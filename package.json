@@ -1,0 +1,33 @@
+{
+  "name": "react-native-big-calendar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:llotheo/react-native-big-calendar",
+  "author": "gosho-kazuya <ketsume0211@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "link-example": "ln -svf $PWD/build example/node_modules/react-native-big-calendar",
+    "postinstall": "npm-run-all build link-example"
+  },
+  "dependencies": {
+    "dayjs": "^1.8.17"
+  },
+  "peerDependencies": {
+    "react-native": "^0.59.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^2.0.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.14",
+    "@types/react-native": "^0.60.23",
+    "acorn-jsx": "^5.1.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
+    "react-native": "^0.61.5",
+    "rollup": "^1.27.8",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.2"
+  }
+}
