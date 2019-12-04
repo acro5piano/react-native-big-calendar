@@ -6,7 +6,10 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "dev": "npm-run-all --parallel start-example watch",
+    "watch": "rollup -cw",
     "build": "rollup -c",
+    "start-example": "cd example && yarn start",
     "link-example": "ln -svf $PWD/build example/node_modules/react-native-big-calendar",
     "postinstall": "npm-run-all build link-example"
   },

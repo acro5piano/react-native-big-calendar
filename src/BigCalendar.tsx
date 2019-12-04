@@ -4,7 +4,7 @@ import { View, Text } from 'react-native'
 export function BigCalendar() {
   return (
     <View>
-      <Text>hello</Text>
+      <Text>hello, hoge</Text>
     </View>
   )
 }
