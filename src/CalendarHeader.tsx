@@ -15,7 +15,7 @@ export const CalendarHeader = React.memo(
       <View style={[styles.container, style]}>
         <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
         {dateRange.map(date => (
-          <View style={{ flex: 1 }}>
+          <View key={date.toString()} style={{ flex: 1 }}>
             <View style={{ height: cellHeight, justifyContent: 'center' }}>
               <Text style={commonStyles.guideText}>{date.format('D(ddd)')}</Text>
             </View>

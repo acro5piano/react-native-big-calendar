@@ -97,6 +97,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center' as const,
     borderRadius: 3,
     padding: 4,
-    color: '#fff',
   },
 })

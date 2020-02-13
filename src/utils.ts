@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-export function getDatesInWeek(date = new Date()) {
+export function getDatesInWeek(date: Date | dayjs.Dayjs = new Date()) {
   const subject = dayjs(date)
   const subjectDOW = subject.day()
   const days = Array(7)
@@ -12,7 +12,7 @@ export function getDatesInWeek(date = new Date()) {
   return days
 }
 
-export function getDatesInNextThreeDays(date = new Date()) {
+export function getDatesInNextThreeDays(date: Date | dayjs.Dayjs = new Date()) {
   const subject = dayjs(date)
   const days = Array(3)
     .fill(0)
