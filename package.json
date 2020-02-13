@@ -1,7 +1,7 @@
 {
   "name": "react-native-big-calendar",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "build/index.js",
   "repository": "git@github.com:llotheo/react-native-big-calendar",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
@@ -20,6 +20,7 @@
     "dayjs": "^1.8.17"
   },
   "peerDependencies": {
+    "react": "^16.8.3",
     "react-native": "^0.59.0"
   },
   "devDependencies": {
