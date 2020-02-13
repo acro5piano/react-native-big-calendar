@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     backgroundColor: '#fff',
+    overflow: 'scroll',
   },
   dateCell: {
     borderWidth: 1,
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
   },
   hourGuide: {
     width: '5%',
+    overflow: 'scroll',
   },
   guideText: {
     color: '#888',
@@ -41,6 +43,16 @@ const styles = StyleSheet.create({
   eventTitle: {
     color: '#fff',
     fontSize: 14,
+  },
+  eventCell: {
+    position: 'absolute' as const,
+    backgroundColor: 'rgb(66, 133, 244)',
+    zIndex: 100,
+    width: '96%',
+    alignSelf: 'center' as const,
+    borderRadius: 3,
+    padding: 4,
+    color: '#fff',
   },
 })
 
@@ -58,16 +70,8 @@ function getEventCellPositionStyle({ end, start }: { end: dayjs.Dayjs; start: da
   const relativeHeight = 100 * (1 / DAY_MINUTES) * end.diff(start, 'minute')
   const relativeTop = (100 * (start.hour() * 60 + start.minute())) / DAY_MINUTES
   return {
-    position: 'absolute' as const,
     height: `${relativeHeight}%`,
     top: `${relativeTop}%`,
-    backgroundColor: 'blue',
-    zIndex: 100,
-    width: '96%',
-    alignSelf: 'center' as const,
-    borderRadius: 3,
-    padding: 4,
-    color: '#fff',
   }
 }
 
@@ -123,9 +127,11 @@ export function Calendar({ events, style, height, mode = '3days' }: CalendarProp
                 ({ start, end }) =>
                   start.isAfter(date.startOf('day')) && end.isBefore(date.endOf('day')),
               )
-
               .map(event => (
-                <View key={event.start.toString()} style={getEventCellPositionStyle(event)}>
+                <View
+                  key={event.start.toString()}
+                  style={[styles.eventCell, getEventCellPositionStyle(event)]}
+                >
                   <Text style={styles.eventTitle}>{event.title}</Text>
                 </View>
               ))}

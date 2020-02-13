@@ -30,7 +30,7 @@ const events = [
 export default function App() {
   return (
     <View style={styles.container}>
-      <Calendar style={styles.calendar} height={1200} events={events} mode="week" />
+      <Calendar style={styles.calendar} height={1200} events={events} mode="3days" />
     </View>
   )
 }
