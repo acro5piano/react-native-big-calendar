@@ -110,7 +110,7 @@ export function Calendar({ events, style, height, mode = '3days' }: CalendarProp
       </View>
       {dateRange.map(date => (
         <View style={[{ height, width: cellWidth }]} key={date.toString()}>
-          <View style={{ height: cellHeight }}>
+          <View style={{ height: cellHeight, justifyContent: 'center' }}>
             <Text style={styles.guideText}>{date.format('D(ddd)')}</Text>
           </View>
           <View style={[styles.dateCell, { height: cellHeight }]}></View>
