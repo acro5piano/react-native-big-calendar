@@ -22,3 +22,13 @@ export function getDatesInNextThreeDays(date = new Date()) {
 
   return days
 }
+
+export const hours = Array(24)
+  .fill(0)
+  .map((_, i) => i)
+
+export function formatHour(hour: number) {
+  return `${hour}:00`
+}
+
+export const DAY_MINUTES = 1440
