@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "npm-run-all --parallel start-example watch",
     "watch": "rollup -cw",
+    "test": "jest",
     "build": "rollup -c",
     "start-example": "cd example && yarn start",
     "link-example": "ln -svf $PWD/build example/node_modules/react-native-big-calendar",
@@ -21,17 +22,19 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^2.0.0",
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^25.1.2",
     "@types/node": "^12.12.14",
     "@types/react-native": "^0.60.23",
     "acorn-jsx": "^5.1.0",
     "husky": "^4.2.3",
+    "jest": "^25.1.0",
     "lint-staged": "^10.0.7",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
     "react-native": "^0.61.5",
     "rollup": "^1.27.8",
     "rollup-plugin-typescript2": "^0.25.3",
+    "ts-jest": "^25.2.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.2"
   },

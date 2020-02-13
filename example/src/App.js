@@ -1,5 +1,12 @@
 import React from 'react'
 import { Calendar } from 'react-native-big-calendar'
+import { View, StyleSheet } from 'react-native'
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+})
 
 const events = [
   {
@@ -15,5 +22,9 @@ const events = [
 ]
 
 export default function App() {
-  return <Calendar height={600} events={events} />
+  return (
+    <View style={styles.container}>
+      <Calendar height={800} events={events} />
+    </View>
+  )
 }
