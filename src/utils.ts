@@ -11,3 +11,14 @@ export function getDatesInWeek(date = new Date()) {
 
   return days
 }
+
+export function getDatesInNextThreeDays(date = new Date()) {
+  const subject = dayjs(date)
+  const days = Array(3)
+    .fill(0)
+    .map((_, i) => {
+      return subject.add(i, 'day')
+    })
+
+  return days
+}

@@ -31,3 +31,12 @@ describe('getDatesInWeek', () => {
     assertDateRange(expected, actual)
   })
 })
+
+describe('getDatesInNextThreeDays', () => {
+  const expected = [new Date(2020, 1, 9), new Date(2020, 1, 10), new Date(2020, 1, 11)]
+
+  test('sunday', () => {
+    const actual = utils.getDatesInNextThreeDays(new Date(2020, 1, 9))
+    assertDateRange(expected, actual)
+  })
+})

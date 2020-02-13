@@ -5,6 +5,12 @@ import { View, StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: '#f8f8f8',
+    height: '100%',
+  },
+  calendar: {
+    borderWidth: 1,
+    borderColor: '#eee',
   },
 })
 
@@ -24,7 +30,7 @@ const events = [
 export default function App() {
   return (
     <View style={styles.container}>
-      <Calendar height={800} events={events} />
+      <Calendar style={styles.calendar} height={1200} events={events} mode="week" />
     </View>
   )
 }
