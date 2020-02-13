@@ -10,8 +10,8 @@
     "react-native-big-calendar": "0.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "build": "env SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
