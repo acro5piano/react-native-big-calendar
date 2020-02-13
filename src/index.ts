@@ -1,2 +1,2 @@
-export { BigCalendar } from './BigCalendar'
+export { Calendar } from './Calendar'
 export { Draggable } from './Draggable'

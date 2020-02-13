@@ -43,7 +43,7 @@ const events = [
 ]
 
 function App() {
-  return <Calendar events={events} />
+  return <Calendar events={events} height={600} />
 }
 ```
 
@@ -116,6 +116,7 @@ function App() {
   return (
     <Calendar
       events={events}
+      height={600}
       components={{
         toolbar: Toolbar,
         dateCellWrapper: DateCell,
@@ -130,6 +131,12 @@ function App() {
 
 ## <Calendar />
 
+### `height` prop
+
+type: `number`
+
+The height of calendar component.
+
 ### `events` prop
 
 type: `Array<{ title: string, start: Date | string, end: Date | string }>`
@@ -138,6 +145,6 @@ The array of events.
 
 ### `components` prop
 
-type: `{ toolbar?: React.ComponentType<ToolbarProps>, dateCellWrapper?: React.ComponentType<DateCellProps>, eventWrapper?: React.ComponentType<EventCellProps> }`
+type: `undefined |{ toolbar?: React.ComponentType<ToolbarProps>, dateCellWrapper?: React.ComponentType<DateCellProps>, eventWrapper?: React.ComponentType<EventCellProps> }`
 
 Custom components which should be rendered instead of default components.
