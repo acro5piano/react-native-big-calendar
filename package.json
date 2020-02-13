@@ -12,9 +12,7 @@
     "build": "npm-run-all build:clean build:ts",
     "build:clean": "rm -rf build/",
     "build:ts": "env NODE_ENV=production rollup -c",
-    "start-example": "cd example && yarn start",
-    "link-example": "ln -svf $PWD/build example/node_modules/react-native-big-calendar",
-    "postinstall": "npm-run-all build link-example"
+    "start-example": "cd example && yarn start"
   },
   "dependencies": {
     "dayjs": "^1.8.17"
