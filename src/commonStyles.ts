@@ -13,8 +13,9 @@ export const commonStyles = StyleSheet.create({
     textAlign: 'center',
   },
   hourGuide: {
-    width: '5%',
-    minWidth: 50,
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    width: 50,
   },
 })
 

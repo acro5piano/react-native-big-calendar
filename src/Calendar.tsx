@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Animated, PanResponder } from 'react-native'
+import { PanResponder, View } from 'react-native'
 import { getDatesInWeek, getDatesInNextThreeDays } from './utils'
 import { CalendarHeader } from './CalendarHeader'
 import { CalendarBody } from './CalendarBody'
@@ -23,12 +23,8 @@ interface CalendarProps<T = {}> {
   style: any
 }
 
-const DURATION = 200
-
 export function Calendar({ events, style = {}, height, mode = '3days' }: CalendarProps) {
   const [date, setDate] = React.useState(dayjs())
-  const [marginRight] = React.useState(new Animated.Value(0))
-  const [marginLeft] = React.useState(new Animated.Value(0))
 
   const dayJsConvertedEvents = React.useMemo(
     () => events.map(e => ({ ...e, start: dayjs(e.start), end: dayjs(e.end) })),
@@ -52,42 +48,23 @@ export function Calendar({ events, style = {}, height, mode = '3days' }: Calenda
     () =>
       PanResponder.create({
         onMoveShouldSetPanResponder: () => true,
-        onPanResponderMove: (_, { dx }) => {
-          Animated.parallel([
-            Animated.timing(marginRight, {
-              toValue: -dx,
-              duration: 0,
-            }),
-            Animated.timing(marginLeft, {
-              toValue: dx,
-              duration: 0,
-            }),
-          ]).start()
-          if (dx < -200) {
+        onPanResponderMove: (_, { dy, dx }) => {
+          if (dy < -50 || 50 < dy) {
+            return
+          }
+          if (dx < -100) {
             setDate(date.add(3, 'day'))
           }
-          // if (dx > 200) {
-          //   setDate(date.add(-3, 'day'))
-          // }
-        },
-        onPanResponderEnd: () => {
-          Animated.parallel([
-            Animated.timing(marginRight, {
-              toValue: 0,
-              duration: DURATION,
-            }),
-            Animated.timing(marginLeft, {
-              toValue: 0,
-              duration: DURATION,
-            }),
-          ]).start()
+          if (dx > 100) {
+            setDate(date.add(-3, 'day'))
+          }
         },
       }),
-    [mode, date, events, marginLeft, marginRight],
+    [date],
   )
 
   return (
-    <Animated.View style={{ marginRight, marginLeft }} {...panResponder.panHandlers}>
+    <View {...panResponder.panHandlers}>
       <CalendarHeader cellHeight={cellHeight} dateRange={dateRange} style={style} />
       <CalendarBody
         dayJsConvertedEvents={dayJsConvertedEvents}
@@ -96,6 +73,6 @@ export function Calendar({ events, style = {}, height, mode = '3days' }: Calenda
         style={style}
         dateRange={dateRange}
       />
-    </Animated.View>
+    </View>
   )
 }
