@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 
-export const HEADER_HEIGHT = 64
+export const HEADER_HEIGHT = 50
 
 export function AppHeader() {
   return (
