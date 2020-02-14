@@ -23,6 +23,8 @@ interface CalendarProps<T = {}> {
   style: any
 }
 
+const SWIPE_THRESHOLD = 50
+
 export function Calendar({ events, style = {}, height, mode = '3days' }: CalendarProps) {
   const [date, setDate] = React.useState(dayjs())
 
@@ -49,13 +51,13 @@ export function Calendar({ events, style = {}, height, mode = '3days' }: Calenda
       PanResponder.create({
         onMoveShouldSetPanResponder: () => true,
         onPanResponderMove: (_, { dy, dx }) => {
-          if (dy < -50 || 50 < dy) {
+          if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy) {
             return
           }
-          if (dx < -100) {
+          if (dx < -1 * SWIPE_THRESHOLD) {
             setDate(date.add(3, 'day'))
           }
-          if (dx > 100) {
+          if (dx > SWIPE_THRESHOLD) {
             setDate(date.add(-3, 'day'))
           }
         },
