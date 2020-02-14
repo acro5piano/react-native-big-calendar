@@ -6,7 +6,8 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "start-storybook -p 7007",
+    "storybook": "start-storybook -p 7007",
+    "build-storybook": "build-storybook -o .storybook-build",
     "test": "jest",
     "watch": "rollup -cw",
     "build": "npm-run-all build:clean build:ts",
@@ -14,7 +15,7 @@
     "build:ts": "env NODE_ENV=production rollup -c"
   },
   "dependencies": {
-    "dayjs": "^1.8.17"
+    "dayjs": "^1.8.20"
   },
   "peerDependencies": {
     "react": "^16.8.3",
