@@ -7,7 +7,7 @@
 
 Cross-platform gcal/outlook like calendar component for React Native.
 
-![image](./assets/screenshot-1.png)
+<img src="./assets/screenshot-1.png" height=100>
 
 # Features
 
