@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { Mode, WeekNum } from './interfaces'
+import { DayJSConvertedEvent, Mode, WeekNum } from './interfaces'
 
 export const DAY_MINUTES = 1440
 
@@ -57,4 +57,8 @@ export function modeToNum(mode: Mode) {
     default:
       throw new Error('undefined mode')
   }
+}
+
+export function formatStartEnd(event: DayJSConvertedEvent) {
+  return `${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}`
 }

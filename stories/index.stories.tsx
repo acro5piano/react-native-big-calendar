@@ -8,23 +8,19 @@ import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { Control, CONTROL_HEIGHT } from './components/Control'
 
 const MOBILE_HEIGHT = 736
+const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('Desktop', module)
   .add('week mode', () => (
     <View style={styles.desktop}>
-      <Calendar
-        style={styles.calendar}
-        height={Dimensions.get('window').height}
-        events={events}
-        mode="week"
-      />
+      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} />
     </View>
   ))
   .add('3days mode', () => (
     <View style={styles.desktop}>
       <Calendar
         style={styles.calendar}
-        height={Dimensions.get('window').height}
+        height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={event => alert(event.title)}
         mode="3days"
@@ -35,9 +31,8 @@ storiesOf('Desktop', module)
     <View style={styles.desktop}>
       <Calendar
         style={styles.calendar}
-        height={Dimensions.get('window').height}
+        height={SCREEN_HEIGHT}
         events={events}
-        mode="week"
         eventCellStyle={event => {
           const backgroundColor = event.title.match(/Meeting/) ? 'red' : 'blue'
           return { backgroundColor }
@@ -58,10 +53,9 @@ storiesOf('Desktop', module)
         <Control {...props} />
         <Calendar
           style={styles.calendar}
-          height={Dimensions.get('window').height - CONTROL_HEIGHT}
+          height={SCREEN_HEIGHT - CONTROL_HEIGHT}
           events={events}
           date={date.toDate()}
-          mode="week"
           swipeEnabled={false}
         />
       </View>
@@ -71,29 +65,27 @@ storiesOf('Desktop', module)
     <View style={styles.desktop}>
       <Calendar
         style={styles.calendar}
-        height={Dimensions.get('window').height}
+        height={SCREEN_HEIGHT}
         events={events}
-        mode="week"
         scrollOffsetMinutes={300}
       />
     </View>
   ))
   .add('week start on Monday', () => (
     <View style={styles.desktop}>
-      <Calendar
-        style={styles.calendar}
-        height={Dimensions.get('window').height}
-        events={events}
-        mode="week"
-        weekStartsOn={1}
-      />
+      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} weekStartsOn={1} />
+    </View>
+  ))
+  .add('do not show time', () => (
+    <View style={styles.desktop}>
+      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} showTime={false} />
     </View>
   ))
 
 storiesOf('Mobile', module)
   .add('week mode', () => (
     <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} mode="week" />
+      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} />
     </View>
   ))
   .add('3days mode', () => (
@@ -110,12 +102,7 @@ storiesOf('Mobile', module)
   .add('with app header', () => (
     <View style={styles.mobile}>
       <AppHeader />
-      <Calendar
-        style={styles.calendar}
-        height={MOBILE_HEIGHT - HEADER_HEIGHT}
-        events={events}
-        mode="week"
-      />
+      <Calendar style={styles.calendar} height={MOBILE_HEIGHT - HEADER_HEIGHT} events={events} />
     </View>
   ))
 

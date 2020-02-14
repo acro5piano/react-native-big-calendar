@@ -11,13 +11,14 @@ interface CalendarProps<T = {}> {
   events: Event<T>[]
   onPressEvent?: (event: Event<T>) => void
   height: number
-  mode: Mode
+  mode?: Mode
   style?: ViewStyle
   eventCellStyle?: EventCellStyle<T>
   scrollOffsetMinutes?: number
   date?: Date
   swipeEnabled?: boolean
-  weekStartsOn: WeekNum
+  showTime?: boolean
+  weekStartsOn?: WeekNum
 }
 
 const SWIPE_THRESHOLD = 50
@@ -26,13 +27,14 @@ export function Calendar({
   events,
   style = {},
   height,
-  mode = '3days',
+  mode = 'week',
   onPressEvent,
   eventCellStyle,
-  scrollOffsetMinutes,
   date,
+  scrollOffsetMinutes = 0,
   swipeEnabled = true,
   weekStartsOn = 0,
+  showTime = true,
 }: CalendarProps) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -93,6 +95,7 @@ export function Calendar({
         onPressEvent={onPressEvent}
         eventCellStyle={eventCellStyle}
         scrollOffsetMinutes={scrollOffsetMinutes}
+        showTime={showTime}
       />
     </View>
   )

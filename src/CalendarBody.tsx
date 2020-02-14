@@ -2,7 +2,14 @@ import * as React from 'react'
 import dayjs from 'dayjs'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles, PRIMARY_COLOR } from './commonStyles'
-import { formatHour, isToday, hours, getRelativeTopInDay, DAY_MINUTES } from './utils'
+import {
+  formatHour,
+  formatStartEnd,
+  isToday,
+  hours,
+  getRelativeTopInDay,
+  DAY_MINUTES,
+} from './utils'
 import { Event, EventCellStyle } from './interfaces'
 
 function getEventCellPositionStyle({ end, start }: { end: dayjs.Dayjs; start: dayjs.Dayjs }) {
@@ -28,7 +35,8 @@ interface CalendarBodyProps<T> {
   style: ViewStyle
   onPressEvent?: (event: Event<T>) => void
   eventCellStyle?: EventCellStyle<T>
-  scrollOffsetMinutes?: number
+  scrollOffsetMinutes: number
+  showTime: boolean
 }
 
 export const CalendarBody = React.memo(
@@ -40,7 +48,8 @@ export const CalendarBody = React.memo(
     dayJsConvertedEvents,
     onPressEvent,
     eventCellStyle,
-    scrollOffsetMinutes = 0,
+    showTime,
+    scrollOffsetMinutes,
   }: CalendarBodyProps<any>) => {
     const getEventStyle = React.useMemo(
       () => (typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle),
@@ -91,7 +100,19 @@ export const CalendarBody = React.memo(
                       onPress={() => onPressEvent && onPressEvent(event)}
                       disabled={!onPressEvent}
                     >
-                      <Text style={styles.eventTitle}>{event.title}</Text>
+                      {event.end.diff(event.start, 'minute') < 32 && showTime ? (
+                        <Text style={styles.eventTitle}>
+                          {event.title},
+                          <Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
+                        </Text>
+                      ) : (
+                        <>
+                          <Text style={styles.eventTitle}>{event.title}</Text>
+                          {showTime && (
+                            <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>
+                          )}
+                        </>
+                      )}
                     </TouchableOpacity>
                   ))}
                 {isToday(date) && (
@@ -114,6 +135,10 @@ const styles = StyleSheet.create({
   eventTitle: {
     color: '#fff',
     fontSize: 12,
+  },
+  eventTime: {
+    color: '#fff',
+    fontSize: 10,
   },
   eventCell: {
     position: 'absolute' as const,
