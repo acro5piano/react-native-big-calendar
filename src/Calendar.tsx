@@ -30,14 +30,14 @@ export function Calendar({
   onPressEvent,
   eventCellStyle,
   scrollOffsetMinutes,
-  date = new Date(),
+  date,
   swipeEnabled = true,
   weekStartsOn = 0,
 }: CalendarProps) {
-  const [targetDate, setDate] = React.useState(dayjs(date))
+  const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
   React.useEffect(() => {
-    setDate(dayjs(date))
+    setTargetDate(dayjs(date))
   }, [date])
 
   const dayJsConvertedEvents = React.useMemo(
@@ -67,10 +67,10 @@ export function Calendar({
             return
           }
           if (dx < -1 * SWIPE_THRESHOLD) {
-            setDate(targetDate.add(modeToNum(mode), 'day'))
+            setTargetDate(targetDate.add(modeToNum(mode), 'day'))
           }
           if (dx > SWIPE_THRESHOLD) {
-            setDate(targetDate.add(modeToNum(mode) * -1, 'day'))
+            setTargetDate(targetDate.add(modeToNum(mode) * -1, 'day'))
           }
         },
       }),
