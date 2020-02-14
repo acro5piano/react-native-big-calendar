@@ -7,15 +7,12 @@ Cross-platform gcal/outlook like calendar component for React Native.
 
 [Components Demo](https://react-native-big-calendar.netlify.com/?path=/story/desktop--3days-mode)
 
-<img src="./assets/screenshot-desktop.png" height="500">
-<img src="./assets/screenshot-mobile.png" height="500">
-
 # Features
 
-- Cross Platform: Runs on Web, iOS, Android with the power of React
+- Cross Platform: Runs on the Web, iOS, Android with the power of React
 - Type-safe: Fully written in TypeScript
 - Customizable: Adjust styles of components
-- Lightweight: ~10kb, only one dependency is `dayjs`
+- Lightweight: ~15kb, only one dependency is `dayjs`
 
 # Install
 
@@ -52,16 +49,11 @@ function App() {
 }
 ```
 
-# API
+# Documentation
 
-`<Calendar />` component
+See [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
 
-| props               | required | type                                             | description                                                                                                                              |
-| ------------------- | -------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| height              | yes      | `number`                                         | The height of calendar.                                                                                                                  |
-| events              | yes      | `Array<{title: string, start: Date, end: Date}>` | Events which will be rendered in the calendar.                                                                                           |
-| mode                | yes      | `'3day' \| 'week'`                               | The type of the calendar.                                                                                                                |
-| onPressEvent        |          | `(event: Event) => void`                         | The handler which fire on press an event.                                                                                                |
-| style               |          | `ViewStyle`                                      | The style of the calendar.                                                                                                               |
-| eventCellStyle      |          | `ViewStyle \| (event: Event) => ViewStyle`       | The style of event cells.                                                                                                                |
-| scrollOffsetMinutes |          | `number`                                         | The minutes of vertical scroll offset of the calendar. e.g.) if you want to show the calendar 8:00am by default, set this value to `480` |
+# Screenshots
+
+<img src="./assets/screenshot-desktop.png" height="500">
+<img src="./assets/screenshot-mobile.png" height="500">
