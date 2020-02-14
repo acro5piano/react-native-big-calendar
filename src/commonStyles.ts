@@ -9,7 +9,7 @@ export const commonStyles = StyleSheet.create({
   },
   guideText: {
     color: '#888',
-    fontSize: 12,
+    fontSize: 10,
     textAlign: 'center',
   },
   hourGuide: {

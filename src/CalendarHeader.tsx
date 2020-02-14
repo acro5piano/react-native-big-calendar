@@ -17,7 +17,8 @@ export const CalendarHeader = React.memo(
         {dateRange.map(date => (
           <View key={date.toString()} style={{ flex: 1 }}>
             <View style={{ height: cellHeight, justifyContent: 'center' }}>
-              <Text style={commonStyles.guideText}>{date.format('D(ddd)')}</Text>
+              <Text style={commonStyles.guideText}>{date.format('ddd')}</Text>
+              <Text style={styles.dateText}>{date.format('D')}</Text>
             </View>
             <View style={[commonStyles.dateCell, { height: cellHeight }]}></View>
           </View>
@@ -32,6 +33,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
+  },
+  dateText: {
+    color: '#444',
+    fontSize: 22,
+    textAlign: 'center',
+    marginTop: 4,
   },
   hourGuideSpacer: {
     borderBottomColor: '#eee',
