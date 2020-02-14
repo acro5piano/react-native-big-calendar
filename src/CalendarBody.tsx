@@ -1,7 +1,7 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { commonStyles } from './commonStyles'
+import { commonStyles, PRIMARY_COLOR } from './commonStyles'
 import { formatHour, hours, DAY_MINUTES } from './utils'
 import { Event, EventCellStyle } from './interfaces'
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   eventCell: {
     position: 'absolute' as const,
-    backgroundColor: 'rgb(66, 133, 244)',
+    backgroundColor: PRIMARY_COLOR,
     zIndex: 100,
     width: '96%',
     alignSelf: 'center' as const,

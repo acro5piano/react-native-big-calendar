@@ -9,7 +9,7 @@ export const commonStyles = StyleSheet.create({
   },
   guideText: {
     color: '#888',
-    fontSize: 10,
+    fontSize: 11,
     textAlign: 'center',
   },
   hourGuide: {
@@ -20,3 +20,4 @@ export const commonStyles = StyleSheet.create({
 })
 
 export const MIN_HEIGHT = 1200
+export const PRIMARY_COLOR = 'rgb(66, 133, 244)'
