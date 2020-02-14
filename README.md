@@ -96,10 +96,10 @@ function DateCell({ range }: DateCellProps) {
   return range.map(dayjs => {
     return (
       <View key={dayjs.toString()}>
-        {dayjs.format('d') === 0 && (
+        {dayjs.day() === 0 && (
           <View style={{ backgroundColor: 'red', height: '100%', width: '100%' }} />
         )}
-        {dayjs.format('d') === 6 && (
+        {dayjs.day() === 6 && (
           <View style={{ backgroundColor: 'blue', height: '100%', width: '100%' }} />
         )}
       </View>
