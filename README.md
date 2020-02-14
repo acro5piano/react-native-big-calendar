@@ -1,10 +1,13 @@
+[![npm version](https://badge.fury.io/js/react-native-big-calendar.svg)](https://badge.fury.io/js/react-native-big-calendar)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ca0f2cc8-bb4f-4a18-be48-c2b10e2b6046/deploy-status)](https://app.netlify.com/sites/react-native-big-calendar/deploys)
+
 **We use `Readme-Driven Development` so some part of features in this document has not been implemented yet.**
 
 # react-native-big-calendar
 
-[Under the development]
-
 Cross-platform gcal/outlook like calendar component for React Native.
+
+![image](./assets/screenshot-1.png)
 
 # Features
 
