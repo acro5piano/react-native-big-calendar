@@ -76,11 +76,35 @@ storiesOf('Desktop', module)
       <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} weekStartsOn={1} />
     </View>
   ))
-  .add('do not show time', () => (
-    <View style={styles.desktop}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} showTime={false} />
-    </View>
-  ))
+  .add('all day event', () => {
+    const _events = [
+      ...events,
+      {
+        title: 'Vacation',
+        start: dayjs()
+          .add(-1, 'day')
+          .set('hour', 0)
+          .set('minute', 0)
+          .toDate(),
+        end: dayjs()
+          .add(-1, 'day')
+          .set('hour', 0)
+          .set('minute', 0)
+          .toDate(),
+      },
+    ]
+
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          style={styles.calendar}
+          height={SCREEN_HEIGHT}
+          events={_events}
+          weekStartsOn={1}
+        />
+      </View>
+    )
+  })
 
 storiesOf('Mobile', module)
   .add('week mode', () => (
@@ -103,6 +127,11 @@ storiesOf('Mobile', module)
     <View style={styles.mobile}>
       <AppHeader />
       <Calendar style={styles.calendar} height={MOBILE_HEIGHT - HEADER_HEIGHT} events={events} />
+    </View>
+  ))
+  .add('do not show time', () => (
+    <View style={styles.mobile}>
+      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} showTime={false} />
     </View>
   ))
 

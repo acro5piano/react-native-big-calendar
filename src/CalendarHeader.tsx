@@ -3,15 +3,17 @@ import dayjs from 'dayjs'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { commonStyles, PRIMARY_COLOR } from './commonStyles'
 import { isToday } from './utils'
+import { Event } from './interfaces'
 
-interface CalendarHeaderProps {
+interface CalendarHeaderProps<T> {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
   style: ViewStyle
+  allDayEvents: Event<T>[]
 }
 
 export const CalendarHeader = React.memo(
-  ({ dateRange, cellHeight, style = {} }: CalendarHeaderProps) => {
+  ({ dateRange, cellHeight, style = {}, allDayEvents }: CalendarHeaderProps<any>) => {
     return (
       <View style={[styles.container, style]}>
         <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
@@ -29,7 +31,18 @@ export const CalendarHeader = React.memo(
                   </Text>
                 </View>
               </View>
-              <View style={[commonStyles.dateCell, { height: cellHeight }]}></View>
+              <View style={[commonStyles.dateCell, { height: cellHeight }]}>
+                {allDayEvents.map(event => {
+                  if (!event.start.isSame(date, 'day')) {
+                    return null
+                  }
+                  return (
+                    <View style={commonStyles.eventCell}>
+                      <Text style={commonStyles.eventTitle}>{event.title}</Text>
+                    </View>
+                  )
+                })}
+              </View>
             </View>
           )
         })}

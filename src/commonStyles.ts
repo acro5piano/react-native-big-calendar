@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native'
 
+export const MIN_HEIGHT = 1200
+export const PRIMARY_COLOR = 'rgb(66, 133, 244)'
+
 export const commonStyles = StyleSheet.create({
   dateCell: {
     borderWidth: 1,
@@ -17,7 +20,17 @@ export const commonStyles = StyleSheet.create({
     zIndex: 1000,
     width: 50,
   },
+  eventCell: {
+    position: 'absolute' as const,
+    backgroundColor: PRIMARY_COLOR,
+    zIndex: 100,
+    width: '96%',
+    alignSelf: 'center' as const,
+    borderRadius: 3,
+    padding: 4,
+  },
+  eventTitle: {
+    color: '#fff',
+    fontSize: 12,
+  },
 })
-
-export const MIN_HEIGHT = 1200
-export const PRIMARY_COLOR = 'rgb(66, 133, 244)'

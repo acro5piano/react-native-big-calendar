@@ -62,3 +62,12 @@ export function modeToNum(mode: Mode) {
 export function formatStartEnd(event: DayJSConvertedEvent) {
   return `${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}`
 }
+
+export function isAllDayEvent(event: DayJSConvertedEvent) {
+  return (
+    event.start.hour() === 0 &&
+    event.start.minute() === 0 &&
+    event.end.hour() === 0 &&
+    event.end.minute() === 0
+  )
+}

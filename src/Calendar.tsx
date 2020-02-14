@@ -1,11 +1,11 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { PanResponder, View, ViewStyle } from 'react-native'
-import { getDatesInWeek, getDatesInNextThreeDays, modeToNum } from './utils'
 import { CalendarHeader } from './CalendarHeader'
 import { CalendarBody } from './CalendarBody'
 import { MIN_HEIGHT } from './commonStyles'
 import { Event, EventCellStyle, Mode, WeekNum } from './interfaces'
+import { getDatesInWeek, getDatesInNextThreeDays, modeToNum, isAllDayEvent } from './utils'
 
 interface CalendarProps<T = {}> {
   events: Event<T>[]
@@ -47,6 +47,14 @@ export function Calendar({
     [events],
   )
 
+  const allDayEvents = React.useMemo(() => dayJsConvertedEvents.filter(isAllDayEvent), [
+    dayJsConvertedEvents,
+  ])
+
+  const daytimeEvents = React.useMemo(() => dayJsConvertedEvents.filter(x => !isAllDayEvent(x)), [
+    dayJsConvertedEvents,
+  ])
+
   const dateRange = React.useMemo(() => {
     switch (mode) {
       case '3days':
@@ -87,10 +95,10 @@ export function Calendar({
 
   return (
     <View {...(swipeEnabled ? panResponder.panHandlers : {})}>
-      <CalendarHeader {...commonProps} />
+      <CalendarHeader {...commonProps} allDayEvents={allDayEvents} />
       <CalendarBody
         {...commonProps}
-        dayJsConvertedEvents={dayJsConvertedEvents}
+        dayJsConvertedEvents={daytimeEvents}
         containerHeight={height}
         onPressEvent={onPressEvent}
         eventCellStyle={eventCellStyle}

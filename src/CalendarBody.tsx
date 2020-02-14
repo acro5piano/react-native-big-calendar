@@ -1,7 +1,7 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { commonStyles, PRIMARY_COLOR } from './commonStyles'
+import { commonStyles } from './commonStyles'
 import {
   formatHour,
   formatStartEnd,
@@ -93,7 +93,7 @@ export const CalendarBody = React.memo(
                     <TouchableOpacity
                       key={event.start.toString()}
                       style={[
-                        styles.eventCell,
+                        commonStyles.eventCell,
                         getEventCellPositionStyle(event),
                         getEventStyle(event),
                       ]}
@@ -101,13 +101,13 @@ export const CalendarBody = React.memo(
                       disabled={!onPressEvent}
                     >
                       {event.end.diff(event.start, 'minute') < 32 && showTime ? (
-                        <Text style={styles.eventTitle}>
+                        <Text style={commonStyles.eventTitle}>
                           {event.title},
                           <Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
                         </Text>
                       ) : (
                         <>
-                          <Text style={styles.eventTitle}>{event.title}</Text>
+                          <Text style={commonStyles.eventTitle}>{event.title}</Text>
                           {showTime && (
                             <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>
                           )}
@@ -132,22 +132,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
   },
-  eventTitle: {
-    color: '#fff',
-    fontSize: 12,
-  },
   eventTime: {
     color: '#fff',
     fontSize: 10,
-  },
-  eventCell: {
-    position: 'absolute' as const,
-    backgroundColor: PRIMARY_COLOR,
-    zIndex: 100,
-    width: '96%',
-    alignSelf: 'center' as const,
-    borderRadius: 3,
-    padding: 4,
   },
   nowIndicator: {
     position: 'absolute',
