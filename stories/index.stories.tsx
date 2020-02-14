@@ -14,6 +14,7 @@ storiesOf('Desktop', module)
         style={styles.calendar}
         height={Dimensions.get('window').height}
         events={events}
+        onPressEvent={event => alert(event.title)}
         mode="3days"
       />
     </View>
@@ -28,11 +29,31 @@ storiesOf('Desktop', module)
       />
     </View>
   ))
+  .add('event cell style', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        style={styles.calendar}
+        height={Dimensions.get('window').height}
+        events={events}
+        mode="week"
+        eventCellStyle={event => {
+          const backgroundColor = event.title.match(/Meeting/) ? 'red' : 'blue'
+          return { backgroundColor }
+        }}
+      />
+    </View>
+  ))
 
 storiesOf('Mobile', module)
   .add('3days mode', () => (
     <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} mode="3days" />
+      <Calendar
+        style={styles.calendar}
+        height={MOBILE_HEIGHT}
+        events={events}
+        mode="3days"
+        onPressEvent={event => alert(event.title)}
+      />
     </View>
   ))
   .add('week mode', () => (

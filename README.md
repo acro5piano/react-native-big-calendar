@@ -15,7 +15,8 @@ Cross-platform gcal/outlook like calendar component for React Native.
 
 - Cross Platform: Runs on Web, iOS, Android with the power of React
 - Type-safe: Fully written in TypeScript
-- Customizable: Render your custom components
+- Customizable: Adjust styles of components
+- Lightweight: ~10kb, only one dependency is `dayjs`
 
 # Install
 
@@ -52,104 +53,15 @@ function App() {
 }
 ```
 
-# Custom Components
-
-```typescript
-import {
-  Calendar,
-  EventCellProps,
-  ToolbarProps,
-  DateCellProps,
-  NavigationActions,
-} from 'react-native-big-calendar'
-import { Text, TouchableOpacity, View } from 'react-native'
-
-const events = [
-  {
-    title: 'Meeting',
-    start: new Date(2020, 1, 11, 10, 0),
-    end: new Date(2020, 1, 11, 10, 30),
-  },
-  {
-    title: 'Coffee break',
-    start: new Date(2020, 1, 18, 15, 45),
-    end: new Date(2020, 1, 18, 16, 30),
-  },
-]
-
-function Toolbar({ onNavigate, date }: ToolbarProps) {
-  return (
-    <View>
-      <TouchableOpacity onPress={() => onNavigate(NavigationActions.PREV)}>
-        <Text>Prev Week</Text>
-      </TouchableOpacity>
-      <Text>{date.toString()}</Text>
-      <TouchableOpacity onPress={() => onNavigate(NavigationActions.NEXT)}>
-        <Text>Next Week</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => onNavigate(NavigationActions.TODAY)}>
-        <Text>Today</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
-
-function DateCell({ range }: DateCellProps) {
-  return range.map(dayjs => {
-    return (
-      <View key={dayjs.toString()}>
-        {dayjs.day() === 0 && (
-          <View style={{ backgroundColor: 'red', height: '100%', width: '100%' }} />
-        )}
-        {dayjs.day() === 6 && (
-          <View style={{ backgroundColor: 'blue', height: '100%', width: '100%' }} />
-        )}
-      </View>
-    )
-  })
-}
-
-function EventCell({ event }: EventCellProps) {
-  return (
-    <View>
-      <Text>{event.title}</Text>
-    </View>
-  )
-}
-
-function App() {
-  return (
-    <Calendar
-      events={events}
-      height={600}
-      components={{
-        toolbar: Toolbar,
-        dateCellWrapper: DateCell,
-        eventWrapper: EventCell,
-      }}
-    />
-  )
-}
-```
-
 # API
 
-## <Calendar />
+`<Calendar />` component
 
-### `height` prop
-
-type: `number`
-
-The height of calendar component.
-
-### `events` prop
-
-type: `Array<{ title: string, start: Date | string, end: Date | string }>`
-
-The array of events.
-
-### `components` prop
-
-type: `undefined |{ toolbar?: React.ComponentType<ToolbarProps>, dateCellWrapper?: React.ComponentType<DateCellProps>, eventWrapper?: React.ComponentType<EventCellProps> }`
-
-Custom components which should be rendered instead of default components.
+| props          | required | type                                             | description                                    |
+| -------------- | -------- | ------------------------------------------------ | ---------------------------------------------- |
+| height         | yes      | `number`                                         | The height of calendar.                        |
+| events         | yes      | `Array<{title: string, start: Date, end: Date}>` | Events which will be rendered in the calendar. |
+| mode           | yes      | `'3day' | 'week'`                                | The type of the calendar.                      |
+| onPressEvent   |          | `(event: Event) => void`                         | The handler which fire on press an event.      |
+| style          |          | `ViewStyle`                                      | The style of the calendar.                     |
+| eventCellStyle |          | `ViewStyle | (event: Event) => ViewStyle`        | The style of event cells.                      |

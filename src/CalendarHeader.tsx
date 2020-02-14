@@ -1,12 +1,12 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { commonStyles } from './commonStyles'
 
 interface CalendarHeaderProps {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
-  style: any
+  style: ViewStyle
 }
 
 export const CalendarHeader = React.memo(

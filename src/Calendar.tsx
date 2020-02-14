@@ -1,31 +1,31 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { PanResponder, View } from 'react-native'
+import { PanResponder, View, ViewStyle } from 'react-native'
 import { getDatesInWeek, getDatesInNextThreeDays } from './utils'
 import { CalendarHeader } from './CalendarHeader'
 import { CalendarBody } from './CalendarBody'
 import { MIN_HEIGHT } from './commonStyles'
-
-interface BaseEvent {
-  start: Date
-  end: Date
-  title: string
-}
-
-type Event<T = {}> = BaseEvent & T
-
-type Mode = '3days' | 'week' | 'day'
+import { Event, EventCellStyle, Mode } from './interfaces'
 
 interface CalendarProps<T = {}> {
   events: Event<T>[]
+  onPressEvent?: (event: Event<T>) => void
   height: number
   mode: Mode
-  style: any
+  style?: ViewStyle
+  eventCellStyle?: EventCellStyle<T>
 }
 
 const SWIPE_THRESHOLD = 50
 
-export function Calendar({ events, style = {}, height, mode = '3days' }: CalendarProps) {
+export function Calendar({
+  events,
+  style = {},
+  height,
+  mode = '3days',
+  onPressEvent,
+  eventCellStyle,
+}: CalendarProps) {
   const [date, setDate] = React.useState(dayjs())
 
   const dayJsConvertedEvents = React.useMemo(
@@ -74,6 +74,8 @@ export function Calendar({ events, style = {}, height, mode = '3days' }: Calenda
         cellHeight={cellHeight}
         style={style}
         dateRange={dateRange}
+        onPressEvent={onPressEvent}
+        eventCellStyle={eventCellStyle}
       />
     </View>
   )

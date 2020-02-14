@@ -1,8 +1,9 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles, MIN_HEIGHT } from './commonStyles'
 import { formatHour, hours, DAY_MINUTES } from './utils'
+import { Event, EventCellStyle } from './interfaces'
 
 function getEventCellPositionStyle({ end, start }: { end: dayjs.Dayjs; start: dayjs.Dayjs }) {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * end.diff(start, 'minute')
@@ -19,12 +20,14 @@ interface DayJsConvertedEvent {
   end: dayjs.Dayjs
 }
 
-interface CalendarBodyProps {
+interface CalendarBodyProps<T> {
   containerHeight: number
   cellHeight: number
   dateRange: dayjs.Dayjs[]
   dayJsConvertedEvents: DayJsConvertedEvent[]
-  style: any
+  style: ViewStyle
+  onPressEvent?: (event: Event<T>) => void
+  eventCellStyle?: EventCellStyle<T>
 }
 
 export const CalendarBody = React.memo(
@@ -34,7 +37,12 @@ export const CalendarBody = React.memo(
     dateRange,
     style = {},
     dayJsConvertedEvents,
-  }: CalendarBodyProps) => {
+    onPressEvent,
+    eventCellStyle,
+  }: CalendarBodyProps<any>) => {
+    const getEventStyle =
+      typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle
+
     return (
       <View style={[styles.container, { height: containerHeight - cellHeight * 2 }, style]}>
         <View style={styles.inner}>
@@ -57,12 +65,18 @@ export const CalendarBody = React.memo(
                       start.isAfter(date.startOf('day')) && end.isBefore(date.endOf('day')),
                   )
                   .map(event => (
-                    <View
+                    <TouchableOpacity
                       key={event.start.toString()}
-                      style={[styles.eventCell, getEventCellPositionStyle(event)]}
+                      style={[
+                        styles.eventCell,
+                        getEventCellPositionStyle(event),
+                        getEventStyle(event),
+                      ]}
+                      onPress={() => onPressEvent && onPressEvent(event)}
+                      disabled={!onPressEvent}
                     >
                       <Text style={styles.eventTitle}>{event.title}</Text>
-                    </View>
+                    </TouchableOpacity>
                   ))}
               </View>
             ))}
