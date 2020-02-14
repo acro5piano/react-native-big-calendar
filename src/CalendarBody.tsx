@@ -2,12 +2,12 @@ import * as React from 'react'
 import dayjs from 'dayjs'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles, PRIMARY_COLOR } from './commonStyles'
-import { formatHour, hours, DAY_MINUTES } from './utils'
+import { formatHour, isToday, hours, getRelativeTopInDay, DAY_MINUTES } from './utils'
 import { Event, EventCellStyle } from './interfaces'
 
 function getEventCellPositionStyle({ end, start }: { end: dayjs.Dayjs; start: dayjs.Dayjs }) {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * end.diff(start, 'minute')
-  const relativeTop = (100 * (start.hour() * 60 + start.minute())) / DAY_MINUTES
+  const relativeTop = getRelativeTopInDay(start)
   return {
     height: `${relativeHeight}%`,
     top: `${relativeTop}%`,
@@ -42,15 +42,22 @@ export const CalendarBody = React.memo(
     eventCellStyle,
     scrollOffsetMinutes = 0,
   }: CalendarBodyProps<any>) => {
-    const getEventStyle =
-      typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle
+    const getEventStyle = React.useMemo(
+      () => (typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle),
+      [eventCellStyle],
+    )
     const scrollView = React.useRef<ScrollView>(null)
+    const [now, setNow] = React.useState(dayjs())
 
     React.useEffect(() => {
       if (scrollView.current && scrollOffsetMinutes) {
         scrollView.current.scrollTo({ y: (cellHeight * scrollOffsetMinutes) / 60, animated: false })
       }
     }, [scrollView.current])
+
+    React.useEffect(() => {
+      setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
+    }, [])
 
     return (
       <ScrollView ref={scrollView} style={[{ height: containerHeight - cellHeight * 2 }, style]}>
@@ -66,7 +73,7 @@ export const CalendarBody = React.memo(
             {dateRange.map(date => (
               <View style={[{ flex: 1 }]} key={date.toString()}>
                 {hours.map(hour => (
-                  <View key={hour} style={[commonStyles.dateCell, { height: cellHeight }]}></View>
+                  <View key={hour} style={[commonStyles.dateCell, { height: cellHeight }]} />
                 ))}
                 {dayJsConvertedEvents
                   .filter(
@@ -87,6 +94,9 @@ export const CalendarBody = React.memo(
                       <Text style={styles.eventTitle}>{event.title}</Text>
                     </TouchableOpacity>
                   ))}
+                {isToday(date) && (
+                  <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
+                )}
               </View>
             ))}
           </View>
@@ -113,5 +123,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center' as const,
     borderRadius: 3,
     padding: 4,
+  },
+  nowIndicator: {
+    position: 'absolute',
+    zIndex: 10000,
+    backgroundColor: 'red',
+    height: 2,
+    width: '100%',
   },
 })

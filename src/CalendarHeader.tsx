@@ -2,13 +2,13 @@ import * as React from 'react'
 import dayjs from 'dayjs'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { commonStyles, PRIMARY_COLOR } from './commonStyles'
+import { isToday } from './utils'
 
 interface CalendarHeaderProps {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
   style: ViewStyle
 }
-const today = dayjs()
 
 export const CalendarHeader = React.memo(
   ({ dateRange, cellHeight, style = {} }: CalendarHeaderProps) => {
@@ -16,15 +16,15 @@ export const CalendarHeader = React.memo(
       <View style={[styles.container, style]}>
         <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
         {dateRange.map(date => {
-          const isToday = today.isSame(date, 'day')
+          const _isToday = isToday(date)
           return (
             <View key={date.toString()} style={{ flex: 1, paddingTop: 2 }}>
               <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-                <Text style={[commonStyles.guideText, isToday && { color: PRIMARY_COLOR }]}>
+                <Text style={[commonStyles.guideText, _isToday && { color: PRIMARY_COLOR }]}>
                   {date.format('ddd')}
                 </Text>
-                <View style={isToday && styles.todayWrap}>
-                  <Text style={[styles.dateText, isToday && { color: '#fff' }]}>
+                <View style={_isToday && styles.todayWrap}>
+                  <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
                     {date.format('D')}
                   </Text>
                 </View>
