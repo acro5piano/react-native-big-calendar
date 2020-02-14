@@ -1,14 +1,15 @@
 import dayjs from 'dayjs'
+import { Mode, WeekNum } from './interfaces'
 
 export const DAY_MINUTES = 1440
 
-export function getDatesInWeek(date: Date | dayjs.Dayjs = new Date()) {
+export function getDatesInWeek(date: Date | dayjs.Dayjs = new Date(), weekStartsOn: WeekNum = 0) {
   const subject = dayjs(date)
   const subjectDOW = subject.day()
   const days = Array(7)
     .fill(0)
     .map((_, i) => {
-      return subject.add(i - subjectDOW, 'day')
+      return subject.add(i - subjectDOW + weekStartsOn, 'day')
     })
 
   return days
@@ -45,4 +46,15 @@ export function getRelativeTopInDay(date = dayjs()) {
 export function todayInMinutes() {
   const today = dayjs()
   return today.diff(dayjs().startOf('day'), 'minute')
+}
+
+export function modeToNum(mode: Mode) {
+  switch (mode) {
+    case '3days':
+      return 3
+    case 'week':
+      return 7
+    default:
+      throw new Error('undefined mode')
+  }
 }
