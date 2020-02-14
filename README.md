@@ -7,6 +7,8 @@
 
 Cross-platform gcal/outlook like calendar component for React Native.
 
+[Components Demo](https://react-native-big-calendar.netlify.com/?path=/story/desktop--3days-mode)
+
 <img src="./assets/screenshot-1.png" height="500">
 
 # Features
