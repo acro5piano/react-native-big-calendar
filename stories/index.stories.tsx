@@ -43,6 +43,17 @@ storiesOf('Desktop', module)
       />
     </View>
   ))
+  .add('scroll to some time', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        style={styles.calendar}
+        height={Dimensions.get('window').height}
+        events={events}
+        mode="week"
+        scrollOffsetMinutes={300}
+      />
+    </View>
+  ))
 
 storiesOf('Mobile', module)
   .add('3days mode', () => (

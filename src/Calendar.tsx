@@ -14,6 +14,7 @@ interface CalendarProps<T = {}> {
   mode: Mode
   style?: ViewStyle
   eventCellStyle?: EventCellStyle<T>
+  scrollOffsetMinutes?: number
 }
 
 const SWIPE_THRESHOLD = 50
@@ -25,6 +26,7 @@ export function Calendar({
   mode = '3days',
   onPressEvent,
   eventCellStyle,
+  scrollOffsetMinutes,
 }: CalendarProps) {
   const [date, setDate] = React.useState(dayjs())
 
@@ -76,6 +78,7 @@ export function Calendar({
         dateRange={dateRange}
         onPressEvent={onPressEvent}
         eventCellStyle={eventCellStyle}
+        scrollOffsetMinutes={scrollOffsetMinutes}
       />
     </View>
   )

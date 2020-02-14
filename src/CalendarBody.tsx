@@ -1,7 +1,7 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
-import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { commonStyles, MIN_HEIGHT } from './commonStyles'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { commonStyles } from './commonStyles'
 import { formatHour, hours, DAY_MINUTES } from './utils'
 import { Event, EventCellStyle } from './interfaces'
 
@@ -28,6 +28,7 @@ interface CalendarBodyProps<T> {
   style: ViewStyle
   onPressEvent?: (event: Event<T>) => void
   eventCellStyle?: EventCellStyle<T>
+  scrollOffsetMinutes?: number
 }
 
 export const CalendarBody = React.memo(
@@ -39,13 +40,21 @@ export const CalendarBody = React.memo(
     dayJsConvertedEvents,
     onPressEvent,
     eventCellStyle,
+    scrollOffsetMinutes = 0,
   }: CalendarBodyProps<any>) => {
     const getEventStyle =
       typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle
+    const scrollView = React.useRef<ScrollView>(null)
+
+    React.useEffect(() => {
+      if (scrollView.current && scrollOffsetMinutes) {
+        scrollView.current.scrollTo({ y: (cellHeight * scrollOffsetMinutes) / 60, animated: false })
+      }
+    }, [scrollView.current])
 
     return (
-      <View style={[styles.container, { height: containerHeight - cellHeight * 2 }, style]}>
-        <View style={styles.inner}>
+      <ScrollView ref={scrollView} style={[{ height: containerHeight - cellHeight * 2 }, style]}>
+        <View>
           <View style={[styles.body]}>
             <View style={[commonStyles.hourGuide]}>
               {hours.map(hour => (
@@ -82,22 +91,15 @@ export const CalendarBody = React.memo(
             ))}
           </View>
         </View>
-      </View>
+      </ScrollView>
     )
   },
 )
 
 const styles = StyleSheet.create({
-  container: {
-    overflow: 'scroll',
-  },
-  inner: {
-    minHeight: MIN_HEIGHT,
-  },
   body: {
     flexDirection: 'row',
     flex: 1,
-    minHeight: 800,
   },
   eventTitle: {
     color: '#fff',

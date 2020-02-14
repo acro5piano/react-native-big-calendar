@@ -57,11 +57,12 @@ function App() {
 
 `<Calendar />` component
 
-| props          | required | type                                             | description                                    |
-| -------------- | -------- | ------------------------------------------------ | ---------------------------------------------- |
-| height         | yes      | `number`                                         | The height of calendar.                        |
-| events         | yes      | `Array<{title: string, start: Date, end: Date}>` | Events which will be rendered in the calendar. |
-| mode           | yes      | `'3day' | 'week'`                                | The type of the calendar.                      |
-| onPressEvent   |          | `(event: Event) => void`                         | The handler which fire on press an event.      |
-| style          |          | `ViewStyle`                                      | The style of the calendar.                     |
-| eventCellStyle |          | `ViewStyle | (event: Event) => ViewStyle`        | The style of event cells.                      |
+| props               | required | type                                             | description                                                                                                                              |
+| ------------------- | -------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| height              | yes      | `number`                                         | The height of calendar.                                                                                                                  |
+| events              | yes      | `Array<{title: string, start: Date, end: Date}>` | Events which will be rendered in the calendar.                                                                                           |
+| mode                | yes      | `'3day' \| 'week'`                               | The type of the calendar.                                                                                                                |
+| onPressEvent        |          | `(event: Event) => void`                         | The handler which fire on press an event.                                                                                                |
+| style               |          | `ViewStyle`                                      | The style of the calendar.                                                                                                               |
+| eventCellStyle      |          | `ViewStyle \| (event: Event) => ViewStyle`       | The style of event cells.                                                                                                                |
+| scrollOffsetMinutes |          | `number`                                         | The minutes of vertical scroll offset of the calendar. e.g.) if you want to show the calendar 8:00am by default, set this value to `480` |
