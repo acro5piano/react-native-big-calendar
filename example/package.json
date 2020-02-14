@@ -6,26 +6,10 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-native-big-calendar": "0.0.2",
-    "react-native-web": "^0.11.7",
-    "react-scripts": "3.2.0"
+    "react-native-web": "^0.11.7"
   },
   "scripts": {
     "build": "env NODE_ENV=production webpack --progress"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "html-webpack-plugin": "^3.2.0",
