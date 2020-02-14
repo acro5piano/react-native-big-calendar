@@ -7,7 +7,7 @@
     "react-dom": "^16.12.0",
     "react-native-web": "^0.11.7",
     "react-scripts": "3.2.0",
-    "react-native-big-calendar": "0.0.1"
+    "react-native-big-calendar": "0.0.2"
   },
   "scripts": {
     "start": "env SKIP_PREFLIGHT_CHECK=true react-scripts start",
