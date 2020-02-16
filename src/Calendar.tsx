@@ -9,8 +9,8 @@ import { getDatesInWeek, getDatesInNextThreeDays, modeToNum, isAllDayEvent } fro
 
 interface CalendarProps<T = {}> {
   events: Event<T>[]
-  onPressEvent?: (event: Event<T>) => void
   height: number
+  onPressEvent?: (event: Event<T>) => void
   mode?: Mode
   style?: ViewStyle
   eventCellStyle?: EventCellStyle<T>

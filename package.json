@@ -1,6 +1,6 @@
 {
   "name": "react-native-big-calendar",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "build/index.js",
   "repository": "git@github.com:llotheo/react-native-big-calendar",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
@@ -10,6 +10,7 @@
     "build-storybook": "build-storybook -o .storybook-build",
     "test": "jest",
     "watch": "rollup -cw",
+    "prepublish": "npm run build",
     "build": "npm-run-all build:clean build:ts",
     "build:clean": "rm -rf build/",
     "build:ts": "env NODE_ENV=production rollup -c"
