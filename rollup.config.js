@@ -5,7 +5,13 @@ import jsx from 'acorn-jsx'
 const plugins = []
 
 if (process.env.NODE_ENV === 'production') {
-  plugins.push(typescriptProd({ tslib: require('tslib'), declaration: true }))
+  plugins.push(
+    typescriptProd({
+      tslib: require('tslib'),
+      declaration: true,
+      tsconfig: 'tsconfig.prod.json',
+    }),
+  )
 } else {
   plugins.push(typescriptDev())
 }
