@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { PanResponder, View, ViewStyle } from 'react-native'
+import { PanResponder, ViewStyle } from 'react-native'
 import { CalendarHeader } from './CalendarHeader'
 import { CalendarBody } from './CalendarBody'
 import { MIN_HEIGHT } from './commonStyles'
@@ -96,7 +96,7 @@ export function Calendar({
   }
 
   return (
-    <View {...(swipeEnabled ? panResponder.panHandlers : {})}>
+    <>
       <CalendarHeader {...commonProps} allDayEvents={allDayEvents} />
       <CalendarBody
         {...commonProps}
@@ -106,7 +106,8 @@ export function Calendar({
         eventCellStyle={eventCellStyle}
         scrollOffsetMinutes={scrollOffsetMinutes}
         showTime={showTime}
+        panHandlers={swipeEnabled ? panResponder.panHandlers : undefined}
       />
-    </View>
+    </>
   )
 }

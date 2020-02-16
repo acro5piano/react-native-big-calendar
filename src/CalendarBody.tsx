@@ -1,6 +1,14 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  GestureResponderHandlers,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
 import { commonStyles } from './commonStyles'
 import {
   formatHour,
@@ -37,6 +45,7 @@ interface CalendarBodyProps<T> {
   eventCellStyle?: EventCellStyle<T>
   scrollOffsetMinutes: number
   showTime: boolean
+  panHandlers?: GestureResponderHandlers
 }
 
 export const CalendarBody = React.memo(
@@ -45,6 +54,7 @@ export const CalendarBody = React.memo(
     cellHeight,
     dateRange,
     style = {},
+    panHandlers = {},
     dayJsConvertedEvents,
     onPressEvent,
     eventCellStyle,
@@ -70,7 +80,7 @@ export const CalendarBody = React.memo(
 
     return (
       <ScrollView ref={scrollView} style={[{ height: containerHeight - cellHeight * 2 }, style]}>
-        <View>
+        <View {...panHandlers}>
           <View style={[styles.body]}>
             <View style={[commonStyles.hourGuide]}>
               {hours.map(hour => (
