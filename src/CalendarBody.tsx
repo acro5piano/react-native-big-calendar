@@ -2,6 +2,7 @@ import * as React from 'react'
 import dayjs from 'dayjs'
 import {
   GestureResponderHandlers,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -79,58 +80,58 @@ export const CalendarBody = React.memo(
     }, [])
 
     return (
-      <ScrollView ref={scrollView} style={[{ height: containerHeight - cellHeight * 2 }, style]}>
-        <View {...panHandlers}>
-          <View style={[styles.body]}>
-            <View style={[commonStyles.hourGuide]}>
-              {hours.map(hour => (
-                <View key={hour} style={{ height: cellHeight }}>
-                  <Text style={commonStyles.guideText}>{formatHour(hour)}</Text>
-                </View>
-              ))}
-            </View>
-            {dateRange.map(date => (
-              <View style={[{ flex: 1 }]} key={date.toString()}>
-                {hours.map(hour => (
-                  <View key={hour} style={[commonStyles.dateCell, { height: cellHeight }]} />
-                ))}
-                {dayJsConvertedEvents
-                  .filter(
-                    ({ start, end }) =>
-                      start.isAfter(date.startOf('day')) && end.isBefore(date.endOf('day')),
-                  )
-                  .map(event => (
-                    <TouchableOpacity
-                      key={event.start.toString()}
-                      style={[
-                        commonStyles.eventCell,
-                        getEventCellPositionStyle(event),
-                        getEventStyle(event),
-                      ]}
-                      onPress={() => onPressEvent && onPressEvent(event)}
-                      disabled={!onPressEvent}
-                    >
-                      {event.end.diff(event.start, 'minute') < 32 && showTime ? (
-                        <Text style={commonStyles.eventTitle}>
-                          {event.title},
-                          <Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
-                        </Text>
-                      ) : (
-                        <>
-                          <Text style={commonStyles.eventTitle}>{event.title}</Text>
-                          {showTime && (
-                            <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>
-                          )}
-                        </>
-                      )}
-                    </TouchableOpacity>
-                  ))}
-                {isToday(date) && (
-                  <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
-                )}
+      <ScrollView
+        style={[{ height: containerHeight - cellHeight * 3 }, style]}
+        ref={scrollView}
+        {...(Platform.OS !== 'web' ? panHandlers : {})}
+      >
+        <View style={[styles.body]} {...(Platform.OS === 'web' ? panHandlers : {})}>
+          <View style={[commonStyles.hourGuide]}>
+            {hours.map(hour => (
+              <View key={hour} style={{ height: cellHeight }}>
+                <Text style={commonStyles.guideText}>{formatHour(hour)}</Text>
               </View>
             ))}
           </View>
+          {dateRange.map(date => (
+            <View style={[{ flex: 1 }]} key={date.toString()}>
+              {hours.map(hour => (
+                <View key={hour} style={[commonStyles.dateCell, { height: cellHeight }]} />
+              ))}
+              {dayJsConvertedEvents
+                .filter(
+                  ({ start, end }) =>
+                    start.isAfter(date.startOf('day')) && end.isBefore(date.endOf('day')),
+                )
+                .map(event => (
+                  <TouchableOpacity
+                    key={event.start.toString()}
+                    style={[
+                      commonStyles.eventCell,
+                      getEventCellPositionStyle(event),
+                      getEventStyle(event),
+                    ]}
+                    onPress={() => onPressEvent && onPressEvent(event)}
+                    disabled={!onPressEvent}
+                  >
+                    {event.end.diff(event.start, 'minute') < 32 && showTime ? (
+                      <Text style={commonStyles.eventTitle}>
+                        {event.title},
+                        <Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
+                      </Text>
+                    ) : (
+                      <>
+                        <Text style={commonStyles.eventTitle}>{event.title}</Text>
+                        {showTime && <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>}
+                      </>
+                    )}
+                  </TouchableOpacity>
+                ))}
+              {isToday(date) && (
+                <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
+              )}
+            </View>
+          ))}
         </View>
       </ScrollView>
     )
