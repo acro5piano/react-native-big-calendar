@@ -3,20 +3,24 @@ import { DayJSConvertedEvent, Mode, WeekNum } from './interfaces'
 
 export const DAY_MINUTES = 1440
 
-export function getDatesInWeek(date: Date | dayjs.Dayjs = new Date(), weekStartsOn: WeekNum = 0) {
+export function getDatesInWeek(
+  date: Date | dayjs.Dayjs = new Date(),
+  weekStartsOn: WeekNum = 0,
+  locale = 'en',
+) {
   const subject = dayjs(date)
   const subjectDOW = subject.day()
   const days = Array(7)
     .fill(0)
     .map((_, i) => {
-      return subject.add(i - subjectDOW + weekStartsOn, 'day')
+      return subject.add(i - subjectDOW + weekStartsOn, 'day').locale(locale)
     })
 
   return days
 }
 
-export function getDatesInNextThreeDays(date: Date | dayjs.Dayjs = new Date()) {
-  const subject = dayjs(date)
+export function getDatesInNextThreeDays(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
+  const subject = dayjs(date).locale(locale)
   const days = Array(3)
     .fill(0)
     .map((_, i) => {

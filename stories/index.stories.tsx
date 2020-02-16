@@ -105,6 +105,16 @@ storiesOf('Desktop', module)
       </View>
     )
   })
+  .add('locale', () => {
+    React.useEffect(() => {
+      require('dayjs/locale/ja')
+    }, [])
+    return (
+      <View style={styles.desktop}>
+        <Calendar style={styles.calendar} locale="ja" height={SCREEN_HEIGHT} events={events} />
+      </View>
+    )
+  })
 
 storiesOf('Mobile', module)
   .add('week mode', () => (

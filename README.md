@@ -8,6 +8,8 @@ Cross-platform gcal/outlook like calendar component for React Native.
 
 [Components Demo](https://react-native-big-calendar.netlify.com/?path=/story/desktop--3days-mode)
 
+<img src="./assets/screenshot-mobile.png" height="500">
+
 # Features
 
 - Cross Platform: Runs on the Web, iOS, Android with the power of React
@@ -53,6 +55,23 @@ function App() {
 # Documentation
 
 See [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
+
+# I18n
+
+Please specity your locale via `locale` prop **and** import day.js locale file:
+
+```typescript
+import 'dayjs/locale/ja'
+
+<Calendar
+  locale="ja"
+  {/* ... */}
+/>
+```
+
+You can find your dayjs locale here:
+
+https://github.com/iamkun/dayjs/tree/dev/src/locale
 
 # Screenshots
 

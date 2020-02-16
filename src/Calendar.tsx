@@ -19,6 +19,7 @@ interface CalendarProps<T = {}> {
   swipeEnabled?: boolean
   showTime?: boolean
   weekStartsOn?: WeekNum
+  locale?: string
 }
 
 const SWIPE_THRESHOLD = 50
@@ -28,6 +29,7 @@ export function Calendar({
   style = {},
   height,
   mode = 'week',
+  locale = 'en',
   onPressEvent,
   eventCellStyle,
   date,
@@ -58,9 +60,9 @@ export function Calendar({
   const dateRange = React.useMemo(() => {
     switch (mode) {
       case '3days':
-        return getDatesInNextThreeDays(targetDate)
+        return getDatesInNextThreeDays(targetDate, locale)
       case 'week':
-        return getDatesInWeek(targetDate, weekStartsOn)
+        return getDatesInWeek(targetDate, weekStartsOn, locale)
       default:
         throw new Error('undefined mode')
     }
