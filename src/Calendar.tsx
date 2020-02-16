@@ -39,6 +39,7 @@ export function Calendar({
   showTime = true,
 }: CalendarProps) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
+  const [panHandled, setPanHandled] = React.useState(false)
 
   React.useEffect(() => {
     setTargetDate(dayjs(date))
@@ -75,18 +76,23 @@ export function Calendar({
       PanResponder.create({
         onMoveShouldSetPanResponder: () => true,
         onPanResponderMove: (_, { dy, dx }) => {
-          if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy) {
+          if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
             return
           }
           if (dx < -1 * SWIPE_THRESHOLD) {
             setTargetDate(targetDate.add(modeToNum(mode), 'day'))
+            setPanHandled(true)
           }
           if (dx > SWIPE_THRESHOLD) {
             setTargetDate(targetDate.add(modeToNum(mode) * -1, 'day'))
+            setPanHandled(true)
           }
         },
+        onPanResponderEnd: () => {
+          setPanHandled(false)
+        },
       }),
-    [targetDate],
+    [targetDate, panHandled],
   )
 
   const commonProps = {
