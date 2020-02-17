@@ -1,11 +1,11 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { PanResponder, ViewStyle } from 'react-native'
-import { CalendarHeader } from './CalendarHeader'
 import { CalendarBody } from './CalendarBody'
+import { CalendarHeader } from './CalendarHeader'
 import { MIN_HEIGHT } from './commonStyles'
 import { Event, EventCellStyle, Mode, WeekNum } from './interfaces'
-import { getDatesInWeek, getDatesInNextThreeDays, modeToNum, isAllDayEvent } from './utils'
+import { getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } from './utils'
 
 interface CalendarProps<T = {}> {
   events: Event<T>[]

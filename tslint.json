@@ -1,0 +1,24 @@
+{
+  "defaultSeverity": "error",
+  "jsRules": {},
+  "rules": {
+    // "no-console": [true, "log"],
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    },
+    "prefer-const": true,
+    "no-debugger": true,
+    "no-duplicate-switch-case": true,
+    "no-duplicate-super": true,
+    "no-duplicate-variable": [true, "check-parameters"],
+    "no-var-keyword": true,
+    "triple-equals": true,
+    "ordered-imports": true
+  },
+  "rulesDirectory": []
+}

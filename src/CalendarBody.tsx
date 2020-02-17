@@ -1,46 +1,24 @@
-import * as React from 'react'
 import dayjs from 'dayjs'
+import * as React from 'react'
 import {
   GestureResponderHandlers,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native'
+import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
-import {
-  formatHour,
-  formatStartEnd,
-  isToday,
-  hours,
-  getRelativeTopInDay,
-  DAY_MINUTES,
-} from './utils'
-import { Event, EventCellStyle } from './interfaces'
-
-function getEventCellPositionStyle({ end, start }: { end: dayjs.Dayjs; start: dayjs.Dayjs }) {
-  const relativeHeight = 100 * (1 / DAY_MINUTES) * end.diff(start, 'minute')
-  const relativeTop = getRelativeTopInDay(start)
-  return {
-    height: `${relativeHeight}%`,
-    top: `${relativeTop}%`,
-  }
-}
-
-interface DayJsConvertedEvent {
-  title: string
-  start: dayjs.Dayjs
-  end: dayjs.Dayjs
-}
+import { DayJSConvertedEvent, Event, EventCellStyle } from './interfaces'
+import { formatHour, formatStartEnd, getRelativeTopInDay, hours, isToday } from './utils'
 
 interface CalendarBodyProps<T> {
   containerHeight: number
   cellHeight: number
   dateRange: dayjs.Dayjs[]
-  dayJsConvertedEvents: DayJsConvertedEvent[]
+  dayJsConvertedEvents: DayJSConvertedEvent[]
   style: ViewStyle
   onPressEvent?: (event: Event<T>) => void
   eventCellStyle?: EventCellStyle<T>
@@ -62,10 +40,6 @@ export const CalendarBody = React.memo(
     showTime,
     scrollOffsetMinutes,
   }: CalendarBodyProps<any>) => {
-    const getEventStyle = React.useMemo(
-      () => (typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle),
-      [eventCellStyle],
-    )
     const scrollView = React.useRef<ScrollView>(null)
     const [now, setNow] = React.useState(dayjs())
 
@@ -114,28 +88,13 @@ export const CalendarBody = React.memo(
                     start.isAfter(date.startOf('day')) && end.isBefore(date.endOf('day')),
                 )
                 .map(event => (
-                  <TouchableOpacity
+                  <CalendarEvent
                     key={event.start.toString()}
-                    style={[
-                      commonStyles.eventCell,
-                      getEventCellPositionStyle(event),
-                      getEventStyle(event),
-                    ]}
-                    onPress={() => onPressEvent && onPressEvent(event)}
-                    disabled={!onPressEvent}
-                  >
-                    {event.end.diff(event.start, 'minute') < 32 && showTime ? (
-                      <Text style={commonStyles.eventTitle}>
-                        {event.title},
-                        <Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
-                      </Text>
-                    ) : (
-                      <>
-                        <Text style={commonStyles.eventTitle}>{event.title}</Text>
-                        {showTime && <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>}
-                      </>
-                    )}
-                  </TouchableOpacity>
+                    event={event}
+                    onPressEvent={onPressEvent}
+                    eventCellStyle={eventCellStyle}
+                    showTime={showTime}
+                  />
                 ))}
               {isToday(date) && (
                 <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
@@ -152,10 +111,6 @@ const styles = StyleSheet.create({
   body: {
     flexDirection: 'row',
     flex: 1,
-  },
-  eventTime: {
-    color: '#fff',
-    fontSize: 10,
   },
   nowIndicator: {
     position: 'absolute',

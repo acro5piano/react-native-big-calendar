@@ -1,9 +1,9 @@
-import * as React from 'react'
 import dayjs from 'dayjs'
+import * as React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { commonStyles, PRIMARY_COLOR } from './commonStyles'
-import { isToday } from './utils'
 import { Event } from './interfaces'
+import { isToday } from './utils'
 
 interface CalendarHeaderProps<T> {
   dateRange: dayjs.Dayjs[]
