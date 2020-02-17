@@ -12,7 +12,7 @@ import {
 import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
 import { DayJSConvertedEvent, Event, EventCellStyle } from './interfaces'
-import { formatHour, formatStartEnd, getRelativeTopInDay, hours, isToday } from './utils'
+import { formatHour, getRelativeTopInDay, hours, isToday } from './utils'
 
 interface CalendarBodyProps<T> {
   containerHeight: number
