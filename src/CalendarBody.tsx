@@ -27,6 +27,22 @@ interface CalendarBodyProps<T> {
   panHandlers?: GestureResponderHandlers
 }
 
+const HourGuideColumn = React.memo(
+  ({ cellHeight, hour }: { cellHeight: number; hour: number }) => (
+    <View style={{ height: cellHeight }}>
+      <Text style={commonStyles.guideText}>{formatHour(hour)}</Text>
+    </View>
+  ),
+  () => true,
+)
+
+const HourCell = React.memo(
+  ({ cellHeight }: { cellHeight: number }) => (
+    <View style={[commonStyles.dateCell, { height: cellHeight }]} />
+  ),
+  () => true,
+)
+
 export const CalendarBody = React.memo(
   ({
     containerHeight,
@@ -74,15 +90,13 @@ export const CalendarBody = React.memo(
         <View style={[styles.body]} {...(Platform.OS === 'web' ? panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>
             {hours.map(hour => (
-              <View key={hour} style={{ height: cellHeight }}>
-                <Text style={commonStyles.guideText}>{formatHour(hour)}</Text>
-              </View>
+              <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} />
             ))}
           </View>
           {dateRange.map(date => (
             <View style={[{ flex: 1 }]} key={date.toString()}>
               {hours.map(hour => (
-                <View key={hour} style={[commonStyles.dateCell, { height: cellHeight }]} />
+                <HourCell key={hour} cellHeight={cellHeight} />
               ))}
               {dayJsConvertedEvents
                 .filter(
