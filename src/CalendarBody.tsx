@@ -69,6 +69,7 @@ export const CalendarBody = React.memo(
         style={[{ height: containerHeight - cellHeight * 3 }, style]}
         ref={scrollView}
         {...(Platform.OS !== 'web' ? panHandlers : {})}
+        showsVerticalScrollIndicator={false}
       >
         <View style={[styles.body]} {...(Platform.OS === 'web' ? panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>
