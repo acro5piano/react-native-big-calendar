@@ -1,11 +1,11 @@
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
-import { Dimensions, View, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { Calendar } from '../src/Calendar'
-import { events } from './events'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { Control, CONTROL_HEIGHT } from './components/Control'
+import { events } from './events'
 
 const MOBILE_HEIGHT = 736
 const SCREEN_HEIGHT = Dimensions.get('window').height
@@ -144,6 +144,22 @@ storiesOf('Mobile', module)
       <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} showTime={false} />
     </View>
   ))
+  .add('on Date Changed', () => {
+    const onChangeDate = React.useCallback(([start, end]) => {
+      alert(`${start} - ${end}`)
+    }, [])
+
+    return (
+      <View style={styles.mobile}>
+        <Calendar
+          style={styles.calendar}
+          height={SCREEN_HEIGHT}
+          events={events}
+          onChangeDate={onChangeDate}
+        />
+      </View>
+    )
+  })
 
 const styles = StyleSheet.create({
   desktop: {
