@@ -85,7 +85,10 @@ export const Calendar = React.memo(
     const panResponder = React.useMemo(
       () =>
         PanResponder.create({
-          onMoveShouldSetPanResponder: () => true,
+          // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
+          onMoveShouldSetPanResponder: (_, { dx, dy }) => {
+            return dx > 2 || dx < -2 || dy > 2 || dy < -2
+          },
           onPanResponderMove: (_, { dy, dx }) => {
             if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
               return
