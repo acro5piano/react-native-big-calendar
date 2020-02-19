@@ -37,6 +37,7 @@ export const CalendarEvent = React.memo(
 
     return (
       <TouchableOpacity
+        delayPressIn={20}
         key={event.start.toString()}
         style={[commonStyles.eventCell, getEventCellPositionStyle(event), getEventStyle(event)]}
         onPress={() => _onPress(event)}
