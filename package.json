@@ -31,7 +31,7 @@
     "@babel/core": "^7.8.7",
     "@rollup/plugin-typescript": "^2.0.0",
     "@storybook/react": "^5.3.14",
-    "@types/jest": "^25.1.2",
+    "@types/jest": "^25.1.4",
     "@types/node": "^13.9.0",
     "@types/react-native": "^0.61.21",
     "acorn-jsx": "^5.1.0",
@@ -48,7 +48,7 @@
     "ts-jest": "^25.2.1",
     "ts-loader": "^6.2.1",
     "tslib": "^1.10.0",
-    "tslint": "^6.0.0",
+    "tslint": "^6.1.0",
     "typescript": "^3.8.3",
     "webpack-merge": "^4.2.2"
   },
