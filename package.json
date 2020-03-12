@@ -43,7 +43,7 @@
     "prettier": "^1.19.1",
     "react-native": "^0.61.5",
     "react-native-web": "^0.12.1",
-    "rollup": "^1.27.8",
+    "rollup": "^1.32.1",
     "rollup-plugin-typescript2": "^0.26.0",
     "ts-jest": "^25.2.1",
     "ts-loader": "^6.2.1",
