@@ -34,7 +34,7 @@
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.0",
     "@types/react-native": "^0.61.21",
-    "acorn-jsx": "^5.1.0",
+    "acorn-jsx": "^5.2.0",
     "babel-loader": "^8.0.6",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
