@@ -35,7 +35,7 @@
     "@types/node": "^13.9.0",
     "@types/react-native": "^0.61.22",
     "acorn-jsx": "^5.2.0",
-    "babel-loader": "^8.0.6",
+    "babel-loader": "^8.1.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "lint-staged": "^10.0.9",
