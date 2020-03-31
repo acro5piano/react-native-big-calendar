@@ -3,6 +3,7 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   timers: 'fake',
+  testRegex: '(/src.+__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$',
   globals: {
     'ts-jest': {
       diagnostics: {
