@@ -21,35 +21,35 @@
     "build:ts": "env NODE_ENV=production rollup -c"
   },
   "dependencies": {
-    "dayjs": "^1.8.20"
+    "dayjs": "^1.8.23"
   },
   "peerDependencies": {
     "react": "^16.8.3",
     "react-native": "^0.59.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@rollup/plugin-typescript": "^2.0.0",
-    "@storybook/react": "^5.3.13",
-    "@types/jest": "^25.1.2",
-    "@types/node": "^12.12.14",
-    "@types/react-native": "^0.60.23",
-    "acorn-jsx": "^5.1.0",
-    "babel-loader": "^8.0.6",
+    "@babel/core": "^7.9.0",
+    "@rollup/plugin-typescript": "^4.0.0",
+    "@storybook/react": "^5.3.17",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.5",
+    "@types/react-native": "^0.62.0",
+    "acorn-jsx": "^5.2.0",
+    "babel-loader": "^8.1.0",
     "husky": "^4.2.3",
-    "jest": "^25.1.0",
-    "lint-staged": "^10.0.7",
+    "jest": "^25.2.4",
+    "lint-staged": "^10.0.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
     "react-native": "^0.61.5",
-    "react-native-web": "^0.12.1",
-    "rollup": "^1.27.8",
+    "react-native-web": "^0.12.2",
+    "rollup": "^1.32.1",
     "rollup-plugin-typescript2": "^0.26.0",
-    "ts-jest": "^25.2.0",
-    "ts-loader": "^6.2.1",
-    "tslib": "^1.10.0",
-    "tslint": "^6.0.0",
-    "typescript": "^3.7.2",
+    "ts-jest": "^25.3.0",
+    "ts-loader": "^6.2.2",
+    "tslib": "^1.11.1",
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3",
     "webpack-merge": "^4.2.2"
   },
   "husky": {
