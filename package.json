@@ -48,7 +48,7 @@
     "ts-jest": "^25.3.0",
     "ts-loader": "^6.2.2",
     "tslib": "^1.11.1",
-    "tslint": "^6.1.0",
+    "tslint": "^6.1.1",
     "typescript": "^3.8.3",
     "webpack-merge": "^4.2.2"
   },
