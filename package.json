@@ -32,7 +32,7 @@
     "@rollup/plugin-typescript": "^4.0.0",
     "@storybook/react": "^5.3.17",
     "@types/jest": "^25.1.4",
-    "@types/node": "^13.9.5",
+    "@types/node": "^13.11.0",
     "@types/react-native": "^0.62.0",
     "acorn-jsx": "^5.2.0",
     "babel-loader": "^8.1.0",
