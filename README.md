@@ -79,3 +79,10 @@ https://github.com/iamkun/dayjs/tree/dev/src/locale
 <img src="./assets/screenshot-mobile.png" height="500">
 <img src="./assets/screenshot-simulator.png" height="500">
 <img src="./assets/screenshot-desktop.png" height="500">
+
+# TODO
+
+- [ ] Add API Documentation (via Storybook )
+- [ ] Add `onDrudCell` feature
+- [ ] Add `onClickCell` feature
+- [ ] Support the month view layout
