@@ -3,7 +3,7 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   timers: 'fake',
-  testRegex: '(/src.+__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$',
+  testPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/node_modules/'],
   globals: {
     'ts-jest': {
       diagnostics: {
