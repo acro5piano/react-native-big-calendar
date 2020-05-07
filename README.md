@@ -53,9 +53,27 @@ function App() {
 }
 ```
 
-# Documentation
+# API Documentation
 
 `<Calendar />` accepts the following props:
+
+```typescript
+interface CalendarProps<T = {}> {
+  events: Event<T>[]
+  height: number
+  onPressEvent?: (event: Event<T>) => void
+  onChangeDate?: ([start, end]: [Date, Date]) => void
+  mode?: Mode
+  style?: ViewStyle
+  eventCellStyle?: EventCellStyle<T>
+  scrollOffsetMinutes?: number
+  date?: Date
+  swipeEnabled?: boolean
+  showTime?: boolean
+  weekStartsOn?: WeekNum
+  locale?: string
+}
+```
 
 ### `events` **required**
 
