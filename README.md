@@ -55,7 +55,79 @@ function App() {
 
 # Documentation
 
-See [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
+`<Calendar />` accepts the following props:
+
+### `events` **required**
+
+The events which will be rendered on the calendar.
+
+type: `Array<{ title: string, start: Date, end: Date }>`
+
+### `height` **required**
+
+Calendar height.
+
+type: `number`
+
+### `onPressEvent`
+
+Event handler which will be fired when the user clicks an event.
+
+type: `(event: { title: string, start: Date, end: Date } => void)`
+
+### `onChangeDate`
+
+Event handler which will be fired when the current date range changed.
+
+type: `([start, end]: [Date, Date]) => void`
+
+### `mode`
+
+type: `'3days' | 'week' | 'day'`
+
+### `style`
+
+type: `import('react-native').ViewStyle`
+
+### `eventCellStyle`
+
+The style of Event cell. Accepts either style object (static) or function (dynamic).
+
+type: `ViewStyle | ((event: { title: string, start: Date, end: Date } ) => ViewStyle)`
+
+### `scrollOffsetMinutes`
+
+Scroll to specific minutes in a day. e.g.) set `480` to scroll to 8am when the calendar rendered.
+
+type: `number`
+
+### `date`
+
+Initial date. Defualts to `Date`
+
+type: `Date`
+
+### `swipeEnabled`
+
+type: `boolean`
+
+### `showTime`
+
+type: `boolean`
+
+### `weekStartsOn`
+
+type: WeekNum
+
+### `locale`
+
+Custom locale. You can find available dayjs locales from here:
+
+https://github.com/iamkun/dayjs/tree/dev/src/locale
+
+type: `string`
+
+For more information, see [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
 
 # I18n
 
@@ -82,7 +154,7 @@ https://github.com/iamkun/dayjs/tree/dev/src/locale
 
 # TODO
 
-- [ ] Add API Documentation (via Storybook )
-- [ ] Add `onDrudCell` feature
+- [x] Add API Documentation
 - [ ] Add `onClickCell` feature
+- [ ] Add `onDrugCell` feature
 - [ ] Support the month view layout
