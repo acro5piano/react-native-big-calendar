@@ -10,8 +10,6 @@ import { getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } fro
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
-  onPressEvent?: (event: Event<T>) => void
-  onChangeDate?: ([start, end]: [Date, Date]) => void
   mode?: Mode
   style?: ViewStyle
   eventCellStyle?: EventCellStyle<T>
@@ -21,6 +19,9 @@ interface CalendarProps<T = {}> {
   showTime?: boolean
   weekStartsOn?: WeekNum
   locale?: string
+  onChangeDate?: ([start, end]: [Date, Date]) => void
+  onPressEvent?: (event: Event<T>) => void
+  onPressDateHeader?: (date: Date) => void
 }
 
 const SWIPE_THRESHOLD = 50
@@ -32,14 +33,15 @@ export const Calendar = React.memo(
     height,
     mode = 'week',
     locale = 'en',
-    onPressEvent,
-    onChangeDate,
     eventCellStyle,
     date,
     scrollOffsetMinutes = 0,
     swipeEnabled = true,
     weekStartsOn = 0,
     showTime = true,
+    onPressEvent,
+    onPressDateHeader,
+    onChangeDate,
   }: CalendarProps) => {
     const [targetDate, setTargetDate] = React.useState(dayjs(date))
     const [panHandled, setPanHandled] = React.useState(false)
@@ -118,7 +120,11 @@ export const Calendar = React.memo(
 
     return (
       <>
-        <CalendarHeader {...commonProps} allDayEvents={allDayEvents} />
+        <CalendarHeader
+          {...commonProps}
+          allDayEvents={allDayEvents}
+          onPressDateHeader={onPressDateHeader}
+        />
         <CalendarBody
           {...commonProps}
           dayJsConvertedEvents={daytimeEvents}

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles, PRIMARY_COLOR } from './commonStyles'
 import { Event } from './interfaces'
 import { isToday } from './utils'
@@ -10,40 +10,59 @@ interface CalendarHeaderProps<T> {
   cellHeight: number
   style: ViewStyle
   allDayEvents: Event<T>[]
+  onPressDateHeader?: (date: Date) => void
 }
 
 export const CalendarHeader = React.memo(
-  ({ dateRange, cellHeight, style = {}, allDayEvents }: CalendarHeaderProps<any>) => {
+  ({
+    dateRange,
+    cellHeight,
+    style = {},
+    allDayEvents,
+    onPressDateHeader,
+  }: CalendarHeaderProps<any>) => {
+    const _onPress = React.useCallback(
+      (date: Date) => {
+        onPressDateHeader && onPressDateHeader(date)
+      },
+      [event],
+    )
+
     return (
       <View style={[styles.container, style]}>
         <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
         {dateRange.map((date) => {
           const _isToday = isToday(date)
           return (
-            <View key={date.toString()} style={{ flex: 1, paddingTop: 2 }}>
-              <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-                <Text style={[commonStyles.guideText, _isToday && { color: PRIMARY_COLOR }]}>
-                  {date.format('ddd')}
-                </Text>
-                <View style={_isToday && styles.todayWrap}>
-                  <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
-                    {date.format('D')}
+            <TouchableOpacity
+              style={{ flex: 1, paddingTop: 2 }}
+              onPress={() => _onPress(date.toDate())}
+            >
+              <View key={date.toString()} style={{ flex: 1, paddingTop: 2 }}>
+                <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
+                  <Text style={[commonStyles.guideText, _isToday && { color: PRIMARY_COLOR }]}>
+                    {date.format('ddd')}
                   </Text>
+                  <View style={_isToday && styles.todayWrap}>
+                    <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
+                      {date.format('D')}
+                    </Text>
+                  </View>
+                </View>
+                <View style={[commonStyles.dateCell, { height: cellHeight }]}>
+                  {allDayEvents.map((event) => {
+                    if (!event.start.isSame(date, 'day')) {
+                      return null
+                    }
+                    return (
+                      <View style={commonStyles.eventCell}>
+                        <Text style={commonStyles.eventTitle}>{event.title}</Text>
+                      </View>
+                    )
+                  })}
                 </View>
               </View>
-              <View style={[commonStyles.dateCell, { height: cellHeight }]}>
-                {allDayEvents.map((event) => {
-                  if (!event.start.isSame(date, 'day')) {
-                    return null
-                  }
-                  return (
-                    <View style={commonStyles.eventCell}>
-                      <Text style={commonStyles.eventTitle}>{event.title}</Text>
-                    </View>
-                  )
-                })}
-              </View>
-            </View>
+            </TouchableOpacity>
           )
         })}
       </View>
