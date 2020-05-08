@@ -21,9 +21,12 @@ export const CalendarHeader = React.memo(
     allDayEvents,
     onPressDateHeader,
   }: CalendarHeaderProps<any>) => {
-    const _onPress = React.useCallback((date: Date) => {
-      onPressDateHeader && onPressDateHeader(date)
-    }, [])
+    const _onPress = React.useCallback(
+      (date: Date) => {
+        onPressDateHeader && onPressDateHeader(date)
+      },
+      [onPressDateHeader],
+    )
 
     return (
       <View style={[styles.container, style]}>
