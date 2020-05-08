@@ -37,6 +37,7 @@ export const CalendarHeader = React.memo(
             <TouchableOpacity
               style={{ flex: 1, paddingTop: 2 }}
               onPress={() => _onPress(date.toDate())}
+              disabled={onPressDateHeader === undefined}
             >
               <View key={date.toString()} style={{ flex: 1, paddingTop: 2 }}>
                 <View style={{ height: cellHeight, justifyContent: 'space-between' }}>

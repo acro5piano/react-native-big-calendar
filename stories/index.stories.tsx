@@ -22,7 +22,7 @@ storiesOf('Desktop', module)
         style={styles.calendar}
         height={SCREEN_HEIGHT}
         events={events}
-        onPressEvent={event => alert(event.title)}
+        onPressEvent={(event) => alert(event.title)}
         mode="3days"
       />
     </View>
@@ -33,7 +33,7 @@ storiesOf('Desktop', module)
         style={styles.calendar}
         height={SCREEN_HEIGHT}
         events={events}
-        eventCellStyle={event => {
+        eventCellStyle={(event) => {
           const backgroundColor = event.title.match(/Meeting/) ? 'red' : 'blue'
           return { backgroundColor }
         }}
@@ -81,16 +81,8 @@ storiesOf('Desktop', module)
       ...events,
       {
         title: 'Vacation',
-        start: dayjs()
-          .add(-1, 'day')
-          .set('hour', 0)
-          .set('minute', 0)
-          .toDate(),
-        end: dayjs()
-          .add(-1, 'day')
-          .set('hour', 0)
-          .set('minute', 0)
-          .toDate(),
+        start: dayjs().add(-1, 'day').set('hour', 0).set('minute', 0).toDate(),
+        end: dayjs().add(-1, 'day').set('hour', 0).set('minute', 0).toDate(),
       },
     ]
 
@@ -101,6 +93,19 @@ storiesOf('Desktop', module)
           height={SCREEN_HEIGHT}
           events={_events}
           weekStartsOn={1}
+        />
+      </View>
+    )
+  })
+  .add('on press date header', () => {
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          style={styles.calendar}
+          height={SCREEN_HEIGHT}
+          events={events}
+          onPressDateHeader={(date) => alert(date)}
+          mode="3days"
         />
       </View>
     )
@@ -129,7 +134,7 @@ storiesOf('Mobile', module)
         height={MOBILE_HEIGHT}
         events={events}
         mode="3days"
-        onPressEvent={event => alert(event.title)}
+        onPressEvent={(event) => alert(event.title)}
       />
     </View>
   ))
@@ -144,7 +149,7 @@ storiesOf('Mobile', module)
       <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} showTime={false} />
     </View>
   ))
-  .add('on Date Changed', () => {
+  .add('on date changed', () => {
     const onChangeDate = React.useCallback(([start, end]) => {
       alert(`${start} - ${end}`)
     }, [])
