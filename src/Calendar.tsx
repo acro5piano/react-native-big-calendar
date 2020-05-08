@@ -10,7 +10,6 @@ import { getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } fro
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
-  onPressEvent?: (event: Event<T>) => void
   onChangeDate?: ([start, end]: [Date, Date]) => void
   mode?: Mode
   style?: ViewStyle
@@ -21,6 +20,8 @@ interface CalendarProps<T = {}> {
   showTime?: boolean
   weekStartsOn?: WeekNum
   locale?: string
+  onPressEvent?: (event: Event<T>) => void
+  onPressDateHeader?: (date: string) => void
 }
 
 const SWIPE_THRESHOLD = 50
@@ -32,14 +33,15 @@ export const Calendar = React.memo(
     height,
     mode = 'week',
     locale = 'en',
-    onPressEvent,
-    onChangeDate,
     eventCellStyle,
     date,
     scrollOffsetMinutes = 0,
     swipeEnabled = true,
     weekStartsOn = 0,
     showTime = true,
+    onPressEvent,
+    onPressDateHeader,
+    onChangeDate,
   }: CalendarProps) => {
     const [targetDate, setTargetDate] = React.useState(dayjs(date))
     const [panHandled, setPanHandled] = React.useState(false)
@@ -51,7 +53,7 @@ export const Calendar = React.memo(
     }, [date])
 
     const dayJsConvertedEvents = React.useMemo(
-      () => events.map(e => ({ ...e, start: dayjs(e.start), end: dayjs(e.end) })),
+      () => events.map((e) => ({ ...e, start: dayjs(e.start), end: dayjs(e.end) })),
       [events],
     )
 
@@ -59,9 +61,10 @@ export const Calendar = React.memo(
       dayJsConvertedEvents,
     ])
 
-    const daytimeEvents = React.useMemo(() => dayJsConvertedEvents.filter(x => !isAllDayEvent(x)), [
-      dayJsConvertedEvents,
-    ])
+    const daytimeEvents = React.useMemo(
+      () => dayJsConvertedEvents.filter((x) => !isAllDayEvent(x)),
+      [dayJsConvertedEvents],
+    )
 
     const dateRange = React.useMemo(() => {
       switch (mode) {
@@ -117,7 +120,11 @@ export const Calendar = React.memo(
 
     return (
       <>
-        <CalendarHeader {...commonProps} allDayEvents={allDayEvents} />
+        <CalendarHeader
+          {...commonProps}
+          allDayEvents={allDayEvents}
+          onPressDateHeader={onPressDateHeader}
+        />
         <CalendarBody
           {...commonProps}
           dayJsConvertedEvents={daytimeEvents}
