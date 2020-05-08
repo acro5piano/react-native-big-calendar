@@ -1,11 +1,20 @@
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Alert, Dimensions, StyleSheet, View } from 'react-native'
 import { Calendar } from '../src/Calendar'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { Control, CONTROL_HEIGHT } from './components/Control'
 import { events } from './events'
+
+function alert(input: any) {
+  // @ts-ignore
+  if (typeof window !== 'undefined') {
+    // @ts-ignore
+    window.alert(String(input))
+  }
+  return Alert.alert('', String(input))
+}
 
 const MOBILE_HEIGHT = 736
 const SCREEN_HEIGHT = Dimensions.get('window').height
@@ -13,7 +22,12 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 storiesOf('Desktop', module)
   .add('week mode', () => (
     <View style={styles.desktop}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} />
+      <Calendar
+        style={styles.calendar}
+        height={SCREEN_HEIGHT}
+        events={events}
+        onPressEvent={(event) => alert(event.title)}
+      />
     </View>
   ))
   .add('3days mode', () => (
