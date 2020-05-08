@@ -21,12 +21,9 @@ export const CalendarHeader = React.memo(
     allDayEvents,
     onPressDateHeader,
   }: CalendarHeaderProps<any>) => {
-    const _onPress = React.useCallback(
-      (date: Date) => {
-        onPressDateHeader && onPressDateHeader(date)
-      },
-      [event],
-    )
+    const _onPress = React.useCallback((date: Date) => {
+      onPressDateHeader && onPressDateHeader(date)
+    }, [])
 
     return (
       <View style={[styles.container, style]}>
@@ -38,8 +35,9 @@ export const CalendarHeader = React.memo(
               style={{ flex: 1, paddingTop: 2 }}
               onPress={() => _onPress(date.toDate())}
               disabled={onPressDateHeader === undefined}
+              key={date.toString()}
             >
-              <View key={date.toString()} style={{ flex: 1, paddingTop: 2 }}>
+              <View style={{ flex: 1, paddingTop: 2 }}>
                 <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
                   <Text style={[commonStyles.guideText, _isToday && { color: PRIMARY_COLOR }]}>
                     {date.format('ddd')}
