@@ -17,7 +17,7 @@ export const CalendarHeader = React.memo(
     return (
       <View style={[styles.container, style]}>
         <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
-        {dateRange.map(date => {
+        {dateRange.map((date) => {
           const _isToday = isToday(date)
           return (
             <View key={date.toString()} style={{ flex: 1, paddingTop: 2 }}>
@@ -32,7 +32,7 @@ export const CalendarHeader = React.memo(
                 </View>
               </View>
               <View style={[commonStyles.dateCell, { height: cellHeight }]}>
-                {allDayEvents.map(event => {
+                {allDayEvents.map((event) => {
                   if (!event.start.isSame(date, 'day')) {
                     return null
                   }
