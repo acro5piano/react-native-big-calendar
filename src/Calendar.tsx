@@ -51,7 +51,7 @@ export const Calendar = React.memo(
     }, [date])
 
     const dayJsConvertedEvents = React.useMemo(
-      () => events.map(e => ({ ...e, start: dayjs(e.start), end: dayjs(e.end) })),
+      () => events.map((e) => ({ ...e, start: dayjs(e.start), end: dayjs(e.end) })),
       [events],
     )
 
@@ -59,9 +59,10 @@ export const Calendar = React.memo(
       dayJsConvertedEvents,
     ])
 
-    const daytimeEvents = React.useMemo(() => dayJsConvertedEvents.filter(x => !isAllDayEvent(x)), [
-      dayJsConvertedEvents,
-    ])
+    const daytimeEvents = React.useMemo(
+      () => dayJsConvertedEvents.filter((x) => !isAllDayEvent(x)),
+      [dayJsConvertedEvents],
+    )
 
     const dateRange = React.useMemo(() => {
       switch (mode) {

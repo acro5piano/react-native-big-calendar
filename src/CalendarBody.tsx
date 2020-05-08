@@ -89,13 +89,13 @@ export const CalendarBody = React.memo(
       >
         <View style={[styles.body]} {...(Platform.OS === 'web' ? panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>
-            {hours.map(hour => (
+            {hours.map((hour) => (
               <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} />
             ))}
           </View>
-          {dateRange.map(date => (
+          {dateRange.map((date) => (
             <View style={[{ flex: 1 }]} key={date.toString()}>
-              {hours.map(hour => (
+              {hours.map((hour) => (
                 <HourCell key={hour} cellHeight={cellHeight} />
               ))}
               {dayJsConvertedEvents
@@ -103,7 +103,7 @@ export const CalendarBody = React.memo(
                   ({ start, end }) =>
                     start.isAfter(date.startOf('day')) && end.isBefore(date.endOf('day')),
                 )
-                .map(event => (
+                .map((event) => (
                   <CalendarEvent
                     key={event.start.toString()}
                     event={event}

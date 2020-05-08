@@ -170,6 +170,14 @@ https://github.com/iamkun/dayjs/tree/dev/src/locale
 <img src="./assets/screenshot-simulator.png" height="500">
 <img src="./assets/screenshot-desktop.png" height="500">
 
+# Who's using this?
+
+<a href="https://www.nupp1.io">
+  <img src="https://www.nupp1.io/images/logo-with-text.svg" height="80" />
+</a>
+
+If you are using this library, please send a PR to add your organization!
+
 # TODO
 
 - [x] Add API Documentation
