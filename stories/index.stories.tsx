@@ -13,7 +13,12 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 storiesOf('Desktop', module)
   .add('week mode', () => (
     <View style={styles.desktop}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} />
+      <Calendar
+        style={styles.calendar}
+        height={SCREEN_HEIGHT}
+        events={events}
+        onPressEvent={(event) => alert(event.title)}
+      />
     </View>
   ))
   .add('3days mode', () => (

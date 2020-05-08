@@ -20,3 +20,9 @@ export type Mode = '3days' | 'week' | 'day'
 export type EventCellStyle<T> = ViewStyle | ((event: Event<T>) => ViewStyle)
 
 export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+export type HasDateRange = [Date, Date]
+
+export type DateRangeHandler = ([start, end]: HasDateRange) => void
+
+export type HorizontalDirection = 'RIGHT' | 'LEFT'

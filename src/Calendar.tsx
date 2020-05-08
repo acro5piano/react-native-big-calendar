@@ -1,10 +1,17 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { PanResponder, ViewStyle } from 'react-native'
+import { ViewStyle } from 'react-native'
 import { CalendarBody } from './CalendarBody'
 import { CalendarHeader } from './CalendarHeader'
 import { MIN_HEIGHT } from './commonStyles'
-import { Event, EventCellStyle, Mode, WeekNum } from './interfaces'
+import {
+  DateRangeHandler,
+  Event,
+  EventCellStyle,
+  HorizontalDirection,
+  Mode,
+  WeekNum,
+} from './interfaces'
 import { getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } from './utils'
 
 interface CalendarProps<T = {}> {
@@ -19,12 +26,11 @@ interface CalendarProps<T = {}> {
   showTime?: boolean
   weekStartsOn?: WeekNum
   locale?: string
-  onChangeDate?: ([start, end]: [Date, Date]) => void
+  onChangeDate?: DateRangeHandler
   onPressEvent?: (event: Event<T>) => void
   onPressDateHeader?: (date: Date) => void
+  onSelectSlot?: DateRangeHandler
 }
-
-const SWIPE_THRESHOLD = 50
 
 export const Calendar = React.memo(
   ({
@@ -42,9 +48,9 @@ export const Calendar = React.memo(
     onPressEvent,
     onPressDateHeader,
     onChangeDate,
+    onSelectSlot,
   }: CalendarProps) => {
     const [targetDate, setTargetDate] = React.useState(dayjs(date))
-    const [panHandled, setPanHandled] = React.useState(false)
 
     React.useEffect(() => {
       if (date) {
@@ -85,31 +91,18 @@ export const Calendar = React.memo(
 
     const cellHeight = React.useMemo(() => Math.max(height - 30, MIN_HEIGHT) / 24, [height])
 
-    const panResponder = React.useMemo(
-      () =>
-        PanResponder.create({
-          // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
-          onMoveShouldSetPanResponder: (_, { dx, dy }) => {
-            return dx > 2 || dx < -2 || dy > 2 || dy < -2
-          },
-          onPanResponderMove: (_, { dy, dx }) => {
-            if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
-              return
-            }
-            if (dx < -1 * SWIPE_THRESHOLD) {
-              setTargetDate(targetDate.add(modeToNum(mode), 'day'))
-              setPanHandled(true)
-            }
-            if (dx > SWIPE_THRESHOLD) {
-              setTargetDate(targetDate.add(modeToNum(mode) * -1, 'day'))
-              setPanHandled(true)
-            }
-          },
-          onPanResponderEnd: () => {
-            setPanHandled(false)
-          },
-        }),
-      [targetDate, panHandled],
+    const onSwipeHorizontal = React.useCallback(
+      (direction: HorizontalDirection) => {
+        if (!swipeEnabled) {
+          return
+        }
+        if (direction === 'LEFT') {
+          setTargetDate(targetDate.add(modeToNum(mode), 'day'))
+        } else {
+          setTargetDate(targetDate.add(modeToNum(mode) * -1, 'day'))
+        }
+      },
+      [swipeEnabled, targetDate],
     )
 
     const commonProps = {
@@ -130,10 +123,11 @@ export const Calendar = React.memo(
           dayJsConvertedEvents={daytimeEvents}
           containerHeight={height}
           onPressEvent={onPressEvent}
+          onSelectSlot={onSelectSlot}
           eventCellStyle={eventCellStyle}
           scrollOffsetMinutes={scrollOffsetMinutes}
           showTime={showTime}
-          panHandlers={swipeEnabled ? panResponder.panHandlers : undefined}
+          onSwipeHorizontal={onSwipeHorizontal}
         />
       </>
     )
