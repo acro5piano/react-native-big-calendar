@@ -61,8 +61,6 @@ function App() {
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
-  onPressEvent?: (event: Event<T>) => void
-  onChangeDate?: ([start, end]: [Date, Date]) => void
   mode?: Mode
   style?: ViewStyle
   eventCellStyle?: EventCellStyle<T>
@@ -72,6 +70,9 @@ interface CalendarProps<T = {}> {
   showTime?: boolean
   weekStartsOn?: WeekNum
   locale?: string
+  onChangeDate?: ([start, end]: [Date, Date]) => void
+  onPressEvent?: (event: Event<T>) => void
+  onPressDateHeader?: (date: Date) => void
 }
 ```
 
@@ -92,6 +93,12 @@ type: `number`
 Event handler which will be fired when the user clicks an event.
 
 type: `(event: { title: string, start: Date, end: Date } => void)`
+
+### `onPressDateHeader`
+
+Event handler which will be fired when the user clicks a date from the header.
+
+type: `(date: Date => void)`
 
 ### `onChangeDate`
 

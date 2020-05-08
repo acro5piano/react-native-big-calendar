@@ -10,7 +10,6 @@ import { getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } fro
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
-  onChangeDate?: ([start, end]: [Date, Date]) => void
   mode?: Mode
   style?: ViewStyle
   eventCellStyle?: EventCellStyle<T>
@@ -20,8 +19,9 @@ interface CalendarProps<T = {}> {
   showTime?: boolean
   weekStartsOn?: WeekNum
   locale?: string
+  onChangeDate?: ([start, end]: [Date, Date]) => void
   onPressEvent?: (event: Event<T>) => void
-  onPressDateHeader?: (date: string) => void
+  onPressDateHeader?: (date: Date) => void
 }
 
 const SWIPE_THRESHOLD = 50

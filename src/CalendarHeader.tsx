@@ -10,7 +10,7 @@ interface CalendarHeaderProps<T> {
   cellHeight: number
   style: ViewStyle
   allDayEvents: Event<T>[]
-  onPressDateHeader?: (date: string) => void
+  onPressDateHeader?: (date: Date) => void
 }
 
 export const CalendarHeader = React.memo(
@@ -22,7 +22,7 @@ export const CalendarHeader = React.memo(
     onPressDateHeader,
   }: CalendarHeaderProps<any>) => {
     const _onPress = React.useCallback(
-      (date: string) => {
+      (date: Date) => {
         onPressDateHeader && onPressDateHeader(date)
       },
       [event],
@@ -36,7 +36,7 @@ export const CalendarHeader = React.memo(
           return (
             <TouchableOpacity
               style={{ flex: 1, paddingTop: 2 }}
-              onPress={() => _onPress(date.toString())}
+              onPress={() => _onPress(date.toDate())}
             >
               <View key={date.toString()} style={{ flex: 1, paddingTop: 2 }}>
                 <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
