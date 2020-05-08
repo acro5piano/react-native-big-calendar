@@ -172,7 +172,9 @@ https://github.com/iamkun/dayjs/tree/dev/src/locale
 
 # Who's using this?
 
-![Nupp1](https://www.nupp1.io/images/logo-with-text.svg)
+<a href="https://www.nupp1.io">
+  <img src="https://www.nupp1.io/images/logo-with-text.svg" height="80" />
+</a>
 
 If you are using this library, please send a PR to add your organization!
 
