@@ -173,10 +173,11 @@ export const CalendarBody = React.memo(
     )
 
     // console.log(x0 - HOUR_GUIDE_WIDTH)
-    const columnWidth = React.useMemo(
-      () => (calendarWidth - HOUR_GUIDE_WIDTH) / (dateRange.length + 1) - 2,
-      [calendarWidth, dateRange.length],
-    )
+    console.log({ calendarWidth })
+    const columnWidth = React.useMemo(() => (calendarWidth - HOUR_GUIDE_WIDTH) / dateRange.length, [
+      calendarWidth,
+      dateRange.length,
+    ])
 
     const marginLeft = React.useMemo(() => x0 - ((x0 - HOUR_GUIDE_WIDTH) % columnWidth), [
       x0,
@@ -191,7 +192,7 @@ export const CalendarBody = React.memo(
         scrollEventThrottle={32}
         {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={false}
-        onContentSizeChange={(_, x) => setCalendarWidth(x)}
+        onContentSizeChange={(x, _) => setCalendarWidth(x)}
       >
         <View style={[styles.body]} {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>
