@@ -40,29 +40,27 @@ export const CalendarHeader = React.memo(
               disabled={onPressDateHeader === undefined}
               key={date.toString()}
             >
-              <View style={{ flex: 1, paddingTop: 2 }}>
-                <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-                  <Text style={[commonStyles.guideText, _isToday && { color: PRIMARY_COLOR }]}>
-                    {date.format('ddd')}
+              <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
+                <Text style={[commonStyles.guideText, _isToday && { color: PRIMARY_COLOR }]}>
+                  {date.format('ddd')}
+                </Text>
+                <View style={_isToday && styles.todayWrap}>
+                  <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
+                    {date.format('D')}
                   </Text>
-                  <View style={_isToday && styles.todayWrap}>
-                    <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
-                      {date.format('D')}
-                    </Text>
-                  </View>
                 </View>
-                <View style={[commonStyles.dateCell, { height: cellHeight }]}>
-                  {allDayEvents.map((event) => {
-                    if (!event.start.isSame(date, 'day')) {
-                      return null
-                    }
-                    return (
-                      <View style={commonStyles.eventCell}>
-                        <Text style={commonStyles.eventTitle}>{event.title}</Text>
-                      </View>
-                    )
-                  })}
-                </View>
+              </View>
+              <View style={[commonStyles.dateCell, { height: cellHeight }]}>
+                {allDayEvents.map((event) => {
+                  if (!event.start.isSame(date, 'day')) {
+                    return null
+                  }
+                  return (
+                    <View style={commonStyles.eventCell}>
+                      <Text style={commonStyles.eventTitle}>{event.title}</Text>
+                    </View>
+                  )
+                })}
               </View>
             </TouchableOpacity>
           )
