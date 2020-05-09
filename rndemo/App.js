@@ -37,6 +37,7 @@ const App = () => {
             height={Dimensions.get('window').height - 50}
             events={[...events, ...additionalEvents]}
             onSelectSlot={addEvent}
+            onPressEvent={(e) => alert(e.title)}
           />
         </ScrollView>
       </SafeAreaView>

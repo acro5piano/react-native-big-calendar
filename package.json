@@ -11,7 +11,8 @@
   "scripts": {
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook -o .storybook-build",
-    "start-ios": "cp -r build rndemo && cd rndemo && yarn ios",
+    "sync-ios": "yarn build && cp -r build rndemo",
+    "start-ios": "yarn sync-ios && cd rndemo && yarn ios",
     "test": "jest",
     "lint": "tslint src/*.{ts,tsx}",
     "lint:fix": "yarn lint --fix",
