@@ -18,6 +18,7 @@ storiesOf('Desktop', module)
         height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={(event) => alert(event.title)}
+        onSelectSlot={() => void 0}
       />
     </View>
   ))
@@ -28,6 +29,7 @@ storiesOf('Desktop', module)
         height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={(event) => alert(event.title)}
+        onSelectSlot={() => void 0}
         mode="3days"
       />
     </View>

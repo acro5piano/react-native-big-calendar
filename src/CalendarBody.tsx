@@ -1,8 +1,17 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { PanResponder, Platform, ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import {
+  Dimensions,
+  PanResponder,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
-import { commonStyles } from './commonStyles'
+import { commonStyles, HOUR_GUIDE_WIDTH } from './commonStyles'
 import {
   DateRangeHandler,
   DayJSConvertedEvent,
@@ -28,8 +37,12 @@ interface CalendarBodyProps<T> {
   onSwipeHorizontal?: (d: HorizontalDirection) => void
 }
 
+interface WithCellHeight {
+  cellHeight: number
+}
+
 const HourGuideColumn = React.memo(
-  ({ cellHeight, hour }: { cellHeight: number; hour: number }) => (
+  ({ cellHeight, hour }: WithCellHeight & { hour: number }) => (
     <View style={{ height: cellHeight }}>
       <Text style={commonStyles.guideText}>{formatHour(hour)}</Text>
     </View>
@@ -38,10 +51,27 @@ const HourGuideColumn = React.memo(
 )
 
 const HourCell = React.memo(
-  ({ cellHeight }: { cellHeight: number }) => (
+  ({ cellHeight }: WithCellHeight) => (
     <View style={[commonStyles.dateCell, { height: cellHeight }]} />
   ),
   () => true,
+)
+
+interface SelectingSlotProps extends WithCellHeight {
+  marginTop: number
+  marginLeft: number
+  width: number
+}
+
+const SelectingSlot = React.memo(
+  ({ cellHeight, marginTop, marginLeft, width }: WithCellHeight & SelectingSlotProps) => (
+    <View
+      style={[
+        commonStyles.eventCell,
+        { left: 0, height: cellHeight, marginTop, marginLeft, width },
+      ]}
+    />
+  ),
 )
 
 export const CalendarBody = React.memo(
@@ -50,7 +80,7 @@ export const CalendarBody = React.memo(
     cellHeight,
     dateRange,
     style = {},
-    // onSelectSlot,
+    onSelectSlot,
     dayJsConvertedEvents,
     onPressEvent,
     eventCellStyle,
@@ -61,6 +91,12 @@ export const CalendarBody = React.memo(
     const scrollView = React.useRef<ScrollView>(null)
     const [now, setNow] = React.useState(dayjs())
     const [panHandled, setPanHandled] = React.useState(false)
+    const [showSelectingSlot, setShowSelectingSlot] = React.useState(false)
+    const [scrollHeight, setScrollHeight] = React.useState(0)
+    const [y0, setY0] = React.useState(0)
+    const [x0, setX0] = React.useState(0)
+    const [moveY, setMoveY] = React.useState(0)
+    const [calendarWidth, setCalendarWidth] = React.useState(0)
 
     React.useEffect(() => {
       if (scrollView.current && scrollOffsetMinutes) {
@@ -68,6 +104,10 @@ export const CalendarBody = React.memo(
         // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
         setTimeout(
           () => {
+            scrollView.current!.scrollTo({
+              y: (cellHeight * scrollOffsetMinutes) / 60,
+              animated: false,
+            })
             scrollView.current!.scrollTo({
               y: (cellHeight * scrollOffsetMinutes) / 60,
               animated: false,
@@ -90,6 +130,10 @@ export const CalendarBody = React.memo(
     //   [onSelectSlot],
     // )
 
+    const onScroll = React.useCallback((e: any) => {
+      setScrollHeight(e.nativeEvent.contentOffset.y)
+    }, [])
+
     const panResponder = React.useMemo(
       () =>
         PanResponder.create({
@@ -97,35 +141,46 @@ export const CalendarBody = React.memo(
           onMoveShouldSetPanResponder: (_, { dx, dy }) => {
             return dx > 2 || dx < -2 || dy > 2 || dy < -2
           },
-          onPanResponderMove: (_, { dy, dx }) => {
-            console.log({ dy, dx })
+          onPanResponderMove: (_, { dy, dx, y0, x0, moveY }) => {
+            if (onSelectSlot) {
+              if (dy > 10 && Dimensions.get('window').width > 768) {
+                setShowSelectingSlot(true)
+                setY0(y0)
+                setX0(x0)
+                setMoveY(moveY)
+              }
+            }
             if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
               return
             }
             if (dx < -1 * SWIPE_THRESHOLD) {
               onSwipeHorizontal && onSwipeHorizontal('LEFT')
-              // setTargetDate(targetDate.add(modeToNum(mode), 'day'))
               setPanHandled(true)
+              return
             }
             if (dx > SWIPE_THRESHOLD) {
               onSwipeHorizontal && onSwipeHorizontal('RIGHT')
-              // setTargetDate(targetDate.add(modeToNum(mode) * -1, 'day'))
               setPanHandled(true)
+              return
             }
           },
           onPanResponderEnd: () => {
             setPanHandled(false)
+            setShowSelectingSlot(false)
           },
         }),
       [panHandled, onSwipeHorizontal],
     )
 
+    console.log(x0 - HOUR_GUIDE_WIDTH)
     return (
       <ScrollView
         style={[{ height: containerHeight - cellHeight * 3 }, style]}
         ref={scrollView}
+        onScroll={onScroll}
         {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={false}
+        onContentSizeChange={(_, x) => setCalendarWidth(x)}
       >
         <View style={[styles.body]} {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>
@@ -158,6 +213,14 @@ export const CalendarBody = React.memo(
             </View>
           ))}
         </View>
+        {showSelectingSlot && (
+          <SelectingSlot
+            cellHeight={Math.abs(moveY - y0)}
+            marginTop={scrollHeight + y0 - cellHeight * 2}
+            marginLeft={x0 - HOUR_GUIDE_WIDTH}
+            width={(calendarWidth - HOUR_GUIDE_WIDTH * 2) / dateRange.length}
+          />
+        )}
       </ScrollView>
     )
   },
