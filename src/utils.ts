@@ -75,19 +75,3 @@ export function isAllDayEvent(event: DayJSConvertedEvent) {
     event.end.minute() === 0
   )
 }
-
-export function quartenizeHour(input: number): [number, number] {
-  const hour = Math.floor(input)
-  const minutes = (input * 60) % 60
-  if (minutes <= 15) {
-    return [hour, 0]
-  } else if (minutes <= 30) {
-    return [hour, 15]
-  } else if (minutes <= 45) {
-    return [hour, 30]
-  } else if (minutes <= 59) {
-    return [hour, 45]
-  } else {
-    return [hour + 1, 0]
-  }
-}

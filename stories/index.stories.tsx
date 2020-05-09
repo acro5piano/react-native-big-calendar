@@ -22,10 +22,15 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 storiesOf('Desktop', module)
   .add('week mode', () => {
     const [additionalEvents, setAdditionalEvents] = React.useState<typeof events>([])
-    const addEvent = ([start, end]: Date[]) => {
+
+    const addEvent = (start: Date) => {
       // @ts-ignore
       const title = prompt('What is the event title?')
-      setAdditionalEvents([...additionalEvents, { start, end, title: title }])
+      if (title) {
+        console.log(additionalEvents)
+        const end = dayjs(start).add(1, 'hour').toDate()
+        setAdditionalEvents([...additionalEvents, { start, end, title: title }])
+      }
     }
 
     return (
@@ -35,7 +40,7 @@ storiesOf('Desktop', module)
           height={SCREEN_HEIGHT}
           events={[...events, ...additionalEvents]}
           onPressEvent={(event) => alert(event.title)}
-          onSelectSlot={addEvent}
+          onPressCell={addEvent}
         />
       </View>
     )
@@ -47,7 +52,7 @@ storiesOf('Desktop', module)
         height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={(event) => alert(event.title)}
-        onSelectSlot={() => void 0}
+        onPressCell={() => void 0}
         mode="3days"
       />
     </View>

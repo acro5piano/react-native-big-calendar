@@ -29,7 +29,7 @@ interface CalendarProps<T = {}> {
   onChangeDate?: DateRangeHandler
   onPressEvent?: (event: Event<T>) => void
   onPressDateHeader?: (date: Date) => void
-  onSelectSlot?: DateRangeHandler
+  onPressCell?: (date: Date) => void
 }
 
 export const Calendar = React.memo(
@@ -48,7 +48,7 @@ export const Calendar = React.memo(
     onPressEvent,
     onPressDateHeader,
     onChangeDate,
-    onSelectSlot,
+    onPressCell,
   }: CalendarProps) => {
     const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -123,7 +123,7 @@ export const Calendar = React.memo(
           dayJsConvertedEvents={daytimeEvents}
           containerHeight={height}
           onPressEvent={onPressEvent}
-          onSelectSlot={onSelectSlot}
+          onPressCell={onPressCell}
           eventCellStyle={eventCellStyle}
           scrollOffsetMinutes={scrollOffsetMinutes}
           showTime={showTime}

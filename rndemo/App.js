@@ -23,21 +23,28 @@ const events = [
 
 const App = () => {
   const [additionalEvents, setAdditionalEvents] = React.useState([]);
-  const addEvent = ([start, end]: Date[]) => {
-    const title = 'new Event';
-    setAdditionalEvents([...additionalEvents, {start, end, title: title}]);
-  };
+  const addEvent = React.useCallback(
+    (start: Date) => {
+      const title = 'new Event';
+      const end = dayjs(start).add(1, 'hour');
+      setAdditionalEvents([...additionalEvents, {start, end, title}]);
+    },
+    [additionalEvents, setAdditionalEvents],
+  );
+  console.log(additionalEvents);
 
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <Calendar
-          height={Dimensions.get('window').height - 50}
-          events={[...events, ...additionalEvents]}
-          onSelectSlot={addEvent}
-          onPressEvent={(e) => alert(e.title)}
-        />
+        <ScrollView>
+          <Calendar
+            height={Dimensions.get('window').height - 50}
+            events={[...events, ...additionalEvents]}
+            onPressCell={addEvent}
+            onPressEvent={(e) => alert(e.title)}
+          />
+        </ScrollView>
       </SafeAreaView>
     </>
   );
