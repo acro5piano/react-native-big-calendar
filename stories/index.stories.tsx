@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 10,
     borderRadius: 10,
-    boxSizing: 'content-box',
+    // boxSizing: 'content-box',
   },
   calendar: {
     borderWidth: 1,
