@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "jsx": "react",
     "types": ["@types/node", "@types/jest"],
-    "lib": ["dom", "es2015", "es2016", "es2017", "esnext.asynciterable"],
+    "lib": [],
     "keyofStringsOnly": true,
 
     /* Strict Type-Checking Options */
