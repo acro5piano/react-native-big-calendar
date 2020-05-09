@@ -20,16 +20,30 @@ const MOBILE_HEIGHT = 736
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('Desktop', module)
-  .add('week mode', () => (
-    <View style={styles.desktop}>
-      <Calendar
-        style={styles.calendar}
-        height={SCREEN_HEIGHT}
-        events={events}
-        onPressEvent={(event) => alert(event.title)}
-      />
-    </View>
-  ))
+  .add('week mode', () => {
+    const [additionalEvents, setAdditionalEvents] = React.useState<typeof events>([])
+
+    const addEvent = (start: Date) => {
+      // @ts-ignore
+      const title = prompt('What is the event title?')
+      if (title) {
+        const end = dayjs(start).add(1, 'hour').toDate()
+        setAdditionalEvents([...additionalEvents, { start, end, title: title }])
+      }
+    }
+
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          style={styles.calendar}
+          height={SCREEN_HEIGHT}
+          events={[...events, ...additionalEvents]}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={addEvent}
+        />
+      </View>
+    )
+  })
   .add('3days mode', () => (
     <View style={styles.desktop}>
       <Calendar
@@ -37,6 +51,7 @@ storiesOf('Desktop', module)
         height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={(event) => alert(event.title)}
+        onPressCell={() => void 0}
         mode="3days"
       />
     </View>
@@ -190,7 +205,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 10,
     borderRadius: 10,
-    boxSizing: 'content-box',
+    // boxSizing: 'content-box',
   },
   calendar: {
     borderWidth: 1,

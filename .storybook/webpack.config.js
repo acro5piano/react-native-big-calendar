@@ -18,6 +18,7 @@ module.exports = ({ config }) =>
       ],
       alias: {
         'react-native': path.resolve(__dirname, '../node_modules/react-native-web'),
+        '@storybook/react-native': path.resolve(__dirname, '../node_modules/react-native-web'),
       },
     },
     module: {

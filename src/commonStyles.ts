@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native'
 
 export const MIN_HEIGHT = 1200
 export const PRIMARY_COLOR = 'rgb(66, 133, 244)'
+export const HOUR_GUIDE_WIDTH = 50
 
 export const commonStyles = StyleSheet.create({
   dateCell: {
@@ -18,7 +19,7 @@ export const commonStyles = StyleSheet.create({
   hourGuide: {
     backgroundColor: '#fff',
     zIndex: 1000,
-    width: 50,
+    width: HOUR_GUIDE_WIDTH,
   },
   eventCell: {
     position: 'absolute' as const,

@@ -1,18 +1,21 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import {
-  GestureResponderHandlers,
+  PanResponder,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
-import { DayJSConvertedEvent, Event, EventCellStyle } from './interfaces'
+import { DayJSConvertedEvent, Event, EventCellStyle, HorizontalDirection } from './interfaces'
 import { formatHour, getRelativeTopInDay, hours, isToday } from './utils'
+
+const SWIPE_THRESHOLD = 50
 
 interface CalendarBodyProps<T> {
   containerHeight: number
@@ -21,14 +24,19 @@ interface CalendarBodyProps<T> {
   dayJsConvertedEvents: DayJSConvertedEvent[]
   style: ViewStyle
   onPressEvent?: (event: Event<T>) => void
+  onPressCell?: (date: Date) => void
   eventCellStyle?: EventCellStyle<T>
   scrollOffsetMinutes: number
   showTime: boolean
-  panHandlers?: GestureResponderHandlers
+  onSwipeHorizontal?: (d: HorizontalDirection) => void
+}
+
+interface WithCellHeight {
+  cellHeight: number
 }
 
 const HourGuideColumn = React.memo(
-  ({ cellHeight, hour }: { cellHeight: number; hour: number }) => (
+  ({ cellHeight, hour }: WithCellHeight & { hour: number }) => (
     <View style={{ height: cellHeight }}>
       <Text style={commonStyles.guideText}>{formatHour(hour)}</Text>
     </View>
@@ -36,12 +44,19 @@ const HourGuideColumn = React.memo(
   () => true,
 )
 
-const HourCell = React.memo(
-  ({ cellHeight }: { cellHeight: number }) => (
-    <View style={[commonStyles.dateCell, { height: cellHeight }]} />
-  ),
-  () => true,
-)
+interface HourCellProps extends WithCellHeight {
+  onPress: (d: dayjs.Dayjs) => void
+  date: dayjs.Dayjs
+  hour: number
+}
+
+function HourCell({ cellHeight, onPress, date, hour }: HourCellProps) {
+  return (
+    <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
+      <View style={[commonStyles.dateCell, { height: cellHeight }]} />
+    </TouchableWithoutFeedback>
+  )
+}
 
 export const CalendarBody = React.memo(
   ({
@@ -49,15 +64,17 @@ export const CalendarBody = React.memo(
     cellHeight,
     dateRange,
     style = {},
-    panHandlers = {},
+    onPressCell,
     dayJsConvertedEvents,
     onPressEvent,
     eventCellStyle,
     showTime,
     scrollOffsetMinutes,
+    onSwipeHorizontal,
   }: CalendarBodyProps<any>) => {
     const scrollView = React.useRef<ScrollView>(null)
     const [now, setNow] = React.useState(dayjs())
+    const [panHandled, setPanHandled] = React.useState(false)
 
     React.useEffect(() => {
       if (scrollView.current && scrollOffsetMinutes) {
@@ -80,14 +97,56 @@ export const CalendarBody = React.memo(
       return () => clearInterval(pid)
     }, [])
 
+    const panResponder = React.useMemo(
+      () =>
+        PanResponder.create({
+          // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
+          onMoveShouldSetPanResponder: (_, { dx, dy }) => {
+            return dx > 2 || dx < -2 || dy > 2 || dy < -2
+          },
+          onPanResponderMove: (_, { dy, dx }) => {
+            if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
+              return
+            }
+            if (dx < -1 * SWIPE_THRESHOLD) {
+              onSwipeHorizontal && onSwipeHorizontal('LEFT')
+              setPanHandled(true)
+              return
+            }
+            if (dx > SWIPE_THRESHOLD) {
+              onSwipeHorizontal && onSwipeHorizontal('RIGHT')
+              setPanHandled(true)
+              return
+            }
+          },
+          onPanResponderEnd: () => {
+            setPanHandled(false)
+          },
+        }),
+      [panHandled, onSwipeHorizontal],
+    )
+
+    const _onPressCell = React.useCallback(
+      (date: dayjs.Dayjs) => {
+        onPressCell && onPressCell(date.toDate())
+      },
+      [onPressCell],
+    )
+
     return (
       <ScrollView
-        style={[{ height: containerHeight - cellHeight * 3 }, style]}
+        style={[
+          {
+            height: containerHeight - cellHeight * 3,
+          },
+          style,
+        ]}
         ref={scrollView}
-        {...(Platform.OS !== 'web' ? panHandlers : {})}
+        scrollEventThrottle={32}
+        {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={false}
       >
-        <View style={[styles.body]} {...(Platform.OS === 'web' ? panHandlers : {})}>
+        <View style={[styles.body]} {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>
             {hours.map((hour) => (
               <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} />
@@ -96,7 +155,13 @@ export const CalendarBody = React.memo(
           {dateRange.map((date) => (
             <View style={[{ flex: 1 }]} key={date.toString()}>
               {hours.map((hour) => (
-                <HourCell key={hour} cellHeight={cellHeight} />
+                <HourCell
+                  key={hour}
+                  cellHeight={cellHeight}
+                  date={date}
+                  hour={hour}
+                  onPress={_onPressCell}
+                />
               ))}
               {dayJsConvertedEvents
                 .filter(
