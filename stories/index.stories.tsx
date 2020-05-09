@@ -20,17 +20,26 @@ const MOBILE_HEIGHT = 736
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('Desktop', module)
-  .add('week mode', () => (
-    <View style={styles.desktop}>
-      <Calendar
-        style={styles.calendar}
-        height={SCREEN_HEIGHT}
-        events={events}
-        onPressEvent={(event) => alert(event.title)}
-        onSelectSlot={() => void 0}
-      />
-    </View>
-  ))
+  .add('week mode', () => {
+    const [additionalEvents, setAdditionalEvents] = React.useState<typeof events>([])
+    const addEvent = ([start, end]: Date[]) => {
+      // @ts-ignore
+      const title = prompt('What is the event title?')
+      setAdditionalEvents([...additionalEvents, { start, end, title: title }])
+    }
+
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          style={styles.calendar}
+          height={SCREEN_HEIGHT}
+          events={[...events, ...additionalEvents]}
+          onPressEvent={(event) => alert(event.title)}
+          onSelectSlot={addEvent}
+        />
+      </View>
+    )
+  })
   .add('3days mode', () => (
     <View style={styles.desktop}>
       <Calendar

@@ -19,7 +19,7 @@ import {
   EventCellStyle,
   HorizontalDirection,
 } from './interfaces'
-import { formatHour, getRelativeTopInDay, hours, isToday } from './utils'
+import { formatHour, getRelativeTopInDay, hours, isToday, quartenizeHour } from './utils'
 
 const SWIPE_THRESHOLD = 50
 
@@ -123,16 +123,25 @@ export const CalendarBody = React.memo(
       return () => clearInterval(pid)
     }, [])
 
-    // const _onSelectSlot = React.useCallback(
-    //   ([start, end]: dayjs.Dayjs[]) => {
-    //     console.log([start, end])
-    //   },
-    //   [onSelectSlot],
-    // )
-
     const onScroll = React.useCallback((e: any) => {
       setScrollHeight(e.nativeEvent.contentOffset.y)
     }, [])
+
+    const marginTop = React.useMemo(() => scrollHeight + y0 - cellHeight * 2 - 14, [
+      scrollHeight,
+      y0,
+      cellHeight,
+    ])
+
+    const columnWidth = React.useMemo(() => (calendarWidth - HOUR_GUIDE_WIDTH) / dateRange.length, [
+      calendarWidth,
+      dateRange.length,
+    ])
+
+    const marginLeft = React.useMemo(() => x0 - ((x0 - HOUR_GUIDE_WIDTH) % columnWidth), [
+      x0,
+      columnWidth,
+    ])
 
     const panResponder = React.useMemo(
       () =>
@@ -164,23 +173,29 @@ export const CalendarBody = React.memo(
               return
             }
           },
-          onPanResponderEnd: () => {
+          onPanResponderEnd: (_, { x0, y0, dy }) => {
             setPanHandled(false)
+
+            if (onSelectSlot && dy > cellHeight / 4) {
+              const baseDayOffset = Math.floor((x0 - HOUR_GUIDE_WIDTH) / columnWidth)
+              const [startHour, startMinute] = quartenizeHour(
+                (scrollHeight + y0 - cellHeight * 2 - 14) / cellHeight,
+              )
+              const start = dateRange[baseDayOffset]
+                .set('hour', startHour)
+                .set('minute', startMinute)
+              const [endHour, endMinute] = quartenizeHour(
+                (scrollHeight + y0 + dy - cellHeight * 2 - 14) / cellHeight,
+              )
+              const end = dateRange[baseDayOffset].set('hour', endHour).set('minute', endMinute)
+              onSelectSlot([start.toDate(), end.toDate()])
+            }
+
             setShowSelectingSlot(false)
           },
         }),
-      [panHandled, onSwipeHorizontal],
+      [panHandled, onSwipeHorizontal, onSelectSlot, cellHeight, scrollHeight, columnWidth],
     )
-
-    const columnWidth = React.useMemo(() => (calendarWidth - HOUR_GUIDE_WIDTH) / dateRange.length, [
-      calendarWidth,
-      dateRange.length,
-    ])
-
-    const marginLeft = React.useMemo(() => x0 - ((x0 - HOUR_GUIDE_WIDTH) % columnWidth), [
-      x0,
-      columnWidth,
-    ])
 
     return (
       <ScrollView
@@ -226,7 +241,7 @@ export const CalendarBody = React.memo(
         {showSelectingSlot && (
           <SelectingSlot
             cellHeight={Math.abs(moveY - y0)}
-            marginTop={scrollHeight + y0 - cellHeight * 2 - 14}
+            marginTop={marginTop}
             marginLeft={marginLeft}
             width={columnWidth}
           />
