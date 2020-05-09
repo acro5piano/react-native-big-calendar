@@ -172,8 +172,6 @@ export const CalendarBody = React.memo(
       [panHandled, onSwipeHorizontal],
     )
 
-    // console.log(x0 - HOUR_GUIDE_WIDTH)
-    console.log({ calendarWidth })
     const columnWidth = React.useMemo(() => (calendarWidth - HOUR_GUIDE_WIDTH) / dateRange.length, [
       calendarWidth,
       dateRange.length,
