@@ -172,12 +172,23 @@ export const CalendarBody = React.memo(
       [panHandled, onSwipeHorizontal],
     )
 
-    console.log(x0 - HOUR_GUIDE_WIDTH)
+    // console.log(x0 - HOUR_GUIDE_WIDTH)
+    const columnWidth = React.useMemo(
+      () => (calendarWidth - HOUR_GUIDE_WIDTH) / (dateRange.length + 1) - 2,
+      [calendarWidth, dateRange.length],
+    )
+
+    const marginLeft = React.useMemo(() => x0 - ((x0 - HOUR_GUIDE_WIDTH) % columnWidth), [
+      x0,
+      columnWidth,
+    ])
+
     return (
       <ScrollView
         style={[{ height: containerHeight - cellHeight * 3 }, style]}
         ref={scrollView}
         onScroll={onScroll}
+        scrollEventThrottle={32}
         {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={(_, x) => setCalendarWidth(x)}
@@ -216,9 +227,9 @@ export const CalendarBody = React.memo(
         {showSelectingSlot && (
           <SelectingSlot
             cellHeight={Math.abs(moveY - y0)}
-            marginTop={scrollHeight + y0 - cellHeight * 2}
-            marginLeft={x0 - HOUR_GUIDE_WIDTH}
-            width={(calendarWidth - HOUR_GUIDE_WIDTH * 2) / dateRange.length}
+            marginTop={scrollHeight + y0 - cellHeight * 2 - 14}
+            marginLeft={marginLeft}
+            width={columnWidth}
           />
         )}
       </ScrollView>
