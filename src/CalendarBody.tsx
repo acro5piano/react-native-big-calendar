@@ -1,15 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import {
-  Dimensions,
-  PanResponder,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { PanResponder, Platform, ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
 import { commonStyles, HOUR_GUIDE_WIDTH } from './commonStyles'
 import {
@@ -22,6 +13,12 @@ import {
 import { formatHour, getRelativeTopInDay, hours, isToday, quartenizeHour } from './utils'
 
 const SWIPE_THRESHOLD = 50
+
+/*
+ * The multiplier to decrease padding when calculating pan handling.
+ * I don't know why this value differs across web and native
+ **/
+const paddingMultiplier = Platform.OS === 'web' ? 2 : 3
 
 interface CalendarBodyProps<T> {
   containerHeight: number
@@ -127,7 +124,7 @@ export const CalendarBody = React.memo(
       setScrollHeight(e.nativeEvent.contentOffset.y)
     }, [])
 
-    const marginTop = React.useMemo(() => scrollHeight + y0 - cellHeight * 2 - 14, [
+    const marginTop = React.useMemo(() => scrollHeight + y0 - cellHeight * paddingMultiplier, [
       scrollHeight,
       y0,
       cellHeight,
@@ -146,16 +143,19 @@ export const CalendarBody = React.memo(
     const panResponder = React.useMemo(
       () =>
         PanResponder.create({
+          onPanResponderGrant: (_, { x0, y0 }) => {
+            setY0(y0)
+            setX0(x0)
+            setMoveY(y0)
+            setShowSelectingSlot(true)
+          },
           // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
           onMoveShouldSetPanResponder: (_, { dx, dy }) => {
             return dx > 2 || dx < -2 || dy > 2 || dy < -2
           },
-          onPanResponderMove: (_, { dy, dx, y0, x0, moveY }) => {
+          onPanResponderMove: (_, { dy, dx, moveY }) => {
             if (onSelectSlot) {
-              if (dy > 10 && Dimensions.get('window').width > 768) {
-                setShowSelectingSlot(true)
-                setY0(y0)
-                setX0(x0)
+              if (dy > 10) {
                 setMoveY(moveY)
               }
             }
@@ -179,13 +179,13 @@ export const CalendarBody = React.memo(
             if (onSelectSlot && dy > cellHeight / 4) {
               const baseDayOffset = Math.floor((x0 - HOUR_GUIDE_WIDTH) / columnWidth)
               const [startHour, startMinute] = quartenizeHour(
-                (scrollHeight + y0 - cellHeight * 2 - 14) / cellHeight,
+                (scrollHeight + y0 - cellHeight * paddingMultiplier) / cellHeight,
               )
               const start = dateRange[baseDayOffset]
                 .set('hour', startHour)
                 .set('minute', startMinute)
               const [endHour, endMinute] = quartenizeHour(
-                (scrollHeight + y0 + dy - cellHeight * 2 - 14) / cellHeight,
+                (scrollHeight + y0 + dy - cellHeight * paddingMultiplier) / cellHeight,
               )
               const end = dateRange[baseDayOffset].set('hour', endHour).set('minute', endMinute)
               onSelectSlot([start.toDate(), end.toDate()])
@@ -199,13 +199,20 @@ export const CalendarBody = React.memo(
 
     return (
       <ScrollView
-        style={[{ height: containerHeight - cellHeight * 3 }, style]}
+        style={[
+          {
+            height: containerHeight - cellHeight * 3,
+            ...(Platform.OS === 'web' ? {} : { paddingTop: cellHeight * 2 }),
+          },
+          style,
+        ]}
         ref={scrollView}
         onScroll={onScroll}
         scrollEventThrottle={32}
         {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={(x, _) => setCalendarWidth(x)}
+        scrollEnabled={!showSelectingSlot}
       >
         <View style={[styles.body]} {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>

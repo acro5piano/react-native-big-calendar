@@ -32,14 +32,12 @@ const App = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView>
-          <Calendar
-            height={Dimensions.get('window').height - 50}
-            events={[...events, ...additionalEvents]}
-            onSelectSlot={addEvent}
-            onPressEvent={(e) => alert(e.title)}
-          />
-        </ScrollView>
+        <Calendar
+          height={Dimensions.get('window').height - 50}
+          events={[...events, ...additionalEvents]}
+          onSelectSlot={addEvent}
+          onPressEvent={(e) => alert(e.title)}
+        />
       </SafeAreaView>
     </>
   );
