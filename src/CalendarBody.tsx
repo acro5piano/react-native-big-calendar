@@ -50,14 +50,13 @@ interface HourCellProps extends WithCellHeight {
   hour: number
 }
 
-const HourCell = React.memo(
-  ({ cellHeight, onPress, date, hour }: HourCellProps) => (
+function HourCell({ cellHeight, onPress, date, hour }: HourCellProps) {
+  return (
     <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
       <View style={[commonStyles.dateCell, { height: cellHeight }]} />
     </TouchableWithoutFeedback>
-  ),
-  () => true,
-)
+  )
+}
 
 export const CalendarBody = React.memo(
   ({

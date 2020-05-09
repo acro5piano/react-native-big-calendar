@@ -27,7 +27,6 @@ storiesOf('Desktop', module)
       // @ts-ignore
       const title = prompt('What is the event title?')
       if (title) {
-        console.log(additionalEvents)
         const end = dayjs(start).add(1, 'hour').toDate()
         setAdditionalEvents([...additionalEvents, { start, end, title: title }])
       }

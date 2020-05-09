@@ -31,7 +31,6 @@ const App = () => {
     },
     [additionalEvents, setAdditionalEvents],
   );
-  console.log(additionalEvents);
 
   return (
     <>
