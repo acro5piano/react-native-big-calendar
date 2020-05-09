@@ -40,20 +40,3 @@ describe('getDatesInNextThreeDays', () => {
     assertDateRange(expected, actual)
   })
 })
-
-describe('quartenizeHour', () => {
-  test('case1', () => {
-    const actual = utils.quartenizeHour(3.6)
-    expect(actual).toEqual([3, 30])
-  })
-
-  test('case2', () => {
-    const actual = utils.quartenizeHour(3.9)
-    expect(actual).toEqual([3, 45])
-  })
-
-  test('case3', () => {
-    const actual = utils.quartenizeHour(17)
-    expect(actual).toEqual([17, 0])
-  })
-})
