@@ -132,6 +132,6 @@ If you are using this library, please send a PR to add your organization!
 # TODO
 
 - [x] Add API Documentation
-- [ ] Add `onClickCell` feature
+- [x] Add `onClickCell` feature
 - [ ] Add `onDrugCell` feature
 - [ ] Support the month view layout
