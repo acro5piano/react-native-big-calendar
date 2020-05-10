@@ -134,4 +134,8 @@ If you are using this library, please send a PR to add your organization!
 - [x] Add API Documentation
 - [x] Add `onClickCell` feature
 - [ ] Add `onDrugCell` feature
+- [ ] Style customize
+  - [ ] Blue active day
+  - [ ] Blue active day text
+  - [ ] Today indicator
 - [ ] Support the month view layout
