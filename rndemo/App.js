@@ -26,7 +26,7 @@ const App = () => {
   const addEvent = React.useCallback(
     (start: Date) => {
       const title = 'new Event';
-      const end = dayjs(start).add(1, 'hour');
+      const end = dayjs(start).add(59, 'minute');
       setAdditionalEvents([...additionalEvents, {start, end, title}]);
     },
     [additionalEvents, setAdditionalEvents],
@@ -36,14 +36,12 @@ const App = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView>
-          <Calendar
-            height={Dimensions.get('window').height - 50}
-            events={[...events, ...additionalEvents]}
-            onPressCell={addEvent}
-            onPressEvent={(e) => alert(e.title)}
-          />
-        </ScrollView>
+        <Calendar
+          height={Dimensions.get('window').height - 50}
+          events={[...events, ...additionalEvents]}
+          onPressCell={addEvent}
+          onPressEvent={(e) => alert(e.title)}
+        />
       </SafeAreaView>
     </>
   );

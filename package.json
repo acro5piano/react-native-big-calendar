@@ -23,7 +23,7 @@
     "build:ts": "env NODE_ENV=production rollup -c"
   },
   "dependencies": {
-    "dayjs": "^1.8.23"
+    "dayjs": "^1.8.26"
   },
   "peerDependencies": {
     "react": "^16.8.3",
@@ -34,7 +34,7 @@
     "@rollup/plugin-typescript": "^4.1.1",
     "@storybook/react": "^5.3.18",
     "@types/jest": "^25.2.1",
-    "@types/node": "^13.11.0",
+    "@types/node": "^13.13.5",
     "@types/react-native": "^0.62.7",
     "acorn-jsx": "^5.2.0",
     "babel-loader": "^8.1.0",
@@ -51,7 +51,7 @@
     "ts-jest": "^25.4.0",
     "ts-loader": "^6.2.2",
     "tslib": "^1.11.1",
-    "tslint": "^6.1.1",
+    "tslint": "^6.1.2",
     "typescript": "^3.8.3",
     "webpack-merge": "^4.2.2"
   },
