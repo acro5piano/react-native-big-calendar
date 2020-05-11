@@ -50,7 +50,7 @@
     "rollup-plugin-typescript2": "^0.27.0",
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.3",
-    "tslib": "^1.11.1",
+    "tslib": "^1.11.2",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3",
     "webpack-merge": "^4.2.2"
