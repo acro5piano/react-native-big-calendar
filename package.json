@@ -52,7 +52,7 @@
     "ts-loader": "^7.0.5",
     "tslib": "^1.11.1",
     "tslint": "^6.1.2",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.6",
     "webpack-merge": "^4.2.2"
   },
   "husky": {
