@@ -34,7 +34,7 @@
     "@rollup/plugin-typescript": "^4.1.1",
     "@storybook/react": "^5.3.19",
     "@types/jest": "^26.0.4",
-    "@types/node": "^14.0.23",
+    "@types/node": "^14.0.26",
     "@types/react-native": "^0.62.18",
     "acorn-jsx": "^5.2.0",
     "babel-loader": "^8.1.0",
