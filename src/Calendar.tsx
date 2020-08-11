@@ -12,7 +12,13 @@ import {
   Mode,
   WeekNum,
 } from './interfaces'
-import { getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } from './utils'
+import {
+  getDatesInNextOneDay,
+  getDatesInNextThreeDays,
+  getDatesInWeek,
+  isAllDayEvent,
+  modeToNum,
+} from './utils'
 
 interface CalendarProps<T = {}> {
   events: Event<T>[]
@@ -78,6 +84,8 @@ export const Calendar = React.memo(
           return getDatesInNextThreeDays(targetDate, locale)
         case 'week':
           return getDatesInWeek(targetDate, weekStartsOn, locale)
+        case 'day':
+          return getDatesInNextOneDay(targetDate, locale)
         default:
           throw new Error('undefined mode')
       }
