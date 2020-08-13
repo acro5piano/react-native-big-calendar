@@ -1,5 +1,10 @@
 # Changelog
 
+# 0.4.1
+
+- fix `day` mode by @joelbarron
+- update deps by @acro5piano
+
 # 0.4.0
 
 - add onPressCell props by @acro5piano
