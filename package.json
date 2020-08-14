@@ -30,7 +30,7 @@
     "react-native": "^0.59.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.4",
+    "@babel/core": "^7.11.1",
     "@rollup/plugin-typescript": "^5.0.2",
     "@storybook/react": "^5.3.19",
     "@types/jest": "^26.0.9",
