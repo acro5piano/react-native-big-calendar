@@ -49,7 +49,7 @@
     "rollup": "^2.26.8",
     "rollup-plugin-typescript2": "^0.27.2",
     "ts-jest": "^25.5.1",
-    "ts-loader": "^8.0.2",
+    "ts-loader": "^8.0.3",
     "tslib": "^2.0.1",
     "tslint": "^6.1.3",
     "typescript": "^3.9.7",
