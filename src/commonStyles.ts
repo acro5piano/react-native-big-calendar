@@ -29,6 +29,7 @@ export const commonStyles = StyleSheet.create({
     alignSelf: 'center' as const,
     borderRadius: 3,
     padding: 4,
+    overflow: 'hidden',
   },
   eventTitle: {
     color: '#fff',

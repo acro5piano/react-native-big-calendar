@@ -51,6 +51,7 @@ export const CalendarEvent = React.memo(
           <>
             <Text style={commonStyles.eventTitle}>{event.title}</Text>
             {showTime && <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>}
+            {event.children && event.children()}
           </>
         )}
       </TouchableOpacity>
