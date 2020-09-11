@@ -18,12 +18,12 @@ export const events = [
   },
   {
     title: 'Meet Larry',
-    start: dayjs().add(1, 'day').set('hour', 7).set('minute', 45).toDate(),
-    end: dayjs().add(1, 'day').set('hour', 9).set('minute', 30).toDate(),
+    start: dayjs().add(1, 'day').set('hour', 8).set('minute', 25).toDate(),
+    end: dayjs().add(1, 'day').set('hour', 9).set('minute', 55).toDate(),
   },
   {
     title: 'Laundry',
-    start: dayjs().add(1, 'day').set('hour', 7).set('minute', 45).toDate(),
-    end: dayjs().add(1, 'day').set('hour', 9).set('minute', 0).toDate(),
+    start: dayjs().add(1, 'day').set('hour', 8).set('minute', 25).toDate(),
+    end: dayjs().add(1, 'day').set('hour', 11).set('minute', 0).toDate(),
   },
 ]
