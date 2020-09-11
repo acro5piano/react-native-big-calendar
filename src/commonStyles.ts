@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
+import { Color } from './theme'
 
 export const MIN_HEIGHT = 1200
-export const PRIMARY_COLOR = 'rgb(66, 133, 244)'
 export const HOUR_GUIDE_WIDTH = 50
 
 export const commonStyles = StyleSheet.create({
@@ -23,12 +23,13 @@ export const commonStyles = StyleSheet.create({
   },
   eventCell: {
     position: 'absolute' as const,
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: Color.blue,
     zIndex: 100,
-    width: '96%',
-    alignSelf: 'center' as const,
+    start: 3,
+    end: 3,
     borderRadius: 3,
     padding: 4,
+    overflow: 'hidden',
   },
   eventTitle: {
     color: '#fff',

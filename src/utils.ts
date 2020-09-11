@@ -1,7 +1,10 @@
 import dayjs from 'dayjs'
 import { DayJSConvertedEvent, Mode, WeekNum } from './interfaces'
+import { Color } from './theme'
 
 export const DAY_MINUTES = 1440
+const OVERLAP_OFFSET = 20
+const OVERLAP_PADDING = 4
 
 export function getDatesInWeek(
   date: Date | dayjs.Dayjs = new Date(),
@@ -85,4 +88,37 @@ export function isAllDayEvent(event: DayJSConvertedEvent) {
     event.end.hour() === 0 &&
     event.end.minute() === 0
   )
+}
+
+export function getCountOfEventsAtEvent(
+  event: DayJSConvertedEvent,
+  eventList: DayJSConvertedEvent[],
+) {
+  return eventList.filter((e) => e.start.isSame(event.start, 'minute')).length
+}
+
+export function getOrderOfEvent(event: DayJSConvertedEvent, eventList: DayJSConvertedEvent[]) {
+  const events = eventList
+    .filter((e) => e.start.isSame(event.start, 'minute'))
+    .sort((a, b) => (a.start.diff(a.end) < b.start.diff(b.end) ? -1 : 1))
+  return events.indexOf(event)
+}
+
+export function getStyleForOverlappingEvent(eventCount: number, eventPosition: number) {
+  let overlapStyle = {}
+  if (eventCount > 1) {
+    const normalizedPosition = eventPosition + 1
+    const start = eventPosition * OVERLAP_OFFSET
+    const end =
+      eventCount === normalizedPosition ? 0 : (eventCount - normalizedPosition) * OVERLAP_OFFSET
+    const color =
+      eventPosition === 0 ? Color.blue : eventPosition === 1 ? Color.orange : Color.green
+    overlapStyle = {
+      start: start + OVERLAP_PADDING,
+      end: end + OVERLAP_PADDING,
+      backgroundColor: color,
+      zIndex: 100 + normalizedPosition,
+    }
+  }
+  return overlapStyle
 }

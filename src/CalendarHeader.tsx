@@ -1,8 +1,9 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { commonStyles, PRIMARY_COLOR } from './commonStyles'
+import { commonStyles } from './commonStyles'
 import { Event } from './interfaces'
+import { Color } from './theme'
 import { isToday } from './utils'
 
 interface CalendarHeaderProps<T> {
@@ -41,7 +42,7 @@ export const CalendarHeader = React.memo(
               key={date.toString()}
             >
               <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-                <Text style={[commonStyles.guideText, _isToday && { color: PRIMARY_COLOR }]}>
+                <Text style={[commonStyles.guideText, _isToday && { color: Color.blue }]}>
                   {date.format('ddd')}
                 </Text>
                 <View style={_isToday && styles.todayWrap}>
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   todayWrap: {
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: Color.blue,
     width: 36,
     height: 36,
     borderRadius: 50,
