@@ -32,19 +32,22 @@ storiesOf('Desktop', module)
       }
     }
 
-    const testChild = () => {
+    const eventNotes = () => {
+      const containerStyle = { marginTop: 3 }
+      const textStyle = { fontSize: 10, color: 'white' }
       return (
-        <View>
-          <Text>Test child</Text>
+        <View style={containerStyle}>
+          <Text style={textStyle}>Phone number: 555-123-4567</Text>
+          <Text style={textStyle}>Arrive 15 minutes early</Text>
         </View>
       )
     }
 
     const childEvent = {
-      title: 'Child Event',
+      title: "Doctor's appointment",
       start: dayjs().set('hour', 13).set('minute', 0).toDate(),
-      end: dayjs().set('hour', 14).set('minute', 30).toDate(),
-      children: testChild,
+      end: dayjs().set('hour', 14).set('minute', 15).toDate(),
+      children: eventNotes,
     }
 
     return (
