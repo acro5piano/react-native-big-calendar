@@ -11,6 +11,7 @@ export interface DayJSConvertedEvent {
   start: dayjs.Dayjs
   end: dayjs.Dayjs
   title: string
+  children?: () => void
 }
 
 export type Event<T = {}> = BaseEvent & T

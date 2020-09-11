@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
-import { Alert, Dimensions, StyleSheet, View } from 'react-native'
+import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native'
 import { Calendar } from '../src/Calendar'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { Control, CONTROL_HEIGHT } from './components/Control'
@@ -32,12 +32,30 @@ storiesOf('Desktop', module)
       }
     }
 
+    const eventNotes = () => {
+      const containerStyle = { marginTop: 3 }
+      const textStyle = { fontSize: 10, color: 'white' }
+      return (
+        <View style={containerStyle}>
+          <Text style={textStyle}>Phone number: 555-123-4567</Text>
+          <Text style={textStyle}>Arrive 15 minutes early</Text>
+        </View>
+      )
+    }
+
+    const childEvent = {
+      title: "Doctor's appointment",
+      start: dayjs().set('hour', 13).set('minute', 0).toDate(),
+      end: dayjs().set('hour', 14).set('minute', 15).toDate(),
+      children: eventNotes,
+    }
+
     return (
       <View style={styles.desktop}>
         <Calendar
           style={styles.calendar}
           height={SCREEN_HEIGHT}
-          events={[...events, ...additionalEvents]}
+          events={[...events, ...additionalEvents, childEvent]}
           onPressEvent={(event) => alert(event.title)}
           onPressCell={addEvent}
         />
