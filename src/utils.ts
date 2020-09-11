@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import { DayJSConvertedEvent, Mode, WeekNum } from './interfaces'
 import { Color } from './theme'
 
@@ -94,14 +95,36 @@ export function getCountOfEventsAtEvent(
   event: DayJSConvertedEvent,
   eventList: DayJSConvertedEvent[],
 ) {
-  return eventList.filter((e) => e.start.isSame(event.start, 'minute')).length
+  // return eventList.filter(e => e.start.isSame(event.start, 'minute')).length;
+  dayjs.extend(isBetween)
+  return eventList.filter((e) => event.start.isBetween(e.start, e.end, 'minute', '[)')).length
 }
 
 export function getOrderOfEvent(event: DayJSConvertedEvent, eventList: DayJSConvertedEvent[]) {
+  dayjs.extend(isBetween)
   const events = eventList
-    .filter((e) => e.start.isSame(event.start, 'minute'))
-    .sort((a, b) => (a.start.diff(a.end) < b.start.diff(b.end) ? -1 : 1))
+    .filter((e) => event.start.isBetween(e.start, e.end, 'minute', '[)'))
+    .sort((a, b) => {
+      return a.start.isSame(b.start) ? 1 : a.start.diff(a.end) < b.start.diff(b.end) ? -1 : 1
+    })
   return events.indexOf(event)
+}
+
+function getColorForEventPosition(eventPosition: number) {
+  switch (eventPosition % 5) {
+    case 0:
+      return Color.blue
+    case 1:
+      return Color.orange
+    case 2:
+      return Color.green
+    case 3:
+      return Color.red
+    case 4:
+      return Color.pink
+    default:
+      return Color.blue
+  }
 }
 
 export function getStyleForOverlappingEvent(eventCount: number, eventPosition: number) {
@@ -111,13 +134,10 @@ export function getStyleForOverlappingEvent(eventCount: number, eventPosition: n
     const start = eventPosition * OVERLAP_OFFSET
     const end =
       eventCount === normalizedPosition ? 0 : (eventCount - normalizedPosition) * OVERLAP_OFFSET
-    const color =
-      eventPosition === 0 ? Color.blue : eventPosition === 1 ? Color.orange : Color.green
     overlapStyle = {
       start: start + OVERLAP_PADDING,
       end: end + OVERLAP_PADDING,
-      backgroundColor: color,
-      zIndex: 100 + normalizedPosition,
+      backgroundColor: getColorForEventPosition(eventPosition),
     }
   }
   return overlapStyle
