@@ -2,16 +2,12 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Text, View } from 'react-native'
 
-const eventNotes = () => {
-  const containerStyle = { marginTop: 3 }
-  const textStyle = { fontSize: 10, color: 'white' }
-  return (
-    <View style={containerStyle}>
-      <Text style={textStyle}> Phone number: 555 - 123 - 4567 </Text>
-      <Text style={textStyle}> Arrive 15 minutes early </Text>
-    </View>
-  )
-}
+const eventNotes = (
+  <View style={{ marginTop: 3 }}>
+    <Text style={{ fontSize: 10, color: 'white' }}> Phone number: 555-123-4567 </Text>
+    <Text style={{ fontSize: 10, color: 'white' }}> Arrive 15 minutes early </Text>
+  </View>
+)
 
 export const events = [
   {
@@ -30,7 +26,7 @@ export const events = [
     end: dayjs().add(1, 'day').set('hour', 13).set('minute', 30).toDate(),
   },
   {
-    title: 'Meet Larry',
+    title: 'Meet Realtor',
     start: dayjs().add(1, 'day').set('hour', 8).set('minute', 25).toDate(),
     end: dayjs().add(1, 'day').set('hour', 9).set('minute', 55).toDate(),
   },

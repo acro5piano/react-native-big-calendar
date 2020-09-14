@@ -29,7 +29,7 @@ const events: DayJSConvertedEvent[] = [
     end: dayjs().add(1, 'day').set('hour', 13).set('minute', 30),
   },
   {
-    title: 'Meet Larry',
+    title: 'Meet Realtor',
     start: dayjs().add(1, 'day').set('hour', 8).set('minute', 25),
     end: dayjs().add(1, 'day').set('hour', 9).set('minute', 55),
   },
