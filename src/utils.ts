@@ -6,7 +6,7 @@ import { Color } from './theme'
 
 export const DAY_MINUTES = 1440
 const OVERLAP_OFFSET = Platform.OS === 'web' ? 20 : 8
-const OVERLAP_PADDING = Platform.OS === 'web' ? 4 : 0
+const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0
 
 export function getDatesInWeek(
   date: Date | dayjs.Dayjs = new Date(),
