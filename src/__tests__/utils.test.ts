@@ -1,5 +1,5 @@
-import { DayJSConvertedEvent } from 'build'
 import dayjs from 'dayjs'
+import { DayJSConvertedEvent } from '../interfaces'
 import * as utils from '../utils'
 
 const events: DayJSConvertedEvent[] = [
@@ -73,7 +73,6 @@ describe('getDatesInWeek', () => {
 })
 
 describe('getDatesInNextThreeDays', () => {
-  ;``
   const expected = [new Date(2020, 1, 9), new Date(2020, 1, 10), new Date(2020, 1, 11)]
 
   test('sunday', () => {

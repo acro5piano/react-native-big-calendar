@@ -1,11 +1,12 @@
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
+import { Platform } from 'react-native'
 import { DayJSConvertedEvent, Mode, WeekNum } from './interfaces'
 import { Color } from './theme'
 
 export const DAY_MINUTES = 1440
-const OVERLAP_OFFSET = 20
-const OVERLAP_PADDING = 4
+const OVERLAP_OFFSET = Platform.OS === 'web' ? 20 : 8
+const OVERLAP_PADDING = Platform.OS === 'web' ? 4 : 0
 
 export function getDatesInWeek(
   date: Date | dayjs.Dayjs = new Date(),

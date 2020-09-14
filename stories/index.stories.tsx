@@ -110,8 +110,8 @@ storiesOf('Desktop', module)
       ...events,
       {
         title: 'Vacation',
-        start: dayjs().add(-1, 'day').set('hour', 0).set('minute', 0).toDate(),
-        end: dayjs().add(-1, 'day').set('hour', 0).set('minute', 0).toDate(),
+        start: dayjs().add(1, 'day').set('hour', 0).set('minute', 0).toDate(),
+        end: dayjs().add(1, 'day').set('hour', 0).set('minute', 0).toDate(),
       },
     ]
 
