@@ -124,7 +124,7 @@ export function getOrderOfEvent(event: DayJSConvertedEvent, eventList: DayJSConv
 function getColorForEventPosition(eventPosition: number) {
   switch (eventPosition % 5) {
     case 0:
-      return Color.blue
+      return Color.primary
     case 1:
       return Color.orange
     case 2:
@@ -134,7 +134,7 @@ function getColorForEventPosition(eventPosition: number) {
     case 4:
       return Color.pink
     default:
-      return Color.blue
+      return Color.primary
   }
 }
 

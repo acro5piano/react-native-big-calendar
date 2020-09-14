@@ -23,7 +23,7 @@ export const commonStyles = StyleSheet.create({
   },
   eventCell: {
     position: 'absolute' as const,
-    backgroundColor: Color.blue,
+    backgroundColor: Color.primary,
     zIndex: 100,
     start: 3,
     end: 3,

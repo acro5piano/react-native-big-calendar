@@ -42,7 +42,7 @@ export const CalendarHeader = React.memo(
               key={date.toString()}
             >
               <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-                <Text style={[commonStyles.guideText, _isToday && { color: Color.blue }]}>
+                <Text style={[commonStyles.guideText, _isToday && { color: Color.primary }]}>
                   {date.format('ddd')}
                 </Text>
                 <View style={_isToday && styles.todayWrap}>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   todayWrap: {
-    backgroundColor: Color.blue,
+    backgroundColor: Color.primary,
     width: 36,
     height: 36,
     borderRadius: 50,
