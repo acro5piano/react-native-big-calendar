@@ -95,17 +95,28 @@ export function getCountOfEventsAtEvent(
   event: DayJSConvertedEvent,
   eventList: DayJSConvertedEvent[],
 ) {
-  // return eventList.filter(e => e.start.isSame(event.start, 'minute')).length;
   dayjs.extend(isBetween)
-  return eventList.filter((e) => event.start.isBetween(e.start, e.end, 'minute', '[)')).length
+  return eventList.filter(
+    (e) =>
+      event.start.isBetween(e.start, e.end, 'minute', '[)') ||
+      e.start.isBetween(event.start, event.end, 'minute', '[)'),
+  ).length
 }
 
 export function getOrderOfEvent(event: DayJSConvertedEvent, eventList: DayJSConvertedEvent[]) {
   dayjs.extend(isBetween)
   const events = eventList
-    .filter((e) => event.start.isBetween(e.start, e.end, 'minute', '[)'))
+    .filter(
+      (e) =>
+        event.start.isBetween(e.start, e.end, 'minute', '[)') ||
+        e.start.isBetween(event.start, event.end, 'minute', '[)'),
+    )
     .sort((a, b) => {
-      return a.start.isSame(b.start) ? 1 : a.start.diff(a.end) < b.start.diff(b.end) ? -1 : 1
+      if (a.start.isSame(b.start)) {
+        return a.start.diff(a.end) < b.start.diff(b.end) ? -1 : 1
+      } else {
+        return a.start.isBefore(b.start) ? -1 : 1
+      }
     })
   return events.indexOf(event)
 }
@@ -134,10 +145,12 @@ export function getStyleForOverlappingEvent(eventCount: number, eventPosition: n
     const start = eventPosition * OVERLAP_OFFSET
     const end =
       eventCount === normalizedPosition ? 0 : (eventCount - normalizedPosition) * OVERLAP_OFFSET
+    const zIndex = 100 + eventPosition
     overlapStyle = {
       start: start + OVERLAP_PADDING,
       end: end + OVERLAP_PADDING,
       backgroundColor: getColorForEventPosition(eventPosition),
+      zIndex,
     }
   }
   return overlapStyle
