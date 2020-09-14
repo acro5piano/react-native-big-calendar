@@ -177,7 +177,7 @@ export const CalendarBody = React.memo(
                 )
                 .map((event) => (
                   <CalendarEvent
-                    key={`${event.start.toString()}${event.title}`}
+                    key={`${event.start}${event.title}`}
                     event={event}
                     onPressEvent={onPressEvent}
                     eventCellStyle={eventCellStyle}

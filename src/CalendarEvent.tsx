@@ -56,8 +56,8 @@ export const CalendarEvent = React.memo(
         style={[
           commonStyles.eventCell,
           getEventCellPositionStyle(event),
-          getEventStyle(event),
           getStyleForOverlappingEvent(eventCount, eventOrder),
+          getEventStyle(event),
         ]}
         onPress={() => _onPress(event)}
         disabled={!onPressEvent}
