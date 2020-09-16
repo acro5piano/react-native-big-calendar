@@ -1,15 +1,20 @@
 # Changelog
 
-# 0.4.1
+# 0.5.0
+
+- Support for overlapping events, ability to display child components in events by @OffensivelyBad
+- update deps by @acro5piano
+
+## 0.4.1
 
 - fix `day` mode by @joelbarron
 - update deps by @acro5piano
 
-# 0.4.0
+## 0.4.0
 
 - add onPressCell props by @acro5piano
 
-# 0.3.2
+## 0.3.2
 
 - Fix to overlapped header 74db874 by @oportojca
 
