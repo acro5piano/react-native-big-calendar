@@ -1,6 +1,6 @@
 # Changelog
 
-# 0.5.0
+## 0.5.0
 
 - Support for overlapping events, ability to display child components in events by @OffensivelyBad
 - update deps by @acro5piano
