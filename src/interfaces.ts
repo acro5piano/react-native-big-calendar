@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import React from 'react'
 import { ViewStyle } from 'react-native'
 
 export interface BaseEvent {
@@ -11,6 +12,7 @@ export interface DayJSConvertedEvent {
   start: dayjs.Dayjs
   end: dayjs.Dayjs
   title: string
+  children?: React.ReactNode
 }
 
 export type Event<T = {}> = BaseEvent & T
