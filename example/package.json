@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "dayjs": "^1.8.36",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-native-big-calendar": "0.0.2",
     "react-native-web": "^0.11.7"
   },
   "scripts": {
+    "start": "webpack-dev-server --progress --open",
     "build": "env NODE_ENV=production webpack --progress"
   },
   "devDependencies": {
@@ -16,6 +18,6 @@
     "ts-loader": "^6.2.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }
