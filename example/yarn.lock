@@ -946,12 +946,7 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-dayjs@^1.8.17:
-  version "1.8.20"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.20.tgz#724a5cb6ad1f6fc066b0bd9a800dedcc7886f19e"
-  integrity sha512-mH0MCDxw6UCGJYxVN78h8ugWycZAO8thkj3bW6vApL5tS0hQplIDdAQcmbvl7n35H0AKdCJQaArTrIQw2xt4Qg==
-
-dayjs@^1.8.36:
+dayjs@^1.8.34, dayjs@^1.8.36:
   version "1.8.36"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.36.tgz#be36e248467afabf8f5a86bae0de0cdceecced50"
   integrity sha512-3VmRXEtw7RZKAf+4Tv1Ym9AGeo8r8+CjDi26x+7SYQil1UqtqdaokhzoEJohqlzt0m5kacJSDhJQkG/LWhpRBw==
@@ -3236,12 +3231,12 @@ react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
-react-native-big-calendar@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-big-calendar/-/react-native-big-calendar-0.0.2.tgz#2e15dc7b4349f0c27a97614c766ea7fd27173932"
-  integrity sha512-PN4fnSMrXytZOkVn5+nAMBeZtXclSF/gnlODLIjsUwibsHSrUFT9QmjXao8QR6bJccN8z3yzGTk6byajiEi6gQ==
+react-native-big-calendar@*:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-big-calendar/-/react-native-big-calendar-0.5.0.tgz#8218da6419f0467736653ba872a3e22ff9458d86"
+  integrity sha512-dOUaOJ3zYSg0nuzxfMvFVuDjjp/x/jpxuiBz2If6yCcbp/M86DXf0ZH9AgK/TxwlmKznf1/gD/tfVzAVX3ZJvA==
   dependencies:
-    dayjs "^1.8.17"
+    dayjs "^1.8.34"
 
 react-native-web@^0.11.7:
   version "0.11.7"
@@ -3959,6 +3954,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typescript@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.3.tgz#153bbd468ef07725c1df9c77e8b453f8d36abba5"
+  integrity sha512-tEu6DGxGgRJPb/mVPIZ48e69xCn2yRmCgYmDugAVwmJ6o+0u1RI18eO7E7WBTLYLaEVVOhwQmcdhQHweux/WPg==
 
 ua-parser-js@^0.7.18:
   version "0.7.21"
