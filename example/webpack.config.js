@@ -1,5 +1,4 @@
 const path = require('path')
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -7,9 +6,9 @@ const isProduction = process.env.NODE_ENV === 'production'
 module.exports = {
   entry: './src/index.tsx',
   mode: isProduction ? 'production' : 'development',
-  devtool: isProduction ? 'source-map' : 'cheap-eval-source-map',
+  devtool: 'source-map',
   output: {
-    filename: isProduction ? '[name].[chunkhash].js' : 'bundle.js',
+    filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
     path: path.resolve(__dirname, 'build'),
     publicPath: '/',
@@ -33,25 +32,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: './src/index.html',
     }),
   ],
-  optimization: {
-    noEmitOnErrors: true,
-    splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        lodash: {
-          test: /[\\/]node_modules[\\/](lodash|lodash-es)[\\/]/,
-          name: 'lodash',
-          chunks: 'all',
-        },
-        vendor: {
-          test: /[\\/]node_modules[\\/](react|react-dom|react-native-web|react-native)[\\/]/,
-          name: 'react',
-          chunks: 'all',
-        },
-      },
-    },
-  },
 }
