@@ -29,8 +29,9 @@ interface CalendarProps<T = {}> {
   scrollOffsetMinutes?: number
   date?: Date
   swipeEnabled?: boolean
-  showTime?: boolean
   weekStartsOn?: WeekNum
+  ampm?: boolean
+  showTime?: boolean
   locale?: string
   onChangeDate?: DateRangeHandler
   onPressEvent?: (event: Event<T>) => void
@@ -50,6 +51,7 @@ export const Calendar = React.memo(
     scrollOffsetMinutes = 0,
     swipeEnabled = true,
     weekStartsOn = 0,
+    ampm = false,
     showTime = true,
     onPressEvent,
     onPressDateHeader,
@@ -134,6 +136,7 @@ export const Calendar = React.memo(
           onPressCell={onPressCell}
           eventCellStyle={eventCellStyle}
           scrollOffsetMinutes={scrollOffsetMinutes}
+          ampm={ampm}
           showTime={showTime}
           onSwipeHorizontal={onSwipeHorizontal}
         />

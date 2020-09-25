@@ -34,6 +34,7 @@ interface CalendarBodyProps<T> {
   onPressCell?: (date: Date) => void
   eventCellStyle?: EventCellStyle<T>
   scrollOffsetMinutes: number
+  ampm: boolean
   showTime: boolean
   onSwipeHorizontal?: (d: HorizontalDirection) => void
 }
@@ -43,9 +44,9 @@ interface WithCellHeight {
 }
 
 const HourGuideColumn = React.memo(
-  ({ cellHeight, hour }: WithCellHeight & { hour: number }) => (
+  ({ cellHeight, hour, ampm }: WithCellHeight & { hour: number; ampm: boolean }) => (
     <View style={{ height: cellHeight }}>
-      <Text style={commonStyles.guideText}>{formatHour(hour)}</Text>
+      <Text style={commonStyles.guideText}>{formatHour(hour, ampm)}</Text>
     </View>
   ),
   () => true,
@@ -75,6 +76,7 @@ export const CalendarBody = React.memo(
     dayJsConvertedEvents,
     onPressEvent,
     eventCellStyle,
+    ampm,
     showTime,
     scrollOffsetMinutes,
     onSwipeHorizontal,
@@ -156,7 +158,7 @@ export const CalendarBody = React.memo(
         <View style={[styles.body]} {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>
             {hours.map((hour) => (
-              <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} />
+              <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
             ))}
           </View>
           {dateRange.map((date) => (
