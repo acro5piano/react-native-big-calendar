@@ -51,7 +51,7 @@ export const hours = Array(24)
 export function formatHour(hour: number, ampm = false) {
   if (ampm) {
     if (hour === 0) {
-      return `12 AM`
+      return ''
     }
     if (hour === 12) {
       return `12 PM`
