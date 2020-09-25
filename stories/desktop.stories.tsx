@@ -148,3 +148,10 @@ storiesOf('Desktop', module)
       </View>
     )
   })
+  .add('AM/PM format', () => {
+    return (
+      <View style={styles.desktop}>
+        <Calendar style={styles.calendar} ampm height={SCREEN_HEIGHT} events={events} />
+      </View>
+    )
+  })
