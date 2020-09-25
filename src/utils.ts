@@ -1,5 +1,8 @@
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
+import { OVERLAP_OFFSET, OVERLAP_PADDING } from '../src/commonStyles'
 import { DayJSConvertedEvent, Mode, WeekNum } from './interfaces'
+import { Color } from './theme'
 
 export const DAY_MINUTES = 1440
 
@@ -85,4 +88,69 @@ export function isAllDayEvent(event: DayJSConvertedEvent) {
     event.end.hour() === 0 &&
     event.end.minute() === 0
   )
+}
+
+export function getCountOfEventsAtEvent(
+  event: DayJSConvertedEvent,
+  eventList: DayJSConvertedEvent[],
+) {
+  dayjs.extend(isBetween)
+  return eventList.filter(
+    (e) =>
+      event.start.isBetween(e.start, e.end, 'minute', '[)') ||
+      e.start.isBetween(event.start, event.end, 'minute', '[)'),
+  ).length
+}
+
+export function getOrderOfEvent(event: DayJSConvertedEvent, eventList: DayJSConvertedEvent[]) {
+  dayjs.extend(isBetween)
+  const events = eventList
+    .filter(
+      (e) =>
+        event.start.isBetween(e.start, e.end, 'minute', '[)') ||
+        e.start.isBetween(event.start, event.end, 'minute', '[)'),
+    )
+    .sort((a, b) => {
+      if (a.start.isSame(b.start)) {
+        return a.start.diff(a.end) < b.start.diff(b.end) ? -1 : 1
+      } else {
+        return a.start.isBefore(b.start) ? -1 : 1
+      }
+    })
+  return events.indexOf(event)
+}
+
+function getColorForEventPosition(eventPosition: number) {
+  switch (eventPosition % 5) {
+    case 0:
+      return Color.primary
+    case 1:
+      return Color.orange
+    case 2:
+      return Color.green
+    case 3:
+      return Color.red
+    case 4:
+      return Color.pink
+    default:
+      return Color.primary
+  }
+}
+
+export function getStyleForOverlappingEvent(eventCount: number, eventPosition: number) {
+  let overlapStyle = {}
+  if (eventCount > 1) {
+    const normalizedPosition = eventPosition + 1
+    const start = eventPosition * OVERLAP_OFFSET
+    const end =
+      eventCount === normalizedPosition ? 0 : (eventCount - normalizedPosition) * OVERLAP_OFFSET
+    const zIndex = 100 + eventPosition
+    overlapStyle = {
+      start: start + OVERLAP_PADDING,
+      end: end + OVERLAP_PADDING,
+      backgroundColor: getColorForEventPosition(eventPosition),
+      zIndex,
+    }
+  }
+  return overlapStyle
 }

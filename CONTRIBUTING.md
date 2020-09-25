@@ -34,13 +34,11 @@ And then maintainer (currently only @acro5piano) will review your code. We might
 
 @acro5piano will create a relase on GitHub.
 
-- Create new branch from master e.g.) `git checkout -b 2.2.0`
 - Edit `package.json` and bump version
 - Add summary to `Changelog.md`
 - Create a pull request to `master`
 - Merge it
-- Add new release from `master` on GitHub by tagging
-- `npm publish`
+- Create a new release on GitHub, which triggers `npm publish`
 
 ## Versioning
 

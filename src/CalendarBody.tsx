@@ -13,7 +13,14 @@ import {
 import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
 import { DayJSConvertedEvent, Event, EventCellStyle, HorizontalDirection } from './interfaces'
-import { formatHour, getRelativeTopInDay, hours, isToday } from './utils'
+import {
+  formatHour,
+  getCountOfEventsAtEvent,
+  getOrderOfEvent,
+  getRelativeTopInDay,
+  hours,
+  isToday,
+} from './utils'
 
 const SWIPE_THRESHOLD = 50
 
@@ -170,11 +177,13 @@ export const CalendarBody = React.memo(
                 )
                 .map((event) => (
                   <CalendarEvent
-                    key={event.start.toString()}
+                    key={`${event.start}${event.title}`}
                     event={event}
                     onPressEvent={onPressEvent}
                     eventCellStyle={eventCellStyle}
                     showTime={showTime}
+                    eventCount={getCountOfEventsAtEvent(event, dayJsConvertedEvents)}
+                    eventOrder={getOrderOfEvent(event, dayJsConvertedEvents)}
                   />
                 ))}
               {isToday(date) && (

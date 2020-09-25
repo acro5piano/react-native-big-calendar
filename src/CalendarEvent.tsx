@@ -3,7 +3,12 @@ import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { commonStyles } from './commonStyles'
 import { DayJSConvertedEvent, Event, EventCellStyle } from './interfaces'
-import { DAY_MINUTES, formatStartEnd, getRelativeTopInDay } from './utils'
+import {
+  DAY_MINUTES,
+  formatStartEnd,
+  getRelativeTopInDay,
+  getStyleForOverlappingEvent,
+} from './utils'
 
 function getEventCellPositionStyle({ end, start }: { end: dayjs.Dayjs; start: dayjs.Dayjs }) {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * end.diff(start, 'minute')
@@ -19,10 +24,19 @@ interface CalendarBodyProps<T> {
   onPressEvent?: (event: Event<T>) => void
   eventCellStyle?: EventCellStyle<T>
   showTime: boolean
+  eventCount?: number
+  eventOrder?: number
 }
 
 export const CalendarEvent = React.memo(
-  ({ event, onPressEvent, eventCellStyle, showTime }: CalendarBodyProps<any>) => {
+  ({
+    event,
+    onPressEvent,
+    eventCellStyle,
+    showTime,
+    eventCount = 1,
+    eventOrder = 0,
+  }: CalendarBodyProps<any>) => {
     const getEventStyle = React.useMemo(
       () => (typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle),
       [eventCellStyle],
@@ -39,7 +53,12 @@ export const CalendarEvent = React.memo(
       <TouchableOpacity
         delayPressIn={20}
         key={event.start.toString()}
-        style={[commonStyles.eventCell, getEventCellPositionStyle(event), getEventStyle(event)]}
+        style={[
+          commonStyles.eventCell,
+          getEventCellPositionStyle(event),
+          getStyleForOverlappingEvent(eventCount, eventOrder),
+          getEventStyle(event),
+        ]}
         onPress={() => _onPress(event)}
         disabled={!onPressEvent}
       >
@@ -51,6 +70,7 @@ export const CalendarEvent = React.memo(
           <>
             <Text style={commonStyles.eventTitle}>{event.title}</Text>
             {showTime && <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>}
+            {event.children && event.children}
           </>
         )}
       </TouchableOpacity>
