@@ -23,38 +23,40 @@ import {
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
-  mode?: Mode
-  style?: ViewStyle
-  eventCellStyle?: EventCellStyle<T>
-  scrollOffsetMinutes?: number
   date?: Date
-  swipeEnabled?: boolean
-  showTime?: boolean
-  weekStartsOn?: WeekNum
+  eventCellStyle?: EventCellStyle<T>
   locale?: string
+  hideNowIndicator?: boolean
+  mode?: Mode
+  scrollOffsetMinutes?: number
+  showTime?: boolean
+  style?: ViewStyle
+  swipeEnabled?: boolean
+  weekStartsOn?: WeekNum
   onChangeDate?: DateRangeHandler
-  onPressEvent?: (event: Event<T>) => void
-  onPressDateHeader?: (date: Date) => void
   onPressCell?: (date: Date) => void
+  onPressDateHeader?: (date: Date) => void
+  onPressEvent?: (event: Event<T>) => void
 }
 
 export const Calendar = React.memo(
   ({
     events,
-    style = {},
     height,
-    mode = 'week',
-    locale = 'en',
-    eventCellStyle,
     date,
+    eventCellStyle,
+    locale = 'en',
+    hideNowIndicator = false,
+    mode = 'week',
     scrollOffsetMinutes = 0,
+    showTime = true,
+    style = {},
     swipeEnabled = true,
     weekStartsOn = 0,
-    showTime = true,
-    onPressEvent,
-    onPressDateHeader,
     onChangeDate,
     onPressCell,
+    onPressDateHeader,
+    onPressEvent,
   }: CalendarProps) => {
     const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -128,13 +130,14 @@ export const Calendar = React.memo(
         />
         <CalendarBody
           {...commonProps}
-          dayJsConvertedEvents={daytimeEvents}
           containerHeight={height}
-          onPressEvent={onPressEvent}
-          onPressCell={onPressCell}
+          dayJsConvertedEvents={daytimeEvents}
           eventCellStyle={eventCellStyle}
+          hideNowIndicator={hideNowIndicator}
           scrollOffsetMinutes={scrollOffsetMinutes}
           showTime={showTime}
+          onPressCell={onPressCell}
+          onPressEvent={onPressEvent}
           onSwipeHorizontal={onSwipeHorizontal}
         />
       </>
