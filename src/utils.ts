@@ -48,7 +48,19 @@ export const hours = Array(24)
   .fill(0)
   .map((_, i) => i)
 
-export function formatHour(hour: number) {
+export function formatHour(hour: number, ampm = false) {
+  if (ampm) {
+    if (hour === 0) {
+      return ''
+    }
+    if (hour === 12) {
+      return `12 PM`
+    }
+    if (hour > 12) {
+      return `${hour - 12} PM`
+    }
+    return `${hour} AM`
+  }
   return `${hour}:00`
 }
 

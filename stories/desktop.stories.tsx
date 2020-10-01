@@ -1,11 +1,11 @@
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
-import { Alert, Dimensions, StyleSheet, View } from 'react-native'
+import { Alert, Dimensions, View } from 'react-native'
 import { Calendar } from '../src/Calendar'
-import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { Control, CONTROL_HEIGHT } from './components/Control'
 import { events } from './events'
+import { styles } from './styles'
 
 function alert(input: any) {
   // @ts-ignore
@@ -16,7 +16,6 @@ function alert(input: any) {
   return Alert.alert('', String(input))
 }
 
-const MOBILE_HEIGHT = 736
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('Desktop', module)
@@ -149,67 +148,10 @@ storiesOf('Desktop', module)
       </View>
     )
   })
-
-storiesOf('Mobile', module)
-  .add('week mode', () => (
-    <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} />
-    </View>
-  ))
-  .add('3days mode', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        style={styles.calendar}
-        height={MOBILE_HEIGHT}
-        events={events}
-        mode="3days"
-        onPressEvent={(event) => alert(event.title)}
-      />
-    </View>
-  ))
-  .add('with app header', () => (
-    <View style={styles.mobile}>
-      <AppHeader />
-      <Calendar style={styles.calendar} height={MOBILE_HEIGHT - HEADER_HEIGHT} events={events} />
-    </View>
-  ))
-  .add('do not show time', () => (
-    <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} showTime={false} />
-    </View>
-  ))
-  .add('on date changed', () => {
-    const onChangeDate = React.useCallback(([start, end]) => {
-      alert(`${start} - ${end}`)
-    }, [])
-
+  .add('AM/PM format', () => {
     return (
-      <View style={styles.mobile}>
-        <Calendar
-          style={styles.calendar}
-          height={SCREEN_HEIGHT}
-          events={events}
-          onChangeDate={onChangeDate}
-        />
+      <View style={styles.desktop}>
+        <Calendar style={styles.calendar} ampm height={SCREEN_HEIGHT} events={events} />
       </View>
     )
   })
-
-const styles = StyleSheet.create({
-  desktop: {
-    height: '100%',
-  },
-  mobile: {
-    width: 414,
-    height: MOBILE_HEIGHT,
-    overflow: 'hidden',
-    borderWidth: 10,
-    borderRadius: 10,
-    // boxSizing: 'content-box',
-  },
-  calendar: {
-    borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fff',
-  },
-})

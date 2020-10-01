@@ -23,6 +23,7 @@ import {
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
+  ampm?: boolean
   date?: Date
   eventCellStyle?: EventCellStyle<T>
   locale?: string
@@ -43,6 +44,7 @@ export const Calendar = React.memo(
   ({
     events,
     height,
+    ampm = false,
     date,
     eventCellStyle,
     locale = 'en',
@@ -135,6 +137,7 @@ export const Calendar = React.memo(
           eventCellStyle={eventCellStyle}
           hideNowIndicator={hideNowIndicator}
           scrollOffsetMinutes={scrollOffsetMinutes}
+          ampm={ampm}
           showTime={showTime}
           onPressCell={onPressCell}
           onPressEvent={onPressEvent}
