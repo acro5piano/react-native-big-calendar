@@ -23,6 +23,7 @@ import {
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
+  overlapOffset?: number
   ampm?: boolean
   date?: Date
   eventCellStyle?: EventCellStyle<T>
@@ -50,6 +51,7 @@ export const Calendar = React.memo(
     locale = 'en',
     hideNowIndicator = false,
     mode = 'week',
+    overlapOffset,
     scrollOffsetMinutes = 0,
     showTime = true,
     style = {},
@@ -136,6 +138,7 @@ export const Calendar = React.memo(
           dayJsConvertedEvents={daytimeEvents}
           eventCellStyle={eventCellStyle}
           hideNowIndicator={hideNowIndicator}
+          overlapOffset={overlapOffset}
           scrollOffsetMinutes={scrollOffsetMinutes}
           ampm={ampm}
           showTime={showTime}

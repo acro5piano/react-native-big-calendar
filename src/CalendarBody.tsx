@@ -35,6 +35,7 @@ interface CalendarBodyProps<T> {
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
   hideNowIndicator?: boolean
+  overlapOffset?: number
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: Event<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
@@ -82,6 +83,7 @@ export const CalendarBody = React.memo(
     scrollOffsetMinutes,
     onSwipeHorizontal,
     hideNowIndicator,
+    overlapOffset,
   }: CalendarBodyProps<any>) => {
     const scrollView = React.useRef<ScrollView>(null)
     const [now, setNow] = React.useState(dayjs())
@@ -188,6 +190,7 @@ export const CalendarBody = React.memo(
                     showTime={showTime}
                     eventCount={getCountOfEventsAtEvent(event, dayJsConvertedEvents)}
                     eventOrder={getOrderOfEvent(event, dayJsConvertedEvents)}
+                    overlapOffset={overlapOffset}
                   />
                 ))}
               {isToday(date) && !hideNowIndicator && (

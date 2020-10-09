@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { commonStyles } from './commonStyles'
+import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
 import { DayJSConvertedEvent, Event, EventCellStyle } from './interfaces'
 import {
   DAY_MINUTES,
@@ -26,6 +26,7 @@ interface CalendarBodyProps<T> {
   showTime: boolean
   eventCount?: number
   eventOrder?: number
+  overlapOffset?: number
 }
 
 export const CalendarEvent = React.memo(
@@ -36,6 +37,7 @@ export const CalendarEvent = React.memo(
     showTime,
     eventCount = 1,
     eventOrder = 0,
+    overlapOffset = OVERLAP_OFFSET,
   }: CalendarBodyProps<any>) => {
     const getEventStyle = React.useMemo(
       () => (typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle),
@@ -56,7 +58,7 @@ export const CalendarEvent = React.memo(
         style={[
           commonStyles.eventCell,
           getEventCellPositionStyle(event),
-          getStyleForOverlappingEvent(eventCount, eventOrder),
+          getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
           getEventStyle(event),
         ]}
         onPress={() => _onPress(event)}
