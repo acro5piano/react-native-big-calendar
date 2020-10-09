@@ -61,6 +61,7 @@ function App() {
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
+  hideNowIndicator?: boolean
   mode?: Mode
   style?: ViewStyle
   eventCellStyle?: EventCellStyle<T>
@@ -82,6 +83,7 @@ interface CalendarProps<T = {}> {
 | --------------------- | -------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `events`              | yes      | `Array<{ title: string, start: Date, end: Date, children?: React.ReactNode }>`      | The events which will be rendered on the calendar, with optional children to display custom components on the event. Events that occur during the same time range will be layered, offset, and given a unique color. |
 | `height`              | yes      | `number`                                                                            | Calendar height.                                                                                                                                                                                                     |
+| `hideNowIndicator`    | no       | `boolean`                                                                           | Hides the indicator for the current time. By default the now indicator is shown.                                                                                                                                     |
 | `onPressEvent`        | no       | `(event: { title: string, start: Date, end: Date } => void)`                        | Event handler which will be fired when the user clicks an event.                                                                                                                                                     |
 | `onChangeDate`        | no       | `([start, end]: [Date, Date]) => void`                                              | Event handler which will be fired when the current date range changed.                                                                                                                                               |
 | `onPressCell`         | no       | `(date: Date) => void`                                                              | Event handler which will be fired when the current date cell is clicked. The minute set to 0.                                                                                                                        |
