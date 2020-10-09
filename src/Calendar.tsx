@@ -23,44 +23,44 @@ import {
 interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
-  mode?: Mode
   overlapOffset?: number
-  style?: ViewStyle
-  eventCellStyle?: EventCellStyle<T>
-  scrollOffsetMinutes?: number
+  ampm?: boolean
   date?: Date
+  eventCellStyle?: EventCellStyle<T>
+  locale?: string
+  hideNowIndicator?: boolean
+  mode?: Mode
+  scrollOffsetMinutes?: number
+  showTime?: boolean
+  style?: ViewStyle
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
-  ampm?: boolean
-  hideNowIndicator?: boolean
-  showTime?: boolean
-  locale?: string
   onChangeDate?: DateRangeHandler
-  onPressEvent?: (event: Event<T>) => void
-  onPressDateHeader?: (date: Date) => void
   onPressCell?: (date: Date) => void
+  onPressDateHeader?: (date: Date) => void
+  onPressEvent?: (event: Event<T>) => void
 }
 
 export const Calendar = React.memo(
   ({
     events,
-    style = {},
     height,
-    mode = 'week',
-    locale = 'en',
-    eventCellStyle,
+    ampm = false,
     date,
-    hideNowIndicator,
+    eventCellStyle,
+    locale = 'en',
+    hideNowIndicator = false,
+    mode = 'week',
     overlapOffset,
     scrollOffsetMinutes = 0,
+    showTime = true,
+    style = {},
     swipeEnabled = true,
     weekStartsOn = 0,
-    ampm = false,
-    showTime = true,
-    onPressEvent,
-    onPressDateHeader,
     onChangeDate,
     onPressCell,
+    onPressDateHeader,
+    onPressEvent,
   }: CalendarProps) => {
     const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -134,16 +134,16 @@ export const Calendar = React.memo(
         />
         <CalendarBody
           {...commonProps}
-          dayJsConvertedEvents={daytimeEvents}
           containerHeight={height}
-          onPressEvent={onPressEvent}
-          onPressCell={onPressCell}
+          dayJsConvertedEvents={daytimeEvents}
           eventCellStyle={eventCellStyle}
           hideNowIndicator={hideNowIndicator}
           overlapOffset={overlapOffset}
           scrollOffsetMinutes={scrollOffsetMinutes}
           ampm={ampm}
           showTime={showTime}
+          onPressCell={onPressCell}
+          onPressEvent={onPressEvent}
           onSwipeHorizontal={onSwipeHorizontal}
         />
       </>

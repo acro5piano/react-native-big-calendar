@@ -73,3 +73,8 @@ storiesOf('Mobile', module)
       </View>
     )
   })
+  .add('Hidden now indocator', () => (
+    <View style={styles.mobile}>
+      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} hideNowIndicator />
+    </View>
+  ))

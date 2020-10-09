@@ -25,8 +25,8 @@ import {
 const SWIPE_THRESHOLD = 50
 
 interface CalendarBodyProps<T> {
-  containerHeight: number
   cellHeight: number
+  containerHeight: number
   dateRange: dayjs.Dayjs[]
   dayJsConvertedEvents: DayJSConvertedEvent[]
   scrollOffsetMinutes: number
@@ -166,7 +166,7 @@ export const CalendarBody = React.memo(
             ))}
           </View>
           {dateRange.map((date) => (
-            <View style={[{ flex: 1 }]} key={date.toString()}>
+            <View style={styles.dayContainer} key={date.toString()}>
               {hours.map((hour) => (
                 <HourCell
                   key={hour}
@@ -178,8 +178,8 @@ export const CalendarBody = React.memo(
               ))}
               {dayJsConvertedEvents
                 .filter(
-                  ({ start, end }) =>
-                    start.isAfter(date.startOf('day')) && end.isBefore(date.endOf('day')),
+                  ({ start }) =>
+                    start.isAfter(date.startOf('day')) && start.isBefore(date.endOf('day')),
                 )
                 .map((event) => (
                   <CalendarEvent
@@ -215,5 +215,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     height: 2,
     width: '100%',
+  },
+  dayContainer: {
+    flex: 1,
+    overflow: 'hidden',
   },
 })
