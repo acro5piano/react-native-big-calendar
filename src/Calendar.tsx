@@ -24,6 +24,7 @@ interface CalendarProps<T = {}> {
   events: Event<T>[]
   height: number
   mode?: Mode
+  overlapOffset?: number
   style?: ViewStyle
   eventCellStyle?: EventCellStyle<T>
   scrollOffsetMinutes?: number
@@ -31,6 +32,7 @@ interface CalendarProps<T = {}> {
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
   ampm?: boolean
+  hideNowIndicator?: boolean
   showTime?: boolean
   locale?: string
   onChangeDate?: DateRangeHandler
@@ -48,6 +50,8 @@ export const Calendar = React.memo(
     locale = 'en',
     eventCellStyle,
     date,
+    hideNowIndicator,
+    overlapOffset,
     scrollOffsetMinutes = 0,
     swipeEnabled = true,
     weekStartsOn = 0,
@@ -135,6 +139,8 @@ export const Calendar = React.memo(
           onPressEvent={onPressEvent}
           onPressCell={onPressCell}
           eventCellStyle={eventCellStyle}
+          hideNowIndicator={hideNowIndicator}
+          overlapOffset={overlapOffset}
           scrollOffsetMinutes={scrollOffsetMinutes}
           ampm={ampm}
           showTime={showTime}

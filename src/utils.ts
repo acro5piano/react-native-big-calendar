@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
-import { OVERLAP_OFFSET, OVERLAP_PADDING } from '../src/commonStyles'
+import { OVERLAP_PADDING } from '../src/commonStyles'
 import { DayJSConvertedEvent, Mode, WeekNum } from './interfaces'
 import { Color } from './theme'
 
@@ -149,17 +149,19 @@ function getColorForEventPosition(eventPosition: number) {
   }
 }
 
-export function getStyleForOverlappingEvent(eventCount: number, eventPosition: number) {
+export function getStyleForOverlappingEvent(
+  eventCount: number,
+  eventPosition: number,
+  overlapOffset: number,
+) {
   let overlapStyle = {}
   if (eventCount > 1) {
-    const normalizedPosition = eventPosition + 1
-    const start = eventPosition * OVERLAP_OFFSET
-    const end =
-      eventCount === normalizedPosition ? 0 : (eventCount - normalizedPosition) * OVERLAP_OFFSET
+    const offset = overlapOffset
+    const start = eventPosition * offset
     const zIndex = 100 + eventPosition
     overlapStyle = {
       start: start + OVERLAP_PADDING,
-      end: end + OVERLAP_PADDING,
+      end: OVERLAP_PADDING,
       backgroundColor: getColorForEventPosition(eventPosition),
       zIndex,
     }
