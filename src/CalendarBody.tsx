@@ -25,17 +25,19 @@ import {
 const SWIPE_THRESHOLD = 50
 
 interface CalendarBodyProps<T> {
-  containerHeight: number
   cellHeight: number
+  containerHeight: number
   dateRange: dayjs.Dayjs[]
   dayJsConvertedEvents: DayJSConvertedEvent[]
-  style: ViewStyle
-  onPressEvent?: (event: Event<T>) => void
-  onPressCell?: (date: Date) => void
-  eventCellStyle?: EventCellStyle<T>
   scrollOffsetMinutes: number
   ampm: boolean
   showTime: boolean
+  style: ViewStyle
+  eventCellStyle?: EventCellStyle<T>
+  hideNowIndicator?: boolean
+  overlapOffset?: number
+  onPressCell?: (date: Date) => void
+  onPressEvent?: (event: Event<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
 }
 
@@ -80,6 +82,8 @@ export const CalendarBody = React.memo(
     showTime,
     scrollOffsetMinutes,
     onSwipeHorizontal,
+    hideNowIndicator,
+    overlapOffset,
   }: CalendarBodyProps<any>) => {
     const scrollView = React.useRef<ScrollView>(null)
     const [now, setNow] = React.useState(dayjs())
@@ -162,7 +166,7 @@ export const CalendarBody = React.memo(
             ))}
           </View>
           {dateRange.map((date) => (
-            <View style={[{ flex: 1 }]} key={date.toString()}>
+            <View style={styles.dayContainer} key={date.toString()}>
               {hours.map((hour) => (
                 <HourCell
                   key={hour}
@@ -174,8 +178,8 @@ export const CalendarBody = React.memo(
               ))}
               {dayJsConvertedEvents
                 .filter(
-                  ({ start, end }) =>
-                    start.isAfter(date.startOf('day')) && end.isBefore(date.endOf('day')),
+                  ({ start }) =>
+                    start.isAfter(date.startOf('day')) && start.isBefore(date.endOf('day')),
                 )
                 .map((event) => (
                   <CalendarEvent
@@ -186,9 +190,10 @@ export const CalendarBody = React.memo(
                     showTime={showTime}
                     eventCount={getCountOfEventsAtEvent(event, dayJsConvertedEvents)}
                     eventOrder={getOrderOfEvent(event, dayJsConvertedEvents)}
+                    overlapOffset={overlapOffset}
                   />
                 ))}
-              {isToday(date) && (
+              {isToday(date) && !hideNowIndicator && (
                 <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
               )}
             </View>
@@ -210,5 +215,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     height: 2,
     width: '100%',
+  },
+  dayContainer: {
+    flex: 1,
+    overflow: 'hidden',
   },
 })

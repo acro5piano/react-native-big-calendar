@@ -155,3 +155,13 @@ storiesOf('Desktop', module)
       </View>
     )
   })
+  .add('Hidden Now indicator', () => (
+    <View style={styles.desktop}>
+      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} hideNowIndicator />
+    </View>
+  ))
+  .add('More overlap padding', () => (
+    <View style={styles.desktop}>
+      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} overlapOffset={70} />
+    </View>
+  ))
