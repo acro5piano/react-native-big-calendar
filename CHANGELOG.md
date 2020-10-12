@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+
+- Add option to hide the nowIndicator by @OffensivelyBad
+- Update deps by @acro5piano
+
 ## 0.5.0
 
 - Support for overlapping events, ability to display child components in events by @OffensivelyBad
