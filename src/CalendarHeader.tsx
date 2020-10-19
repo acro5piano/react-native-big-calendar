@@ -11,6 +11,7 @@ interface CalendarHeaderProps<T> {
   cellHeight: number
   style: ViewStyle
   allDayEvents: Event<T>[]
+  isRTL:boolean
   onPressDateHeader?: (date: Date) => void
 }
 
@@ -20,6 +21,7 @@ export const CalendarHeader = React.memo(
     cellHeight,
     style = {},
     allDayEvents,
+    isRTL,
     onPressDateHeader,
   }: CalendarHeaderProps<any>) => {
     const _onPress = React.useCallback(
@@ -30,7 +32,7 @@ export const CalendarHeader = React.memo(
     )
 
     return (
-      <View style={[styles.container, style]}>
+      <View style={[isRTL?styles.containerRTL:styles.container, style]}>
         <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
         {dateRange.map((date) => {
           const _isToday = isToday(date)
@@ -74,6 +76,11 @@ export const CalendarHeader = React.memo(
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    borderBottomColor: '#eee',
+    borderBottomWidth: 1,
+  },
+  containerRTL:{
+    flexDirection: 'row-reverse',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
   },

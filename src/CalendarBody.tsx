@@ -36,6 +36,7 @@ interface CalendarBodyProps<T> {
   eventCellStyle?: EventCellStyle<T>
   hideNowIndicator?: boolean
   overlapOffset?: number
+  isRTL:boolean
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: Event<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
@@ -84,6 +85,7 @@ export const CalendarBody = React.memo(
     onSwipeHorizontal,
     hideNowIndicator,
     overlapOffset,
+    isRTL
   }: CalendarBodyProps<any>) => {
     const scrollView = React.useRef<ScrollView>(null)
     const [now, setNow] = React.useState(dayjs())
@@ -159,7 +161,7 @@ export const CalendarBody = React.memo(
         {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={false}
       >
-        <View style={[styles.body]} {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}>
+        <View style={isRTL?[styles.bodyRTL]:[styles.body]} {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}>
           <View style={[commonStyles.hourGuide]}>
             {hours.map((hour) => (
               <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
@@ -207,6 +209,10 @@ export const CalendarBody = React.memo(
 const styles = StyleSheet.create({
   body: {
     flexDirection: 'row',
+    flex: 1,
+  },
+  bodyRTL:{
+    flexDirection: 'row-reverse',
     flex: 1,
   },
   nowIndicator: {
