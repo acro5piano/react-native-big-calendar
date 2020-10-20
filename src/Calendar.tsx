@@ -35,6 +35,7 @@ interface CalendarProps<T = {}> {
   style?: ViewStyle
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
+  isRTL?: boolean
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
@@ -57,6 +58,7 @@ export const Calendar = React.memo(
     style = {},
     swipeEnabled = true,
     weekStartsOn = 0,
+    isRTL = false,
     onChangeDate,
     onPressCell,
     onPressDateHeader,
@@ -110,7 +112,7 @@ export const Calendar = React.memo(
         if (!swipeEnabled) {
           return
         }
-        if (direction === 'LEFT') {
+        if ((direction === 'LEFT' && !isRTL) || (direction === 'RIGHT' && isRTL)) {
           setTargetDate(targetDate.add(modeToNum(mode), 'day'))
         } else {
           setTargetDate(targetDate.add(modeToNum(mode) * -1, 'day'))
@@ -123,6 +125,7 @@ export const Calendar = React.memo(
       cellHeight,
       dateRange,
       style,
+      isRTL,
     }
 
     return (
