@@ -73,6 +73,7 @@ interface CalendarProps<T = {}> {
   weekStartsOn?: WeekNum
   locale?: string
   overlapOffset?: number
+  isRTL: boolean
   onChangeDate?: ([start, end]: [Date, Date]) => void
   onPressEvent?: (event: Event<T>) => void
   onPressDateHeader?: (date: Date) => void
@@ -101,6 +102,7 @@ interface CalendarProps<T = {}> {
 | `weekStartsOn`        | no       | 0, 1, 2, 3, 4, 5, 6                                                                 | Which day the week starts on. Sunday is `0`.                                                                                                                                                                         |
 | `locale`              | no       | `string`                                                                            | Custom locale. See I18n section                                                                                                                                                                                      |
 | `overlapOffset`       | no       | `number`                                                                            | Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.                                                                                                     |
+| `isRTL`               | no       | `boolean`                                                                           | Switches the direction of the layout for use with RTL languages. Defaults to false.                                                                                                                                  |
 
 For more information, see [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
 
