@@ -23,7 +23,7 @@
     "build:ts": "env NODE_ENV=production rollup -c"
   },
   "dependencies": {
-    "dayjs": "^1.9.3"
+    "dayjs": "^1.9.4"
   },
   "peerDependencies": {
     "react": "^16.8.3",
