@@ -165,3 +165,19 @@ storiesOf('Desktop', module)
       <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} overlapOffset={70} />
     </View>
   ))
+  .add('RTL', () => {
+    React.useEffect(() => {
+      require('dayjs/locale/he')
+    }, [])
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          style={styles.calendar}
+          locale="he"
+          height={SCREEN_HEIGHT}
+          events={events}
+          isRTL={true}
+        />
+      </View>
+    )
+  })
