@@ -11,6 +11,11 @@ const eventNotes = (
 
 export const events = [
   {
+    title: 'Watch Boxing',
+    start: dayjs().set('hour', 0).set('minute', 0).set('second', 0).toDate(),
+    end: dayjs().set('hour', 1).set('minute', 30).toDate(),
+  },
+  {
     title: 'Meeting',
     start: dayjs().set('hour', 10).set('minute', 0).toDate(),
     end: dayjs().set('hour', 10).set('minute', 30).toDate(),
