@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
 import {
   PanResponder,
@@ -22,6 +23,7 @@ import {
   isToday,
 } from './utils'
 
+dayjs.extend(isBetween)
 const SWIPE_THRESHOLD = 50
 
 interface CalendarBodyProps<T> {
@@ -36,7 +38,7 @@ interface CalendarBodyProps<T> {
   eventCellStyle?: EventCellStyle<T>
   hideNowIndicator?: boolean
   overlapOffset?: number
-  isRTL:boolean
+  isRTL: boolean
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: Event<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
@@ -85,7 +87,7 @@ export const CalendarBody = React.memo(
     onSwipeHorizontal,
     hideNowIndicator,
     overlapOffset,
-    isRTL
+    isRTL,
   }: CalendarBodyProps<any>) => {
     const scrollView = React.useRef<ScrollView>(null)
     const [now, setNow] = React.useState(dayjs())
@@ -161,7 +163,10 @@ export const CalendarBody = React.memo(
         {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={false}
       >
-        <View style={isRTL?[styles.bodyRTL]:[styles.body]} {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}>
+        <View
+          style={isRTL ? [styles.bodyRTL] : [styles.body]}
+          {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
+        >
           <View style={[commonStyles.hourGuide]}>
             {hours.map((hour) => (
               <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
@@ -179,9 +184,8 @@ export const CalendarBody = React.memo(
                 />
               ))}
               {dayJsConvertedEvents
-                .filter(
-                  ({ start }) =>
-                    start.isAfter(date.startOf('day')) && start.isBefore(date.endOf('day')),
+                .filter(({ start }) =>
+                  start.isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
                 )
                 .map((event) => (
                   <CalendarEvent
@@ -211,7 +215,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
   },
-  bodyRTL:{
+  bodyRTL: {
     flexDirection: 'row-reverse',
     flex: 1,
   },
