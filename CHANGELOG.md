@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.1
+
+- Fixes an issue with displaying events that occur at midnight by @OffensivelyBad
+- Fix modeToNum in utils by @huikaihoo
+- Update deps by @acro5piano
+
+## 0.7.0
+
+- RTL support by @Gilad-Shnoor
+- Update deps by @acro5piano
+
 ## 0.6.0
 
 - Add option to hide the nowIndicator by @OffensivelyBad
