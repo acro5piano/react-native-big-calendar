@@ -46,7 +46,7 @@
     "react-native": "^0.63.2",
     "react-native-web": "^0.14.8",
     "rollup": "^2.32.0",
-    "rollup-plugin-typescript2": "^0.28.0",
+    "rollup-plugin-typescript2": "^0.29.0",
     "ts-jest": "^25.5.1",
     "ts-loader": "^8.0.4",
     "tslib": "^2.0.3",
