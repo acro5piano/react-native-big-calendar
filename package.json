@@ -46,7 +46,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-native": "^0.63.4",
-    "react-native-web": "^0.14.10",
+    "react-native-web": "^0.14.11",
     "rollup": "^2.36.1",
     "rollup-plugin-typescript2": "^0.29.0",
     "ts-jest": "^25.5.1",

@@ -10578,10 +10578,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-native-web@^0.14.10:
-  version "0.14.10"
-  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.14.10.tgz#a4435b00370bb3265c288eacaaa1c9a963537d0d"
-  integrity sha512-YTvYnUUPnOjU50GiXk90cm6atk714vF8p7HhBlqHtLtftHk9xQRwgxXzoMHiKf0Bx20Dyo2SGvv4XrPxcmEheQ==
+react-native-web@^0.14.11:
+  version "0.14.11"
+  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.14.11.tgz#a50ef690df97fa3ed46dead063c07fb1aa66a396"
+  integrity sha512-IhZe8KwK3X/HgbMvi6A198/vKvgfrKhCVFXjD2qiTEKTo3AW5Twc3OT92W/O+7HkOBoGMytlcu7WUBPUqGCeRg==
   dependencies:
     array-find-index "^1.0.2"
     create-react-class "^15.6.2"
