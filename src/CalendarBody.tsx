@@ -71,144 +71,144 @@ function HourCell({ cellHeight, onPress, date, hour }: HourCellProps) {
   )
 }
 
-export const CalendarBody = React.memo(
-  ({
-    containerHeight,
-    cellHeight,
-    dateRange,
-    style = {},
-    onPressCell,
-    dayJsConvertedEvents,
-    onPressEvent,
-    eventCellStyle,
-    ampm,
-    showTime,
-    scrollOffsetMinutes,
-    onSwipeHorizontal,
-    hideNowIndicator,
-    overlapOffset,
-    isRTL,
-  }: CalendarBodyProps<any>) => {
-    const scrollView = React.useRef<ScrollView>(null)
-    const [now, setNow] = React.useState(dayjs())
-    const [panHandled, setPanHandled] = React.useState(false)
+export const CalendarBody = React.memo<CalendarBodyProps<any>>(_CalendarBody)
 
-    React.useEffect(() => {
-      if (scrollView.current && scrollOffsetMinutes) {
-        // We add delay here to work correct on React Native
-        // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
-        setTimeout(
-          () => {
-            scrollView.current!.scrollTo({
-              y: (cellHeight * scrollOffsetMinutes) / 60,
-              animated: false,
-            })
-          },
-          Platform.OS === 'web' ? 0 : 10,
-        )
-      }
-    }, [scrollView.current])
+export function _CalendarBody({
+  containerHeight,
+  cellHeight,
+  dateRange,
+  style = {},
+  onPressCell,
+  dayJsConvertedEvents,
+  onPressEvent,
+  eventCellStyle,
+  ampm,
+  showTime,
+  scrollOffsetMinutes,
+  onSwipeHorizontal,
+  hideNowIndicator,
+  overlapOffset,
+  isRTL,
+}: CalendarBodyProps<{}>) {
+  const scrollView = React.useRef<ScrollView>(null)
+  const [now, setNow] = React.useState(dayjs())
+  const [panHandled, setPanHandled] = React.useState(false)
 
-    React.useEffect(() => {
-      const pid = setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
-      return () => clearInterval(pid)
-    }, [])
+  React.useEffect(() => {
+    if (scrollView.current && scrollOffsetMinutes) {
+      // We add delay here to work correct on React Native
+      // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
+      setTimeout(
+        () => {
+          scrollView.current!.scrollTo({
+            y: (cellHeight * scrollOffsetMinutes) / 60,
+            animated: false,
+          })
+        },
+        Platform.OS === 'web' ? 0 : 10,
+      )
+    }
+  }, [scrollView.current])
 
-    const panResponder = React.useMemo(
-      () =>
-        PanResponder.create({
-          // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
-          onMoveShouldSetPanResponder: (_, { dx, dy }) => {
-            return dx > 2 || dx < -2 || dy > 2 || dy < -2
-          },
-          onPanResponderMove: (_, { dy, dx }) => {
-            if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
-              return
-            }
-            if (dx < -1 * SWIPE_THRESHOLD) {
-              onSwipeHorizontal && onSwipeHorizontal('LEFT')
-              setPanHandled(true)
-              return
-            }
-            if (dx > SWIPE_THRESHOLD) {
-              onSwipeHorizontal && onSwipeHorizontal('RIGHT')
-              setPanHandled(true)
-              return
-            }
-          },
-          onPanResponderEnd: () => {
-            setPanHandled(false)
-          },
-        }),
-      [panHandled, onSwipeHorizontal],
-    )
+  React.useEffect(() => {
+    const pid = setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
+    return () => clearInterval(pid)
+  }, [])
 
-    const _onPressCell = React.useCallback(
-      (date: dayjs.Dayjs) => {
-        onPressCell && onPressCell(date.toDate())
-      },
-      [onPressCell],
-    )
+  const panResponder = React.useMemo(
+    () =>
+      PanResponder.create({
+        // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
+        onMoveShouldSetPanResponder: (_, { dx, dy }) => {
+          return dx > 2 || dx < -2 || dy > 2 || dy < -2
+        },
+        onPanResponderMove: (_, { dy, dx }) => {
+          if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
+            return
+          }
+          if (dx < -1 * SWIPE_THRESHOLD) {
+            onSwipeHorizontal && onSwipeHorizontal('LEFT')
+            setPanHandled(true)
+            return
+          }
+          if (dx > SWIPE_THRESHOLD) {
+            onSwipeHorizontal && onSwipeHorizontal('RIGHT')
+            setPanHandled(true)
+            return
+          }
+        },
+        onPanResponderEnd: () => {
+          setPanHandled(false)
+        },
+      }),
+    [panHandled, onSwipeHorizontal],
+  )
 
-    return (
-      <ScrollView
-        style={[
-          {
-            height: containerHeight - cellHeight * 3,
-          },
-          style,
-        ]}
-        ref={scrollView}
-        scrollEventThrottle={32}
-        {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
-        showsVerticalScrollIndicator={false}
+  const _onPressCell = React.useCallback(
+    (date: dayjs.Dayjs) => {
+      onPressCell && onPressCell(date.toDate())
+    },
+    [onPressCell],
+  )
+
+  return (
+    <ScrollView
+      style={[
+        {
+          height: containerHeight - cellHeight * 3,
+        },
+        style,
+      ]}
+      ref={scrollView}
+      scrollEventThrottle={32}
+      {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
+      showsVerticalScrollIndicator={false}
+    >
+      <View
+        style={isRTL ? [styles.bodyRTL] : [styles.body]}
+        {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
       >
-        <View
-          style={isRTL ? [styles.bodyRTL] : [styles.body]}
-          {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
-        >
-          <View style={[commonStyles.hourGuide]}>
-            {hours.map((hour) => (
-              <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
-            ))}
-          </View>
-          {dateRange.map((date) => (
-            <View style={styles.dayContainer} key={date.toString()}>
-              {hours.map((hour) => (
-                <HourCell
-                  key={hour}
-                  cellHeight={cellHeight}
-                  date={date}
-                  hour={hour}
-                  onPress={_onPressCell}
-                />
-              ))}
-              {dayJsConvertedEvents
-                .filter(({ start }) =>
-                  start.isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                )
-                .map((event) => (
-                  <CalendarEvent
-                    key={`${event.start}${event.title}`}
-                    event={event}
-                    onPressEvent={onPressEvent}
-                    eventCellStyle={eventCellStyle}
-                    showTime={showTime}
-                    eventCount={getCountOfEventsAtEvent(event, dayJsConvertedEvents)}
-                    eventOrder={getOrderOfEvent(event, dayJsConvertedEvents)}
-                    overlapOffset={overlapOffset}
-                  />
-                ))}
-              {isToday(date) && !hideNowIndicator && (
-                <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
-              )}
-            </View>
+        <View style={[commonStyles.hourGuide]}>
+          {hours.map((hour) => (
+            <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
           ))}
         </View>
-      </ScrollView>
-    )
-  },
-)
+        {dateRange.map((date) => (
+          <View style={styles.dayContainer} key={date.toString()}>
+            {hours.map((hour) => (
+              <HourCell
+                key={hour}
+                cellHeight={cellHeight}
+                date={date}
+                hour={hour}
+                onPress={_onPressCell}
+              />
+            ))}
+            {dayJsConvertedEvents
+              .filter(({ start }) =>
+                start.isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+              )
+              .map((event) => (
+                <CalendarEvent
+                  key={`${event.start}${event.title}`}
+                  event={event}
+                  onPressEvent={onPressEvent}
+                  eventCellStyle={eventCellStyle}
+                  showTime={showTime}
+                  eventCount={getCountOfEventsAtEvent(event, dayJsConvertedEvents)}
+                  eventOrder={getOrderOfEvent(event, dayJsConvertedEvents)}
+                  overlapOffset={overlapOffset}
+                />
+              ))}
+            {isToday(date) && !hideNowIndicator && (
+              <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
+            )}
+          </View>
+        ))}
+      </View>
+    </ScrollView>
+  )
+}
 
 const styles = StyleSheet.create({
   body: {
