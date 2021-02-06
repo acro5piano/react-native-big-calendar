@@ -11,67 +11,67 @@ interface CalendarHeaderProps<T> {
   cellHeight: number
   style: ViewStyle
   allDayEvents: Event<T>[]
-  isRTL:boolean
+  isRTL: boolean
   onPressDateHeader?: (date: Date) => void
 }
 
-export const CalendarHeader = React.memo(
-  ({
-    dateRange,
-    cellHeight,
-    style = {},
-    allDayEvents,
-    isRTL,
-    onPressDateHeader,
-  }: CalendarHeaderProps<any>) => {
-    const _onPress = React.useCallback(
-      (date: Date) => {
-        onPressDateHeader && onPressDateHeader(date)
-      },
-      [onPressDateHeader],
-    )
+export const CalendarHeader = React.memo(_CalendarHeader)
 
-    return (
-      <View style={[isRTL?styles.containerRTL:styles.container, style]}>
-        <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
-        {dateRange.map((date) => {
-          const _isToday = isToday(date)
-          return (
-            <TouchableOpacity
-              style={{ flex: 1, paddingTop: 2 }}
-              onPress={() => _onPress(date.toDate())}
-              disabled={onPressDateHeader === undefined}
-              key={date.toString()}
-            >
-              <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-                <Text style={[commonStyles.guideText, _isToday && { color: Color.primary }]}>
-                  {date.format('ddd')}
+export function _CalendarHeader({
+  dateRange,
+  cellHeight,
+  style = {},
+  allDayEvents,
+  isRTL,
+  onPressDateHeader,
+}: CalendarHeaderProps<any>) {
+  const _onPress = React.useCallback(
+    (date: Date) => {
+      onPressDateHeader && onPressDateHeader(date)
+    },
+    [onPressDateHeader],
+  )
+
+  return (
+    <View style={[isRTL ? styles.containerRTL : styles.container, style]}>
+      <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
+      {dateRange.map((date) => {
+        const _isToday = isToday(date)
+        return (
+          <TouchableOpacity
+            style={{ flex: 1, paddingTop: 2 }}
+            onPress={() => _onPress(date.toDate())}
+            disabled={onPressDateHeader === undefined}
+            key={date.toString()}
+          >
+            <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
+              <Text style={[commonStyles.guideText, _isToday && { color: Color.primary }]}>
+                {date.format('ddd')}
+              </Text>
+              <View style={_isToday && styles.todayWrap}>
+                <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
+                  {date.format('D')}
                 </Text>
-                <View style={_isToday && styles.todayWrap}>
-                  <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
-                    {date.format('D')}
-                  </Text>
-                </View>
               </View>
-              <View style={[commonStyles.dateCell, { height: cellHeight }]}>
-                {allDayEvents.map((event) => {
-                  if (!event.start.isSame(date, 'day')) {
-                    return null
-                  }
-                  return (
-                    <View style={commonStyles.eventCell}>
-                      <Text style={commonStyles.eventTitle}>{event.title}</Text>
-                    </View>
-                  )
-                })}
-              </View>
-            </TouchableOpacity>
-          )
-        })}
-      </View>
-    )
-  },
-)
+            </View>
+            <View style={[commonStyles.dateCell, { height: cellHeight }]}>
+              {allDayEvents.map((event) => {
+                if (!event.start.isSame(date, 'day')) {
+                  return null
+                }
+                return (
+                  <View style={commonStyles.eventCell}>
+                    <Text style={commonStyles.eventTitle}>{event.title}</Text>
+                  </View>
+                )
+              })}
+            </View>
+          </TouchableOpacity>
+        )
+      })}
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
   },
-  containerRTL:{
+  containerRTL: {
     flexDirection: 'row-reverse',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
