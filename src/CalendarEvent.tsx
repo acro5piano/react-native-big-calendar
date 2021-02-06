@@ -29,56 +29,62 @@ interface CalendarBodyProps<T> {
   overlapOffset?: number
 }
 
-export const CalendarEvent = React.memo(
-  ({
-    event,
-    onPressEvent,
-    eventCellStyle,
-    showTime,
-    eventCount = 1,
-    eventOrder = 0,
-    overlapOffset = OVERLAP_OFFSET,
-  }: CalendarBodyProps<any>) => {
-    const getEventStyle = React.useMemo(
-      () => (typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle),
-      [eventCellStyle],
-    )
+export const CalendarEvent = React.memo(_CalendarEvent)
 
-    const _onPress = React.useCallback(
-      (event: DayJSConvertedEvent) => {
-        onPressEvent && onPressEvent(event)
-      },
-      [event],
-    )
+export function _CalendarEvent({
+  event,
+  onPressEvent,
+  eventCellStyle,
+  showTime,
+  eventCount = 1,
+  eventOrder = 0,
+  overlapOffset = OVERLAP_OFFSET,
+}: CalendarBodyProps<{}>) {
+  const getEventStyle = React.useMemo(
+    () => (typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle),
+    [eventCellStyle],
+  )
 
-    return (
-      <TouchableOpacity
-        delayPressIn={20}
-        key={event.start.toString()}
-        style={[
-          commonStyles.eventCell,
-          getEventCellPositionStyle(event),
-          getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
-          getEventStyle(event),
-        ]}
-        onPress={() => _onPress(event)}
-        disabled={!onPressEvent}
-      >
-        {event.end.diff(event.start, 'minute') < 32 && showTime ? (
-          <Text style={commonStyles.eventTitle}>
-            {event.title},<Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
-          </Text>
-        ) : (
-          <>
-            <Text style={commonStyles.eventTitle}>{event.title}</Text>
-            {showTime && <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>}
-            {event.children && event.children}
-          </>
-        )}
-      </TouchableOpacity>
-    )
-  },
-)
+  const plainJsEvent = React.useMemo(
+    () => ({
+      ...event,
+      start: event.start.toDate(),
+      end: event.end.toDate(),
+    }),
+    [event],
+  )
+
+  const _onPress = React.useCallback(() => {
+    onPressEvent && onPressEvent(plainJsEvent)
+  }, [onPressEvent, plainJsEvent])
+
+  return (
+    <TouchableOpacity
+      delayPressIn={20}
+      key={event.start.toString()}
+      style={[
+        commonStyles.eventCell,
+        getEventCellPositionStyle(event),
+        getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
+        getEventStyle(plainJsEvent),
+      ]}
+      onPress={_onPress}
+      disabled={!onPressEvent}
+    >
+      {event.end.diff(event.start, 'minute') < 32 && showTime ? (
+        <Text style={commonStyles.eventTitle}>
+          {event.title},<Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
+        </Text>
+      ) : (
+        <>
+          <Text style={commonStyles.eventTitle}>{event.title}</Text>
+          {showTime && <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>}
+          {event.children && event.children}
+        </>
+      )}
+    </TouchableOpacity>
+  )
+}
 
 const styles = StyleSheet.create({
   eventTime: {
