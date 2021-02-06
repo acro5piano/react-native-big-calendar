@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.3
+
+- Fix type of event callback function by @acro5piano
+- Extract function from `React.memo` to show proper display name by @acro5piano
+- Update deps by @acro5piano
+
 ## 0.7.2
 
 - Update deps by @acro5piano
