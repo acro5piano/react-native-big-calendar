@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.4
+
+- Fix Android scrolling issue by adding `nestedScrollEnabled` by @acro5piano and @deepakmehra96
+
 ## 0.7.3
 
 - Fix type of event callback function by @acro5piano
