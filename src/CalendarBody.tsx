@@ -163,6 +163,7 @@ export function _CalendarBody({
       scrollEventThrottle={32}
       {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
       showsVerticalScrollIndicator={false}
+      nestedScrollEnabled
     >
       <View
         style={isRTL ? [styles.bodyRTL] : [styles.body]}
