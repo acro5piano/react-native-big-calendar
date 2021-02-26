@@ -19,7 +19,7 @@
     "watch": "rollup -cw",
     "prepublish": "npm run build",
     "build": "npm-run-all build:clean build:ts",
-    "build:clean": "rm -rf build/",
+    "build:clean": "rimraf build/",
     "build:ts": "env NODE_ENV=production rollup -c"
   },
   "dependencies": {
@@ -47,6 +47,7 @@
     "react-dom": "^17.0.1",
     "react-native": "^0.63.4",
     "react-native-web": "^0.14.11",
+    "rimraf": "^3.0.2",
     "rollup": "^2.36.1",
     "rollup-plugin-typescript2": "^0.29.0",
     "ts-jest": "^25.5.1",
