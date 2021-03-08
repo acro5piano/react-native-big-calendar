@@ -101,7 +101,7 @@ export function _CalendarBody({
       setTimeout(
         () => {
           if(scrollView && scrollView.current) {
-            scrollView.current!.scrollTo({
+            scrollView.current.scrollTo({
               y: (cellHeight * scrollOffsetMinutes) / 60,
               animated: false,
             })
