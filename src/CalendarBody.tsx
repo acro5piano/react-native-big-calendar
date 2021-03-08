@@ -100,10 +100,12 @@ export function _CalendarBody({
       // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
       setTimeout(
         () => {
-          scrollView.current!.scrollTo({
-            y: (cellHeight * scrollOffsetMinutes) / 60,
-            animated: false,
-          })
+          if(scrollView && scrollView.current) {
+            scrollView.current!.scrollTo({
+              y: (cellHeight * scrollOffsetMinutes) / 60,
+              animated: false,
+            })
+          }
         },
         Platform.OS === 'web' ? 0 : 10,
       )
