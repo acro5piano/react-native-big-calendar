@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.5
+
+- Double checking that object exists before calling scrollTo method upon it by @filipearena
+- Update deps by @acro5piano
+
 ## 0.7.4
 
 - Fix Android scrolling issue by adding `nestedScrollEnabled` by @acro5piano and @deepakmehra96
