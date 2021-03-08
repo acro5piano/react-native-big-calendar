@@ -20,7 +20,8 @@
     "prepublish": "npm run build",
     "build": "npm-run-all build:clean build:ts",
     "build:clean": "rimraf build/",
-    "build:ts": "env NODE_ENV=production rollup -c"
+    "build:ts": "env NODE_ENV=production rollup -c",
+    "prepare": "husky install"
   },
   "dependencies": {
     "dayjs": "^1.10.4"
