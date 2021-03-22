@@ -1,11 +1,12 @@
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
-import { Alert, Dimensions, View } from 'react-native'
+import { Alert, Dimensions, View, Text } from 'react-native'
 import { Calendar } from '../src/Calendar'
 import { Control, CONTROL_HEIGHT } from './components/Control'
-import { events } from './events'
+import { customRendererEvents, events } from './events'
 import { styles } from './styles'
+
 
 function alert(input: any) {
   // @ts-ignore
@@ -177,6 +178,20 @@ storiesOf('Desktop', module)
           height={SCREEN_HEIGHT}
           events={events}
           isRTL={true}
+        />
+      </View>
+    )
+  })
+  .add('Custom Event Component renderer', () => {
+    
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          style={styles.calendar}
+          height={SCREEN_HEIGHT}
+          events={[...events, ...customRendererEvents]}
+
+
         />
       </View>
     )
