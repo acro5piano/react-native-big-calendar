@@ -7,7 +7,6 @@ import { Control, CONTROL_HEIGHT } from './components/Control'
 import { customRendererEvents, events } from './events'
 import { styles } from './styles'
 
-
 function alert(input: any) {
   // @ts-ignore
   if (typeof window !== 'undefined') {
@@ -183,15 +182,12 @@ storiesOf('Desktop', module)
     )
   })
   .add('Custom Event Component renderer', () => {
-    
     return (
       <View style={styles.desktop}>
         <Calendar
           style={styles.calendar}
           height={SCREEN_HEIGHT}
           events={[...events, ...customRendererEvents]}
-
-
         />
       </View>
     )
