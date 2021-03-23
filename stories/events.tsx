@@ -1,6 +1,10 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
+import { commonStyles } from '../src/commonStyles'
+import { DayJSConvertedEvent } from '../src/interfaces'
+import { formatStartEnd } from '../src/utils'
+import { styles } from './styles'
 
 const eventNotes = (
   <View style={{ marginTop: 3 }}>
@@ -45,5 +49,58 @@ export const events = [
     start: dayjs().set('hour', 13).set('minute', 0).toDate(),
     end: dayjs().set('hour', 14).set('minute', 15).toDate(),
     children: eventNotes,
+  },
+]
+
+const eventRenderer = (event: DayJSConvertedEvent, touchableOpacityProps: any) => {
+  return (
+    <TouchableOpacity
+      {...touchableOpacityProps}
+      style={[
+        ...touchableOpacityProps.style,
+        {
+          backgroundColor: 'white',
+          borderWidth: 1,
+          borderColor: 'lightgrey',
+          borderLeftColor: event.color
+            ? event.color
+            : touchableOpacityProps.style[2].backgroundColor,
+          borderLeftWidth: 10,
+          borderStyle: 'solid',
+          borderRadius: 6,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+      ]}
+    >
+      {event.end.diff(event.start, 'minute') < 32 && showTime ? (
+        <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
+          {event.title},<Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
+        </Text>
+      ) : (
+        <>
+          <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>{event.title}</Text>
+          <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>
+          {event.children && event.children}
+        </>
+      )}
+    </TouchableOpacity>
+  )
+}
+
+export const customRendererEvents = [
+  {
+    title: 'Custom Renderer',
+    start: dayjs().add(1, 'day').set('hour', 12).set('minute', 0).toDate(),
+    end: dayjs().add(1, 'day').set('hour', 15).set('minute', 30).toDate(),
+    // color: 'green',
+    eventRenderer,
+  },
+  {
+    title: 'Custom reminder',
+    start: dayjs().set('hour', 16).set('minute', 0).toDate(),
+    end: dayjs().set('hour', 17).set('minute', 0).toDate(),
+    color: 'purple',
+    eventRenderer,
   },
 ]

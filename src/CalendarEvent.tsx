@@ -58,19 +58,25 @@ export function _CalendarEvent({
     onPressEvent && onPressEvent(plainJsEvent)
   }, [onPressEvent, plainJsEvent])
 
+  const touchableOpacityProps = {
+    delayPressIn: 20,
+    key: event.start.toString(),
+    style: [
+      commonStyles.eventCell,
+      getEventCellPositionStyle(event),
+      getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
+      getEventStyle(plainJsEvent),
+    ],
+    onPress: _onPress,
+    disabled: !onPressEvent,
+  }
+
+  if (event.eventRenderer) {
+    return event.eventRenderer(event, touchableOpacityProps)
+  }
+
   return (
-    <TouchableOpacity
-      delayPressIn={20}
-      key={event.start.toString()}
-      style={[
-        commonStyles.eventCell,
-        getEventCellPositionStyle(event),
-        getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
-        getEventStyle(plainJsEvent),
-      ]}
-      onPress={_onPress}
-      disabled={!onPressEvent}
-    >
+    <TouchableOpacity {...touchableOpacityProps}>
       {event.end.diff(event.start, 'minute') < 32 && showTime ? (
         <Text style={commonStyles.eventTitle}>
           {event.title},<Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>

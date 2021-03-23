@@ -84,7 +84,7 @@ interface CalendarProps<T = {}> {
 
 | name                  | required | type                                                                                | description                                                                                                                                                                                                          |
 | --------------------- | -------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `events`              | yes      | `Array<{ title: string, start: Date, end: Date, children?: React.ReactNode }>`      | The events which will be rendered on the calendar, with optional children to display custom components on the event. Events that occur during the same time range will be layered, offset, and given a unique color. |
+| `events`              | yes      | `Array<{ title: string, start: Date, end: Date, children?: React.ReactNode, eventRenderer?: (event: DayJSConvertedEvent, touchableOpacityProps: any) => JSX.Element }>`      | The events which will be rendered on the calendar, with optional children to display custom components inside the event, and optional event renderer function to take complete control over the rendered event (advanced feature). Events that occur during the same time range will be layered, offset, and given a unique color. |
 | `height`              | yes      | `number`                                                                            | Calendar height.                                                                                                                                                                                                     |
 | `hideNowIndicator`    | no       | `boolean`                                                                           | Hides the indicator for the current time. By default the now indicator is shown.                                                                                                                                     |
 | `onPressEvent`        | no       | `(event: { title: string, start: Date, end: Date } => void)`                        | Event handler which will be fired when the user clicks an event.                                                                                                                                                     |
@@ -103,8 +103,39 @@ interface CalendarProps<T = {}> {
 | `locale`              | no       | `string`                                                                            | Custom locale. See I18n section                                                                                                                                                                                      |
 | `overlapOffset`       | no       | `number`                                                                            | Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.                                                                                                     |
 | `isRTL`               | no       | `boolean`                                                                           | Switches the direction of the layout for use with RTL languages. Defaults to false.                                                                                                                                  |
+                                                       |
 
 For more information, see [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
+
+## Overriding the component which renders an event
+
+You can override the component which renders a specific event. You choose to do so for all your events, or a specific event. The function `eventRenderer` must return a `JSX.Element`. The component *should* be wrapped inside a `TouchableOpacity` if you are using `react-native`, or *any* DOM element which accepts positionning and click events (`onPress`, ...). You can read more on this feature on its [PR](https://github.com/acro5piano/react-native-big-calendar/pull/359).
+
+```typescript
+
+const AgendaWithACustomRenderer: React.FC = () => {
+
+  const eventRenderer = (event: DayJSConvertedEvent, touchableOpacityProps: any) => (
+    <TouchableOpacity {...touchableOpacityProps}>
+      <Text>{`My custom event: ${event.title}`}</Text>
+    </TouchableOpacity>
+    )
+
+  return (
+    <Calendar
+      events={[
+        {
+          title: 'Custom Component',
+          start: dayjs().add(1, 'day').set('hour', 12).set('minute', 0).toDate(),
+          end: dayjs().add(1, 'day').set('hour', 15).set('minute', 30).toDate(),
+          eventRenderer,
+        },
+      ]}
+      {/* ... */}
+    />
+  )
+}
+```
 
 # I18n
 
