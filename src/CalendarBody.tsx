@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
-import { DayJSConvertedEvent, Event, EventCellStyle, HorizontalDirection } from './interfaces'
+import { Event, EventCellStyle, HorizontalDirection } from './interfaces'
 import {
   formatHour,
   getCountOfEventsAtEvent,
@@ -30,7 +30,7 @@ interface CalendarBodyProps<T> {
   cellHeight: number
   containerHeight: number
   dateRange: dayjs.Dayjs[]
-  dayJsConvertedEvents: DayJSConvertedEvent[]
+  dayJsConvertedEvents: Event<T>[]
   scrollOffsetMinutes: number
   ampm: boolean
   showTime: boolean
@@ -189,7 +189,7 @@ export function _CalendarBody({
             ))}
             {dayJsConvertedEvents
               .filter(({ start }) =>
-                start.isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                (start as dayjs.Dayjs).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
               )
               .map((event) => (
                 <CalendarEvent

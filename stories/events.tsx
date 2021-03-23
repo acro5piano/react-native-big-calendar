@@ -1,10 +1,9 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles } from '../src/commonStyles'
-import { DayJSConvertedEvent } from '../src/interfaces'
+import { CalendarTouchableOpacityProps, Event } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils'
-import { styles } from './styles'
 
 const eventNotes = (
   <View style={{ marginTop: 3 }}>
@@ -13,7 +12,7 @@ const eventNotes = (
   </View>
 )
 
-export const events = [
+export const events: Event[] = [
   {
     title: 'Watch Boxing',
     start: dayjs().set('hour', 0).set('minute', 0).set('second', 0).toDate(),
@@ -52,19 +51,27 @@ export const events = [
   },
 ]
 
-const eventRenderer = (event: DayJSConvertedEvent, touchableOpacityProps: any) => {
+export type MyCustomEventType = {
+  children?: React.ReactElement | null
+  color?: string
+}
+
+const eventRenderer = (
+  event: Event<MyCustomEventType>,
+  touchableOpacityProps: CalendarTouchableOpacityProps,
+) => {
   return (
     <TouchableOpacity
       {...touchableOpacityProps}
       style={[
-        ...touchableOpacityProps.style,
+        ...(touchableOpacityProps.style as RecursiveArray<ViewStyle>),
         {
           backgroundColor: 'white',
           borderWidth: 1,
           borderColor: 'lightgrey',
           borderLeftColor: event.color
             ? event.color
-            : touchableOpacityProps.style[2].backgroundColor,
+            : ((touchableOpacityProps.style as RecursiveArray<ViewStyle>)[2] as ViewStyle).backgroundColor,
           borderLeftWidth: 10,
           borderStyle: 'solid',
           borderRadius: 6,
@@ -73,14 +80,19 @@ const eventRenderer = (event: DayJSConvertedEvent, touchableOpacityProps: any) =
         },
       ]}
     >
-      {event.end.diff(event.start, 'minute') < 32 && showTime ? (
+      {(event.end as dayjs.Dayjs).diff(event.start, 'minute') < 32 ? (
         <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
-          {event.title},<Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
+          {event.title},
+          <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
+            {(event.start as dayjs.Dayjs).format('HH:mm')}
+          </Text>
         </Text>
       ) : (
         <>
           <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>{event.title}</Text>
-          <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>
+          <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
+            {formatStartEnd(event)}
+          </Text>
           {event.children && event.children}
         </>
       )}
@@ -88,7 +100,7 @@ const eventRenderer = (event: DayJSConvertedEvent, touchableOpacityProps: any) =
   )
 }
 
-export const customRendererEvents = [
+export const customRendererEvents: Event<MyCustomEventType>[] = [
   {
     title: 'Custom Renderer',
     start: dayjs().add(1, 'day').set('hour', 12).set('minute', 0).toDate(),

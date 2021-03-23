@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
-import { Alert, Dimensions, View, Text } from 'react-native'
+import { Alert, Dimensions, View } from 'react-native'
 import { Calendar } from '../src/Calendar'
 import { Control, CONTROL_HEIGHT } from './components/Control'
 import { customRendererEvents, events } from './events'

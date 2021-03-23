@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
-import { DayJSConvertedEvent, Event, EventCellStyle } from './interfaces'
+import { CalendarTouchableOpacityProps, Event, EventCellStyle } from './interfaces'
 import {
   DAY_MINUTES,
   formatStartEnd,
@@ -10,17 +10,17 @@ import {
   getStyleForOverlappingEvent,
 } from './utils'
 
-function getEventCellPositionStyle({ end, start }: { end: dayjs.Dayjs; start: dayjs.Dayjs }) {
-  const relativeHeight = 100 * (1 / DAY_MINUTES) * end.diff(start, 'minute')
-  const relativeTop = getRelativeTopInDay(start)
+function getEventCellPositionStyle(event: Event<any>) {
+  const relativeHeight = 100 * (1 / DAY_MINUTES) * (event.end as dayjs.Dayjs).diff(event.start, 'minute')
+  const relativeTop = getRelativeTopInDay(event.start)
   return {
-    height: `${relativeHeight}%`,
+    height: `${relativeHeight}%`, 
     top: `${relativeTop}%`,
   }
 }
 
 interface CalendarBodyProps<T> {
-  event: DayJSConvertedEvent
+  event: Event<T>
   onPressEvent?: (event: Event<T>) => void
   eventCellStyle?: EventCellStyle<T>
   showTime: boolean
@@ -48,8 +48,8 @@ export function _CalendarEvent({
   const plainJsEvent = React.useMemo(
     () => ({
       ...event,
-      start: event.start.toDate(),
-      end: event.end.toDate(),
+      start: (event.start as dayjs.Dayjs).toDate(),
+      end: (event.end as dayjs.Dayjs).toDate(),
     }),
     [event],
   )
@@ -58,7 +58,7 @@ export function _CalendarEvent({
     onPressEvent && onPressEvent(plainJsEvent)
   }, [onPressEvent, plainJsEvent])
 
-  const touchableOpacityProps = {
+  const touchableOpacityProps: CalendarTouchableOpacityProps = {
     delayPressIn: 20,
     key: event.start.toString(),
     style: [
@@ -77,9 +77,9 @@ export function _CalendarEvent({
 
   return (
     <TouchableOpacity {...touchableOpacityProps}>
-      {event.end.diff(event.start, 'minute') < 32 && showTime ? (
+      {(event.end as dayjs.Dayjs).diff(event.start, 'minute') < 32 && showTime ? (
         <Text style={commonStyles.eventTitle}>
-          {event.title},<Text style={styles.eventTime}>{event.start.format('HH:mm')}</Text>
+          {event.title},<Text style={styles.eventTime}>{(event.start as dayjs.Dayjs).format('HH:mm')}</Text>
         </Text>
       ) : (
         <>

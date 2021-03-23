@@ -1,8 +1,7 @@
 import dayjs from 'dayjs'
-import { DayJSConvertedEvent } from '../interfaces'
 import * as utils from '../utils'
 
-const events: DayJSConvertedEvent[] = [
+const events: Event[] = [
   {
     title: 'Meeting',
     start: dayjs().set('hour', 10).set('minute', 0),
