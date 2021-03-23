@@ -6,14 +6,12 @@ export interface BaseEvent {
   start: Date
   end: Date
   title: string
-  eventRenderer?: (event: DayJSConvertedEvent, touchableOpacityProps: any) => JSX.Element 
 }
 
 export interface DayJSConvertedEvent {
   start: dayjs.Dayjs
   end: dayjs.Dayjs
   title: string
-  eventRenderer?: (event: DayJSConvertedEvent, touchableOpacityProps: any) => JSX.Element 
   children?: React.ReactNode
 }
 
