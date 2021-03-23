@@ -1,10 +1,9 @@
-import dayjs from 'dayjs'
 import React from 'react'
 import { RecursiveArray, ViewStyle } from 'react-native'
 
 interface BaseEvent<T> {
-  start: Date | dayjs.Dayjs
-  end: Date | dayjs.Dayjs
+  start: Date
+  end: Date
   title: string
   children?: React.ReactElement | null
   eventRenderer?: (event: Event<T>, touchableOpacityProps: any) => React.ReactElement | null

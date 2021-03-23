@@ -189,7 +189,7 @@ export function _CalendarBody({
             ))}
             {dayJsConvertedEvents
               .filter(({ start }) =>
-                (start as dayjs.Dayjs).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
               )
               .map((event) => (
                 <CalendarEvent

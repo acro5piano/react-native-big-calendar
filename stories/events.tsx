@@ -80,11 +80,11 @@ const eventRenderer = (
         },
       ]}
     >
-      {(event.end as dayjs.Dayjs).diff(event.start, 'minute') < 32 ? (
+      {dayjs(event.end).diff(event.start, 'minute') < 32 ? (
         <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
           {event.title},
           <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
-            {(event.start as dayjs.Dayjs).format('HH:mm')}
+            {dayjs(event.start).format('HH:mm')}
           </Text>
         </Text>
       ) : (

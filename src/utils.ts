@@ -92,15 +92,18 @@ export function modeToNum(mode: Mode) {
 }
 
 export function formatStartEnd(event: Event<any>) {
-  return `${(event.start as dayjs.Dayjs).format('HH:mm')} - ${(event.end as dayjs.Dayjs).format('HH:mm')}`
+  return `${dayjs(event.start).format('HH:mm')} - ${dayjs(event.end).format('HH:mm')}`
 }
 
 export function isAllDayEvent(event: Event<any>) {
+ const start = dayjs(event.start)
+ const end = dayjs(event.end)
+
   return (
-    (event.start as dayjs.Dayjs).hour() === 0 &&
-    (event.start as dayjs.Dayjs).minute() === 0 &&
-    (event.end as dayjs.Dayjs).hour() === 0 &&
-    (event.end as dayjs.Dayjs).minute() === 0
+    start.hour() === 0 &&
+    start.minute() === 0 &&
+    end.hour() === 0 &&
+    end.minute() === 0
   )
 }
 
@@ -111,8 +114,8 @@ export function getCountOfEventsAtEvent(
   dayjs.extend(isBetween)
   return eventList.filter(
     (e) =>
-      (event.start as dayjs.Dayjs).isBetween(e.start, e.end, 'minute', '[)') ||
-      (e.start as dayjs.Dayjs).isBetween(event.start, event.end, 'minute', '[)'),
+      dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
+      dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
   ).length
 }
 
@@ -121,14 +124,14 @@ export function getOrderOfEvent(event: Event<any>, eventList: Event<any>[]) {
   const events = eventList
     .filter(
       (e) =>
-        (event.start as dayjs.Dayjs).isBetween(e.start, e.end, 'minute', '[)') ||
-        (e.start as dayjs.Dayjs).isBetween(event.start, event.end, 'minute', '[)'),
+        dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
+        dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
     )
     .sort((a, b) => {
-      if ((a.start as dayjs.Dayjs).isSame(b.start)) {
-        return (a.start as dayjs.Dayjs).diff(a.end) < (b.start as dayjs.Dayjs).diff(b.end) ? -1 : 1
+      if (dayjs(a.start).isSame(b.start)) {
+        return dayjs(a.start).diff(a.end) < dayjs(b.start).diff(b.end) ? -1 : 1
       } else {
-        return (a.start as dayjs.Dayjs).isBefore(b.start) ? -1 : 1
+        return dayjs(a.start).isBefore(b.start) ? -1 : 1
       }
     })
   return events.indexOf(event)

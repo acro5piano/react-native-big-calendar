@@ -11,7 +11,7 @@ import {
 } from './utils'
 
 function getEventCellPositionStyle(event: Event<any>) {
-  const relativeHeight = 100 * (1 / DAY_MINUTES) * (event.end as dayjs.Dayjs).diff(event.start, 'minute')
+  const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(event.end).diff(event.start, 'minute')
   const relativeTop = getRelativeTopInDay(event.start)
   return {
     height: `${relativeHeight}%`, 
@@ -48,8 +48,8 @@ export function _CalendarEvent({
   const plainJsEvent = React.useMemo(
     () => ({
       ...event,
-      start: (event.start as dayjs.Dayjs).toDate(),
-      end: (event.end as dayjs.Dayjs).toDate(),
+      start: dayjs(event.start).toDate(),
+      end: dayjs(event.end).toDate(),
     }),
     [event],
   )
@@ -77,9 +77,9 @@ export function _CalendarEvent({
 
   return (
     <TouchableOpacity {...touchableOpacityProps}>
-      {(event.end as dayjs.Dayjs).diff(event.start, 'minute') < 32 && showTime ? (
+      {dayjs(event.end).diff(event.start, 'minute') < 32 && showTime ? (
         <Text style={commonStyles.eventTitle}>
-          {event.title},<Text style={styles.eventTime}>{(event.start as dayjs.Dayjs).format('HH:mm')}</Text>
+          {event.title},<Text style={styles.eventTime}>{dayjs(event.start).format('HH:mm')}</Text>
         </Text>
       ) : (
         <>
