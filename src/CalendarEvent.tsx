@@ -14,7 +14,7 @@ function getEventCellPositionStyle(event: Event<any>) {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(event.end).diff(event.start, 'minute')
   const relativeTop = getRelativeTopInDay(event.start)
   return {
-    height: `${relativeHeight}%`, 
+    height: `${relativeHeight}%`,
     top: `${relativeTop}%`,
   }
 }

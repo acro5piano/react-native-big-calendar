@@ -14,6 +14,7 @@
     "sync-ios": "yarn build && cp -r build rndemo",
     "start-ios": "yarn sync-ios && cd rndemo && yarn ios",
     "test": "jest",
+    "format": "prettier --write {src,stories}/*.{ts,tsx}",
     "lint": "tslint src/*.{ts,tsx}",
     "lint:fix": "yarn lint --fix",
     "watch": "rollup -cw",

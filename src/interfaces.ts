@@ -10,11 +10,11 @@ interface BaseEvent<T> {
 }
 
 export type CalendarTouchableOpacityProps = {
-  delayPressIn: number;
-  key: string;
+  delayPressIn: number
+  key: string
   style: RecursiveArray<ViewStyle | undefined> | ViewStyle
-  onPress: () => void;
-  disabled: boolean;
+  onPress: () => void
+  disabled: boolean
 }
 
 export type Event<T = any> = BaseEvent<T> & T
@@ -30,7 +30,6 @@ export type HasDateRange = [Date, Date]
 export type DateRangeHandler = ([start, end]: HasDateRange) => void
 
 export type HorizontalDirection = 'RIGHT' | 'LEFT'
-
 
 /**
  * @deprecated Prefer type Event<T = any> instead.
