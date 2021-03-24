@@ -24,7 +24,7 @@ const events = [
 const App = () => {
   const [additionalEvents, setAdditionalEvents] = React.useState([]);
   const addEvent = React.useCallback(
-    (start: Date) => {
+    (start) => {
       const title = 'new Event';
       const end = dayjs(start).add(59, 'minute');
       setAdditionalEvents([...additionalEvents, {start, end, title}]);
@@ -33,7 +33,7 @@ const App = () => {
   );
 
   return (
-    <>
+    <React.Fragment>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <Calendar
@@ -43,7 +43,7 @@ const App = () => {
           onPressEvent={(e) => alert(e.title)}
         />
       </SafeAreaView>
-    </>
+    </React.Fragment>
   );
 };
 
