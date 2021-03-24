@@ -20,7 +20,7 @@ import {
   modeToNum,
 } from './utils'
 
-interface CalendarProps<T> {
+export interface CalendarProps<T> {
   events: Event<T>[]
   height: number
   overlapOffset?: number

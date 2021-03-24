@@ -59,7 +59,7 @@ function App() {
 **Summary**
 
 ```typescript
-interface CalendarProps<T = {}> {
+interface CalendarProps<T> {
   events: Event<T>[]
   height: number
   hideNowIndicator?: boolean
