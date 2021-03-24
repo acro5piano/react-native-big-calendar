@@ -13,24 +13,40 @@ import {
 } from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
-import { Event, EventCellStyle, HorizontalDirection } from './interfaces'
-import {
-  formatHour,
-  getCountOfEventsAtEvent,
-  getOrderOfEvent,
-  getRelativeTopInDay,
-  hours,
-  isToday,
-} from './utils'
+import { EventCellStyle, HorizontalDirection, ICalendarEvent } from './interfaces'
+import { typedMemo } from './typedMemo.helper'
+import { formatHour, getCountOfEventsAtEvent, getOrderOfEvent, getRelativeTopInDay, hours, isToday } from './utils'
 
 dayjs.extend(isBetween)
 const SWIPE_THRESHOLD = 50
+
+const styles = StyleSheet.create({
+  body: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  bodyRTL: {
+    flexDirection: 'row-reverse',
+    flex: 1,
+  },
+  nowIndicator: {
+    position: 'absolute',
+    zIndex: 10000,
+    backgroundColor: 'red',
+    height: 2,
+    width: '100%',
+  },
+  dayContainer: {
+    flex: 1,
+    overflow: 'hidden',
+  },
+})
 
 interface CalendarBodyProps<T> {
   cellHeight: number
   containerHeight: number
   dateRange: dayjs.Dayjs[]
-  dayJsConvertedEvents: Event<T>[]
+  events: ICalendarEvent<T>[]
   scrollOffsetMinutes: number
   ampm: boolean
   showTime: boolean
@@ -40,7 +56,7 @@ interface CalendarBodyProps<T> {
   overlapOffset?: number
   isRTL: boolean
   onPressCell?: (date: Date) => void
-  onPressEvent?: (event: Event<T>) => void
+  onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
 }
 
@@ -63,7 +79,7 @@ interface HourCellProps extends WithCellHeight {
   hour: number
 }
 
-function HourCell({ cellHeight, onPress, date, hour }: HourCellProps) {
+const HourCell = ({ cellHeight, onPress, date, hour }: HourCellProps) => {
   return (
     <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
       <View style={[commonStyles.dateCell, { height: cellHeight }]} />
@@ -71,15 +87,13 @@ function HourCell({ cellHeight, onPress, date, hour }: HourCellProps) {
   )
 }
 
-export const CalendarBody = React.memo<CalendarBodyProps<any>>(_CalendarBody)
-
-export function _CalendarBody({
+function _CalendarBody<T>({
   containerHeight,
   cellHeight,
   dateRange,
   style = {},
   onPressCell,
-  dayJsConvertedEvents,
+  events,
   onPressEvent,
   eventCellStyle,
   ampm,
@@ -89,7 +103,7 @@ export function _CalendarBody({
   hideNowIndicator,
   overlapOffset,
   isRTL,
-}: CalendarBodyProps<{}>) {
+}: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const [now, setNow] = React.useState(dayjs())
   const [panHandled, setPanHandled] = React.useState(false)
@@ -110,7 +124,7 @@ export function _CalendarBody({
         Platform.OS === 'web' ? 0 : 10,
       )
     }
-  }, [scrollView.current])
+  }, [scrollView])
 
   React.useEffect(() => {
     const pid = setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
@@ -179,18 +193,10 @@ export function _CalendarBody({
         {dateRange.map((date) => (
           <View style={styles.dayContainer} key={date.toString()}>
             {hours.map((hour) => (
-              <HourCell
-                key={hour}
-                cellHeight={cellHeight}
-                date={date}
-                hour={hour}
-                onPress={_onPressCell}
-              />
+              <HourCell key={hour} cellHeight={cellHeight} date={date} hour={hour} onPress={_onPressCell} />
             ))}
-            {dayJsConvertedEvents
-              .filter(({ start }) =>
-                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-              )
+            {events
+              .filter(({ start }) => dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'))
               .map((event) => (
                 <CalendarEvent
                   key={`${event.start}${event.title}`}
@@ -198,8 +204,8 @@ export function _CalendarBody({
                   onPressEvent={onPressEvent}
                   eventCellStyle={eventCellStyle}
                   showTime={showTime}
-                  eventCount={getCountOfEventsAtEvent(event, dayJsConvertedEvents)}
-                  eventOrder={getOrderOfEvent(event, dayJsConvertedEvents)}
+                  eventCount={getCountOfEventsAtEvent(event, events)}
+                  eventOrder={getOrderOfEvent(event, events)}
                   overlapOffset={overlapOffset}
                 />
               ))}
@@ -213,24 +219,4 @@ export function _CalendarBody({
   )
 }
 
-const styles = StyleSheet.create({
-  body: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  bodyRTL: {
-    flexDirection: 'row-reverse',
-    flex: 1,
-  },
-  nowIndicator: {
-    position: 'absolute',
-    zIndex: 10000,
-    backgroundColor: 'red',
-    height: 2,
-    width: '100%',
-  },
-  dayContainer: {
-    flex: 1,
-    overflow: 'hidden',
-  },
-})
+export const CalendarBody = typedMemo(_CalendarBody)

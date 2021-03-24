@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles } from '../src/commonStyles'
-import { CalendarTouchableOpacityProps, Event } from '../src/interfaces'
+import { CalendarTouchableOpacityProps, ICalendarEvent } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils'
 
 const eventNotes = (
@@ -12,7 +12,7 @@ const eventNotes = (
   </View>
 )
 
-export const events: Event[] = [
+export const events: ICalendarEvent[] = [
   {
     title: 'Watch Boxing',
     start: dayjs().set('hour', 0).set('minute', 0).set('second', 0).toDate(),
@@ -51,13 +51,12 @@ export const events: Event[] = [
   },
 ]
 
-export type MyCustomEventType = {
-  children?: React.ReactElement | null
+export interface MyCustomEventType {
   color?: string
 }
 
 const eventRenderer = (
-  event: Event<MyCustomEventType>,
+  event: ICalendarEvent<MyCustomEventType>,
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => {
   return (
@@ -92,7 +91,7 @@ const eventRenderer = (
         <>
           <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>{event.title}</Text>
           <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
-            {formatStartEnd(event)}
+            {formatStartEnd(event.start, event.end)}
           </Text>
           {event.children && event.children}
         </>
@@ -101,12 +100,11 @@ const eventRenderer = (
   )
 }
 
-export const customRendererEvents: Event<MyCustomEventType>[] = [
+export const customRendererEvents: ICalendarEvent<MyCustomEventType>[] = [
   {
     title: 'Custom Renderer',
     start: dayjs().add(1, 'day').set('hour', 12).set('minute', 0).toDate(),
     end: dayjs().add(1, 'day').set('hour', 15).set('minute', 30).toDate(),
-    // color: 'green',
     eventRenderer,
   },
   {
