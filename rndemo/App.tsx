@@ -1,6 +1,6 @@
 import React from 'react';
-import {Dimensions, SafeAreaView, ScrollView, StatusBar} from 'react-native';
-import {Calendar} from './build';
+import {Dimensions, SafeAreaView, StatusBar} from 'react-native';
+import {Event, Calendar} from './build';
 import dayjs from 'dayjs';
 
 const events = [
@@ -22,7 +22,8 @@ const events = [
 ];
 
 const App = () => {
-  const [additionalEvents, setAdditionalEvents] = React.useState([]);
+  const [additionalEvents, setAdditionalEvents] = React.useState<Event[]>([]);
+
   const addEvent = React.useCallback(
     (start: Date) => {
       const title = 'new Event';
@@ -40,7 +41,7 @@ const App = () => {
           height={Dimensions.get('window').height - 50}
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
-          onPressEvent={(e) => alert(e.title)}
+          onPressEvent={(e) => console.log(e.title)}
         />
       </SafeAreaView>
     </>
