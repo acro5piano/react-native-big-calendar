@@ -31,6 +31,12 @@ Or if you use Yarn:
 yarn add react-native-big-calendar
 ```
 
+If you use TypeScript ensure `@types/react` and `@types/react-native` is installed. `react-native-big-calendar` uses them internally.
+
+```
+yarn add -D @types/react @types/react-native
+```
+
 # Getting Started
 
 ```typescript
