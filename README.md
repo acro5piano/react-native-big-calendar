@@ -84,7 +84,7 @@ interface CalendarProps<T = {}> {
 
 | name                  | required | type                                                                                | description                                                                                                                                                                                                          |
 | --------------------- | -------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `events`              | yes      | `Array<{ title: string, start: Date, end: Date, children?: React.ReactNode, eventRenderer?: (event: DayJSConvertedEvent, touchableOpacityProps: any) => JSX.Element }>`      | The events which will be rendered on the calendar, with optional children to display custom components inside the event, and optional event renderer function to take complete control over the rendered event (advanced feature). Events that occur during the same time range will be layered, offset, and given a unique color. |
+| `events`              | yes      | `Array<{ title: string, start: Date, end: Date, children?: React.ReactNode, eventRenderer?: (event: Event<T>, touchableOpacityProps: CalendarTouchableOpacityProps) => JSX.Element }>`      | The events which will be rendered on the calendar, with optional children to display custom components inside the event, and optional event renderer function to take complete control over the rendered event (advanced feature). Events that occur during the same time range will be layered, offset, and given a unique color. |
 | `height`              | yes      | `number`                                                                            | Calendar height.                                                                                                                                                                                                     |
 | `hideNowIndicator`    | no       | `boolean`                                                                           | Hides the indicator for the current time. By default the now indicator is shown.                                                                                                                                     |
 | `onPressEvent`        | no       | `(event: { title: string, start: Date, end: Date } => void)`                        | Event handler which will be fired when the user clicks an event.                                                                                                                                                     |
@@ -115,7 +115,7 @@ You can override the component which renders a specific event. You choose to do 
 
 const AgendaWithACustomRenderer: React.FC = () => {
 
-  const eventRenderer = (event: DayJSConvertedEvent, touchableOpacityProps: any) => (
+  const eventRenderer = (event: Event<any>, touchableOpacityProps: CalendarTouchableOpacityProps) => (
     <TouchableOpacity {...touchableOpacityProps}>
       <Text>{`My custom event: ${event.title}`}</Text>
     </TouchableOpacity>

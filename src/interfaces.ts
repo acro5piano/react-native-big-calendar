@@ -1,23 +1,23 @@
-import dayjs from 'dayjs'
 import React from 'react'
-import { ViewStyle } from 'react-native'
+import { RecursiveArray, ViewStyle } from 'react-native'
 
-export interface BaseEvent {
+interface BaseEvent<T> {
   start: Date
   end: Date
   title: string
-  eventRenderer?: (event: DayJSConvertedEvent, touchableOpacityProps: any) => JSX.Element 
+  children?: React.ReactElement | null
+  eventRenderer?: (event: Event<T>, touchableOpacityProps: any) => React.ReactElement | null
 }
 
-export interface DayJSConvertedEvent {
-  start: dayjs.Dayjs
-  end: dayjs.Dayjs
-  title: string
-  eventRenderer?: (event: DayJSConvertedEvent, touchableOpacityProps: any) => JSX.Element 
-  children?: React.ReactNode
+export type CalendarTouchableOpacityProps = {
+  delayPressIn: number;
+  key: string;
+  style: RecursiveArray<ViewStyle | undefined> | ViewStyle
+  onPress: () => void;
+  disabled: boolean;
 }
 
-export type Event<T = {}> = BaseEvent & T
+export type Event<T = any> = BaseEvent<T> & T
 
 export type Mode = '3days' | 'week' | 'day'
 
@@ -30,3 +30,9 @@ export type HasDateRange = [Date, Date]
 export type DateRangeHandler = ([start, end]: HasDateRange) => void
 
 export type HorizontalDirection = 'RIGHT' | 'LEFT'
+
+
+/**
+ * @deprecated Prefer type Event<T = any> instead.
+ */
+export type DayJSConvertedEvent<T = any> = Event<T>

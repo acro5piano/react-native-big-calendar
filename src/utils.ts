@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import { OVERLAP_PADDING } from '../src/commonStyles'
-import { DayJSConvertedEvent, Mode, WeekNum } from './interfaces'
+import { Event, Mode, WeekNum } from './interfaces'
 import { Color } from './theme'
 
 export const DAY_MINUTES = 1440
@@ -69,7 +69,7 @@ export function isToday(date: dayjs.Dayjs) {
   return today.isSame(date, 'day')
 }
 
-export function getRelativeTopInDay(date = dayjs()) {
+export function getRelativeTopInDay(date: dayjs.Dayjs) {
   return (100 * (date.hour() * 60 + date.minute())) / DAY_MINUTES
 }
 
@@ -91,44 +91,47 @@ export function modeToNum(mode: Mode) {
   }
 }
 
-export function formatStartEnd(event: DayJSConvertedEvent) {
-  return `${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}`
+export function formatStartEnd(event: Event<any>) {
+  return `${dayjs(event.start).format('HH:mm')} - ${dayjs(event.end).format('HH:mm')}`
 }
 
-export function isAllDayEvent(event: DayJSConvertedEvent) {
+export function isAllDayEvent(event: Event<any>) {
+ const start = dayjs(event.start)
+ const end = dayjs(event.end)
+
   return (
-    event.start.hour() === 0 &&
-    event.start.minute() === 0 &&
-    event.end.hour() === 0 &&
-    event.end.minute() === 0
+    start.hour() === 0 &&
+    start.minute() === 0 &&
+    end.hour() === 0 &&
+    end.minute() === 0
   )
 }
 
 export function getCountOfEventsAtEvent(
-  event: DayJSConvertedEvent,
-  eventList: DayJSConvertedEvent[],
+  event: Event<any>,
+  eventList: Event<any>[],
 ) {
   dayjs.extend(isBetween)
   return eventList.filter(
     (e) =>
-      event.start.isBetween(e.start, e.end, 'minute', '[)') ||
-      e.start.isBetween(event.start, event.end, 'minute', '[)'),
+      dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
+      dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
   ).length
 }
 
-export function getOrderOfEvent(event: DayJSConvertedEvent, eventList: DayJSConvertedEvent[]) {
+export function getOrderOfEvent(event: Event<any>, eventList: Event<any>[]) {
   dayjs.extend(isBetween)
   const events = eventList
     .filter(
       (e) =>
-        event.start.isBetween(e.start, e.end, 'minute', '[)') ||
-        e.start.isBetween(event.start, event.end, 'minute', '[)'),
+        dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
+        dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
     )
     .sort((a, b) => {
-      if (a.start.isSame(b.start)) {
-        return a.start.diff(a.end) < b.start.diff(b.end) ? -1 : 1
+      if (dayjs(a.start).isSame(b.start)) {
+        return dayjs(a.start).diff(a.end) < dayjs(b.start).diff(b.end) ? -1 : 1
       } else {
-        return a.start.isBefore(b.start) ? -1 : 1
+        return dayjs(a.start).isBefore(b.start) ? -1 : 1
       }
     })
   return events.indexOf(event)
