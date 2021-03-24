@@ -13,6 +13,6 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
-      - run: yarn tsc
+      - run: yarn tsc --noEmit
       - run: yarn lint
       - run: yarn test
