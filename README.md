@@ -235,3 +235,4 @@ If you are using this library, please send a PR to add your organization!
   - [ ] Blue active day text
   - [ ] Today indicator
 - [ ] Support the month view layout
+- [ ] Provide an example with `expo`
