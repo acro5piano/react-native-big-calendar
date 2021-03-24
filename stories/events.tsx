@@ -71,7 +71,8 @@ const eventRenderer = (
           borderColor: 'lightgrey',
           borderLeftColor: event.color
             ? event.color
-            : ((touchableOpacityProps.style as RecursiveArray<ViewStyle>)[2] as ViewStyle).backgroundColor,
+            : ((touchableOpacityProps.style as RecursiveArray<ViewStyle>)[2] as ViewStyle)
+                .backgroundColor,
           borderLeftWidth: 10,
           borderStyle: 'solid',
           borderRadius: 6,

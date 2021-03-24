@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+
+- Add custom renderer for events by @sebastienfi
+
 ## 0.7.5
 
 - Double checking that object exists before calling scrollTo method upon it by @filipearena

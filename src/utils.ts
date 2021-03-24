@@ -96,21 +96,13 @@ export function formatStartEnd(event: Event<any>) {
 }
 
 export function isAllDayEvent(event: Event<any>) {
- const start = dayjs(event.start)
- const end = dayjs(event.end)
+  const start = dayjs(event.start)
+  const end = dayjs(event.end)
 
-  return (
-    start.hour() === 0 &&
-    start.minute() === 0 &&
-    end.hour() === 0 &&
-    end.minute() === 0
-  )
+  return start.hour() === 0 && start.minute() === 0 && end.hour() === 0 && end.minute() === 0
 }
 
-export function getCountOfEventsAtEvent(
-  event: Event<any>,
-  eventList: Event<any>[],
-) {
+export function getCountOfEventsAtEvent(event: Event<any>, eventList: Event<any>[]) {
   dayjs.extend(isBetween)
   return eventList.filter(
     (e) =>

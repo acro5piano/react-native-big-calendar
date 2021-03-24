@@ -1,5 +1,8 @@
 name: test
-on: push
+on:
+  push: {}
+  pull_request:
+    types: [created, synchronize]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,6 +16,7 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
-      - run: yarn tsc
+      - run: yarn sync-ios
+      - run: yarn tsc --noEmit
       - run: yarn lint
       - run: yarn test
