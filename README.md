@@ -40,7 +40,7 @@ yarn add -D @types/react @types/react-native
 # Getting Started
 
 ```typescript
-import Calendar from 'react-native-big-calendar'
+import { Calendar } from 'react-native-big-calendar'
 
 const events = [
   {
