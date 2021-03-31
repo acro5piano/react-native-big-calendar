@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1
+
+- Add default export for supporting both style by @sebastienfi
+- Internal refactoring by @sebastienfi
+
 ## 0.8.0
 
 - Add custom renderer for events by @sebastienfi
