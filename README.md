@@ -39,11 +39,15 @@ Please ensure peer dependencies are installed.
 npm install react react-native
 ```
 
-If you use TypeScript ensure `@types/react` and `@types/react-native` is installed. `react-native-big-calendar` uses them internally.
+### TypeScript
+
+If you use TypeScript ensure `@types/react` and `@types/react-native` is installed. `react-native-big-calendar` internally uses them.
 
 ```sh
 npm install --save-dev @types/react @types/react-native
 ```
+
+### Usage on the Web
 
 If you are using this module on the Web, please install `react-native-web`.
 
