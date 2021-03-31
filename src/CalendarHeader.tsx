@@ -2,75 +2,18 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles } from './commonStyles'
-import { Event } from './interfaces'
+import { ICalendarEvent } from './interfaces'
 import { Color } from './theme'
+import { typedMemo } from './typedMemo.helper'
 import { isToday } from './utils'
 
 interface CalendarHeaderProps<T> {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
   style: ViewStyle
-  allDayEvents: Event<T>[]
+  allDayEvents: ICalendarEvent<T>[]
   isRTL: boolean
   onPressDateHeader?: (date: Date) => void
-}
-
-export const CalendarHeader = React.memo(_CalendarHeader)
-
-export function _CalendarHeader({
-  dateRange,
-  cellHeight,
-  style = {},
-  allDayEvents,
-  isRTL,
-  onPressDateHeader,
-}: CalendarHeaderProps<any>) {
-  const _onPress = React.useCallback(
-    (date: Date) => {
-      onPressDateHeader && onPressDateHeader(date)
-    },
-    [onPressDateHeader],
-  )
-
-  return (
-    <View style={[isRTL ? styles.containerRTL : styles.container, style]}>
-      <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
-      {dateRange.map((date) => {
-        const _isToday = isToday(date)
-        return (
-          <TouchableOpacity
-            style={{ flex: 1, paddingTop: 2 }}
-            onPress={() => _onPress(date.toDate())}
-            disabled={onPressDateHeader === undefined}
-            key={date.toString()}
-          >
-            <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-              <Text style={[commonStyles.guideText, _isToday && { color: Color.primary }]}>
-                {date.format('ddd')}
-              </Text>
-              <View style={_isToday && styles.todayWrap}>
-                <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
-                  {date.format('D')}
-                </Text>
-              </View>
-            </View>
-            <View style={[commonStyles.dateCell, { height: cellHeight }]}>
-              {allDayEvents.map((event) => {
-                if (!event.start.isSame(date, 'day')) {
-                  return null
-                }
-                return (
-                  <View style={commonStyles.eventCell}>
-                    <Text style={commonStyles.eventTitle}>{event.title}</Text>
-                  </View>
-                )
-              })}
-            </View>
-          </TouchableOpacity>
-        )
-      })}
-    </View>
-  )
 }
 
 const styles = StyleSheet.create({
@@ -106,3 +49,57 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
 })
+
+function _CalendarHeader<T>({
+  dateRange,
+  cellHeight,
+  style = {},
+  allDayEvents,
+  isRTL,
+  onPressDateHeader,
+}: CalendarHeaderProps<T>) {
+  const _onPress = React.useCallback(
+    (date: Date) => {
+      onPressDateHeader && onPressDateHeader(date)
+    },
+    [onPressDateHeader],
+  )
+
+  return (
+    <View style={[isRTL ? styles.containerRTL : styles.container, style]}>
+      <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
+      {dateRange.map((date) => {
+        const _isToday = isToday(date)
+        return (
+          <TouchableOpacity
+            style={{ flex: 1, paddingTop: 2 }}
+            onPress={() => _onPress(date.toDate())}
+            disabled={onPressDateHeader === undefined}
+            key={date.toString()}
+          >
+            <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
+              <Text style={[commonStyles.guideText, _isToday && { color: Color.primary }]}>{date.format('ddd')}</Text>
+              <View style={_isToday && styles.todayWrap}>
+                <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>{date.format('D')}</Text>
+              </View>
+            </View>
+            <View style={[commonStyles.dateCell, { height: cellHeight }]}>
+              {allDayEvents.map((event) => {
+                if (!dayjs(event.start).isSame(date, 'day')) {
+                  return null
+                }
+                return (
+                  <View style={commonStyles.eventCell} key={`${event.start}${event.title}`}>
+                    <Text style={commonStyles.eventTitle}>{event.title}</Text>
+                  </View>
+                )
+              })}
+            </View>
+          </TouchableOpacity>
+        )
+      })}
+    </View>
+  )
+}
+
+export const CalendarHeader = typedMemo(_CalendarHeader)

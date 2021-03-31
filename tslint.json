@@ -2,7 +2,21 @@
   "defaultSeverity": "error",
   "jsRules": {},
   "rules": {
-    // "no-console": [true, "log"],
+    "no-console": [
+      true,
+      "log"
+    ],
+    "no-debugger": true,
+    "no-duplicate-super": true,
+    "no-duplicate-switch-case": true,
+    "no-duplicate-variable": [
+      true,
+      "check-parameters"
+    ],
+    "no-var-keyword": true,
+    "ordered-imports": true,
+    "prefer-const": true,
+    "triple-equals": true,
     "variable-name": {
       "options": [
         "ban-keywords",
@@ -10,15 +24,7 @@
         "allow-leading-underscore",
         "allow-pascal-case"
       ]
-    },
-    "prefer-const": true,
-    "no-debugger": true,
-    "no-duplicate-switch-case": true,
-    "no-duplicate-super": true,
-    "no-duplicate-variable": [true, "check-parameters"],
-    "no-var-keyword": true,
-    "triple-equals": true,
-    "ordered-imports": true
+    }
   },
   "rulesDirectory": []
 }

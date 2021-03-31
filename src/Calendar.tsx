@@ -1,27 +1,15 @@
 import dayjs from 'dayjs'
-import * as React from 'react'
+import React from 'react'
 import { ViewStyle } from 'react-native'
 import { CalendarBody } from './CalendarBody'
 import { CalendarHeader } from './CalendarHeader'
 import { MIN_HEIGHT } from './commonStyles'
-import {
-  DateRangeHandler,
-  Event,
-  EventCellStyle,
-  HorizontalDirection,
-  Mode,
-  WeekNum,
-} from './interfaces'
-import {
-  getDatesInNextOneDay,
-  getDatesInNextThreeDays,
-  getDatesInWeek,
-  isAllDayEvent,
-  modeToNum,
-} from './utils'
+import { DateRangeHandler, EventCellStyle, HorizontalDirection, ICalendarEvent, Mode, WeekNum } from './interfaces'
+import { typedMemo } from './typedMemo.helper'
+import { getDatesInNextOneDay, getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } from './utils'
 
-interface CalendarProps<T> {
-  events: Event<T>[]
+export interface CalendarProps<T> {
+  events: ICalendarEvent<T>[]
   height: number
   overlapOffset?: number
   ampm?: boolean
@@ -39,10 +27,10 @@ interface CalendarProps<T> {
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: Event<T>) => void
+  onPressEvent?: (event: ICalendarEvent<T>) => void
 }
 
-export function _Calendar<T>({
+function _Calendar<T>({
   events,
   height,
   ampm = false,
@@ -71,18 +59,9 @@ export function _Calendar<T>({
     }
   }, [date])
 
-  const dayJsConvertedEvents = React.useMemo(
-    () => events.map((e) => ({ ...e, start: dayjs(e.start), end: dayjs(e.end) })),
-    [events],
-  )
+  const allDayEvents = React.useMemo(() => events.filter((event) => isAllDayEvent(event.start, event.end)), [events])
 
-  const allDayEvents = React.useMemo(() => dayJsConvertedEvents.filter(isAllDayEvent), [
-    dayJsConvertedEvents,
-  ])
-
-  const daytimeEvents = React.useMemo(() => dayJsConvertedEvents.filter((x) => !isAllDayEvent(x)), [
-    dayJsConvertedEvents,
-  ])
+  const daytimeEvents = React.useMemo(() => events.filter((event) => !isAllDayEvent(event.start, event.end)), [events])
 
   const dateRange = React.useMemo(() => {
     switch (mode) {
@@ -127,16 +106,12 @@ export function _Calendar<T>({
   }
 
   return (
-    <>
-      <CalendarHeader
-        {...commonProps}
-        allDayEvents={allDayEvents}
-        onPressDateHeader={onPressDateHeader}
-      />
+    <React.Fragment>
+      <CalendarHeader {...commonProps} allDayEvents={allDayEvents} onPressDateHeader={onPressDateHeader} />
       <CalendarBody
         {...commonProps}
         containerHeight={height}
-        dayJsConvertedEvents={daytimeEvents}
+        events={daytimeEvents}
         eventCellStyle={eventCellStyle}
         hideNowIndicator={hideNowIndicator}
         overlapOffset={overlapOffset}
@@ -147,8 +122,8 @@ export function _Calendar<T>({
         onPressEvent={onPressEvent}
         onSwipeHorizontal={onSwipeHorizontal}
       />
-    </>
+    </React.Fragment>
   )
 }
 
-export const Calendar = React.memo(_Calendar)
+export const Calendar = typedMemo(_Calendar)

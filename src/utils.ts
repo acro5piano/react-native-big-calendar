@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
-import { OVERLAP_PADDING } from '../src/commonStyles'
-import { Event, Mode, WeekNum } from './interfaces'
+import { OVERLAP_PADDING } from './commonStyles'
+import { ICalendarEvent, Mode, WeekNum } from './interfaces'
 import { Color } from './theme'
 
 export const DAY_MINUTES = 1440
@@ -91,18 +91,21 @@ export function modeToNum(mode: Mode) {
   }
 }
 
-export function formatStartEnd(event: Event<any>) {
-  return `${dayjs(event.start).format('HH:mm')} - ${dayjs(event.end).format('HH:mm')}`
+export function formatStartEnd(start: Date, end: Date) {
+  return `${dayjs(start).format('HH:mm')} - ${dayjs(end).format('HH:mm')}`
 }
 
-export function isAllDayEvent(event: Event<any>) {
-  const start = dayjs(event.start)
-  const end = dayjs(event.end)
+export function isAllDayEvent(start: Date, end: Date) {
+  const _start = dayjs(start)
+  const _end = dayjs(end)
 
-  return start.hour() === 0 && start.minute() === 0 && end.hour() === 0 && end.minute() === 0
+  return _start.hour() === 0 && _start.minute() === 0 && _end.hour() === 0 && _end.minute() === 0
 }
 
-export function getCountOfEventsAtEvent(event: Event<any>, eventList: Event<any>[]) {
+export function getCountOfEventsAtEvent(
+  event: ICalendarEvent<any>,
+  eventList: ICalendarEvent<any>[],
+) {
   dayjs.extend(isBetween)
   return eventList.filter(
     (e) =>
@@ -111,7 +114,7 @@ export function getCountOfEventsAtEvent(event: Event<any>, eventList: Event<any>
   ).length
 }
 
-export function getOrderOfEvent(event: Event<any>, eventList: Event<any>[]) {
+export function getOrderOfEvent(event: ICalendarEvent<any>, eventList: ICalendarEvent<any>[]) {
   dayjs.extend(isBetween)
   const events = eventList
     .filter(

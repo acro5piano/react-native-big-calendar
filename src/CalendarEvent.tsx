@@ -2,26 +2,28 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
-import { CalendarTouchableOpacityProps, Event, EventCellStyle } from './interfaces'
-import {
-  DAY_MINUTES,
-  formatStartEnd,
-  getRelativeTopInDay,
-  getStyleForOverlappingEvent,
-} from './utils'
+import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEvent } from './interfaces'
+import { typedMemo } from './typedMemo.helper'
+import { DAY_MINUTES, formatStartEnd, getRelativeTopInDay, getStyleForOverlappingEvent } from './utils'
 
-function getEventCellPositionStyle(event: Event<any>) {
-  const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(event.end).diff(event.start, 'minute')
-  const relativeTop = getRelativeTopInDay(event.start)
+const getEventCellPositionStyle = (start: Date, end: Date) => {
+  const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
+  const relativeTop = getRelativeTopInDay(dayjs(start))
   return {
     height: `${relativeHeight}%`,
     top: `${relativeTop}%`,
   }
 }
 
-interface CalendarBodyProps<T> {
-  event: Event<T>
-  onPressEvent?: (event: Event<T>) => void
+const styles = StyleSheet.create({
+  eventTime: {
+    color: '#fff',
+    fontSize: 10,
+  },
+})
+interface CalendarEventProps<T> {
+  event: ICalendarEvent<T>
+  onPressEvent?: (event: ICalendarEvent<T>) => void
   eventCellStyle?: EventCellStyle<T>
   showTime: boolean
   eventCount?: number
@@ -29,9 +31,7 @@ interface CalendarBodyProps<T> {
   overlapOffset?: number
 }
 
-export const CalendarEvent = React.memo(_CalendarEvent)
-
-export function _CalendarEvent({
+function _CalendarEvent<T>({
   event,
   onPressEvent,
   eventCellStyle,
@@ -39,9 +39,9 @@ export function _CalendarEvent({
   eventCount = 1,
   eventOrder = 0,
   overlapOffset = OVERLAP_OFFSET,
-}: CalendarBodyProps<{}>) {
+}: CalendarEventProps<T>) {
   const getEventStyle = React.useMemo(
-    () => (typeof eventCellStyle === 'function' ? eventCellStyle : (_: any) => eventCellStyle),
+    () => (typeof eventCellStyle === 'function' ? eventCellStyle : () => eventCellStyle),
     [eventCellStyle],
   )
 
@@ -63,7 +63,7 @@ export function _CalendarEvent({
     key: event.start.toString(),
     style: [
       commonStyles.eventCell,
-      getEventCellPositionStyle(event),
+      getEventCellPositionStyle(event.start, event.end),
       getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
       getEventStyle(plainJsEvent),
     ],
@@ -84,7 +84,7 @@ export function _CalendarEvent({
       ) : (
         <>
           <Text style={commonStyles.eventTitle}>{event.title}</Text>
-          {showTime && <Text style={styles.eventTime}>{formatStartEnd(event)}</Text>}
+          {showTime && <Text style={styles.eventTime}>{formatStartEnd(event.start, event.end)}</Text>}
           {event.children && event.children}
         </>
       )}
@@ -92,9 +92,4 @@ export function _CalendarEvent({
   )
 }
 
-const styles = StyleSheet.create({
-  eventTime: {
-    color: '#fff',
-    fontSize: 10,
-  },
-})
+export const CalendarEvent = typedMemo(_CalendarEvent)
