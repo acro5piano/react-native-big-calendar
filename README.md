@@ -33,20 +33,16 @@ yarn add react-native-big-calendar
 
 ### Other dependencies
 
+Please ensure peer dependencies are installed.
+
+```
+npm install react react-native
+```
+
 If you use TypeScript ensure `@types/react` and `@types/react-native` is installed. `react-native-big-calendar` uses them internally.
 
-```
-# NPM
+```sh
 npm install --save-dev @types/react @types/react-native
-
-# Yarn
-yarn add -D @types/react @types/react-native
-```
-
-Also ensure peer dependencies are installed.
-
-```
-yarn add react react-native
 ```
 
 If you are using this module on the Web, please follow the official react-native-web installation guide.
