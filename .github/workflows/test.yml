@@ -1,8 +1,10 @@
 name: test
+
 on:
   push: {}
   pull_request:
     types: [created, synchronize]
+
 jobs:
   test:
     runs-on: ubuntu-latest
