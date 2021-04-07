@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.2
+
+- Added contentOffset for iOS to avoid initial scroll for `scrollOffsetMinutes`. @RajRohitYadav
+
 ## 0.8.1
 
 - Add default export for supporting both style by @sebastienfi
