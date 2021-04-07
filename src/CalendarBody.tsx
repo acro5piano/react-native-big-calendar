@@ -109,7 +109,7 @@ function _CalendarBody<T>({
   const [panHandled, setPanHandled] = React.useState(false)
 
   React.useEffect(() => {
-    if (scrollView.current && scrollOffsetMinutes) {
+    if (scrollView.current && scrollOffsetMinutes && Platform.OS !== "ios") {
       // We add delay here to work correct on React Native
       // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
       setTimeout(
@@ -180,6 +180,8 @@ function _CalendarBody<T>({
       {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
       showsVerticalScrollIndicator={false}
       nestedScrollEnabled
+      contentOffset={Platform.OS === 'ios' ? 
+        { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
     >
       <View
         style={isRTL ? [styles.bodyRTL] : [styles.body]}
