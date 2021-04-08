@@ -104,7 +104,7 @@ export interface CalendarProps<T> {
   style?: ViewStyle
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
-  weekStartsOn?: WeekNum
+  weekEndsOn?: WeekNum
   isRTL?: boolean
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
