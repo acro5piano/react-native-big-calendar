@@ -6,7 +6,7 @@ import { CalendarHeader } from './CalendarHeader'
 import { MIN_HEIGHT } from './commonStyles'
 import { DateRangeHandler, EventCellStyle, HorizontalDirection, ICalendarEvent, Mode, WeekNum } from './interfaces'
 import { typedMemo } from './typedMemo.helper'
-import { getDatesInNextOneDay, getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } from './utils'
+import { getDatesInNextCustomDays, getDatesInNextOneDay, getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } from './utils'
 
 export interface CalendarProps<T> {
   events: ICalendarEvent<T>[]
@@ -27,7 +27,8 @@ export interface CalendarProps<T> {
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+  onPressEvent?: (event: ICalendarEvent<T>) => void,
+  weekEndsOn?: WeekNum
 }
 
 function _Calendar<T>({
@@ -50,6 +51,7 @@ function _Calendar<T>({
   onPressCell,
   onPressDateHeader,
   onPressEvent,
+  weekEndsOn = 6
 }: CalendarProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -71,6 +73,8 @@ function _Calendar<T>({
         return getDatesInWeek(targetDate, weekStartsOn, locale)
       case 'day':
         return getDatesInNextOneDay(targetDate, locale)
+      case 'custom':
+        return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
       default:
         throw new Error('undefined mode')
     }

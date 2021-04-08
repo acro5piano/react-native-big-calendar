@@ -168,3 +168,47 @@ export function getStyleForOverlappingEvent(
   }
   return overlapStyle
 }
+
+export function getDatesInNextCustomDays(
+  date: Date | dayjs.Dayjs = new Date(),
+  weekStartsOn: WeekNum = 0,
+  weekEndsOn: WeekNum = 6,
+  locale = 'en',
+) {
+  const subject = dayjs(date)
+  const subjectDOW = subject.day()
+  const days = Array(weekDaysCount(weekStartsOn,weekEndsOn))
+    .fill(0)
+    .map((_, i) => {
+      return subject.add(i - subjectDOW + weekStartsOn, 'day').locale(locale)
+    })
+  return days
+}
+
+function weekDaysCount (weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
+  // handle reverse week
+  if(weekEndsOn < weekStartsOn){
+    let daysCount = 1;
+    let i = weekStartsOn;
+    while(i != weekEndsOn){
+      ++i;
+      if(i > 6) {
+        i = 0;
+      }
+      ++daysCount;
+      // fallback for infinite
+      if(daysCount > 7){
+        break;
+      }
+    }
+    return daysCount;
+  } 
+  // normal week
+  else if (weekEndsOn > weekStartsOn) {
+    return weekEndsOn - weekStartsOn + 1
+  } 
+  // default
+  else {
+    return 1;
+  }
+}
