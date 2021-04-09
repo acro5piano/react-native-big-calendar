@@ -3,8 +3,13 @@ import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
 import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEvent } from './interfaces'
-import { typedMemo } from './typedMemo.helper'
-import { DAY_MINUTES, formatStartEnd, getRelativeTopInDay, getStyleForOverlappingEvent } from './utils'
+import {
+  DAY_MINUTES,
+  formatStartEnd,
+  getRelativeTopInDay,
+  getStyleForOverlappingEvent,
+  typedMemo,
+} from './utils'
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
@@ -84,7 +89,9 @@ function _CalendarEvent<T>({
       ) : (
         <>
           <Text style={commonStyles.eventTitle}>{event.title}</Text>
-          {showTime && <Text style={styles.eventTime}>{formatStartEnd(event.start, event.end)}</Text>}
+          {showTime && (
+            <Text style={styles.eventTime}>{formatStartEnd(event.start, event.end)}</Text>
+          )}
           {event.children && event.children}
         </>
       )}

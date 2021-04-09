@@ -9,6 +9,7 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "prepare": "simple-git-hooks",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook -o .storybook-build",
     "sync-ios": "yarn build && cp -r build rndemo",
@@ -21,8 +22,7 @@
     "prepublish": "npm run build",
     "build": "npm-run-all build:clean build:ts",
     "build:clean": "rimraf build/",
-    "build:ts": "env NODE_ENV=production rollup -c",
-    "prepare": "husky install"
+    "build:ts": "env NODE_ENV=production rollup -c"
   },
   "dependencies": {
     "dayjs": "^1.10.4"
@@ -40,7 +40,6 @@
     "@types/react-native": "^0.64.0",
     "acorn-jsx": "^5.3.1",
     "babel-loader": "^8.2.2",
-    "husky": "^6.0.0",
     "jest": "^25.5.4",
     "lint-staged": "^10.5.4",
     "npm-run-all": "^4.1.5",
@@ -51,6 +50,7 @@
     "react-native-web": "^0.15.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.42.3",
+    "simple-git-hooks": "^2.3.1",
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^25.5.1",
     "ts-loader": "^8.0.10",
@@ -59,10 +59,8 @@
     "typescript": "^3.9.9",
     "webpack-merge": "^5.7.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,md}": [
