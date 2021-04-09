@@ -9,6 +9,7 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "prepare": "simple-git-hooks",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook -o .storybook-build",
     "sync-ios": "yarn build && cp -r build rndemo",
@@ -24,8 +25,7 @@
     "build:ts": "env NODE_ENV=production rollup -c"
   },
   "dependencies": {
-    "dayjs": "^1.10.4",
-    "simple-git-hooks": "^2.3.1"
+    "dayjs": "^1.10.4"
   },
   "peerDependencies": {
     "react": "^16.8.3",
@@ -50,6 +50,7 @@
     "react-native-web": "^0.15.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.42.3",
+    "simple-git-hooks": "^2.3.1",
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^25.5.1",
     "ts-loader": "^8.0.10",
