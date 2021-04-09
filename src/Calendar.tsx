@@ -13,12 +13,12 @@ import {
   WeekNum,
 } from './interfaces'
 import {
-  typedMemo,
   getDatesInNextOneDay,
   getDatesInNextThreeDays,
   getDatesInWeek,
   isAllDayEvent,
   modeToNum,
+  typedMemo,
 } from './utils'
 
 export interface CalendarProps<T> {

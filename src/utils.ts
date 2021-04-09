@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
+import React from 'react'
 import { OVERLAP_PADDING } from './commonStyles'
 import { ICalendarEvent, Mode, WeekNum } from './interfaces'
 import { Color } from './theme'
-import React from 'react'
 
 export const typedMemo: <T>(c: T) => T = React.memo
 

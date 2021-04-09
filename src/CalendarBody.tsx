@@ -15,13 +15,13 @@ import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
 import { EventCellStyle, HorizontalDirection, ICalendarEvent } from './interfaces'
 import {
-  typedMemo,
   formatHour,
   getCountOfEventsAtEvent,
   getOrderOfEvent,
   getRelativeTopInDay,
   hours,
   isToday,
+  typedMemo,
 } from './utils'
 
 dayjs.extend(isBetween)

@@ -4,11 +4,11 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
 import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEvent } from './interfaces'
 import {
-  typedMemo,
   DAY_MINUTES,
   formatStartEnd,
   getRelativeTopInDay,
   getStyleForOverlappingEvent,
+  typedMemo,
 } from './utils'
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {

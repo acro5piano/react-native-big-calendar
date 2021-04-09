@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-nativ
 import { commonStyles } from './commonStyles'
 import { ICalendarEvent } from './interfaces'
 import { Color } from './theme'
-import { typedMemo, isToday } from './utils'
+import { isToday, typedMemo } from './utils'
 
 interface CalendarHeaderProps<T> {
   dateRange: dayjs.Dayjs[]
