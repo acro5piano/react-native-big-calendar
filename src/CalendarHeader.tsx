@@ -4,8 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-nativ
 import { commonStyles } from './commonStyles'
 import { ICalendarEvent } from './interfaces'
 import { Color } from './theme'
-import { typedMemo } from './typedMemo.helper'
-import { isToday } from './utils'
+import { typedMemo, isToday } from './utils'
 
 interface CalendarHeaderProps<T> {
   dateRange: dayjs.Dayjs[]
@@ -78,9 +77,13 @@ function _CalendarHeader<T>({
             key={date.toString()}
           >
             <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-              <Text style={[commonStyles.guideText, _isToday && { color: Color.primary }]}>{date.format('ddd')}</Text>
+              <Text style={[commonStyles.guideText, _isToday && { color: Color.primary }]}>
+                {date.format('ddd')}
+              </Text>
               <View style={_isToday && styles.todayWrap}>
-                <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>{date.format('D')}</Text>
+                <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
+                  {date.format('D')}
+                </Text>
               </View>
             </View>
             <View style={[commonStyles.dateCell, { height: cellHeight }]}>

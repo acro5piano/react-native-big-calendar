@@ -14,8 +14,15 @@ import {
 import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
 import { EventCellStyle, HorizontalDirection, ICalendarEvent } from './interfaces'
-import { typedMemo } from './typedMemo.helper'
-import { formatHour, getCountOfEventsAtEvent, getOrderOfEvent, getRelativeTopInDay, hours, isToday } from './utils'
+import {
+  typedMemo,
+  formatHour,
+  getCountOfEventsAtEvent,
+  getOrderOfEvent,
+  getRelativeTopInDay,
+  hours,
+  isToday,
+} from './utils'
 
 dayjs.extend(isBetween)
 const SWIPE_THRESHOLD = 50
@@ -109,7 +116,7 @@ function _CalendarBody<T>({
   const [panHandled, setPanHandled] = React.useState(false)
 
   React.useEffect(() => {
-    if (scrollView.current && scrollOffsetMinutes && Platform.OS !== "ios") {
+    if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
       // We add delay here to work correct on React Native
       // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
       setTimeout(
@@ -180,8 +187,7 @@ function _CalendarBody<T>({
       {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
       showsVerticalScrollIndicator={false}
       nestedScrollEnabled
-      contentOffset={Platform.OS === 'ios' ? 
-        { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
+      contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
     >
       <View
         style={isRTL ? [styles.bodyRTL] : [styles.body]}
@@ -195,10 +201,18 @@ function _CalendarBody<T>({
         {dateRange.map((date) => (
           <View style={styles.dayContainer} key={date.toString()}>
             {hours.map((hour) => (
-              <HourCell key={hour} cellHeight={cellHeight} date={date} hour={hour} onPress={_onPressCell} />
+              <HourCell
+                key={hour}
+                cellHeight={cellHeight}
+                date={date}
+                hour={hour}
+                onPress={_onPressCell}
+              />
             ))}
             {events
-              .filter(({ start }) => dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'))
+              .filter(({ start }) =>
+                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+              )
               .map((event) => (
                 <CalendarEvent
                   key={`${event.start}${event.title}`}
