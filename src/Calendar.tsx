@@ -4,9 +4,22 @@ import { ViewStyle } from 'react-native'
 import { CalendarBody } from './CalendarBody'
 import { CalendarHeader } from './CalendarHeader'
 import { MIN_HEIGHT } from './commonStyles'
-import { DateRangeHandler, EventCellStyle, HorizontalDirection, ICalendarEvent, Mode, WeekNum } from './interfaces'
-import { typedMemo } from './typedMemo.helper'
-import { getDatesInNextOneDay, getDatesInNextThreeDays, getDatesInWeek, isAllDayEvent, modeToNum } from './utils'
+import {
+  DateRangeHandler,
+  EventCellStyle,
+  HorizontalDirection,
+  ICalendarEvent,
+  Mode,
+  WeekNum,
+} from './interfaces'
+import {
+  getDatesInNextOneDay,
+  getDatesInNextThreeDays,
+  getDatesInWeek,
+  isAllDayEvent,
+  modeToNum,
+  typedMemo,
+} from './utils'
 
 export interface CalendarProps<T> {
   events: ICalendarEvent<T>[]
@@ -59,9 +72,15 @@ function _Calendar<T>({
     }
   }, [date])
 
-  const allDayEvents = React.useMemo(() => events.filter((event) => isAllDayEvent(event.start, event.end)), [events])
+  const allDayEvents = React.useMemo(
+    () => events.filter((event) => isAllDayEvent(event.start, event.end)),
+    [events],
+  )
 
-  const daytimeEvents = React.useMemo(() => events.filter((event) => !isAllDayEvent(event.start, event.end)), [events])
+  const daytimeEvents = React.useMemo(
+    () => events.filter((event) => !isAllDayEvent(event.start, event.end)),
+    [events],
+  )
 
   const dateRange = React.useMemo(() => {
     switch (mode) {
@@ -107,7 +126,11 @@ function _Calendar<T>({
 
   return (
     <React.Fragment>
-      <CalendarHeader {...commonProps} allDayEvents={allDayEvents} onPressDateHeader={onPressDateHeader} />
+      <CalendarHeader
+        {...commonProps}
+        allDayEvents={allDayEvents}
+        onPressDateHeader={onPressDateHeader}
+      />
       <CalendarBody
         {...commonProps}
         containerHeight={height}
