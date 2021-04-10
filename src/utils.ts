@@ -180,7 +180,7 @@ export function getDatesInNextCustomDays(
 ) {
   const subject = dayjs(date)
   const subjectDOW = subject.day()
-  const days = Array(weekDaysCount(weekStartsOn,weekEndsOn))
+  const days = Array(weekDaysCount(weekStartsOn, weekEndsOn))
     .fill(0)
     .map((_, i) => {
       return subject.add(i - subjectDOW + weekStartsOn, 'day').locale(locale)
@@ -188,30 +188,28 @@ export function getDatesInNextCustomDays(
   return days
 }
 
-function weekDaysCount (weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
+function weekDaysCount(weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
   // handle reverse week
-  if(weekEndsOn < weekStartsOn){
-    let daysCount = 1;
-    let i = weekStartsOn;
-    while(i != weekEndsOn){
-      ++i;
-      if(i > 6) {
-        i = 0;
+  if (weekEndsOn < weekStartsOn) {
+    let daysCount = 1
+    let i = weekStartsOn
+    while (i != weekEndsOn) {
+      ++i
+      ++daysCount
+      if (i > 6) {
+        i = 0
       }
-      ++daysCount;
       // fallback for infinite
-      if(daysCount > 7){
-        break;
+      if (daysCount > 7) {
+        break
       }
     }
-    return daysCount;
-  } 
-  // normal week
-  else if (weekEndsOn > weekStartsOn) {
-    return weekEndsOn - weekStartsOn + 1
-  } 
-  // default
-  else {
-    return 1;
+    return daysCount
   }
+  // normal week
+  if (weekEndsOn > weekStartsOn) {
+    return weekEndsOn - weekStartsOn + 1
+  }
+  // default
+  return 1
 }

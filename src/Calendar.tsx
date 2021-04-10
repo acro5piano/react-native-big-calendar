@@ -16,6 +16,7 @@ import {
   getDatesInNextOneDay,
   getDatesInNextThreeDays,
   getDatesInWeek,
+  getDatesInNextCustomDays,
   isAllDayEvent,
   modeToNum,
   typedMemo,
@@ -40,7 +41,7 @@ export interface CalendarProps<T> {
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: ICalendarEvent<T>) => void,
+  onPressEvent?: (event: ICalendarEvent<T>) => void
   weekEndsOn?: WeekNum
 }
 
@@ -64,7 +65,7 @@ function _Calendar<T>({
   onPressCell,
   onPressDateHeader,
   onPressEvent,
-  weekEndsOn = 6
+  weekEndsOn = 6,
 }: CalendarProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
