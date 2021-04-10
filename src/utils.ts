@@ -193,7 +193,7 @@ function weekDaysCount(weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
   if (weekEndsOn < weekStartsOn) {
     let daysCount = 1
     let i = weekStartsOn
-    while (i != weekEndsOn) {
+    while (i !== weekEndsOn) {
       ++i
       ++daysCount
       if (i > 6) {

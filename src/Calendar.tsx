@@ -13,10 +13,10 @@ import {
   WeekNum,
 } from './interfaces'
 import {
+  getDatesInNextCustomDays,
   getDatesInNextOneDay,
   getDatesInNextThreeDays,
   getDatesInWeek,
-  getDatesInNextCustomDays,
   isAllDayEvent,
   modeToNum,
   typedMemo,
