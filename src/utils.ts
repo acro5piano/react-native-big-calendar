@@ -89,6 +89,8 @@ export function modeToNum(mode: Mode) {
       return 7
     case 'day':
       return 1
+    case 'custom':
+      return 7
     default:
       throw new Error('undefined mode')
   }
