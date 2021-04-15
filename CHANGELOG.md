@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.0
+
+- New mode, `custom` which enables to specify week start and end date at the same time by @RajRohitYadav on #382
+
 ## 0.8.2
 
 - Added contentOffset for iOS to avoid initial scroll for `scrollOffsetMinutes`. @RajRohitYadav
