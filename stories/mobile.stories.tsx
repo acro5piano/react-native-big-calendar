@@ -94,3 +94,15 @@ storiesOf('Mobile', module)
       </View>
     )
   })
+  .add('Custom week length', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        style={styles.calendar}
+        height={SCREEN_HEIGHT}
+        events={events}
+        mode={'custom'}
+        weekStartsOn={1}
+        weekEndsOn={5}
+      />
+    </View>
+  ))

@@ -89,6 +89,8 @@ export function modeToNum(mode: Mode) {
       return 7
     case 'day':
       return 1
+    case 'custom':
+      return 7
     default:
       throw new Error('undefined mode')
   }
@@ -170,4 +172,47 @@ export function getStyleForOverlappingEvent(
     }
   }
   return overlapStyle
+}
+
+export function getDatesInNextCustomDays(
+  date: Date | dayjs.Dayjs = new Date(),
+  weekStartsOn: WeekNum = 0,
+  weekEndsOn: WeekNum = 6,
+  locale = 'en',
+) {
+  const subject = dayjs(date)
+  const subjectDOW = subject.day()
+  const days = Array(weekDaysCount(weekStartsOn, weekEndsOn))
+    .fill(0)
+    .map((_, i) => {
+      return subject.add(i - subjectDOW + weekStartsOn, 'day').locale(locale)
+    })
+  return days
+}
+
+// TODO: This method should be unit-tested
+function weekDaysCount(weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
+  // handle reverse week
+  if (weekEndsOn < weekStartsOn) {
+    let daysCount = 1
+    let i = weekStartsOn
+    while (i !== weekEndsOn) {
+      ++i
+      ++daysCount
+      if (i > 6) {
+        i = 0
+      }
+      // fallback for infinite
+      if (daysCount > 7) {
+        break
+      }
+    }
+    return daysCount
+  }
+  // normal week
+  if (weekEndsOn > weekStartsOn) {
+    return weekEndsOn - weekStartsOn + 1
+  }
+  // default
+  return 1
 }

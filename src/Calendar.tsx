@@ -13,6 +13,7 @@ import {
   WeekNum,
 } from './interfaces'
 import {
+  getDatesInNextCustomDays,
   getDatesInNextOneDay,
   getDatesInNextThreeDays,
   getDatesInWeek,
@@ -41,6 +42,7 @@ export interface CalendarProps<T> {
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
+  weekEndsOn?: WeekNum
 }
 
 function _Calendar<T>({
@@ -63,6 +65,7 @@ function _Calendar<T>({
   onPressCell,
   onPressDateHeader,
   onPressEvent,
+  weekEndsOn = 6,
 }: CalendarProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -90,6 +93,8 @@ function _Calendar<T>({
         return getDatesInWeek(targetDate, weekStartsOn, locale)
       case 'day':
         return getDatesInNextOneDay(targetDate, locale)
+      case 'custom':
+        return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
       default:
         throw new Error('undefined mode')
     }

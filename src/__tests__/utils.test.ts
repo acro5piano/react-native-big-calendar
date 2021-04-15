@@ -144,4 +144,10 @@ describe('modeToNum', () => {
     const num = utils.modeToNum(mode)
     expect(num).toEqual(1)
   })
+
+  test('custom', () => {
+    const mode = 'custom'
+    const num = utils.modeToNum(mode)
+    expect(num).toEqual(7)
+  })
 })
