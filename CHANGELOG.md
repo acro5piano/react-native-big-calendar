@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.1
+
+- Fix bumping version. I'm too sleepy!
+
 ## 0.9.0
 
 - New mode, `custom` which enables to specify week start and end date at the same time by @RajRohitYadav on #382
