@@ -190,6 +190,7 @@ export function getDatesInNextCustomDays(
   return days
 }
 
+// TODO: This method should be unit-tested
 function weekDaysCount(weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
   // handle reverse week
   if (weekEndsOn < weekStartsOn) {
