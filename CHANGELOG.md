@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2
+
+- Do not use `setInterval` if `hideNowIndicator` is specified by @acro5piano
+
 ## 0.9.1
 
 - Fix bumping version. I'm too sleepy!
