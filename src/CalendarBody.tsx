@@ -134,6 +134,9 @@ function _CalendarBody<T>({
   }, [scrollView])
 
   React.useEffect(() => {
+    if (hideNowIndicator) {
+      return () => {}
+    }
     const pid = setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
     return () => clearInterval(pid)
   }, [])
