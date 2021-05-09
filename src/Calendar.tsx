@@ -20,6 +20,7 @@ import {
   getDatesInWeek,
   isAllDayEvent,
   modeToNum,
+  typedMemo,
 } from './utils'
 
 export interface CalendarProps<T> {
@@ -157,4 +158,4 @@ function _Calendar<T>({
   )
 }
 
-export const Calendar = React.memo(_Calendar)
+export const Calendar = typedMemo(_Calendar)

@@ -55,7 +55,10 @@ export interface MyCustomEventType {
   color?: string
 }
 
-export const eventRenderer: EventRenderer<MyCustomEventType> = (event, touchableOpacityProps) => {
+export const customEventRenderer: EventRenderer<MyCustomEventType> = (
+  event,
+  touchableOpacityProps,
+) => {
   return (
     <TouchableOpacity
       {...touchableOpacityProps}

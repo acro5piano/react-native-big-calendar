@@ -4,7 +4,7 @@ import React from 'react'
 import { Alert, Dimensions, View } from 'react-native'
 import { Calendar } from '../src/Calendar'
 import { Control, CONTROL_HEIGHT } from './components/Control'
-import { customRendererEvents, eventRenderer, events } from './events'
+import { customEventRenderer, events } from './events'
 import { styles } from './styles'
 
 function alert(input: any) {
@@ -187,7 +187,7 @@ storiesOf('Desktop', module)
         <Calendar
           style={styles.calendar}
           height={SCREEN_HEIGHT}
-          renderEvent={eventRenderer}
+          renderEvent={customEventRenderer}
           events={events}
         />
       </View>
