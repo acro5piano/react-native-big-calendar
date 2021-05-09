@@ -42,6 +42,7 @@
   },
   "exclude": [
     "./example/**",
+    "./rndemo/**",
     "**/node_modules/**",
     "**/vendor/**",
     ".git",
