@@ -90,10 +90,12 @@ function _Calendar<T>({
 
   const dateRange = React.useMemo(() => {
     switch (mode) {
-      case '3days':
-        return getDatesInNextThreeDays(targetDate, locale)
       case 'week':
         return getDatesInWeek(targetDate, weekStartsOn, locale)
+      case 'month':
+        return getDatesInWeek(targetDate, weekStartsOn, locale)
+      case '3days':
+        return getDatesInNextThreeDays(targetDate, locale)
       case 'day':
         return getDatesInNextOneDay(targetDate, locale)
       case 'custom':

@@ -5,6 +5,7 @@ import { Alert, Dimensions, View } from 'react-native'
 import { Calendar } from '../src/Calendar'
 import { Control, CONTROL_HEIGHT } from './components/Control'
 import { customEventRenderer, events } from './events'
+import { useEvents } from './hooks'
 import { styles } from './styles'
 
 function alert(input: any) {
@@ -19,26 +20,31 @@ function alert(input: any) {
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('Desktop', module)
-  .add('week mode', () => {
-    const [additionalEvents, setAdditionalEvents] = React.useState<typeof events>([])
-
-    const addEvent = (start: Date) => {
-      // @ts-ignore
-      const title = prompt('What is the event title?')
-      if (title) {
-        const end = dayjs(start).add(1, 'hour').toDate()
-        setAdditionalEvents([...additionalEvents, { start, end, title: title }])
-      }
-    }
-
+  .add('Week mode', () => {
+    const state = useEvents(events)
     return (
       <View style={styles.desktop}>
         <Calendar
           style={styles.calendar}
           height={SCREEN_HEIGHT}
-          events={[...events, ...additionalEvents]}
+          events={state.events}
           onPressEvent={(event) => alert(event.title)}
-          onPressCell={addEvent}
+          onPressCell={state.addEvent}
+        />
+      </View>
+    )
+  })
+  .add('Month mode', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          style={styles.calendar}
+          mode="month"
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
         />
       </View>
     )

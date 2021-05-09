@@ -21,7 +21,6 @@ export function getDatesInWeek(
     .map((_, i) => {
       return subject.add(i - subjectDOW + weekStartsOn, 'day').locale(locale)
     })
-
   return days
 }
 
@@ -32,7 +31,6 @@ export function getDatesInNextThreeDays(date: Date | dayjs.Dayjs = new Date(), l
     .map((_, i) => {
       return subject.add(i, 'day')
     })
-
   return days
 }
 
@@ -43,13 +41,35 @@ export function getDatesInNextOneDay(date: Date | dayjs.Dayjs = new Date(), loca
     .map((_, i) => {
       return subject.add(i, 'day')
     })
-
   return days
 }
 
-export const hours = Array(24)
-  .fill(0)
-  .map((_, i) => i)
+export const hours = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+]
 
 export function formatHour(hour: number, ampm = false) {
   if (ampm) {
