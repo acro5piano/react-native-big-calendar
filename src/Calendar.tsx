@@ -7,6 +7,7 @@ import { MIN_HEIGHT } from './commonStyles'
 import {
   DateRangeHandler,
   EventCellStyle,
+  EventRenderer,
   HorizontalDirection,
   ICalendarEvent,
   Mode,
@@ -42,6 +43,7 @@ export interface CalendarProps<T> {
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
+  renderEvent?: EventRenderer<T>
   weekEndsOn?: WeekNum
 }
 
@@ -65,6 +67,7 @@ function _Calendar<T>({
   onPressCell,
   onPressDateHeader,
   onPressEvent,
+  renderEvent,
   weekEndsOn = 6,
 }: CalendarProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
@@ -149,6 +152,7 @@ function _Calendar<T>({
         onPressCell={onPressCell}
         onPressEvent={onPressEvent}
         onSwipeHorizontal={onSwipeHorizontal}
+        renderEvent={renderEvent}
       />
     </React.Fragment>
   )

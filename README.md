@@ -55,7 +55,7 @@ If you are using this module on the Web, please install `react-native-web`.
 npm install react-native-web
 ```
 
-If you are using Create React App, you are ready to go 🎉 
+If you are using Create React App, you are ready to go 🎉
 
 For more details, please refer to the official react-native-web installation guide.
 
@@ -96,6 +96,10 @@ export interface CalendarProps<T> {
   ampm?: boolean
   date?: Date
   eventCellStyle?: EventCellStyle<T>
+  renderEvent?: (
+    event: ICalendarEvent<T>,
+    touchableOpacityProps: CalendarTouchableOpacityProps,
+  ) => ReactElement | null
   locale?: string
   hideNowIndicator?: boolean
   mode?: Mode
@@ -113,11 +117,10 @@ export interface CalendarProps<T> {
 }
 ```
 
-
 `<Calendar />` Props are:
 
 | name                  | required | type                                                   | description                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|-----------------------|----------|--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------- | -------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `events`              | yes      | `ICalendarEvent<T>[]`                                  | The events which will be rendered on the calendar. You can extend the type `ICalendarEvent` by providing a value to generic type T (see `./stories/events.tsx` for an example). with optional children to display custom components inside the event, and optional event renderer function to take complete control over the rendered event (advanced feature). Events that occur during the same time range will be layered, offset, and given a unique color. |
 | `height`              | yes      | `number`                                               | Calendar height.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `hideNowIndicator`    | no       | `boolean`                                              | Hides the indicator for the current time. By default the now indicator is shown.                                                                                                                                                                                                                                                                                                                                                                                |
@@ -125,7 +128,7 @@ export interface CalendarProps<T> {
 | `onChangeDate`        | no       | `([start: Date, end: Date]) => void`                   | Event handler which will be fired when the current date range changed.                                                                                                                                                                                                                                                                                                                                                                                          |
 | `onPressCell`         | no       | `(date: Date) => void`                                 | Event handler which will be fired when the current date cell is clicked. The minute set to 0.                                                                                                                                                                                                                                                                                                                                                                   |
 | `onPressDateHeader`   | no       | `(date: Date) => void`                                 | Event handler which will be fired when the user clicks a date from the header.                                                                                                                                                                                                                                                                                                                                                                                  |
-| `mode`                | no       | `'3days' \| 'week' \| 'day' \| 'custom'`                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `mode`                | no       | `'3days' \| 'week' \| 'day' \| 'custom'`               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `style`               | no       | `import('react-native').ViewStyle`                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `eventCellStyle`      | no       | `ViewStyle \| (event: ICalendarEvent<T>) => ViewStyle` | The style of Event cell. Accepts either style object (static) or function (dynamic).                                                                                                                                                                                                                                                                                                                                                                            |
 | `scrollOffsetMinutes` | no       | `number`                                               | Scroll to specific minutes in a day. e.g.) set `480` to scroll to 8am when the calendar rendered.                                                                                                                                                                                                                                                                                                                                                               |
@@ -133,8 +136,8 @@ export interface CalendarProps<T> {
 | `swipeEnabled`        | no       | `boolean`                                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `showTime`            | no       | `boolean`                                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `ampm`                | no       | `boolean`                                              | Use 12 hours time format instead of 24 hours.                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `weekStartsOn`        | no       | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Which day the week starts on. Sunday is `0`.                                                                                                                                                                                                                                                                                       |
-| `weekEndsOn`        | no       | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Which day the week ends on. Sunday is `0`.                                                                                                                                                                                                                                                                                       |
+| `weekStartsOn`        | no       | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6`                      | Which day the week starts on. Sunday is `0`.                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `weekEndsOn`          | no       | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6`                      | Which day the week ends on. Sunday is `0`.                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `locale`              | no       | `string`                                               | Custom locale. See I18n section                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `overlapOffset`       | no       | `number`                                               | Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.                                                                                                                                                                                                                                                                                                                                                |
 | `isRTL`               | no       | `boolean`                                              | Switches the direction of the layout for use with RTL languages. Defaults to false.                                                                                                                                                                                                                                                                                                                                                                             |
@@ -149,10 +152,6 @@ interface ICalendarEventBase<T> {
   end: Date
   title: string
   children?: ReactElement | null
-  eventRenderer?: (
-    event: ICalendarEvent<T>,
-    touchableOpacityProps: CalendarTouchableOpacityProps,
-  ) => ReactElement | null
 }
 
 export type ICalendarEvent<T = any> = ICalendarEventBase<T> & T
@@ -162,30 +161,24 @@ export type ICalendarEvent<T = any> = ICalendarEventBase<T> & T
 
 You can override the component which renders a specific event. You choose to do so for all your events, or a specific event. You can extend the props on an event by implementing (in TypeScript) the type with generics `ICalendarEvent<T>` where `T` should be your custom interface (or type) with more props to an event. An example can be found [here](./stories/events.tsx).
 
-- The function `eventRenderer` must return a `ReactElement`. 
-- The component _should_ be wrapped inside a `TouchableOpacity` if you are using `react-native`, or _any_ DOM element which accepts positioning and click events (`onPress`, ...). 
-
+- The function `renderEvent` must return a `ReactElement`.
+- The component _should_ be wrapped inside a `TouchableOpacity` if you are using `react-native`, or _any_ DOM element which accepts positioning and click events (`onPress`, ...).
 
 ```typescript
 export interface MyCustomEventType {
   color: string
 }
 
-const eventRenderer = (event: ICalendarEvent<MyCustomEventType>, touchableOpacityProps: CalendarTouchableOpacityProps) => (
+const renderEvent = (
+  event: ICalendarEvent<MyCustomEventType>,
+  touchableOpacityProps: CalendarTouchableOpacityProps,
+) => (
   <TouchableOpacity {...touchableOpacityProps}>
     <Text>{`My custom event: ${event.title} with a color: ${event.color}`}</Text>
   </TouchableOpacity>
 )
 
-export const myEvents: ICalendarEvent<MyCustomEventType>[] = [
-  {
-    title: 'Custom reminder',
-    start: dayjs().set('hour', 16).set('minute', 0).toDate(),
-    end: dayjs().set('hour', 17).set('minute', 0).toDate(),
-    color: 'purple',
-    eventRenderer,
-  },
-]
+<Calendar renderEvent={renderEvent} />
 ```
 
 ## Displaying event's notes
@@ -193,12 +186,15 @@ export const myEvents: ICalendarEvent<MyCustomEventType>[] = [
 Your events can contain a prop `children` An example can be found [here](./stories/events.tsx).
 
 ```typescript
-const eventNotes = useMemo(() => (
-  <View style={{ marginTop: 3 }}>
-    <Text style={{ fontSize: 10, color: 'white' }}> Phone number: 555-123-4567 </Text>
-    <Text style={{ fontSize: 10, color: 'white' }}> Arrive 15 minutes early </Text>
-  </View>
-), [])
+const eventNotes = useMemo(
+  () => (
+    <View style={{ marginTop: 3 }}>
+      <Text style={{ fontSize: 10, color: 'white' }}> Phone number: 555-123-4567 </Text>
+      <Text style={{ fontSize: 10, color: 'white' }}> Arrive 15 minutes early </Text>
+    </View>
+  ),
+  [],
+)
 
 export const myEvents: ICalendarEvent[] = [
   {
@@ -209,6 +205,7 @@ export const myEvents: ICalendarEvent[] = [
   },
 ]
 ```
+
 # I18n
 
 Please specity your locale via `locale` prop **and** import day.js locale file:

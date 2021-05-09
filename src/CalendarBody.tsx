@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
 import { commonStyles } from './commonStyles'
-import { EventCellStyle, HorizontalDirection, ICalendarEvent } from './interfaces'
+import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from './interfaces'
 import {
   formatHour,
   getCountOfEventsAtEvent,
@@ -65,6 +65,7 @@ interface CalendarBodyProps<T> {
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
+  renderEvent?: EventRenderer<T>
 }
 
 interface WithCellHeight {
@@ -110,6 +111,7 @@ function _CalendarBody<T>({
   hideNowIndicator,
   overlapOffset,
   isRTL,
+  renderEvent,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const [now, setNow] = React.useState(dayjs())
@@ -226,6 +228,7 @@ function _CalendarBody<T>({
                   eventCount={getCountOfEventsAtEvent(event, events)}
                   eventOrder={getOrderOfEvent(event, events)}
                   overlapOffset={overlapOffset}
+                  renderEvent={renderEvent}
                 />
               ))}
             {isToday(date) && !hideNowIndicator && (

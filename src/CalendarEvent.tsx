@@ -1,15 +1,14 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
-import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEvent } from './interfaces'
+import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 import {
-  DAY_MINUTES,
-  formatStartEnd,
-  getRelativeTopInDay,
-  getStyleForOverlappingEvent,
-  typedMemo,
-} from './utils'
+  CalendarTouchableOpacityProps,
+  EventCellStyle,
+  EventRenderer,
+  ICalendarEvent,
+} from './interfaces'
+import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from './utils'
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
@@ -20,12 +19,6 @@ const getEventCellPositionStyle = (start: Date, end: Date) => {
   }
 }
 
-const styles = StyleSheet.create({
-  eventTime: {
-    color: '#fff',
-    fontSize: 10,
-  },
-})
 interface CalendarEventProps<T> {
   event: ICalendarEvent<T>
   onPressEvent?: (event: ICalendarEvent<T>) => void
@@ -34,6 +27,7 @@ interface CalendarEventProps<T> {
   eventCount?: number
   eventOrder?: number
   overlapOffset?: number
+  renderEvent?: EventRenderer<T>
 }
 
 function _CalendarEvent<T>({
@@ -44,6 +38,7 @@ function _CalendarEvent<T>({
   eventCount = 1,
   eventOrder = 0,
   overlapOffset = OVERLAP_OFFSET,
+  renderEvent,
 }: CalendarEventProps<T>) {
   const getEventStyle = React.useMemo(
     () => (typeof eventCellStyle === 'function' ? eventCellStyle : () => eventCellStyle),
@@ -76,26 +71,16 @@ function _CalendarEvent<T>({
     disabled: !onPressEvent,
   }
 
-  if (event.eventRenderer) {
-    return event.eventRenderer(event, touchableOpacityProps)
+  if (renderEvent) {
+    return renderEvent(event, touchableOpacityProps)
   }
 
   return (
-    <TouchableOpacity {...touchableOpacityProps}>
-      {dayjs(event.end).diff(event.start, 'minute') < 32 && showTime ? (
-        <Text style={commonStyles.eventTitle}>
-          {event.title},<Text style={styles.eventTime}>{dayjs(event.start).format('HH:mm')}</Text>
-        </Text>
-      ) : (
-        <>
-          <Text style={commonStyles.eventTitle}>{event.title}</Text>
-          {showTime && (
-            <Text style={styles.eventTime}>{formatStartEnd(event.start, event.end)}</Text>
-          )}
-          {event.children && event.children}
-        </>
-      )}
-    </TouchableOpacity>
+    <DefaultCalendarEventRenderer
+      event={event}
+      showTime={showTime}
+      touchableOpacityProps={touchableOpacityProps}
+    />
   )
 }
 
