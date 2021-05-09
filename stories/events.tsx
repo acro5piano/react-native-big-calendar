@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles } from '../src/commonStyles'
-import { CalendarTouchableOpacityProps, ICalendarEvent } from '../src/interfaces'
+import { EventRenderer, ICalendarEvent } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils'
 
 const eventNotes = (
@@ -55,10 +55,7 @@ export interface MyCustomEventType {
   color?: string
 }
 
-const eventRenderer = (
-  event: ICalendarEvent<MyCustomEventType>,
-  touchableOpacityProps: CalendarTouchableOpacityProps,
-) => {
+export const eventRenderer: EventRenderer<MyCustomEventType> = (event, touchableOpacityProps) => {
   return (
     <TouchableOpacity
       {...touchableOpacityProps}
@@ -105,13 +102,11 @@ export const customRendererEvents: ICalendarEvent<MyCustomEventType>[] = [
     title: 'Custom Renderer',
     start: dayjs().add(1, 'day').set('hour', 12).set('minute', 0).toDate(),
     end: dayjs().add(1, 'day').set('hour', 15).set('minute', 30).toDate(),
-    eventRenderer,
   },
   {
     title: 'Custom reminder',
     start: dayjs().set('hour', 16).set('minute', 0).toDate(),
     end: dayjs().set('hour', 17).set('minute', 0).toDate(),
     color: 'purple',
-    eventRenderer,
   },
 ]

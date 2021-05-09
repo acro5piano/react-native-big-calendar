@@ -2,7 +2,12 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
-import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEvent } from './interfaces'
+import {
+  CalendarTouchableOpacityProps,
+  EventCellStyle,
+  EventRenderer,
+  ICalendarEvent,
+} from './interfaces'
 import {
   DAY_MINUTES,
   formatStartEnd,
@@ -26,6 +31,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
 })
+
 interface CalendarEventProps<T> {
   event: ICalendarEvent<T>
   onPressEvent?: (event: ICalendarEvent<T>) => void
@@ -34,6 +40,7 @@ interface CalendarEventProps<T> {
   eventCount?: number
   eventOrder?: number
   overlapOffset?: number
+  renderEvent?: EventRenderer<T>
 }
 
 function _CalendarEvent<T>({
@@ -44,6 +51,7 @@ function _CalendarEvent<T>({
   eventCount = 1,
   eventOrder = 0,
   overlapOffset = OVERLAP_OFFSET,
+  renderEvent,
 }: CalendarEventProps<T>) {
   const getEventStyle = React.useMemo(
     () => (typeof eventCellStyle === 'function' ? eventCellStyle : () => eventCellStyle),
@@ -76,8 +84,8 @@ function _CalendarEvent<T>({
     disabled: !onPressEvent,
   }
 
-  if (event.eventRenderer) {
-    return event.eventRenderer(event, touchableOpacityProps)
+  if (renderEvent) {
+    return renderEvent(event, touchableOpacityProps)
   }
 
   return (
