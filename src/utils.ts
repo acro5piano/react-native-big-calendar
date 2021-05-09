@@ -9,6 +9,16 @@ export const typedMemo: <T>(c: T) => T = React.memo
 
 export const DAY_MINUTES = 1440
 
+export function getDatesInMonth(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
+  const subject = dayjs(date)
+  const days = Array(subject.daysInMonth() - 1)
+    .fill(0)
+    .map((_, i) => {
+      return subject.date(i + 1).locale(locale)
+    })
+  return days
+}
+
 export function getDatesInWeek(
   date: Date | dayjs.Dayjs = new Date(),
   weekStartsOn: WeekNum = 0,
@@ -101,7 +111,13 @@ export function todayInMinutes() {
   return today.diff(dayjs().startOf('day'), 'minute')
 }
 
-export function modeToNum(mode: Mode) {
+export function modeToNum(mode: Mode, current?: dayjs.Dayjs): number {
+  if (mode === 'month') {
+    if (!current) {
+      throw new Error('You must specify current date if mode is month')
+    }
+    return current.daysInMonth() - current.date() + 1
+  }
   switch (mode) {
     case '3days':
       return 3

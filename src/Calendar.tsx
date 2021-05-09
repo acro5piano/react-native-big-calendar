@@ -2,7 +2,9 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { ViewStyle } from 'react-native'
 import { CalendarBody } from './CalendarBody'
+import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
 import { CalendarHeader } from './CalendarHeader'
+import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
 import { MIN_HEIGHT } from './commonStyles'
 import {
   DateRangeHandler,
@@ -14,6 +16,7 @@ import {
   WeekNum,
 } from './interfaces'
 import {
+  getDatesInMonth,
   getDatesInNextCustomDays,
   getDatesInNextOneDay,
   getDatesInNextThreeDays,
@@ -90,9 +93,9 @@ function _Calendar<T>({
 
   const dateRange = React.useMemo(() => {
     switch (mode) {
-      case 'week':
-        return getDatesInWeek(targetDate, weekStartsOn, locale)
       case 'month':
+        return getDatesInMonth(targetDate, locale)
+      case 'week':
         return getDatesInWeek(targetDate, weekStartsOn, locale)
       case '3days':
         return getDatesInNextThreeDays(targetDate, locale)
@@ -119,9 +122,9 @@ function _Calendar<T>({
         return
       }
       if ((direction === 'LEFT' && !isRTL) || (direction === 'RIGHT' && isRTL)) {
-        setTargetDate(targetDate.add(modeToNum(mode), 'day'))
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
       } else {
-        setTargetDate(targetDate.add(modeToNum(mode) * -1, 'day'))
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
       }
     },
     [swipeEnabled, targetDate],
@@ -132,6 +135,31 @@ function _Calendar<T>({
     dateRange,
     style,
     isRTL,
+    mode,
+  }
+
+  if (mode === 'month') {
+    return (
+      <React.Fragment>
+        <CalendarHeaderForMonthView locale={locale} isRTL={isRTL} weekStartsOn={weekStartsOn} />
+        <CalendarBodyForMonthView
+          {...commonProps}
+          containerHeight={height}
+          events={daytimeEvents}
+          eventCellStyle={eventCellStyle}
+          hideNowIndicator={hideNowIndicator}
+          overlapOffset={overlapOffset}
+          scrollOffsetMinutes={scrollOffsetMinutes}
+          ampm={ampm}
+          showTime={showTime}
+          onPressCell={onPressCell}
+          onPressEvent={onPressEvent}
+          onSwipeHorizontal={onSwipeHorizontal}
+          renderEvent={renderEvent}
+          targetDate={targetDate}
+        />
+      </React.Fragment>
+    )
   }
 
   return (

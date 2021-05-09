@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import * as R from 'remeda'
 import * as utils from '../utils'
 
 const events: Event[] = [
@@ -43,6 +44,15 @@ function assertDateRange(expected: any[], actual: any[]) {
   const formatToIso = (a: any) => a.toISOString()
   expect(actual.map(formatToIso)).toEqual(expected.map(formatToIso))
 }
+
+describe('getDatesInMonth', () => {
+  const expected = R.range(1, 31).map((date) => new Date(2021, 4, date))
+
+  test('may 2021', () => {
+    const actual = utils.getDatesInMonth(new Date(2021, 4, 9))
+    assertDateRange(expected, actual)
+  })
+})
 
 describe('getDatesInWeek', () => {
   const expected = [
