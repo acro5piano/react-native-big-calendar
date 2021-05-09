@@ -1,20 +1,14 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
+import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 import {
   CalendarTouchableOpacityProps,
   EventCellStyle,
   EventRenderer,
   ICalendarEvent,
 } from './interfaces'
-import {
-  DAY_MINUTES,
-  formatStartEnd,
-  getRelativeTopInDay,
-  getStyleForOverlappingEvent,
-  typedMemo,
-} from './utils'
+import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from './utils'
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
@@ -24,13 +18,6 @@ const getEventCellPositionStyle = (start: Date, end: Date) => {
     top: `${relativeTop}%`,
   }
 }
-
-const styles = StyleSheet.create({
-  eventTime: {
-    color: '#fff',
-    fontSize: 10,
-  },
-})
 
 interface CalendarEventProps<T> {
   event: ICalendarEvent<T>
@@ -89,21 +76,11 @@ function _CalendarEvent<T>({
   }
 
   return (
-    <TouchableOpacity {...touchableOpacityProps}>
-      {dayjs(event.end).diff(event.start, 'minute') < 32 && showTime ? (
-        <Text style={commonStyles.eventTitle}>
-          {event.title},<Text style={styles.eventTime}>{dayjs(event.start).format('HH:mm')}</Text>
-        </Text>
-      ) : (
-        <>
-          <Text style={commonStyles.eventTitle}>{event.title}</Text>
-          {showTime && (
-            <Text style={styles.eventTime}>{formatStartEnd(event.start, event.end)}</Text>
-          )}
-          {event.children && event.children}
-        </>
-      )}
-    </TouchableOpacity>
+    <DefaultCalendarEventRenderer
+      event={event}
+      showTime={showTime}
+      touchableOpacityProps={touchableOpacityProps}
+    />
   )
 }
 
