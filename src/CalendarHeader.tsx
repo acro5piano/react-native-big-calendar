@@ -1,9 +1,8 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { commonStyles } from './commonStyles'
+import { Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { commonStyles, dateCellStyle, eventTitleStyle, guideTextStyle, u } from './commonStyles'
 import { ICalendarEvent } from './interfaces'
-import { Color } from './theme'
 import { isToday, typedMemo } from './utils'
 
 interface CalendarHeaderProps<T> {
@@ -14,40 +13,6 @@ interface CalendarHeaderProps<T> {
   isRTL: boolean
   onPressDateHeader?: (date: Date) => void
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
-  },
-  containerRTL: {
-    flexDirection: 'row-reverse',
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
-  },
-  dateText: {
-    color: '#444',
-    fontSize: 22,
-    textAlign: 'center',
-    marginTop: 6,
-  },
-  todayWrap: {
-    backgroundColor: Color.primary,
-    width: 36,
-    height: 36,
-    borderRadius: 50,
-    marginTop: 6,
-    paddingBottom: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  hourGuideSpacer: {
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
-  },
-})
 
 function _CalendarHeader<T>({
   dateRange,
@@ -65,8 +30,16 @@ function _CalendarHeader<T>({
   )
 
   return (
-    <View style={[isRTL ? styles.containerRTL : styles.container, style]}>
-      <View style={[commonStyles.hourGuide, styles.hourGuideSpacer]} />
+    <View
+      style={[
+        u['flex-1'],
+        u['border-b'],
+        u['border-gray-100'],
+        isRTL ? u['flex-row-reverse'] : u['flex-row'],
+        style,
+      ]}
+    >
+      <View style={[u['bg-white'], u['z-20'], u['w-50'], u['border-b'], u['border-gray-100']]} />
       {dateRange.map((date) => {
         const _isToday = isToday(date)
         return (
@@ -77,23 +50,44 @@ function _CalendarHeader<T>({
             key={date.toString()}
           >
             <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
-              <Text style={[commonStyles.guideText, _isToday && { color: Color.primary }]}>
+              <Text style={[guideTextStyle, _isToday && u['text-primary']]}>
                 {date.format('ddd')}
               </Text>
-              <View style={_isToday && styles.todayWrap}>
-                <Text style={[styles.dateText, _isToday && { color: '#fff' }]}>
+              <View
+                style={
+                  _isToday && [
+                    u['h-36'],
+                    u['w-36'],
+                    u['mt-6'],
+                    u['bg-primary'],
+                    u['pb-6'],
+                    u['rounded-full'],
+                    u['items-center'],
+                    u['justify-center'],
+                  ]
+                }
+              >
+                <Text
+                  style={[
+                    u['mt-6'],
+                    u['text-gray-800'],
+                    u['text-2xl'],
+                    u['text-center'],
+                    _isToday && u['text-white'],
+                  ]}
+                >
                   {date.format('D')}
                 </Text>
               </View>
             </View>
-            <View style={[commonStyles.dateCell, { height: cellHeight }]}>
+            <View style={[dateCellStyle, { height: cellHeight }]}>
               {allDayEvents.map((event) => {
                 if (!dayjs(event.start).isSame(date, 'day')) {
                   return null
                 }
                 return (
                   <View style={commonStyles.eventCell} key={`${event.start}${event.title}`}>
-                    <Text style={commonStyles.eventTitle}>{event.title}</Text>
+                    <Text style={eventTitleStyle}>{event.title}</Text>
                   </View>
                 )
               })}

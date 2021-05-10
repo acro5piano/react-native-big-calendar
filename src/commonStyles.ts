@@ -7,22 +7,6 @@ export const OVERLAP_OFFSET = Platform.OS === 'web' ? 20 : 8
 export const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0
 
 export const commonStyles = StyleSheet.create({
-  dateCell: {
-    borderWidth: 1,
-    borderColor: '#eee',
-    borderTopWidth: 0,
-    borderRightWidth: 0,
-  },
-  guideText: {
-    color: '#888',
-    fontSize: 11,
-    textAlign: 'center',
-  },
-  hourGuide: {
-    backgroundColor: '#fff',
-    zIndex: 1000,
-    width: HOUR_GUIDE_WIDTH,
-  },
   eventCell: {
     position: 'absolute' as const,
     backgroundColor: Color.primary,
@@ -39,8 +23,165 @@ export const commonStyles = StyleSheet.create({
     elevation: 2,
     minWidth: '33%',
   },
-  eventTitle: {
+})
+
+/*
+ * Utility-first CSS.
+ */
+export const u = StyleSheet.create({
+  /*
+   * Flex
+   */
+  flex: {
+    flexDirection: 'row',
+  },
+  'flex-row': {
+    flexDirection: 'row',
+  },
+  'flex-row-reverse': {
+    flexDirection: 'row-reverse',
+  },
+  'flex-column': {
+    flexDirection: 'column',
+  },
+  'flex-1': {
+    flex: 1,
+  },
+  'justify-center': {
+    justifyContent: 'center',
+  },
+  'items-center': {
+    alignItems: 'center',
+  },
+
+  /*
+   * Border
+   */
+  'border-l': {
+    borderLeftWidth: 1,
+  },
+  'border-t': {
+    borderTopWidth: 1,
+  },
+  'border-b': {
+    borderBottomWidth: 1,
+  },
+  'border-r': {
+    borderRightWidth: 1,
+  },
+  'border-gray-100': {
+    borderColor: '#eee',
+  },
+  'border-gray-200': {
+    borderColor: '#ddd',
+  },
+
+  /*
+   * Spacing
+   */
+  'mt-4': {
+    marginTop: 4,
+  },
+  'mt-6': {
+    marginTop: 6,
+  },
+  'p-8': {
+    padding: 8,
+  },
+  'py-2': {
+    paddingVertical: 2,
+  },
+  'px-6': {
+    paddingHorizontal: 6,
+  },
+  'pb-6': {
+    paddingBottom: 6,
+  },
+
+  /*
+   * Text
+   */
+  'text-gray-800': {
+    color: '#444',
+  },
+  'text-2xl': {
+    fontSize: 22,
+  },
+  'text-center': {
+    textAlign: 'center',
+  },
+  'text-white': {
     color: '#fff',
+  },
+  'text-primary': {
+    color: Color.primary,
+  },
+  'text-gray-300': {
+    color: '#fff',
+  },
+  'text-xs': {
+    fontSize: 10,
+  },
+  'text-sm': {
     fontSize: 12,
   },
+
+  /*
+   * Radius
+   */
+  rounded: {
+    borderRadius: 3,
+  },
+  'rounded-full': {
+    borderRadius: 9999,
+  },
+
+  /*
+   * Z Index
+   */
+  'z-0': {
+    zIndex: 0,
+  },
+  'z-10': {
+    zIndex: 10,
+  },
+  'z-20': {
+    zIndex: 20,
+  },
+
+  /*
+   * Backgrond
+   */
+  'bg-primary': {
+    backgroundColor: Color.primary,
+  },
+  'bg-white': {
+    backgroundColor: '#fff',
+  },
+
+  /*
+   * Width
+   */
+  'w-36': {
+    width: 36,
+  },
+  'w-50': {
+    width: 50,
+  },
+  'h-36': {
+    height: 36,
+  },
+
+  /*
+   * Misc
+   */
+  'overflow-hidden': {
+    overflow: 'hidden',
+  },
 })
+
+export const eventTitleStyle = [u['text-white'], u['text-sm']]
+
+export const dateCellStyle = [u['border-l'], u['border-b'], u['border-gray-100']]
+
+export const guideTextStyle = [u['text-gray-300'], u['text-xs'], u['text-center']]

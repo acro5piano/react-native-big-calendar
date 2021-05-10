@@ -1,9 +1,8 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { commonStyles } from './commonStyles'
+import { Text, View, ViewStyle } from 'react-native'
+import { guideTextStyle, u } from './commonStyles'
 import { WeekNum } from './interfaces'
-import { Color } from './theme'
 import { getDatesInWeek, typedMemo } from './utils'
 
 interface CalendarHeaderProps {
@@ -12,24 +11,6 @@ interface CalendarHeaderProps {
   locale: string
   style?: ViewStyle
 }
-
-// TODO: extract to common styles
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
-  },
-  containerRTL: {
-    flexDirection: 'row-reverse',
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
-  },
-  hourGuideSpacer: {
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
-  },
-})
 
 function _CalendarHeaderForMonthView({
   locale,
@@ -41,16 +22,19 @@ function _CalendarHeaderForMonthView({
   const todayWeekNum = dayjs().day()
 
   return (
-    <View style={[isRTL ? styles.containerRTL : styles.container, style]}>
+    <View
+      style={[
+        u['flex-1'],
+        u['border-b'],
+        u['border-gray-100'],
+        isRTL ? u['flex-row-reverse'] : u['flex-row'],
+        style,
+      ]}
+    >
       {dates.map((date) => (
         <View style={{ flex: 1, paddingTop: 2 }}>
           <View style={{ height: 30 }}>
-            <Text
-              style={[
-                commonStyles.guideText,
-                todayWeekNum === date.day() && { color: Color.primary },
-              ]}
-            >
+            <Text style={[guideTextStyle, todayWeekNum === date.day() && u['text-primary']]}>
               {date.format('ddd')}
             </Text>
           </View>

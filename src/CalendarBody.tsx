@@ -12,7 +12,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
-import { commonStyles } from './commonStyles'
+import { dateCellStyle, guideTextStyle, u } from './commonStyles'
 import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from './interfaces'
 import {
   formatHour,
@@ -28,24 +28,12 @@ dayjs.extend(isBetween)
 const SWIPE_THRESHOLD = 50
 
 const styles = StyleSheet.create({
-  body: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  bodyRTL: {
-    flexDirection: 'row-reverse',
-    flex: 1,
-  },
   nowIndicator: {
     position: 'absolute',
     zIndex: 10000,
     backgroundColor: 'red',
     height: 2,
     width: '100%',
-  },
-  dayContainer: {
-    flex: 1,
-    overflow: 'hidden',
   },
 })
 
@@ -75,7 +63,7 @@ interface WithCellHeight {
 const HourGuideColumn = React.memo(
   ({ cellHeight, hour, ampm }: WithCellHeight & { hour: number; ampm: boolean }) => (
     <View style={{ height: cellHeight }}>
-      <Text style={commonStyles.guideText}>{formatHour(hour, ampm)}</Text>
+      <Text style={guideTextStyle}>{formatHour(hour, ampm)}</Text>
     </View>
   ),
   () => true,
@@ -90,7 +78,7 @@ interface HourCellProps extends WithCellHeight {
 const HourCell = ({ cellHeight, onPress, date, hour }: HourCellProps) => {
   return (
     <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
-      <View style={[commonStyles.dateCell, { height: cellHeight }]} />
+      <View style={[dateCellStyle, { height: cellHeight }]} />
     </TouchableWithoutFeedback>
   )
 }
@@ -195,16 +183,16 @@ function _CalendarBody<T>({
       contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
     >
       <View
-        style={isRTL ? [styles.bodyRTL] : [styles.body]}
+        style={[u['flex-1'], isRTL ? u['flex-row-reverse'] : u['flex-row']]}
         {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
       >
-        <View style={[commonStyles.hourGuide]}>
+        <View style={[u['bg-white'], u['z-20'], u['w-50']]}>
           {hours.map((hour) => (
             <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
           ))}
         </View>
         {dateRange.map((date) => (
-          <View style={styles.dayContainer} key={date.toString()}>
+          <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
             {hours.map((hour) => (
               <HourCell
                 key={hour}

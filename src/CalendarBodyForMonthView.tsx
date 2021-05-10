@@ -2,8 +2,9 @@ import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
-import { PanResponder, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { PanResponder, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
+import { u } from './commonStyles'
 import {
   EventCellStyle,
   EventRenderer,
@@ -16,28 +17,6 @@ import { typedMemo } from './utils'
 
 dayjs.extend(isBetween)
 const SWIPE_THRESHOLD = 50
-
-const styles = StyleSheet.create({
-  body: {
-    flexDirection: 'column',
-    flex: 1,
-  },
-  weekContainer: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  weekContainerRTL: {
-    flex: 1,
-    flexDirection: 'row-reverse',
-  },
-  dayContainer: {
-    flex: 1,
-    borderLeftWidth: 1,
-    borderTopWidth: 1,
-    borderColor: '#ddd',
-    padding: 8,
-  },
-})
 
 interface CalendarBodyForMonthViewProps<T> {
   containerHeight: number
@@ -122,7 +101,8 @@ function _CalendarBodyForMonthView<T>({
         {
           height: containerHeight,
         },
-        styles.body,
+        u['flex-column'],
+        u['flex-1'],
         style,
       ]}
       {...panResponder.panHandlers}
@@ -130,14 +110,26 @@ function _CalendarBodyForMonthView<T>({
       {weeks.map((week, i) => (
         <View
           key={i}
-          style={[isRTL ? styles.weekContainerRTL : styles.weekContainer, { height: cellHeight }]}
+          style={[
+            u['flex-1'],
+            isRTL ? u['flex-row-reverse'] : u['flex-row'],
+            { height: cellHeight },
+          ]}
         >
           {week
             .map((d) => (d > 0 ? targetDate.date(d) : null))
             .map((date, ii) => (
               <TouchableOpacity
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
-                style={[styles.dayContainer, { height: cellHeight }]}
+                style={[
+                  i > 0 && u['border-t'],
+                  isRTL && ii > 0 && u['border-r'],
+                  !isRTL && ii > 0 && u['border-l'],
+                  u['border-gray-200'],
+                  u['p-8'],
+                  u['flex-1'],
+                  { height: cellHeight },
+                ]}
                 key={ii}
               >
                 <Text

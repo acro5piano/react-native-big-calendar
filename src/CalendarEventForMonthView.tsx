@@ -1,30 +1,14 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
+import { u } from './commonStyles'
 import {
   CalendarTouchableOpacityProps,
   EventCellStyle,
   EventRenderer,
   ICalendarEvent,
 } from './interfaces'
-import { Color } from './theme'
 import { typedMemo } from './utils'
-
-const styles = StyleSheet.create({
-  eventTitleContainer: {
-    marginTop: 4,
-    paddingVertical: 2,
-    paddingHorizontal: 6,
-    borderRadius: 3,
-    backgroundColor: Color.primary,
-    color: '#fff',
-  },
-  eventTitle: {
-    backgroundColor: Color.primary,
-    color: '#fff',
-    fontSize: 11,
-  },
-})
 
 interface CalendarEventProps<T> {
   event: ICalendarEvent<T>
@@ -60,7 +44,14 @@ function _CalendarEventForMonthView<T>({
   const touchableOpacityProps: CalendarTouchableOpacityProps = {
     delayPressIn: 20,
     key: `${event.start}${event.title}`,
-    style: [styles.eventTitleContainer, getEventStyle(plainJsEvent)],
+    style: [
+      u['bg-primary'],
+      u['rounded'],
+      u['px-6'],
+      u['py-2'],
+      u['mt-4'],
+      getEventStyle(plainJsEvent),
+    ],
     onPress: _onPress,
     disabled: !onPressEvent,
   }
@@ -71,7 +62,7 @@ function _CalendarEventForMonthView<T>({
 
   return (
     <TouchableOpacity {...touchableOpacityProps}>
-      <Text style={styles.eventTitle}>{event.title}</Text>
+      <Text style={[u['text-white'], u['text-xs']]}>{event.title}</Text>
     </TouchableOpacity>
   )
 }
