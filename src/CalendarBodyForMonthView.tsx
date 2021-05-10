@@ -93,6 +93,7 @@ function _CalendarBodyForMonthView<T>({
                   u['border-gray-200'],
                   u['p-8'],
                   u['flex-1'],
+                  u['flex-column'],
                   { height: cellHeight },
                 ]}
                 key={ii}

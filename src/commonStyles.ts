@@ -8,7 +8,6 @@ export const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0
 
 export const commonStyles = StyleSheet.create({
   eventCell: {
-    position: 'absolute' as const,
     backgroundColor: Color.primary,
     zIndex: 100,
     start: 3,
@@ -85,6 +84,9 @@ export const u = StyleSheet.create({
   /*
    * Spacing
    */
+  'mt-2': {
+    marginTop: 2,
+  },
   'mt-4': {
     marginTop: 4,
   },
@@ -189,6 +191,9 @@ export const u = StyleSheet.create({
    */
   'overflow-hidden': {
     overflow: 'hidden',
+  },
+  absolute: {
+    position: 'absolute',
   },
 })
 

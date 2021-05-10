@@ -22,6 +22,7 @@ function _CalendarEventForMonthView<T>({
     event,
     eventCellStyle,
     onPressEvent,
+    injectedStyles: [u['mt-2']],
   })
 
   if (renderEvent) {

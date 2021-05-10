@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { OVERLAP_OFFSET } from './commonStyles'
+import { OVERLAP_OFFSET, u } from './commonStyles'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 import { useCalendarTouchableOpacityProps } from './hooks/useCalendarTouchableOpacityProps'
 import { EventCellStyle, EventRenderer, ICalendarEvent } from './interfaces'
@@ -40,10 +40,11 @@ function _CalendarEvent<T>({
     event,
     eventCellStyle,
     onPressEvent,
-    injectedStyle: {
-      ...getEventCellPositionStyle(event.start, event.end),
-      ...getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
-    },
+    injectedStyles: [
+      getEventCellPositionStyle(event.start, event.end),
+      getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
+      u['absolute'],
+    ],
   })
 
   if (renderEvent) {
