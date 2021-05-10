@@ -1,5 +1,46 @@
 # Changelog
 
+## 1.0.0
+
+- Add month view #410
+- Fix warning android timer #414
+- Fix Events spanning multiple days not rendering correct #416
+- Replace tslint with eslint #415
+- Fix bugs on wrong React hooks implementation
+- **Breaking**: Remove eventRenderer and add custom render function capability #408
+
+# Migration from 0.x
+
+If you use `event.eventRenderer` , you should mmove the code to the `<Calendar />` component.
+
+Before:
+
+```typescript
+<Calendar
+  events={[
+    {
+      // ...
+      eventRenderer?: () => <TouchableOpacity /* ... */ />
+    },
+  ]}
+/>
+```
+
+After:
+
+```typescript
+<Calendar
+  events=[
+    {
+      // ...
+    },
+  ]
+  eventRenderer: () => <TouchableOpacity /* ... */ />
+/>
+```
+
+Details: https://github.com/acro5piano/react-native-big-calendar/pull/408
+
 ## 0.9.2
 
 - Do not use `setInterval` if `hideNowIndicator` is specified by @acro5piano

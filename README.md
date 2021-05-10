@@ -12,6 +12,8 @@ Cross-platform gcal/outlook like calendar component for React Native.
 
 <img src="./assets/screenshot-mobile.png" height="500">
 
+![image](https://user-images.githubusercontent.com/10719495/117629046-b98a2480-b1b4-11eb-89df-02c373438e45.png)
+
 # Features
 
 - Cross Platform: Runs on the Web, iOS, Android with the power of React

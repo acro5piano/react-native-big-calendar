@@ -1,6 +1,6 @@
 {
   "name": "react-native-big-calendar",
-  "version": "0.9.2",
+  "version": "1.0.0",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
@@ -73,9 +73,12 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,md}": [
+    "*.{ts,tsx,js,jsx}": [
       "prettier --write",
       "eslint --fix"
+    ],
+    "*.{md}": [
+      "prettier --write"
     ]
   },
   "importSort": {
