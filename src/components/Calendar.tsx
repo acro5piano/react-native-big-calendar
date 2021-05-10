@@ -2,11 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { ViewStyle } from 'react-native'
 
-import { CalendarBody } from './CalendarBody'
-import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
-import { CalendarHeader } from './CalendarHeader'
-import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
-import { MIN_HEIGHT } from './commonStyles'
+import { MIN_HEIGHT } from '../commonStyles'
 import {
   DateRangeHandler,
   EventCellStyle,
@@ -15,7 +11,7 @@ import {
   ICalendarEvent,
   Mode,
   WeekNum,
-} from './interfaces'
+} from '../interfaces'
 import {
   getDatesInMonth,
   getDatesInNextCustomDays,
@@ -25,7 +21,11 @@ import {
   isAllDayEvent,
   modeToNum,
   typedMemo,
-} from './utils'
+} from '../utils'
+import { CalendarBody } from './CalendarBody'
+import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
+import { CalendarHeader } from './CalendarHeader'
+import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
 
 export interface CalendarProps<T> {
   events: ICalendarEvent<T>[]

@@ -2,9 +2,9 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 
-import { eventTitleStyle, u } from './commonStyles'
-import { CalendarTouchableOpacityProps, ICalendarEvent } from './interfaces'
-import { formatStartEnd } from './utils'
+import { eventTitleStyle, u } from '../commonStyles'
+import { CalendarTouchableOpacityProps, ICalendarEvent } from '../interfaces'
+import { formatStartEnd } from '../utils'
 
 interface DefaultCalendarEventRendererProps<T> {
   touchableOpacityProps: CalendarTouchableOpacityProps

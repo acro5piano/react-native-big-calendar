@@ -11,11 +11,10 @@ import {
   ViewStyle,
 } from 'react-native'
 
-import { CalendarEvent } from './CalendarEvent'
-import { dateCellStyle, guideTextStyle, u } from './commonStyles'
-import { useNow } from './hooks/useNow'
-import { usePanResponder } from './hooks/usePanResponder'
-import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from './interfaces'
+import { dateCellStyle, guideTextStyle, u } from '../commonStyles'
+import { useNow } from '../hooks/useNow'
+import { usePanResponder } from '../hooks/usePanResponder'
+import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from '../interfaces'
 import {
   formatHour,
   getCountOfEventsAtEvent,
@@ -24,7 +23,8 @@ import {
   hours,
   isToday,
   typedMemo,
-} from './utils'
+} from '../utils'
+import { CalendarEvent } from './CalendarEvent'
 
 dayjs.extend(isBetween)
 
