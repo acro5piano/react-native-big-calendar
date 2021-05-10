@@ -1,6 +1,8 @@
 # Changelog
 
-## 1.0.0
+## 1.0.1
+
+We're excited to announce the first stable version! It contains lots of bug fixes, and new mode "month".
 
 - Add month view #410
 - Fix warning android timer #414
