@@ -137,6 +137,20 @@ function _CalendarBody<T>({
     [onPressCell],
   )
 
+  const _renderMappedEvent = (event: ICalendarEvent<T>) => (
+    <CalendarEvent
+      key={`${event.start}${event.title}`}
+      event={event}
+      onPressEvent={onPressEvent}
+      eventCellStyle={eventCellStyle}
+      showTime={showTime}
+      eventCount={getCountOfEventsAtEvent(event, events)}
+      eventOrder={getOrderOfEvent(event, events)}
+      overlapOffset={overlapOffset}
+      renderEvent={renderEvent}
+    />
+  )
+
   return (
     <ScrollView
       style={[
@@ -176,19 +190,30 @@ function _CalendarBody<T>({
               .filter(({ start }) =>
                 dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
               )
-              .map((event) => (
-                <CalendarEvent
-                  key={`${event.start}${event.title}`}
-                  event={event}
-                  onPressEvent={onPressEvent}
-                  eventCellStyle={eventCellStyle}
-                  showTime={showTime}
-                  eventCount={getCountOfEventsAtEvent(event, events)}
-                  eventOrder={getOrderOfEvent(event, events)}
-                  overlapOffset={overlapOffset}
-                  renderEvent={renderEvent}
-                />
-              ))}
+              .map(_renderMappedEvent)}
+            {events
+              .filter(
+                ({ start, end }) =>
+                  dayjs(start).isBefore(date.startOf('day')) &&
+                  dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+              )
+              .map((event) => ({
+                ...event,
+                start: dayjs(event.end).startOf('day'),
+              }))
+              .map(_renderMappedEvent)}
+            {events
+              .filter(
+                ({ start, end }) =>
+                  dayjs(start).isBefore(date.startOf('day')) &&
+                  dayjs(end).isAfter(date.endOf('day')),
+              )
+              .map((event) => ({
+                ...event,
+                start: dayjs(event.end).startOf('day'),
+                end: dayjs(event.end).endOf('day'),
+              }))
+              .map(_renderMappedEvent)}
             {isToday(date) && !hideNowIndicator && (
               <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
             )}
