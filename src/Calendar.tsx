@@ -2,7 +2,9 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { ViewStyle } from 'react-native'
 import { CalendarBody } from './CalendarBody'
+import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
 import { CalendarHeader } from './CalendarHeader'
+import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
 import { MIN_HEIGHT } from './commonStyles'
 import {
   DateRangeHandler,
@@ -14,6 +16,7 @@ import {
   WeekNum,
 } from './interfaces'
 import {
+  getDatesInMonth,
   getDatesInNextCustomDays,
   getDatesInNextOneDay,
   getDatesInNextThreeDays,
@@ -45,6 +48,7 @@ export interface CalendarProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   renderEvent?: EventRenderer<T>
   weekEndsOn?: WeekNum
+  maxVisibleEventCount?: number
 }
 
 function _Calendar<T>({
@@ -69,6 +73,7 @@ function _Calendar<T>({
   onPressEvent,
   renderEvent,
   weekEndsOn = 6,
+  maxVisibleEventCount = 3,
 }: CalendarProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -90,10 +95,12 @@ function _Calendar<T>({
 
   const dateRange = React.useMemo(() => {
     switch (mode) {
-      case '3days':
-        return getDatesInNextThreeDays(targetDate, locale)
+      case 'month':
+        return getDatesInMonth(targetDate, locale)
       case 'week':
         return getDatesInWeek(targetDate, weekStartsOn, locale)
+      case '3days':
+        return getDatesInNextThreeDays(targetDate, locale)
       case 'day':
         return getDatesInNextOneDay(targetDate, locale)
       case 'custom':
@@ -117,9 +124,9 @@ function _Calendar<T>({
         return
       }
       if ((direction === 'LEFT' && !isRTL) || (direction === 'RIGHT' && isRTL)) {
-        setTargetDate(targetDate.add(modeToNum(mode), 'day'))
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
       } else {
-        setTargetDate(targetDate.add(modeToNum(mode) * -1, 'day'))
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
       }
     },
     [swipeEnabled, targetDate],
@@ -130,6 +137,29 @@ function _Calendar<T>({
     dateRange,
     style,
     isRTL,
+    mode,
+  }
+
+  if (mode === 'month') {
+    return (
+      <React.Fragment>
+        <CalendarHeaderForMonthView locale={locale} isRTL={isRTL} weekStartsOn={weekStartsOn} />
+        <CalendarBodyForMonthView<T>
+          {...commonProps}
+          containerHeight={height}
+          events={daytimeEvents}
+          eventCellStyle={eventCellStyle}
+          weekStartsOn={weekStartsOn}
+          hideNowIndicator={hideNowIndicator}
+          onPressCell={onPressCell}
+          onPressEvent={onPressEvent}
+          onSwipeHorizontal={onSwipeHorizontal}
+          renderEvent={renderEvent}
+          targetDate={targetDate}
+          maxVisibleEventCount={maxVisibleEventCount}
+        />
+      </React.Fragment>
+    )
   }
 
   return (

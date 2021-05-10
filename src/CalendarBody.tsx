@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
 import {
-  PanResponder,
   Platform,
   ScrollView,
   StyleSheet,
@@ -12,7 +11,9 @@ import {
   ViewStyle,
 } from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
-import { commonStyles } from './commonStyles'
+import { dateCellStyle, guideTextStyle, u } from './commonStyles'
+import { useNow } from './hooks/useNow'
+import { usePanResponder } from './hooks/usePanResponder'
 import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from './interfaces'
 import {
   formatHour,
@@ -25,27 +26,14 @@ import {
 } from './utils'
 
 dayjs.extend(isBetween)
-const SWIPE_THRESHOLD = 50
 
 const styles = StyleSheet.create({
-  body: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  bodyRTL: {
-    flexDirection: 'row-reverse',
-    flex: 1,
-  },
   nowIndicator: {
     position: 'absolute',
     zIndex: 10000,
     backgroundColor: 'red',
     height: 2,
     width: '100%',
-  },
-  dayContainer: {
-    flex: 1,
-    overflow: 'hidden',
   },
 })
 
@@ -75,7 +63,7 @@ interface WithCellHeight {
 const HourGuideColumn = React.memo(
   ({ cellHeight, hour, ampm }: WithCellHeight & { hour: number; ampm: boolean }) => (
     <View style={{ height: cellHeight }}>
-      <Text style={commonStyles.guideText}>{formatHour(hour, ampm)}</Text>
+      <Text style={guideTextStyle}>{formatHour(hour, ampm)}</Text>
     </View>
   ),
   () => true,
@@ -90,7 +78,7 @@ interface HourCellProps extends WithCellHeight {
 const HourCell = ({ cellHeight, onPress, date, hour }: HourCellProps) => {
   return (
     <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
-      <View style={[commonStyles.dateCell, { height: cellHeight }]} />
+      <View style={[dateCellStyle, { height: cellHeight }]} />
     </TouchableWithoutFeedback>
   )
 }
@@ -114,8 +102,7 @@ function _CalendarBody<T>({
   renderEvent,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
-  const [now, setNow] = React.useState(dayjs())
-  const [panHandled, setPanHandled] = React.useState(false)
+  const { now } = useNow(!hideNowIndicator)
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -135,42 +122,9 @@ function _CalendarBody<T>({
     }
   }, [scrollView])
 
-  React.useEffect(() => {
-    if (hideNowIndicator) {
-      return () => {}
-    }
-    const pid = setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
-    return () => clearInterval(pid)
-  }, [])
-
-  const panResponder = React.useMemo(
-    () =>
-      PanResponder.create({
-        // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
-        onMoveShouldSetPanResponder: (_, { dx, dy }) => {
-          return dx > 2 || dx < -2 || dy > 2 || dy < -2
-        },
-        onPanResponderMove: (_, { dy, dx }) => {
-          if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
-            return
-          }
-          if (dx < -1 * SWIPE_THRESHOLD) {
-            onSwipeHorizontal && onSwipeHorizontal('LEFT')
-            setPanHandled(true)
-            return
-          }
-          if (dx > SWIPE_THRESHOLD) {
-            onSwipeHorizontal && onSwipeHorizontal('RIGHT')
-            setPanHandled(true)
-            return
-          }
-        },
-        onPanResponderEnd: () => {
-          setPanHandled(false)
-        },
-      }),
-    [panHandled, onSwipeHorizontal],
-  )
+  const panResponder = usePanResponder({
+    onSwipeHorizontal,
+  })
 
   const _onPressCell = React.useCallback(
     (date: dayjs.Dayjs) => {
@@ -195,16 +149,16 @@ function _CalendarBody<T>({
       contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
     >
       <View
-        style={isRTL ? [styles.bodyRTL] : [styles.body]}
+        style={[u['flex-1'], isRTL ? u['flex-row-reverse'] : u['flex-row']]}
         {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
       >
-        <View style={[commonStyles.hourGuide]}>
+        <View style={[u['bg-white'], u['z-20'], u['w-50']]}>
           {hours.map((hour) => (
             <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
           ))}
         </View>
         {dateRange.map((date) => (
-          <View style={styles.dayContainer} key={date.toString()}>
+          <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
             {hours.map((hour) => (
               <HourCell
                 key={hour}

@@ -9,6 +9,16 @@ export const typedMemo: <T>(c: T) => T = React.memo
 
 export const DAY_MINUTES = 1440
 
+export function getDatesInMonth(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
+  const subject = dayjs(date)
+  const days = Array(subject.daysInMonth() - 1)
+    .fill(0)
+    .map((_, i) => {
+      return subject.date(i + 1).locale(locale)
+    })
+  return days
+}
+
 export function getDatesInWeek(
   date: Date | dayjs.Dayjs = new Date(),
   weekStartsOn: WeekNum = 0,
@@ -21,7 +31,6 @@ export function getDatesInWeek(
     .map((_, i) => {
       return subject.add(i - subjectDOW + weekStartsOn, 'day').locale(locale)
     })
-
   return days
 }
 
@@ -32,7 +41,6 @@ export function getDatesInNextThreeDays(date: Date | dayjs.Dayjs = new Date(), l
     .map((_, i) => {
       return subject.add(i, 'day')
     })
-
   return days
 }
 
@@ -43,13 +51,35 @@ export function getDatesInNextOneDay(date: Date | dayjs.Dayjs = new Date(), loca
     .map((_, i) => {
       return subject.add(i, 'day')
     })
-
   return days
 }
 
-export const hours = Array(24)
-  .fill(0)
-  .map((_, i) => i)
+export const hours = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+]
 
 export function formatHour(hour: number, ampm = false) {
   if (ampm) {
@@ -81,7 +111,13 @@ export function todayInMinutes() {
   return today.diff(dayjs().startOf('day'), 'minute')
 }
 
-export function modeToNum(mode: Mode) {
+export function modeToNum(mode: Mode, current?: dayjs.Dayjs): number {
+  if (mode === 'month') {
+    if (!current) {
+      throw new Error('You must specify current date if mode is month')
+    }
+    return current.daysInMonth() - current.date() + 1
+  }
   switch (mode) {
     case '3days':
       return 3

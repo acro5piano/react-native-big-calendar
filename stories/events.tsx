@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { commonStyles } from '../src/commonStyles'
+import { eventTitleStyle } from '../src/commonStyles'
 import { EventRenderer, ICalendarEvent } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils'
 
@@ -68,10 +68,7 @@ export const customEventRenderer: EventRenderer<MyCustomEventType> = (
           backgroundColor: 'white',
           borderWidth: 1,
           borderColor: 'lightgrey',
-          borderLeftColor: event.color
-            ? event.color
-            : ((touchableOpacityProps.style as RecursiveArray<ViewStyle>)[2] as ViewStyle)
-                .backgroundColor,
+          borderLeftColor: event.color ? event.color : 'green',
           borderLeftWidth: 10,
           borderStyle: 'solid',
           borderRadius: 6,
@@ -81,16 +78,16 @@ export const customEventRenderer: EventRenderer<MyCustomEventType> = (
       ]}
     >
       {dayjs(event.end).diff(event.start, 'minute') < 32 ? (
-        <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
+        <Text style={[eventTitleStyle, { color: 'black' }]}>
           {event.title},
-          <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
+          <Text style={[eventTitleStyle, { color: 'black' }]}>
             {dayjs(event.start).format('HH:mm')}
           </Text>
         </Text>
       ) : (
         <>
-          <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>{event.title}</Text>
-          <Text style={{ ...commonStyles.eventTitle, color: 'black' }}>
+          <Text style={[eventTitleStyle, { color: 'black' }]}>{event.title}</Text>
+          <Text style={[eventTitleStyle, { color: 'black' }]}>
             {formatStartEnd(event.start, event.end)}
           </Text>
           {event.children && event.children}

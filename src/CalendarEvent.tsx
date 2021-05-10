@@ -1,13 +1,9 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { commonStyles, OVERLAP_OFFSET } from './commonStyles'
+import { OVERLAP_OFFSET } from './commonStyles'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
-import {
-  CalendarTouchableOpacityProps,
-  EventCellStyle,
-  EventRenderer,
-  ICalendarEvent,
-} from './interfaces'
+import { useCalendarTouchableOpacityProps } from './hooks/useCalendarTouchableOpacityProps'
+import { EventCellStyle, EventRenderer, ICalendarEvent } from './interfaces'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from './utils'
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {
@@ -40,36 +36,15 @@ function _CalendarEvent<T>({
   overlapOffset = OVERLAP_OFFSET,
   renderEvent,
 }: CalendarEventProps<T>) {
-  const getEventStyle = React.useMemo(
-    () => (typeof eventCellStyle === 'function' ? eventCellStyle : () => eventCellStyle),
-    [eventCellStyle],
-  )
-
-  const plainJsEvent = React.useMemo(
-    () => ({
-      ...event,
-      start: dayjs(event.start).toDate(),
-      end: dayjs(event.end).toDate(),
-    }),
-    [event],
-  )
-
-  const _onPress = React.useCallback(() => {
-    onPressEvent && onPressEvent(plainJsEvent)
-  }, [onPressEvent, plainJsEvent])
-
-  const touchableOpacityProps: CalendarTouchableOpacityProps = {
-    delayPressIn: 20,
-    key: event.start.toString(),
-    style: [
-      commonStyles.eventCell,
-      getEventCellPositionStyle(event.start, event.end),
-      getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
-      getEventStyle(plainJsEvent),
-    ],
-    onPress: _onPress,
-    disabled: !onPressEvent,
-  }
+  const touchableOpacityProps = useCalendarTouchableOpacityProps({
+    event,
+    eventCellStyle,
+    onPressEvent,
+    injectedStyle: {
+      ...getEventCellPositionStyle(event.start, event.end),
+      ...getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
+    },
+  })
 
   if (renderEvent) {
     return renderEvent(event, touchableOpacityProps)
