@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { Alert, Dimensions, View } from 'react-native'
+import { Alert, View } from 'react-native'
 import { Calendar } from '../src/Calendar'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events } from './events'
@@ -16,7 +16,6 @@ function alert(input: any) {
 }
 
 const MOBILE_HEIGHT = 736
-const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('Mobile', module)
   .add('day mode', () => (
@@ -54,7 +53,7 @@ storiesOf('Mobile', module)
   ))
   .add('do not show time', () => (
     <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} showTime={false} />
+      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} showTime={false} />
     </View>
   ))
   .add('on date changed', () => {
@@ -66,7 +65,7 @@ storiesOf('Mobile', module)
       <View style={styles.mobile}>
         <Calendar
           style={styles.calendar}
-          height={SCREEN_HEIGHT}
+          height={MOBILE_HEIGHT}
           events={events}
           onChangeDate={onChangeDate}
         />
@@ -75,7 +74,7 @@ storiesOf('Mobile', module)
   })
   .add('Hidden now indocator', () => (
     <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} hideNowIndicator />
+      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} hideNowIndicator />
     </View>
   ))
   .add('RTL', () => {
@@ -87,7 +86,7 @@ storiesOf('Mobile', module)
         <Calendar
           style={styles.calendar}
           locale="he"
-          height={SCREEN_HEIGHT}
+          height={MOBILE_HEIGHT}
           events={events}
           isRTL={true}
         />
@@ -98,7 +97,7 @@ storiesOf('Mobile', module)
     <View style={styles.mobile}>
       <Calendar
         style={styles.calendar}
-        height={SCREEN_HEIGHT}
+        height={MOBILE_HEIGHT}
         events={events}
         mode={'custom'}
         weekStartsOn={1}
