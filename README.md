@@ -255,19 +255,3 @@ https://github.com/iamkun/dayjs/tree/dev/src/locale
 </p>
 
 If you are using this library, please send a PR to add your organization!
-
-# TODO
-
-- [x] Add API Documentation
-- [x] Add `onClickCell` feature
-- [ ] Add `onDragCell` feature
-- [ ] Allow component replacement
-  - [x] Event
-  - [ ] Complete Header
-  - [ ] Hour indicator
-- [ ] Style customize
-  - [ ] Blue active day
-  - [ ] Blue active day text
-  - [ ] Today indicator
-- [ ] Support the month view layout
-- [ ] Provide an example with `expo`
