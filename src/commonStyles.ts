@@ -53,6 +53,9 @@ export const u = StyleSheet.create({
   'items-center': {
     alignItems: 'center',
   },
+  'self-center': {
+    alignSelf: 'center',
+  },
 
   /*
    * Border
@@ -104,6 +107,9 @@ export const u = StyleSheet.create({
   'text-gray-800': {
     color: '#444',
   },
+  'text-gray-300': {
+    color: '#888',
+  },
   'text-2xl': {
     fontSize: 22,
   },
@@ -115,9 +121,6 @@ export const u = StyleSheet.create({
   },
   'text-primary': {
     color: Color.primary,
-  },
-  'text-gray-300': {
-    color: '#fff',
   },
   'text-xs': {
     fontSize: 10,

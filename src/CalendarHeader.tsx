@@ -64,6 +64,7 @@ function _CalendarHeader<T>({
                     u['rounded-full'],
                     u['items-center'],
                     u['justify-center'],
+                    u['self-center'],
                   ]
                 }
               >
