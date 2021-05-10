@@ -68,10 +68,7 @@ export const customEventRenderer: EventRenderer<MyCustomEventType> = (
           backgroundColor: 'white',
           borderWidth: 1,
           borderColor: 'lightgrey',
-          borderLeftColor: event.color
-            ? event.color
-            : ((touchableOpacityProps.style as RecursiveArray<ViewStyle>)[2] as ViewStyle)
-                .backgroundColor,
+          borderLeftColor: event.color ? event.color : 'green',
           borderLeftWidth: 10,
           borderStyle: 'solid',
           borderRadius: 6,

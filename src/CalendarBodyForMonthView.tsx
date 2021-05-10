@@ -2,9 +2,11 @@ import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
-import { PanResponder, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 import { u } from './commonStyles'
+import { useNow } from './hooks/useNow'
+import { usePanResponder } from './hooks/usePanResponder'
 import {
   EventCellStyle,
   EventRenderer,
@@ -16,7 +18,6 @@ import { Color } from './theme'
 import { typedMemo } from './utils'
 
 dayjs.extend(isBetween)
-const SWIPE_THRESHOLD = 50
 
 interface CalendarBodyForMonthViewProps<T> {
   containerHeight: number
@@ -49,47 +50,11 @@ function _CalendarBodyForMonthView<T>({
   maxVisibleEventCount,
   weekStartsOn,
 }: CalendarBodyForMonthViewProps<T>) {
-  const [now, setNow] = React.useState(dayjs())
-  const [panHandled, setPanHandled] = React.useState(false)
+  const { now } = useNow(!hideNowIndicator)
 
-  // TODO: add `useNow` hook
-  React.useEffect(() => {
-    if (hideNowIndicator) {
-      return () => {}
-    }
-    const pid = setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
-    return () => clearInterval(pid)
-  }, [])
-
-  // TODO: add custom hook for this
-  const panResponder = React.useMemo(
-    () =>
-      PanResponder.create({
-        // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
-        onMoveShouldSetPanResponder: (_, { dx, dy }) => {
-          return dx > 2 || dx < -2 || dy > 2 || dy < -2
-        },
-        onPanResponderMove: (_, { dy, dx }) => {
-          if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
-            return
-          }
-          if (dx < -1 * SWIPE_THRESHOLD) {
-            onSwipeHorizontal && onSwipeHorizontal('LEFT')
-            setPanHandled(true)
-            return
-          }
-          if (dx > SWIPE_THRESHOLD) {
-            onSwipeHorizontal && onSwipeHorizontal('RIGHT')
-            setPanHandled(true)
-            return
-          }
-        },
-        onPanResponderEnd: () => {
-          setPanHandled(false)
-        },
-      }),
-    [panHandled, onSwipeHorizontal],
-  )
+  const panResponder = usePanResponder({
+    onSwipeHorizontal,
+  })
 
   const weeks = calendarize(now.toDate(), weekStartsOn)
 

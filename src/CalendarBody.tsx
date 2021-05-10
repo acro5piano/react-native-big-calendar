@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
 import {
-  PanResponder,
   Platform,
   ScrollView,
   StyleSheet,
@@ -13,6 +12,8 @@ import {
 } from 'react-native'
 import { CalendarEvent } from './CalendarEvent'
 import { dateCellStyle, guideTextStyle, u } from './commonStyles'
+import { useNow } from './hooks/useNow'
+import { usePanResponder } from './hooks/usePanResponder'
 import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from './interfaces'
 import {
   formatHour,
@@ -25,7 +26,6 @@ import {
 } from './utils'
 
 dayjs.extend(isBetween)
-const SWIPE_THRESHOLD = 50
 
 const styles = StyleSheet.create({
   nowIndicator: {
@@ -102,8 +102,7 @@ function _CalendarBody<T>({
   renderEvent,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
-  const [now, setNow] = React.useState(dayjs())
-  const [panHandled, setPanHandled] = React.useState(false)
+  const { now } = useNow(!hideNowIndicator)
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -123,42 +122,9 @@ function _CalendarBody<T>({
     }
   }, [scrollView])
 
-  React.useEffect(() => {
-    if (hideNowIndicator) {
-      return () => {}
-    }
-    const pid = setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
-    return () => clearInterval(pid)
-  }, [])
-
-  const panResponder = React.useMemo(
-    () =>
-      PanResponder.create({
-        // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
-        onMoveShouldSetPanResponder: (_, { dx, dy }) => {
-          return dx > 2 || dx < -2 || dy > 2 || dy < -2
-        },
-        onPanResponderMove: (_, { dy, dx }) => {
-          if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandled) {
-            return
-          }
-          if (dx < -1 * SWIPE_THRESHOLD) {
-            onSwipeHorizontal && onSwipeHorizontal('LEFT')
-            setPanHandled(true)
-            return
-          }
-          if (dx > SWIPE_THRESHOLD) {
-            onSwipeHorizontal && onSwipeHorizontal('RIGHT')
-            setPanHandled(true)
-            return
-          }
-        },
-        onPanResponderEnd: () => {
-          setPanHandled(false)
-        },
-      }),
-    [panHandled, onSwipeHorizontal],
-  )
+  const panResponder = usePanResponder({
+    onSwipeHorizontal,
+  })
 
   const _onPressCell = React.useCallback(
     (date: dayjs.Dayjs) => {
