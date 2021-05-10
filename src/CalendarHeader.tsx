@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { commonStyles, dateCellStyle, eventTitleStyle, guideTextStyle, u } from './commonStyles'
 import { ICalendarEvent } from './interfaces'
 import { isToday, typedMemo } from './utils'
@@ -32,49 +32,51 @@ function _CalendarHeader<T>({
   return (
     <View
       style={[
-        u['flex-1'],
         u['border-b'],
         u['border-gray-100'],
+        u['bg-white'],
         isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
     >
-      <View style={[u['bg-white'], u['z-20'], u['w-50'], u['border-b'], u['border-gray-100']]} />
+      <View style={[u['bg-white'], u['z-10'], u['w-50'], u['border-b'], u['border-gray-100']]} />
       {dateRange.map((date) => {
         const _isToday = isToday(date)
         return (
           <TouchableOpacity
-            style={{ flex: 1, paddingTop: 2 }}
+            style={[u['bg-white'], u['flex-1'], u['pt-2']]}
             onPress={() => _onPress(date.toDate())}
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
           >
-            <View style={{ height: cellHeight, justifyContent: 'space-between' }}>
+            <View style={[u['justify-between'], { height: cellHeight }]}>
               <Text style={[guideTextStyle, _isToday && u['text-primary']]}>
                 {date.format('ddd')}
               </Text>
               <View
                 style={
-                  _isToday && [
-                    u['h-36'],
-                    u['w-36'],
-                    u['mt-6'],
-                    u['bg-primary'],
-                    u['pb-6'],
-                    u['rounded-full'],
-                    u['items-center'],
-                    u['justify-center'],
-                    u['self-center'],
-                  ]
+                  _isToday
+                    ? [
+                        u['h-36'],
+                        u['w-36'],
+                        u['bg-primary'],
+                        u['pb-6'],
+                        u['rounded-full'],
+                        u['items-center'],
+                        u['justify-center'],
+                        u['self-center'],
+                        u['z-20'],
+                      ]
+                    : [u['mb-6']]
                 }
               >
                 <Text
                   style={[
-                    u['mt-6'],
                     u['text-gray-800'],
                     u['text-2xl'],
                     u['text-center'],
                     _isToday && u['text-white'],
+                    Platform.OS === 'web' && _isToday && u['mt-6'],
                   ]}
                 >
                   {date.format('D')}

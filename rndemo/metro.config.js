@@ -5,19 +5,13 @@
  * @format
  */
 
-const path = require('path');
-
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
-        inlineRequires: false,
+        inlineRequires: true,
       },
     }),
   },
-  watchFolders: [
-    // To allow finding files outside mobile
-    path.resolve(__dirname, '..'),
-  ],
 };

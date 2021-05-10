@@ -8,13 +8,13 @@ interface UseCalendarTouchableOpacityPropsProps<T> {
   event: ICalendarEvent<T>
   eventCellStyle?: EventCellStyle<T>
   onPressEvent?: (e: ICalendarEvent<T>) => void
-  injectedStyle?: ViewStyle
+  injectedStyles?: ViewStyle[]
 }
 
 export function useCalendarTouchableOpacityProps<T>({
   event,
   eventCellStyle,
-  injectedStyle,
+  injectedStyles = [],
   onPressEvent,
 }: UseCalendarTouchableOpacityPropsProps<T>) {
   const getEventStyle = React.useMemo(
@@ -38,7 +38,7 @@ export function useCalendarTouchableOpacityProps<T>({
   const touchableOpacityProps: CalendarTouchableOpacityProps = {
     delayPressIn: 20,
     key: event.start.toString(),
-    style: [commonStyles.eventCell, injectedStyle, getEventStyle(plainJsEvent)],
+    style: [commonStyles.eventCell, ...injectedStyles, getEventStyle(plainJsEvent)],
     onPress: _onPress,
     disabled: !onPressEvent,
   }

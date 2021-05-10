@@ -1,7 +1,7 @@
+import dayjs from 'dayjs';
 import React from 'react';
 import {Dimensions, SafeAreaView, StatusBar} from 'react-native';
-import {ICalendarEvent, Calendar} from './build';
-import dayjs from 'dayjs';
+import {Calendar, ICalendarEvent} from './build';
 
 const events = [
   {
@@ -22,10 +22,12 @@ const events = [
 ];
 
 const App = () => {
-  const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEvent[]>([]);
+  const [additionalEvents, setAdditionalEvents] = React.useState<
+    ICalendarEvent[]
+  >([]);
 
   const addEvent = React.useCallback(
-    (start) => {
+    start => {
       const title = 'new Event';
       const end = dayjs(start).add(59, 'minute');
       setAdditionalEvents([...additionalEvents, {start, end, title}]);
@@ -38,10 +40,9 @@ const App = () => {
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <Calendar
-          height={Dimensions.get('window').height - 50}
+          height={Dimensions.get('window').height}
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
-          onPressEvent={(e: ICalendarEvent) => console.log(e.title)}
         />
       </SafeAreaView>
     </React.Fragment>

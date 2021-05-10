@@ -56,7 +56,7 @@ function _CalendarBodyForMonthView<T>({
     onSwipeHorizontal,
   })
 
-  const weeks = calendarize(now.toDate(), weekStartsOn)
+  const weeks = calendarize(targetDate.toDate(), weekStartsOn)
 
   const cellHeight = containerHeight / 6 - 30
 
@@ -93,6 +93,7 @@ function _CalendarBodyForMonthView<T>({
                   u['border-gray-200'],
                   u['p-8'],
                   u['flex-1'],
+                  u['flex-column'],
                   { height: cellHeight },
                 ]}
                 key={ii}
@@ -101,7 +102,7 @@ function _CalendarBodyForMonthView<T>({
                   style={[
                     { textAlign: 'center' },
                     date &&
-                      date.format('YYYY-MM-DD') === targetDate.format('YYYY-MM-DD') && {
+                      date.format('YYYY-MM-DD') === now.format('YYYY-MM-DD') && {
                         color: Color.primary,
                       },
                   ]}

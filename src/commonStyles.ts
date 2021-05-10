@@ -8,7 +8,6 @@ export const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0
 
 export const commonStyles = StyleSheet.create({
   eventCell: {
-    position: 'absolute' as const,
     backgroundColor: Color.primary,
     zIndex: 100,
     start: 3,
@@ -47,6 +46,9 @@ export const u = StyleSheet.create({
   'flex-1': {
     flex: 1,
   },
+  'justify-between': {
+    justifyContent: 'space-between',
+  },
   'justify-center': {
     justifyContent: 'center',
   },
@@ -82,14 +84,23 @@ export const u = StyleSheet.create({
   /*
    * Spacing
    */
+  'mt-2': {
+    marginTop: 2,
+  },
   'mt-4': {
     marginTop: 4,
   },
   'mt-6': {
     marginTop: 6,
   },
+  'mb-6': {
+    marginBottom: 6,
+  },
   'p-8': {
     padding: 8,
+  },
+  'pt-2': {
+    paddingTop: 2,
   },
   'py-2': {
     paddingVertical: 2,
@@ -181,10 +192,13 @@ export const u = StyleSheet.create({
   'overflow-hidden': {
     overflow: 'hidden',
   },
+  absolute: {
+    position: 'absolute',
+  },
 })
 
 export const eventTitleStyle = [u['text-white'], u['text-sm']]
 
-export const dateCellStyle = [u['border-l'], u['border-b'], u['border-gray-100']]
+export const dateCellStyle = [u['border-l'], u['border-b'], u['border-gray-100'], u['bg-white']]
 
 export const guideTextStyle = [u['text-gray-300'], u['text-xs'], u['text-center']]
