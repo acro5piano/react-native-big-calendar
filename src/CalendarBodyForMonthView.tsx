@@ -51,6 +51,7 @@ interface CalendarBodyForMonthViewProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
+  maxVisibleEventCount: number
   weekStartsOn: WeekNum
 }
 
@@ -66,6 +67,7 @@ function _CalendarBodyForMonthView<T>({
   hideNowIndicator,
   isRTL,
   renderEvent,
+  maxVisibleEventCount,
   weekStartsOn,
 }: CalendarBodyForMonthViewProps<T>) {
   const [now, setNow] = React.useState(dayjs())
@@ -157,7 +159,7 @@ function _CalendarBodyForMonthView<T>({
                     .reduce(
                       (elements, event, index, events) => [
                         ...elements,
-                        index > 2 ? (
+                        index > maxVisibleEventCount - 1 ? (
                           <Text style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}>
                             {events.length - 3} More
                           </Text>

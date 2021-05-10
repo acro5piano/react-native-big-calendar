@@ -48,6 +48,7 @@ export interface CalendarProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   renderEvent?: EventRenderer<T>
   weekEndsOn?: WeekNum
+  maxVisibleEventCount?: number
 }
 
 function _Calendar<T>({
@@ -72,6 +73,7 @@ function _Calendar<T>({
   onPressEvent,
   renderEvent,
   weekEndsOn = 6,
+  maxVisibleEventCount = 3,
 }: CalendarProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -154,6 +156,7 @@ function _Calendar<T>({
           onSwipeHorizontal={onSwipeHorizontal}
           renderEvent={renderEvent}
           targetDate={targetDate}
+          maxVisibleEventCount={maxVisibleEventCount}
         />
       </React.Fragment>
     )
