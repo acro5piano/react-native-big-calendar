@@ -109,7 +109,7 @@ function _Calendar<T>({
       default:
         throw new Error('undefined mode')
     }
-  }, [mode, targetDate])
+  }, [mode, targetDate, locale, weekEndsOn, weekStartsOn])
 
   React.useEffect(() => {
     if (onChangeDate) {
@@ -130,7 +130,7 @@ function _Calendar<T>({
         setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
       }
     },
-    [swipeEnabled, targetDate],
+    [swipeEnabled, targetDate, mode, isRTL],
   )
 
   const commonProps = {

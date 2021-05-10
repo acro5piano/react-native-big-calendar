@@ -33,7 +33,7 @@ function _CalendarHeaderForMonthView({
       ]}
     >
       {dates.map((date) => (
-        <View style={{ flex: 1, paddingTop: 2 }}>
+        <View style={{ flex: 1, paddingTop: 2 }} key={date.toISOString()}>
           <View style={{ height: 30 }}>
             <Text style={[guideTextStyle, todayWeekNum === date.day() && u['text-primary']]}>
               {date.format('ddd')}
