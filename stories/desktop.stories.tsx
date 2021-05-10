@@ -228,3 +228,25 @@ storiesOf('Desktop', module)
       />
     </View>
   ))
+  .add('Event spanning multiple days', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        style={styles.calendar}
+        height={SCREEN_HEIGHT}
+        events={[
+          {
+            title: 'Multiple span',
+            start: dayjs().toDate(),
+            end: dayjs().add(28, 'hour').toDate(),
+          },
+          {
+            title: 'Multiple span longer',
+            start: dayjs().add(29, 'hour').toDate(),
+            end: dayjs().add(64, 'hour').toDate(),
+          },
+        ]}
+        eventCellStyle={(event) => (/longer/.test(event.title) ? { backgroundColor: 'green' } : {})}
+        mode={'week'}
+      />
+    </View>
+  ))
