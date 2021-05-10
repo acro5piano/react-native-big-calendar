@@ -8,7 +8,7 @@ export function useNow(enabled: boolean) {
     if (!enabled) {
       return () => {}
     }
-    const pid = setInterval(() => setNow(dayjs()), 2 * 60 * 1000)
+    const pid = setInterval(() => setNow(dayjs()), 60 * 1000)
     return () => clearInterval(pid)
   }, [enabled])
 
