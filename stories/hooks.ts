@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
+
 import { ICalendarEvent } from '../src/interfaces'
 
 export function useEvents(defaultEvents: ICalendarEvent[]) {

@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Alert, View } from 'react-native'
+
 import { Calendar } from '../src/Calendar'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events } from './events'

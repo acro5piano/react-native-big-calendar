@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+
 import { commonStyles, dateCellStyle, eventTitleStyle, guideTextStyle, u } from './commonStyles'
 import { ICalendarEvent } from './interfaces'
 import { isToday, typedMemo } from './utils'

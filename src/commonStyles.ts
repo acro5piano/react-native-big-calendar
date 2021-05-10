@@ -1,4 +1,5 @@
 import { Platform, StyleSheet } from 'react-native'
+
 import { Color } from './theme'
 
 export const MIN_HEIGHT = 1200

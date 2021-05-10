@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { Text, View, ViewStyle } from 'react-native'
+
 import { guideTextStyle, u } from './commonStyles'
 import { WeekNum } from './interfaces'
 import { getDatesInWeek, typedMemo } from './utils'

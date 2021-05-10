@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
 import { Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 import { u } from './commonStyles'
 import { useNow } from './hooks/useNow'
