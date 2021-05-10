@@ -49,6 +49,22 @@ storiesOf('Desktop', module)
       </View>
     )
   })
+  .add('Month mode - RTL', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          style={styles.calendar}
+          mode="month"
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          isRTL
+        />
+      </View>
+    )
+  })
   .add('3days mode', () => (
     <View style={styles.desktop}>
       <Calendar

@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { commonStyles } from './commonStyles'
 import {
   CalendarTouchableOpacityProps,
   EventCellStyle,

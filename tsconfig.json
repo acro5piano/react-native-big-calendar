@@ -12,6 +12,7 @@
     "types": ["@types/node", "@types/jest"],
     "lib": [],
     "keyofStringsOnly": true,
+    "noEmit": true,
 
     /* Strict Type-Checking Options */
     "strict": true,

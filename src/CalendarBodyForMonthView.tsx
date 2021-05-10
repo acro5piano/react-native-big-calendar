@@ -26,6 +26,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  weekContainerRTL: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+  },
   dayContainer: {
     flex: 1,
     borderLeftWidth: 1,
@@ -122,13 +126,16 @@ function _CalendarBodyForMonthView<T>({
       {...panResponder.panHandlers}
     >
       {weeks.map((week, i) => (
-        <View key={i} style={[styles.weekContainer, { height: cellHeight }]}>
+        <View
+          key={i}
+          style={[isRTL ? styles.weekContainerRTL : styles.weekContainer, { height: cellHeight }]}
+        >
           {week
             .map((d) => (d > 0 ? targetDate.date(d) : null))
             .map((date, ii) => (
               <TouchableOpacity
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
-                style={[styles.dayContainer, { paddingTop: 8, height: cellHeight }]}
+                style={[styles.dayContainer, { height: cellHeight }]}
                 key={ii}
               >
                 <Text
