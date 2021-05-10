@@ -143,6 +143,16 @@ export interface CalendarProps<T> {
 | `locale`              | no       | `string`                                               | Custom locale. See I18n section                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `overlapOffset`       | no       | `number`                                               | Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.                                                                                                                                                                                                                                                                                                                                                |
 | `isRTL`               | no       | `boolean`                                              | Switches the direction of the layout for use with RTL languages. Defaults to false.                                                                                                                                                                                                                                                                                                                                                                             |
+| `renderEvent`         | no       | `EventRenderer`                                        | Custom event renderer. See below type definition.                                                                                                                                                                                                                                                                                                                                                                                                               |
+
+## EventRenderer
+
+```typescript
+type EventRenderer<T> = (
+  event: ICalendarEvent<T>,
+  touchableOpacityProps: CalendarTouchableOpacityProps,
+) => ReactElement | null
+```
 
 For more information, see [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
 
@@ -159,12 +169,12 @@ interface ICalendarEventBase<T> {
 export type ICalendarEvent<T = any> = ICalendarEventBase<T> & T
 ```
 
-## Extending props of events and using a custom event render function
+## Using a custom event render function
 
-You can override the component which renders a specific event. You choose to do so for all your events, or a specific event. You can extend the props on an event by implementing (in TypeScript) the type with generics `ICalendarEvent<T>` where `T` should be your custom interface (or type) with more props to an event. An example can be found [here](./stories/events.tsx).
+You can specify custom event render function which receives the calculated `TouchableOpacity` prop and `event`.
 
 - The function `renderEvent` must return a `ReactElement`.
-- The component _should_ be wrapped inside a `TouchableOpacity` if you are using `react-native`, or _any_ DOM element which accepts positioning and click events (`onPress`, ...).
+- The component _should_ be wrapped inside a `TouchableOpacity` or _any_ DOM element which accepts positioning and click events (`onPress`, ...).
 
 ```typescript
 export interface MyCustomEventType {
@@ -245,19 +255,3 @@ https://github.com/iamkun/dayjs/tree/dev/src/locale
 </p>
 
 If you are using this library, please send a PR to add your organization!
-
-# TODO
-
-- [x] Add API Documentation
-- [x] Add `onClickCell` feature
-- [ ] Add `onDragCell` feature
-- [ ] Allow component replacement
-  - [x] Event
-  - [ ] Complete Header
-  - [ ] Hour indicator
-- [ ] Style customize
-  - [ ] Blue active day
-  - [ ] Blue active day text
-  - [ ] Today indicator
-- [ ] Support the month view layout
-- [ ] Provide an example with `expo`
