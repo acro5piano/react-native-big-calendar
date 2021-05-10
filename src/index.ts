@@ -1,6 +1,8 @@
-import { Calendar } from './Calendar'
+import { Calendar } from './components/Calendar'
 
-export * from './Calendar'
+export * from './components/Calendar'
+export * from './components/DefaultCalendarEventRenderer'
 export * from './interfaces'
-export * from './DefaultCalendarEventRenderer'
+
+/* eslint-disable */
 export default Calendar

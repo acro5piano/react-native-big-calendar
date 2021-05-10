@@ -3,19 +3,20 @@ import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
 import { Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { CalendarEventForMonthView } from './CalendarEventForMonthView'
-import { u } from './commonStyles'
-import { useNow } from './hooks/useNow'
-import { usePanResponder } from './hooks/usePanResponder'
+
+import { u } from '../commonStyles'
+import { useNow } from '../hooks/useNow'
+import { usePanResponder } from '../hooks/usePanResponder'
 import {
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
   ICalendarEvent,
   WeekNum,
-} from './interfaces'
-import { Color } from './theme'
-import { typedMemo } from './utils'
+} from '../interfaces'
+import { Color } from '../theme'
+import { typedMemo } from '../utils'
+import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 
 dayjs.extend(isBetween)
 

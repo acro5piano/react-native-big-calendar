@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+
 import { eventTitleStyle } from '../src/commonStyles'
 import { EventRenderer, ICalendarEvent } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils'

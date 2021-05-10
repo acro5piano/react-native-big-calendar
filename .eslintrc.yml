@@ -1,0 +1,30 @@
+env:
+  browser: true
+  es6: true
+  jest: true
+extends:
+  - 'plugin:react/recommended'
+parser: '@typescript-eslint/parser'
+plugins:
+  - import
+  - react
+  - react-hooks
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 2019
+  sourceType: module
+settings:
+  react:
+    version: '16.13'
+rules:
+  no-unused-vars: off
+  import/first: error
+  import/newline-after-import: error
+  import/no-default-export: error     # https://basarat.gitbook.io/typescript/main-1/defaultisbad
+  import/no-anonymous-default-export: error
+  react-hooks/exhaustive-deps: error
+  react-hooks/rules-of-hooks: error
+  react/no-unescaped-entities: off
+  react/prop-types: off
+  react/react-in-jsx-scope: off

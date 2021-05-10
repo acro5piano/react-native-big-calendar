@@ -10,11 +10,11 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import { CalendarEvent } from './CalendarEvent'
-import { dateCellStyle, guideTextStyle, u } from './commonStyles'
-import { useNow } from './hooks/useNow'
-import { usePanResponder } from './hooks/usePanResponder'
-import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from './interfaces'
+
+import { dateCellStyle, guideTextStyle, u } from '../commonStyles'
+import { useNow } from '../hooks/useNow'
+import { usePanResponder } from '../hooks/usePanResponder'
+import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from '../interfaces'
 import {
   formatHour,
   getCountOfEventsAtEvent,
@@ -23,7 +23,8 @@ import {
   hours,
   isToday,
   typedMemo,
-} from './utils'
+} from '../utils'
+import { CalendarEvent } from './CalendarEvent'
 
 dayjs.extend(isBetween)
 
@@ -60,14 +61,17 @@ interface WithCellHeight {
   cellHeight: number
 }
 
-const HourGuideColumn = React.memo(
-  ({ cellHeight, hour, ampm }: WithCellHeight & { hour: number; ampm: boolean }) => (
-    <View style={{ height: cellHeight }}>
-      <Text style={guideTextStyle}>{formatHour(hour, ampm)}</Text>
-    </View>
-  ),
-  () => true,
+const _HourGuideColumn = ({
+  cellHeight,
+  hour,
+  ampm,
+}: WithCellHeight & { hour: number; ampm: boolean }) => (
+  <View style={{ height: cellHeight }}>
+    <Text style={guideTextStyle}>{formatHour(hour, ampm)}</Text>
+  </View>
 )
+
+const HourGuideColumn = React.memo(_HourGuideColumn, () => true)
 
 interface HourCellProps extends WithCellHeight {
   onPress: (d: dayjs.Dayjs) => void
@@ -120,7 +124,7 @@ function _CalendarBody<T>({
         Platform.OS === 'web' ? 0 : 10,
       )
     }
-  }, [scrollView])
+  }, [scrollView, scrollOffsetMinutes, cellHeight])
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
