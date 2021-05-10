@@ -142,16 +142,13 @@ function _Calendar<T>({
     return (
       <React.Fragment>
         <CalendarHeaderForMonthView locale={locale} isRTL={isRTL} weekStartsOn={weekStartsOn} />
-        <CalendarBodyForMonthView
+        <CalendarBodyForMonthView<T>
           {...commonProps}
           containerHeight={height}
           events={daytimeEvents}
           eventCellStyle={eventCellStyle}
+          weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
-          overlapOffset={overlapOffset}
-          scrollOffsetMinutes={scrollOffsetMinutes}
-          ampm={ampm}
-          showTime={showTime}
           onPressCell={onPressCell}
           onPressEvent={onPressEvent}
           onSwipeHorizontal={onSwipeHorizontal}
