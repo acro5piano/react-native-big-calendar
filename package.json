@@ -46,7 +46,7 @@
     "babel-loader": "^8.2.2",
     "eslint": "^7.27.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "import-sort-style-module": "^6.0.0",
     "jest": "^25.5.4",
