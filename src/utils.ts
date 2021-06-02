@@ -30,7 +30,7 @@ export function getDatesInWeek(
   const days = Array(7)
     .fill(0)
     .map((_, i) => {
-      return subject.add(i - subjectDOW + weekStartsOn, 'day').locale(locale)
+      return subject.add(i - (subjectDOW < weekStartsOn ? 7 + subjectDOW : subjectDOW) + weekStartsOn, 'day').locale(locale)
     })
   return days
 }
