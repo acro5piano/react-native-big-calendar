@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2
+
+- Fixes the issue where the change from day to week view would display the wrong week when the startOfWeek is not the default #438
+- Update deps
+
 ## 1.0.1
 
 We're excited to announce the first stable version! It contains lots of bug fixes, and new mode "month".
