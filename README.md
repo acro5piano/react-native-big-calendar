@@ -19,7 +19,7 @@ Cross-platform gcal/outlook like calendar component for React Native.
 - Cross Platform: Runs on the Web, iOS, Android with the power of React
 - Type-safe: Fully written in TypeScript
 - Customizable: Adjust styles of components
-- Lightweight: ~15kb, only one dependency is `dayjs`
+- Lightweight: ~37.4KB, dependency is `dayjs` and `calendarize`
 
 # Install
 
