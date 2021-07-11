@@ -255,3 +255,17 @@ https://github.com/iamkun/dayjs/tree/dev/src/locale
 </p>
 
 If you are using this library, please send a PR to add your organization!
+
+# Enterprise support
+
+First, thank you for your interest in this project. As this library is getting famous, lots of people are requesting features they need. I would like to respond all of them as possible, but there are limited hours I'm working on this. To be a full-time open sourcer and make this project sustainable, I've decided to add the enterprise support.
+
+Enterprise customers are able to obtain:
+
+- Full customization like colors, logos, images, and more.
+- Priority response and development.
+- Consultancy for React, TypeScript, and React Native application.
+
+Note that Enterprise features will be distributed to the OSS version.
+
+If you are interested in those features, please send an email to: ketsume0211@gmail.com
