@@ -21,6 +21,30 @@ function alert(input: any) {
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('Desktop', module)
+  .add('day mode', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        style={styles.calendar}
+        height={SCREEN_HEIGHT}
+        events={events}
+        onPressEvent={(event) => alert(event.title)}
+        onPressCell={() => void 0}
+        mode="day"
+      />
+    </View>
+  ))
+  .add('3days mode', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        style={styles.calendar}
+        height={SCREEN_HEIGHT}
+        events={events}
+        onPressEvent={(event) => alert(event.title)}
+        onPressCell={() => void 0}
+        mode="3days"
+      />
+    </View>
+  ))
   .add('Week mode', () => {
     const state = useEvents(events)
     return (
@@ -66,18 +90,6 @@ storiesOf('Desktop', module)
       </View>
     )
   })
-  .add('3days mode', () => (
-    <View style={styles.desktop}>
-      <Calendar
-        style={styles.calendar}
-        height={SCREEN_HEIGHT}
-        events={events}
-        onPressEvent={(event) => alert(event.title)}
-        onPressCell={() => void 0}
-        mode="3days"
-      />
-    </View>
-  ))
   .add('event cell style', () => (
     <View style={styles.desktop}>
       <Calendar
