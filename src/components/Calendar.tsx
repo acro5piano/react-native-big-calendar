@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import React from 'react'
 import { ViewStyle } from 'react-native'
 
@@ -51,6 +52,8 @@ export interface CalendarProps<T> {
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
 }
+
+dayjs.extend(isBetween)
 
 function _Calendar<T>({
   events,
@@ -107,7 +110,9 @@ function _Calendar<T>({
       case 'custom':
         return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
       default:
-        throw new Error('undefined mode')
+        throw new Error(
+          `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
+        )
     }
   }, [mode, targetDate, locale, weekEndsOn, weekStartsOn])
 

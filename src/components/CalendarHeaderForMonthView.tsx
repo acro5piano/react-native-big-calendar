@@ -25,7 +25,6 @@ function _CalendarHeaderForMonthView({
   return (
     <View
       style={[
-        u['flex-1'],
         u['border-b'],
         u['border-gray-100'],
         isRTL ? u['flex-row-reverse'] : u['flex-row'],

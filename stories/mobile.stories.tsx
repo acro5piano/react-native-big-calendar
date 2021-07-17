@@ -5,6 +5,7 @@ import { Alert, View } from 'react-native'
 import { Calendar } from '../src'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events } from './events'
+import { useEvents } from './hooks'
 import { styles } from './styles'
 
 function alert(input: any) {
@@ -46,6 +47,21 @@ storiesOf('Mobile', module)
       <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} />
     </View>
   ))
+  .add('Month mode', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.mobile}>
+        <Calendar
+          style={styles.calendar}
+          mode="month"
+          height={MOBILE_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+        />
+      </View>
+    )
+  })
   .add('with app header', () => (
     <View style={styles.mobile}>
       <AppHeader />

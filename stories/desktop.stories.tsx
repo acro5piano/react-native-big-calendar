@@ -5,7 +5,7 @@ import { Alert, Dimensions, View } from 'react-native'
 
 import { Calendar } from '../src'
 import { CONTROL_HEIGHT, Control } from './components/Control'
-import { customEventRenderer, customRendererEvents, events } from './events'
+import { customEventRenderer, events } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 
@@ -21,6 +21,30 @@ function alert(input: any) {
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('Desktop', module)
+  .add('day mode', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        style={styles.calendar}
+        height={SCREEN_HEIGHT}
+        events={events}
+        onPressEvent={(event) => alert(event.title)}
+        onPressCell={() => void 0}
+        mode="day"
+      />
+    </View>
+  ))
+  .add('3days mode', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        style={styles.calendar}
+        height={SCREEN_HEIGHT}
+        events={events}
+        onPressEvent={(event) => alert(event.title)}
+        onPressCell={() => void 0}
+        mode="3days"
+      />
+    </View>
+  ))
   .add('Week mode', () => {
     const state = useEvents(events)
     return (
@@ -43,7 +67,14 @@ storiesOf('Desktop', module)
           style={styles.calendar}
           mode="month"
           height={SCREEN_HEIGHT}
-          events={state.events}
+          events={[
+            ...state.events,
+            {
+              start: dayjs().add(2, 'days').toDate(),
+              end: dayjs().add(2, 'days').add(5, 'hours').toDate(),
+              title: 'This is sooooo long name event which will be truncated',
+            },
+          ]}
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
         />
@@ -66,18 +97,6 @@ storiesOf('Desktop', module)
       </View>
     )
   })
-  .add('3days mode', () => (
-    <View style={styles.desktop}>
-      <Calendar
-        style={styles.calendar}
-        height={SCREEN_HEIGHT}
-        events={events}
-        onPressEvent={(event) => alert(event.title)}
-        onPressCell={() => void 0}
-        mode="3days"
-      />
-    </View>
-  ))
   .add('event cell style', () => (
     <View style={styles.desktop}>
       <Calendar
@@ -211,7 +230,7 @@ storiesOf('Desktop', module)
           style={styles.calendar}
           height={SCREEN_HEIGHT}
           renderEvent={customEventRenderer}
-          events={customRendererEvents}
+          events={events}
         />
       </View>
     )
