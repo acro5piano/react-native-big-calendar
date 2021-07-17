@@ -12023,10 +12023,10 @@ signal-exit@^3.0.3:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
-simple-git-hooks@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/simple-git-hooks/-/simple-git-hooks-2.4.1.tgz#bb3495610701394d00ce4a84892a9ca8aad73710"
-  integrity sha512-LFdiF7O0Hg96vS1mO8gtBiDXLkCrLhqpU7O3gMZVO90Uf+/VFY4C5VJITyXPbHNX6OnlFmiFR0YnV4XbfguZHA==
+simple-git-hooks@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/simple-git-hooks/-/simple-git-hooks-2.5.1.tgz#78ed9cfa552843bc45cd36ad5b7424567119c2f4"
+  integrity sha512-iI/MEEVObv45slsxz+BT+5NCS2UDgVIqfQKmNjL4/XnEfacpdYAHd71Imc5Nw/FY100A+i1PIXdIdkLHYcC2Bg==
 
 simple-plist@^1.0.0:
   version "1.1.0"

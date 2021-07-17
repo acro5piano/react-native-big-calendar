@@ -62,7 +62,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.50.5",
     "rollup-plugin-typescript2": "^0.30.0",
-    "simple-git-hooks": "^2.4.1",
+    "simple-git-hooks": "^2.5.1",
     "ts-jest": "^25.5.1",
     "ts-loader": "^8.0.10",
     "tslib": "^2.2.0",
