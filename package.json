@@ -9,7 +9,7 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "simple-git-hooks",
+    "prepare": "simple-git-hooks || true",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook -o .storybook-build",
     "sync-rndemo": "yarn build && cp -r build rndemo",
