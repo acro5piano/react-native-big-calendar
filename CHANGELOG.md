@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3
+
+- Fix the month view for the mobile #466
+- Kind error message for invalid mode #466
+
 ## 1.0.2
 
 - Fixes the issue where the change from day to week view would display the wrong week when the startOfWeek is not the default #438
