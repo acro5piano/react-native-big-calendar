@@ -5,7 +5,7 @@ import { Alert, Dimensions, View } from 'react-native'
 
 import { Calendar } from '../src'
 import { CONTROL_HEIGHT, Control } from './components/Control'
-import { customEventRenderer, customRendererEvents, events } from './events'
+import { customEventRenderer, events } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 
@@ -67,7 +67,14 @@ storiesOf('Desktop', module)
           style={styles.calendar}
           mode="month"
           height={SCREEN_HEIGHT}
-          events={state.events}
+          events={[
+            ...state.events,
+            {
+              start: dayjs().add(2, 'days').toDate(),
+              end: dayjs().add(2, 'days').add(5, 'hours').toDate(),
+              title: 'This is sooooo long name event which will be truncated',
+            },
+          ]}
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
         />
@@ -223,7 +230,7 @@ storiesOf('Desktop', module)
           style={styles.calendar}
           height={SCREEN_HEIGHT}
           renderEvent={customEventRenderer}
-          events={customRendererEvents}
+          events={events}
         />
       </View>
     )

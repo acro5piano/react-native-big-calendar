@@ -13,7 +13,7 @@ const eventNotes = (
   </View>
 )
 
-export const events: ICalendarEvent[] = [
+export const events: ICalendarEvent<{ color?: string }>[] = [
   {
     title: 'Watch Boxing',
     start: dayjs().set('hour', 0).set('minute', 0).set('second', 0).toDate(),
@@ -28,6 +28,12 @@ export const events: ICalendarEvent[] = [
     title: 'Coffee break',
     start: dayjs().set('hour', 14).set('minute', 30).toDate(),
     end: dayjs().set('hour', 15).set('minute', 30).toDate(),
+  },
+  {
+    title: 'with color prop',
+    start: dayjs().set('hour', 16).set('minute', 0).toDate(),
+    end: dayjs().set('hour', 18).set('minute', 30).toDate(),
+    color: 'purple',
   },
   {
     title: 'Repair my car',
@@ -97,17 +103,3 @@ export const customEventRenderer: EventRenderer<MyCustomEventType> = (
     </TouchableOpacity>
   )
 }
-
-export const customRendererEvents: ICalendarEvent<MyCustomEventType>[] = [
-  {
-    title: 'Custom Renderer',
-    start: dayjs().add(1, 'day').set('hour', 12).set('minute', 0).toDate(),
-    end: dayjs().add(1, 'day').set('hour', 15).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Custom reminder',
-    start: dayjs().set('hour', 16).set('minute', 0).toDate(),
-    end: dayjs().set('hour', 17).set('minute', 0).toDate(),
-    color: 'purple',
-  },
-]

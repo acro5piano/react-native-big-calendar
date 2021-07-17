@@ -1,15 +1,11 @@
 import { ReactElement } from 'react'
 import { RecursiveArray, ViewStyle } from 'react-native'
 
-interface ICalendarEventBase<T> {
+export interface ICalendarEventBase {
   start: Date
   end: Date
   title: string
   children?: ReactElement | null
-  eventRenderer?: (
-    event: ICalendarEvent<T>,
-    touchableOpacityProps: CalendarTouchableOpacityProps,
-  ) => ReactElement | null
 }
 
 export type CalendarTouchableOpacityProps = {
@@ -20,7 +16,7 @@ export type CalendarTouchableOpacityProps = {
   disabled: boolean
 }
 
-export type ICalendarEvent<T = any> = ICalendarEventBase<T> & T
+export type ICalendarEvent<T = {}> = ICalendarEventBase & T
 
 export type Mode = '3days' | 'week' | 'day' | 'custom' | 'month'
 

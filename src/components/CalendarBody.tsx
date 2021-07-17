@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
 import {
   Platform,
@@ -25,8 +24,6 @@ import {
   typedMemo,
 } from '../utils'
 import { CalendarEvent } from './CalendarEvent'
-
-dayjs.extend(isBetween)
 
 const styles = StyleSheet.create({
   nowIndicator: {
@@ -186,11 +183,19 @@ function _CalendarBody<T>({
                 onPress={_onPressCell}
               />
             ))}
+
+            {/* Render events of this date */}
+            {/* M  T  (W)  T  F  S  S */}
+            {/*       S-E             */}
             {events
               .filter(({ start }) =>
                 dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
               )
               .map(_renderMappedEvent)}
+
+            {/* Render events which starts before this date and ends on this date */}
+            {/* M  T  (W)  T  F  S  S */}
+            {/* S------E              */}
             {events
               .filter(
                 ({ start, end }) =>
@@ -202,6 +207,10 @@ function _CalendarBody<T>({
                 start: dayjs(event.end).startOf('day'),
               }))
               .map(_renderMappedEvent)}
+
+            {/* Render events which starts before this date and ends after this date */}
+            {/* M  T  (W)  T  F  S  S */}
+            {/*    S-------E          */}
             {events
               .filter(
                 ({ start, end }) =>
@@ -214,6 +223,7 @@ function _CalendarBody<T>({
                 end: dayjs(event.end).endOf('day'),
               }))
               .map(_renderMappedEvent)}
+
             {isToday(date) && !hideNowIndicator && (
               <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
             )}
