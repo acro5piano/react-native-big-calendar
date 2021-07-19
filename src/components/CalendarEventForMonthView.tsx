@@ -32,7 +32,9 @@ function _CalendarEventForMonthView<T>({
 
   return (
     <TouchableOpacity {...touchableOpacityProps}>
-      <Text style={[u['text-white'], u['text-xs'], u['truncate']]}>{event.title}</Text>
+      <Text style={[u['text-white'], u['text-xs'], u['truncate']]} numberOfLines={1}>
+        {event.title}
+      </Text>
     </TouchableOpacity>
   )
 }

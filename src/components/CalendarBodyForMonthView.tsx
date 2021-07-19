@@ -71,7 +71,17 @@ function _CalendarBodyForMonthView<T>({
       {...panResponder.panHandlers}
     >
       {weeks.map((week, i) => (
-        <View key={i} style={[u['flex-1'], isRTL ? u['flex-row-reverse'] : u['flex-row']]}>
+        <View
+          key={i}
+          style={[
+            u['flex-1'],
+            u['bg-white'],
+            isRTL ? u['flex-row-reverse'] : u['flex-row'],
+            {
+              minHeight: minCellHeight,
+            },
+          ]}
+        >
           {week
             .map((d) => (d > 0 ? targetDate.date(d) : null))
             .map((date, ii) => (
@@ -111,11 +121,15 @@ function _CalendarBodyForMonthView<T>({
                       (elements, event, index, events) => [
                         ...elements,
                         index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
-                          <Text style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}>
+                          <Text
+                            key={index}
+                            style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}
+                          >
                             {events.length - 3} More
                           </Text>
                         ) : (
                           <CalendarEventForMonthView
+                            key={index}
                             event={event}
                             eventCellStyle={eventCellStyle}
                             onPressEvent={onPressEvent}
