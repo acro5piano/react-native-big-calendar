@@ -43,7 +43,7 @@
     "@types/node": "^15.6.1",
     "@types/react-native": "^0.64.10",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
-    "@typescript-eslint/parser": "^4.26.0",
+    "@typescript-eslint/parser": "^4.28.3",
     "acorn-jsx": "^5.3.1",
     "babel-loader": "^8.2.2",
     "eslint": "^7.30.0",
