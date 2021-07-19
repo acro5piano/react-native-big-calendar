@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.4
+
+- [hotfix] Fix css properties on platform native #470
+- Add `key` prop for month view components #470
+- Improve Demo app usability #470
+
 ## 1.0.3
 
 - Fix the month view for the mobile #466
