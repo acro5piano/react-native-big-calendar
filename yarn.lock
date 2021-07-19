@@ -11795,10 +11795,10 @@ relateurl@^0.2.7:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
-remeda@^0.0.27:
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/remeda/-/remeda-0.0.27.tgz#5924d656c5f8e9c7c692324cd7f4c43ce8552997"
-  integrity sha512-nkQnPLMXtSirvF8OxjuvbZhwBawDD6ZQAvg7hiq4/nZEFIgB4u80fS/NUm6PMJgSUfwfzQ6ZwVyVn8DTJcmkCw==
+remeda@^0.0.28:
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/remeda/-/remeda-0.0.28.tgz#b6fc042164a5ed2c959c97d49eb6fa00ca80e9de"
+  integrity sha512-ak/fqh9EOUIaIPzizAtaOy4f+b9893N/gk/q4lT9dioNKYWYKVf66rrcyUoxHpaI50wl590czu63a7Aw5zn0Uw==
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
