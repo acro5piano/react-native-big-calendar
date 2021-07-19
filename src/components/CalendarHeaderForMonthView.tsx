@@ -27,6 +27,7 @@ function _CalendarHeaderForMonthView({
       style={[
         u['border-b'],
         u['border-gray-100'],
+        u['bg-white'],
         isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}

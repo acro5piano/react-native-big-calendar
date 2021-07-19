@@ -1,7 +1,8 @@
-import dayjs from 'dayjs';
-import React from 'react';
-import {Dimensions, SafeAreaView, StatusBar} from 'react-native';
-import {Calendar, ICalendarEvent} from './build';
+import dayjs from 'dayjs'
+import React from 'react'
+import { Dimensions, Picker, SafeAreaView, StatusBar, View } from 'react-native'
+
+import { Calendar, ICalendarEvent, Mode } from './build'
 
 const events = [
   {
@@ -19,34 +20,40 @@ const events = [
     start: dayjs().add(1, 'day').set('hour', 7).set('minute', 45).toDate(),
     end: dayjs().add(1, 'day').set('hour', 13).set('minute', 30).toDate(),
   },
-];
+]
 
-const App = () => {
-  const [additionalEvents, setAdditionalEvents] = React.useState<
-    ICalendarEvent[]
-  >([]);
+export const App = () => {
+  const [mode, setMode] = React.useState<Mode>('week')
+  const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEvent[]>([])
 
   const addEvent = React.useCallback(
-    start => {
-      const title = 'new Event';
-      const end = dayjs(start).add(59, 'minute');
-      setAdditionalEvents([...additionalEvents, {start, end, title}]);
+    (start) => {
+      const title = 'new Event'
+      const end = dayjs(start).add(59, 'minute').toDate()
+      setAdditionalEvents([...additionalEvents, { start, end, title }])
     },
     [additionalEvents, setAdditionalEvents],
-  );
+  )
 
   return (
     <React.Fragment>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
+        <View style={{ height: 60, borderBottomWidth: 0.5, backgroundColor: '#fff' }}>
+          <Picker onValueChange={setMode}>
+            <Picker.Item value="week" label="week" />
+            <Picker.Item value="day" label="day" />
+            <Picker.Item value="3days" label="3days" />
+            <Picker.Item value="month" label="month" />
+          </Picker>
+        </View>
         <Calendar
-          height={Dimensions.get('window').height}
+          height={Dimensions.get('window').height - 60}
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
+          mode={mode}
         />
       </SafeAreaView>
     </React.Fragment>
-  );
-};
-
-export default App;
+  )
+}

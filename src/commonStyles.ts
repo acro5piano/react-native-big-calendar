@@ -196,11 +196,14 @@ export const u = StyleSheet.create({
   absolute: {
     position: 'absolute',
   },
-  truncate: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
+  truncate:
+    Platform.OS === 'web'
+      ? {
+          overflow: 'hidden',
+          // textOverflow: 'ellipsis',
+          // whiteSpace: 'nowrap',
+        }
+      : {},
 })
 
 export const eventTitleStyle = [u['text-white'], u['text-sm']]
