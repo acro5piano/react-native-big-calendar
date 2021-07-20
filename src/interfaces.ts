@@ -28,6 +28,32 @@ export type EventCellStyle<T> = ViewStyle | ((event: ICalendarEvent<T>) => ViewS
 
 export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
 
+export type HourNum =
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 12
+  | 13
+  | 14
+  | 15
+  | 16
+  | 17
+  | 18
+  | 19
+  | 20
+  | 21
+  | 22
+  | 23
+
 export type HasDateRange = [Date, Date]
 
 export type DateRangeHandler = ([start, end]: HasDateRange) => void

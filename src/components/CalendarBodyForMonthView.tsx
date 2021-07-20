@@ -17,6 +17,7 @@ import {
 import { Color } from '../theme'
 import { typedMemo } from '../utils'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
+import { CALENDAR_HEADER_MONTH_VIEW_HEIGHT } from './CalendarHeaderForMonthView'
 
 dayjs.extend(isBetween)
 
@@ -59,13 +60,14 @@ function _CalendarBodyForMonthView<T>({
 
   const weeks = calendarize(targetDate.toDate(), weekStartsOn)
 
-  const cellHeight = containerHeight / 6 - 30
+  const calendarHeight = containerHeight - CALENDAR_HEADER_MONTH_VIEW_HEIGHT
+  const cellHeight = calendarHeight / weeks.length
 
   return (
     <View
       style={[
         {
-          height: containerHeight,
+          height: calendarHeight,
         },
         u['flex-column'],
         u['flex-1'],
@@ -101,7 +103,7 @@ function _CalendarBodyForMonthView<T>({
               >
                 <Text
                   style={[
-                    { textAlign: 'center' },
+                    { textAlign: 'right' },
                     date &&
                       date.format('YYYY-MM-DD') === now.format('YYYY-MM-DD') && {
                         color: Color.primary,
@@ -115,12 +117,15 @@ function _CalendarBodyForMonthView<T>({
                     .filter(({ start }) =>
                       dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
                     )
-                    .reduce(
-                      (elements, event, index, events) => [
+                    .reduce((elements, event, index, events) => {
+                      if (index > maxVisibleEventCount) {
+                        return elements
+                      }
+                      return [
                         ...elements,
                         index > maxVisibleEventCount - 1 ? (
                           <Text style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}>
-                            {events.length - 3} More
+                            {events.length - maxVisibleEventCount} More
                           </Text>
                         ) : (
                           <CalendarEventForMonthView
@@ -130,9 +135,8 @@ function _CalendarBodyForMonthView<T>({
                             renderEvent={renderEvent}
                           />
                         ),
-                      ],
-                      [] as JSX.Element[],
-                    )}
+                      ]
+                    }, [] as JSX.Element[])}
               </TouchableOpacity>
             ))}
         </View>

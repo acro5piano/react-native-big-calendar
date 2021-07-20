@@ -2,12 +2,12 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { ViewStyle } from 'react-native'
 
-import { MIN_HEIGHT } from '../commonStyles'
 import {
   DateRangeHandler,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
+  HourNum,
   ICalendarEvent,
   Mode,
   WeekNum,
@@ -42,6 +42,9 @@ export interface CalendarProps<T> {
   style?: ViewStyle
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
+  dayStartsOn?: HourNum
+  dayEndsOn?: HourNum
+  extendDaysTimeWithEvents?: boolean
   isRTL?: boolean
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
@@ -67,6 +70,9 @@ function _Calendar<T>({
   style = {},
   swipeEnabled = true,
   weekStartsOn = 0,
+  dayStartsOn = 0,
+  dayEndsOn = 23,
+  extendDaysTimeWithEvents = false,
   isRTL = false,
   onChangeDate,
   onPressCell,
@@ -117,7 +123,13 @@ function _Calendar<T>({
     }
   }, [dateRange, onChangeDate])
 
-  const cellHeight = React.useMemo(() => Math.max(height - 30, MIN_HEIGHT) / 24, [height])
+  const hoursRange = dayEndsOn - dayStartsOn + 1
+  const viewHeight = hoursRange * 50
+
+  const cellHeight = React.useMemo(
+    () => Math.max(height - 30, viewHeight) / hoursRange,
+    [height, hoursRange, viewHeight],
+  )
 
   const onSwipeHorizontal = React.useCallback(
     (direction: HorizontalDirection) => {
@@ -136,6 +148,9 @@ function _Calendar<T>({
   const commonProps = {
     cellHeight,
     dateRange,
+    dayStartsOn,
+    dayEndsOn,
+    extendDaysTimeWithEvents,
     style,
     isRTL,
     mode,

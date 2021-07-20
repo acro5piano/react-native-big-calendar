@@ -14,13 +14,19 @@ import {
 import { dateCellStyle, guideTextStyle, u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
-import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from '../interfaces'
+import {
+  EventCellStyle,
+  EventRenderer,
+  HorizontalDirection,
+  HourNum,
+  ICalendarEvent,
+} from '../interfaces'
 import {
   formatHour,
   getCountOfEventsAtEvent,
+  getHours,
   getOrderOfEvent,
   getRelativeTopInDay,
-  hours,
   isToday,
   typedMemo,
 } from '../utils'
@@ -51,6 +57,9 @@ interface CalendarBodyProps<T> {
   hideNowIndicator?: boolean
   overlapOffset?: number
   isRTL: boolean
+  dayStartsOn: HourNum
+  dayEndsOn: HourNum
+  extendDaysTimeWithEvents?: boolean
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
@@ -103,10 +112,15 @@ function _CalendarBody<T>({
   hideNowIndicator,
   overlapOffset,
   isRTL,
+  dayStartsOn,
+  dayEndsOn,
   renderEvent,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
+
+  // const dayEnds = extendDaysTimeWithEvents ? buildLastHourFromEvents(dayEndsOn, extendDaysTimeWithEvents) : dayEndsOn;
+  const hours = getHours(dayStartsOn, dayEndsOn)
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -141,6 +155,8 @@ function _CalendarBody<T>({
     <CalendarEvent
       key={`${event.start}${event.title}`}
       event={event}
+      dayStartsOn={dayStartsOn}
+      dayEndsOn={dayEndsOn}
       onPressEvent={onPressEvent}
       eventCellStyle={eventCellStyle}
       showTime={showTime}
@@ -215,7 +231,12 @@ function _CalendarBody<T>({
               }))
               .map(_renderMappedEvent)}
             {isToday(date) && !hideNowIndicator && (
-              <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
+              <View
+                style={[
+                  styles.nowIndicator,
+                  { top: `${getRelativeTopInDay(now, dayStartsOn, dayEndsOn)}%` },
+                ]}
+              />
             )}
           </View>
         ))}

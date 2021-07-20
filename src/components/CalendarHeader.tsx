@@ -60,8 +60,8 @@ function _CalendarHeader<T>({
                     ? [
                         u['h-36'],
                         u['w-36'],
+                        u['mb-6'],
                         u['bg-primary'],
-                        u['pb-6'],
                         u['rounded-full'],
                         u['items-center'],
                         u['justify-center'],
@@ -84,18 +84,20 @@ function _CalendarHeader<T>({
                 </Text>
               </View>
             </View>
-            <View style={[dateCellStyle, { height: cellHeight }]}>
-              {allDayEvents.map((event) => {
-                if (!dayjs(event.start).isSame(date, 'day')) {
-                  return null
-                }
-                return (
-                  <View style={commonStyles.eventCell} key={`${event.start}${event.title}`}>
-                    <Text style={eventTitleStyle}>{event.title}</Text>
-                  </View>
-                )
-              })}
-            </View>
+            {allDayEvents.length ? (
+              <View style={[dateCellStyle, { height: cellHeight }]}>
+                {allDayEvents.map((event) => {
+                  if (!dayjs(event.start).isSame(date, 'day')) {
+                    return null
+                  }
+                  return (
+                    <View style={commonStyles.eventCell} key={`${event.start}${event.title}`}>
+                      <Text style={eventTitleStyle}>{event.title}</Text>
+                    </View>
+                  )
+                })}
+              </View>
+            ) : null}
           </TouchableOpacity>
         )
       })}

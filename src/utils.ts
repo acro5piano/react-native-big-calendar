@@ -3,12 +3,12 @@ import isBetween from 'dayjs/plugin/isBetween'
 import React from 'react'
 
 import { OVERLAP_PADDING } from './commonStyles'
-import { ICalendarEvent, Mode, WeekNum } from './interfaces'
+import { HourNum, ICalendarEvent, Mode, WeekNum } from './interfaces'
 import { Color } from './theme'
 
 export const typedMemo: <T>(c: T) => T = React.memo
 
-export const DAY_MINUTES = 1440
+export const DAY_MINUTES = 24 * 60
 
 export function getDatesInMonth(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
   const subject = dayjs(date)
@@ -30,7 +30,9 @@ export function getDatesInWeek(
   const days = Array(7)
     .fill(0)
     .map((_, i) => {
-      return subject.add(i - (subjectDOW < weekStartsOn ? 7 + subjectDOW : subjectDOW) + weekStartsOn, 'day').locale(locale)
+      return subject
+        .add(i - (subjectDOW < weekStartsOn ? 7 + subjectDOW : subjectDOW) + weekStartsOn, 'day')
+        .locale(locale)
     })
   return days
 }
@@ -56,31 +58,16 @@ export function getDatesInNextOneDay(date: Date | dayjs.Dayjs = new Date(), loca
 }
 
 export const hours = [
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  23,
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 ]
+
+export function getHours(dayStarts: HourNum, dayEnds: HourNum): HourNum[] {
+  const rangeArray = Array.apply(null, Array(dayEnds - dayStarts + 1)).map(function (_, i) {
+    return i + dayStarts
+  }) as HourNum[]
+
+  return rangeArray
+}
 
 export function formatHour(hour: number, ampm = false) {
   if (ampm) {
@@ -103,8 +90,10 @@ export function isToday(date: dayjs.Dayjs) {
   return today.isSame(date, 'day')
 }
 
-export function getRelativeTopInDay(date: dayjs.Dayjs) {
-  return (100 * (date.hour() * 60 + date.minute())) / DAY_MINUTES
+export function getRelativeTopInDay(date: dayjs.Dayjs, dayStartsOn: HourNum, dayEndsOn: HourNum) {
+  const dayMinutes = (dayEndsOn - dayStartsOn + 1) * 60
+
+  return (100 * ((date.hour() - dayStartsOn) * 60 + date.minute())) / dayMinutes
 }
 
 export function todayInMinutes() {
