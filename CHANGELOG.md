@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5
+
+- Exported CalendarBody component #474
+
 ## 1.0.4
 
 - [hotfix] Fix css properties on platform native #470
