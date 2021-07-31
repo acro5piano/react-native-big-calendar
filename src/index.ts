@@ -10,9 +10,10 @@ export * from './components/CalendarHeaderForMonthView'
 export * from './components/DefaultCalendarEventRenderer'
 
 export * from './commonStyles'
-export * from './index'
 export * from './interfaces'
-export * from './theme'
+export * from './theme/ThemeContext'
+export * from './theme/ThemeInterface'
+export * from './theme/defaultTheme'
 export * from './utils'
 
 export * from './interfaces'

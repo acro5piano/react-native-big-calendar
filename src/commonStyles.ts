@@ -9,7 +9,6 @@ export const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0
 
 export const commonStyles = StyleSheet.create({
   eventCell: {
-    backgroundColor: Color.primary,
     zIndex: 100,
     start: 3,
     end: 3,
@@ -206,7 +205,7 @@ export const u = StyleSheet.create({
       : {},
 })
 
-export const eventTitleStyle = [u['text-white'], u['text-sm']]
+export const eventTitleStyle = [u['text-sm']]
 
 export const dateCellStyle = [u['border-l'], u['border-b'], u['border-gray-100'], u['bg-white']]
 

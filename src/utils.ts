@@ -4,7 +4,7 @@ import React from 'react'
 
 import { OVERLAP_PADDING } from './commonStyles'
 import { ICalendarEvent, Mode, WeekNum } from './interfaces'
-import { Color } from './theme'
+import { Palette } from './theme/ThemeInterface'
 
 export const typedMemo: <T>(c: T) => T = React.memo
 
@@ -30,7 +30,9 @@ export function getDatesInWeek(
   const days = Array(7)
     .fill(0)
     .map((_, i) => {
-      return subject.add(i - (subjectDOW < weekStartsOn ? 7 + subjectDOW : subjectDOW) + weekStartsOn, 'day').locale(locale)
+      return subject
+        .add(i - (subjectDOW < weekStartsOn ? 7 + subjectDOW : subjectDOW) + weekStartsOn, 'day')
+        .locale(locale)
     })
   return days
 }
@@ -56,30 +58,7 @@ export function getDatesInNextOneDay(date: Date | dayjs.Dayjs = new Date(), loca
 }
 
 export const hours = [
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  23,
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 ]
 
 export function formatHour(hour: number, ampm = false) {
@@ -174,37 +153,22 @@ export function getOrderOfEvent(event: ICalendarEvent<any>, eventList: ICalendar
   return events.indexOf(event)
 }
 
-function getColorForEventPosition(eventPosition: number) {
-  switch (eventPosition % 5) {
-    case 0:
-      return Color.primary
-    case 1:
-      return Color.orange
-    case 2:
-      return Color.green
-    case 3:
-      return Color.red
-    case 4:
-      return Color.pink
-    default:
-      return Color.primary
-  }
-}
-
 export function getStyleForOverlappingEvent(
   eventCount: number,
   eventPosition: number,
   overlapOffset: number,
+  palettes: Palette[],
 ) {
   let overlapStyle = {}
   if (eventCount > 1) {
     const offset = overlapOffset
     const start = eventPosition * offset
     const zIndex = 100 + eventPosition
+    const bgColors = palettes.map((p) => p.main)
     overlapStyle = {
       start: start + OVERLAP_PADDING,
       end: OVERLAP_PADDING,
-      backgroundColor: getColorForEventPosition(eventPosition),
+      backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
       zIndex,
     }
   }

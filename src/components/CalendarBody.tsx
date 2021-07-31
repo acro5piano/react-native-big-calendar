@@ -4,18 +4,17 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native'
 
-import { dateCellStyle, guideTextStyle, u } from '../commonStyles'
+import { dateCellStyle, u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from '../interfaces'
+import { useTheme } from '../theme/ThemeContext'
 import {
-  formatHour,
   getCountOfEventsAtEvent,
   getOrderOfEvent,
   getRelativeTopInDay,
@@ -24,6 +23,7 @@ import {
   typedMemo,
 } from '../utils'
 import { CalendarEvent } from './CalendarEvent'
+import { HourGuideColumn } from './HourGuideColumn'
 
 const styles = StyleSheet.create({
   nowIndicator: {
@@ -47,7 +47,6 @@ interface CalendarBodyProps<T> {
   eventCellStyle?: EventCellStyle<T>
   hideNowIndicator?: boolean
   overlapOffset?: number
-  isRTL: boolean
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
@@ -57,18 +56,6 @@ interface CalendarBodyProps<T> {
 interface WithCellHeight {
   cellHeight: number
 }
-
-const _HourGuideColumn = ({
-  cellHeight,
-  hour,
-  ampm,
-}: WithCellHeight & { hour: number; ampm: boolean }) => (
-  <View style={{ height: cellHeight }}>
-    <Text style={guideTextStyle}>{formatHour(hour, ampm)}</Text>
-  </View>
-)
-
-const HourGuideColumn = React.memo(_HourGuideColumn, () => true)
 
 interface HourCellProps extends WithCellHeight {
   onPress: (d: dayjs.Dayjs) => void
@@ -99,7 +86,6 @@ function _CalendarBody<T>({
   onSwipeHorizontal,
   hideNowIndicator,
   overlapOffset,
-  isRTL,
   renderEvent,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
@@ -148,6 +134,8 @@ function _CalendarBody<T>({
     />
   )
 
+  const theme = useTheme()
+
   return (
     <ScrollView
       style={[
@@ -164,7 +152,7 @@ function _CalendarBody<T>({
       contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
     >
       <View
-        style={[u['flex-1'], isRTL ? u['flex-row-reverse'] : u['flex-row']]}
+        style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
         {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
       >
         <View style={[u['bg-white'], u['z-20'], u['w-50']]}>

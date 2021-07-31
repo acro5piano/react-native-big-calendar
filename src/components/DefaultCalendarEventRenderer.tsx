@@ -2,23 +2,27 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 
-import { eventTitleStyle, u } from '../commonStyles'
 import { CalendarTouchableOpacityProps, ICalendarEvent } from '../interfaces'
+import { useTheme } from '../theme/ThemeContext'
 import { formatStartEnd } from '../utils'
 
 interface DefaultCalendarEventRendererProps<T> {
   touchableOpacityProps: CalendarTouchableOpacityProps
   event: ICalendarEvent<T>
   showTime?: boolean
+  textColor: string
 }
-
-const eventTimeStyle = [u['text-white'], u['text-xs']]
 
 export function DefaultCalendarEventRenderer<T>({
   touchableOpacityProps,
   event,
   showTime = true,
+  textColor,
 }: DefaultCalendarEventRendererProps<T>) {
+  const theme = useTheme()
+  const eventTimeStyle = { fontSize: theme.typography.xs.fontSize, color: textColor }
+  const eventTitleStyle = { fontSize: theme.typography.sm.fontSize, color: textColor }
+
   return (
     <TouchableOpacity {...touchableOpacityProps}>
       {dayjs(event.end).diff(event.start, 'minute') < 32 && showTime ? (

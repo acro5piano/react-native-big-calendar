@@ -3,6 +3,7 @@ import React from 'react'
 import { Alert, View } from 'react-native'
 
 import { Calendar } from '../src'
+import { ThemeProvider } from '../src/theme/ThemeContext'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events } from './events'
 import { useEvents } from './hooks'
@@ -100,13 +101,9 @@ storiesOf('Mobile', module)
     }, [])
     return (
       <View style={styles.mobile}>
-        <Calendar
-          style={styles.calendar}
-          locale="he"
-          height={MOBILE_HEIGHT}
-          events={events}
-          isRTL={true}
-        />
+        <ThemeProvider value={{ direction: 'rtl' }}>
+          <Calendar style={styles.calendar} locale="he" height={MOBILE_HEIGHT} events={events} />
+        </ThemeProvider>
       </View>
     )
   })

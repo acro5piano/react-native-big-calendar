@@ -4,6 +4,7 @@ import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { commonStyles, dateCellStyle, eventTitleStyle, guideTextStyle, u } from '../commonStyles'
 import { ICalendarEvent } from '../interfaces'
+import { useTheme } from '../theme/ThemeContext'
 import { isToday, typedMemo } from '../utils'
 
 interface CalendarHeaderProps<T> {
@@ -11,7 +12,6 @@ interface CalendarHeaderProps<T> {
   cellHeight: number
   style: ViewStyle
   allDayEvents: ICalendarEvent<T>[]
-  isRTL: boolean
   onPressDateHeader?: (date: Date) => void
 }
 
@@ -20,7 +20,6 @@ function _CalendarHeader<T>({
   cellHeight,
   style = {},
   allDayEvents,
-  isRTL,
   onPressDateHeader,
 }: CalendarHeaderProps<T>) {
   const _onPress = React.useCallback(
@@ -30,13 +29,15 @@ function _CalendarHeader<T>({
     [onPressDateHeader],
   )
 
+  const theme = useTheme()
+
   return (
     <View
       style={[
         u['border-b'],
         u['border-gray-100'],
         u['bg-white'],
-        isRTL ? u['flex-row-reverse'] : u['flex-row'],
+        theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
     >
@@ -51,7 +52,7 @@ function _CalendarHeader<T>({
             key={date.toString()}
           >
             <View style={[u['justify-between'], { height: cellHeight }]}>
-              <Text style={[guideTextStyle, _isToday && u['text-primary']]}>
+              <Text style={[guideTextStyle, _isToday && { color: theme.palette.primary.main }]}>
                 {date.format('ddd')}
               </Text>
               <View
@@ -60,7 +61,7 @@ function _CalendarHeader<T>({
                     ? [
                         u['h-36'],
                         u['w-36'],
-                        u['bg-primary'],
+                        { backgroundColor: theme.palette.primary.main },
                         u['pb-6'],
                         u['rounded-full'],
                         u['items-center'],

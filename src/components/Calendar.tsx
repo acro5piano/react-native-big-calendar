@@ -13,6 +13,7 @@ import {
   Mode,
   WeekNum,
 } from '../interfaces'
+import { useTheme } from '../theme/ThemeContext'
 import {
   getDatesInMonth,
   getDatesInNextCustomDays,
@@ -43,7 +44,6 @@ export interface CalendarProps<T> {
   style?: ViewStyle
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
-  isRTL?: boolean
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
@@ -70,7 +70,6 @@ function _Calendar<T>({
   style = {},
   swipeEnabled = true,
   weekStartsOn = 0,
-  isRTL = false,
   onChangeDate,
   onPressCell,
   onPressDateHeader,
@@ -124,32 +123,33 @@ function _Calendar<T>({
 
   const cellHeight = React.useMemo(() => Math.max(height - 30, MIN_HEIGHT) / 24, [height])
 
+  const theme = useTheme()
+
   const onSwipeHorizontal = React.useCallback(
     (direction: HorizontalDirection) => {
       if (!swipeEnabled) {
         return
       }
-      if ((direction === 'LEFT' && !isRTL) || (direction === 'RIGHT' && isRTL)) {
+      if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
         setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
       } else {
         setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
       }
     },
-    [swipeEnabled, targetDate, mode, isRTL],
+    [swipeEnabled, targetDate, mode, theme.isRTL],
   )
 
   const commonProps = {
     cellHeight,
     dateRange,
     style,
-    isRTL,
     mode,
   }
 
   if (mode === 'month') {
     return (
       <React.Fragment>
-        <CalendarHeaderForMonthView locale={locale} isRTL={isRTL} weekStartsOn={weekStartsOn} />
+        <CalendarHeaderForMonthView locale={locale} weekStartsOn={weekStartsOn} />
         <CalendarBodyForMonthView<T>
           {...commonProps}
           containerHeight={height}

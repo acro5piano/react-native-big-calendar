@@ -4,23 +4,20 @@ import { Text, View, ViewStyle } from 'react-native'
 
 import { guideTextStyle, u } from '../commonStyles'
 import { WeekNum } from '../interfaces'
+import { useTheme } from '../theme/ThemeContext'
 import { getDatesInWeek, typedMemo } from '../utils'
 
 interface CalendarHeaderProps {
   weekStartsOn: WeekNum
-  isRTL: boolean
   locale: string
   style?: ViewStyle
 }
 
-function _CalendarHeaderForMonthView({
-  locale,
-  isRTL,
-  weekStartsOn,
-  style = {},
-}: CalendarHeaderProps) {
+function _CalendarHeaderForMonthView({ locale, weekStartsOn, style = {} }: CalendarHeaderProps) {
   const dates = getDatesInWeek(new Date(), weekStartsOn, locale)
   const todayWeekNum = dayjs().day()
+
+  const theme = useTheme()
 
   return (
     <View
@@ -28,7 +25,7 @@ function _CalendarHeaderForMonthView({
         u['border-b'],
         u['border-gray-100'],
         u['bg-white'],
-        isRTL ? u['flex-row-reverse'] : u['flex-row'],
+        theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
     >

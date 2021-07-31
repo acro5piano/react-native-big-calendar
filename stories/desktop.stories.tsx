@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Dimensions, View } from 'react-native'
 
-import { Calendar } from '../src'
+import { Calendar, ThemeProvider } from '../src'
 import { CONTROL_HEIGHT, Control } from './components/Control'
 import { customEventRenderer, events } from './events'
 import { useEvents } from './hooks'
@@ -85,15 +85,16 @@ storiesOf('Desktop', module)
     const state = useEvents(events)
     return (
       <View style={styles.desktop}>
-        <Calendar
-          style={styles.calendar}
-          mode="month"
-          height={SCREEN_HEIGHT}
-          events={state.events}
-          onPressEvent={(event) => alert(event.title)}
-          onPressCell={state.addEvent}
-          isRTL
-        />
+        <ThemeProvider value={{ direction: 'rtl' }}>
+          <Calendar
+            style={styles.calendar}
+            mode="month"
+            height={SCREEN_HEIGHT}
+            events={state.events}
+            onPressEvent={(event) => alert(event.title)}
+            onPressCell={state.addEvent}
+          />
+        </ThemeProvider>
       </View>
     )
   })
@@ -213,13 +214,9 @@ storiesOf('Desktop', module)
     }, [])
     return (
       <View style={styles.desktop}>
-        <Calendar
-          style={styles.calendar}
-          locale="he"
-          height={SCREEN_HEIGHT}
-          events={events}
-          isRTL={true}
-        />
+        <ThemeProvider value={{ direction: 'rtl' }}>
+          <Calendar style={styles.calendar} locale="he" height={SCREEN_HEIGHT} events={events} />
+        </ThemeProvider>
       </View>
     )
   })
@@ -269,3 +266,28 @@ storiesOf('Desktop', module)
       />
     </View>
   ))
+  .add('Provide custom theme', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <ThemeProvider
+          value={{
+            palette: {
+              primary: {
+                main: 'purple',
+                contrastText: '#fff',
+              },
+            },
+          }}
+        >
+          <Calendar
+            style={styles.calendar}
+            height={SCREEN_HEIGHT}
+            events={state.events}
+            onPressEvent={(event) => alert(event.title)}
+            onPressCell={state.addEvent}
+          />
+        </ThemeProvider>
+      </View>
+    )
+  })
