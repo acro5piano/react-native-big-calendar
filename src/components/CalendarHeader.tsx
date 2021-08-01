@@ -7,7 +7,7 @@ import { ICalendarEvent } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday, typedMemo } from '../utils'
 
-interface CalendarHeaderProps<T> {
+export interface CalendarHeaderProps<T> {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
   style: ViewStyle
@@ -18,7 +18,7 @@ interface CalendarHeaderProps<T> {
 function _CalendarHeader<T>({
   dateRange,
   cellHeight,
-  style = {},
+  style,
   allDayEvents,
   onPressDateHeader,
 }: CalendarHeaderProps<T>) {

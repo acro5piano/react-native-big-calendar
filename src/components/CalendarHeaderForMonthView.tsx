@@ -7,13 +7,17 @@ import { WeekNum } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { getDatesInWeek, typedMemo } from '../utils'
 
-interface CalendarHeaderProps {
+export interface CalendarHeaderForMonthViewProps {
   weekStartsOn: WeekNum
   locale: string
-  style?: ViewStyle
+  style: ViewStyle
 }
 
-function _CalendarHeaderForMonthView({ locale, weekStartsOn, style = {} }: CalendarHeaderProps) {
+function _CalendarHeaderForMonthView({
+  locale,
+  weekStartsOn,
+  style,
+}: CalendarHeaderForMonthViewProps) {
   const dates = getDatesInWeek(new Date(), weekStartsOn, locale)
   const todayWeekNum = dayjs().day()
 

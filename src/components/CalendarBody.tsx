@@ -50,7 +50,7 @@ function _CalendarBody<T>({
   containerHeight,
   cellHeight,
   dateRange,
-  style = {},
+  style,
   onPressCell,
   events,
   onPressEvent,

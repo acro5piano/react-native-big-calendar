@@ -274,3 +274,32 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
+  .add('Without the header', () => {
+    const state = useEvents(events)
+    return (
+      <View style={[styles.desktop]}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          renderHeader={() => null}
+        />
+      </View>
+    )
+  })
+  .add('Without the header (month)', () => {
+    const state = useEvents(events)
+    return (
+      <View style={[styles.desktop]}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          renderHeaderForMonthView={() => null}
+          mode="month"
+        />
+      </View>
+    )
+  })

@@ -35,7 +35,7 @@ interface CalendarBodyForMonthViewProps<T> {
 function _CalendarBodyForMonthView<T>({
   containerHeight,
   targetDate,
-  style = {},
+  style,
   onPressCell,
   events,
   onPressEvent,

@@ -8,9 +8,11 @@ import {
   DateRangeHandler,
   EventCellStyle,
   EventRenderer,
+  HeaderRenderer,
   HorizontalDirection,
   ICalendarEvent,
   Mode,
+  MonthHeaderRenderer,
   WeekNum,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
@@ -30,25 +32,46 @@ import { CalendarHeader } from './CalendarHeader'
 import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
 
 export interface CalendarContainerProps<T> {
+  /**
+   * Events to be rendered. This is a required prop.
+   */
   events: ICalendarEvent<T>[]
+
+  /**
+   * The height of calendar component. This is a required prop.
+   */
   height: number
+
+  /**
+   * Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.
+   */
   overlapOffset?: number
+
+  // Custom style
+  eventCellStyle?: EventCellStyle<T>
+  calendarContainerStyle?: ViewStyle
+  headerContainerStyle?: ViewStyle
+  bodyContainerStyle?: ViewStyle
+
+  // Custom renderer
+  renderEvent?: EventRenderer<T>
+  renderHeader?: HeaderRenderer<T>
+  renderHeaderForMonthView?: MonthHeaderRenderer
+
   ampm?: boolean
   date?: Date
-  eventCellStyle?: EventCellStyle<T>
   locale?: string
   hideNowIndicator?: boolean
   mode?: Mode
   scrollOffsetMinutes?: number
   showTime?: boolean
-  style?: ViewStyle
+
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
-  renderEvent?: EventRenderer<T>
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
 }
@@ -67,7 +90,8 @@ function _CalendarContainer<T>({
   overlapOffset,
   scrollOffsetMinutes = 0,
   showTime = true,
-  style = {},
+  headerContainerStyle = {},
+  bodyContainerStyle = {},
   swipeEnabled = true,
   weekStartsOn = 0,
   onChangeDate,
@@ -75,6 +99,8 @@ function _CalendarContainer<T>({
   onPressDateHeader,
   onPressEvent,
   renderEvent,
+  renderHeader: HeaderComponent = CalendarHeader,
+  renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
 }: CalendarContainerProps<T>) {
@@ -142,16 +168,21 @@ function _CalendarContainer<T>({
   const commonProps = {
     cellHeight,
     dateRange,
-    style,
     mode,
   }
 
   if (mode === 'month') {
+    const headerProps = {
+      style: headerContainerStyle,
+      locale: locale,
+      weekStartsOn: weekStartsOn,
+    }
     return (
       <React.Fragment>
-        <CalendarHeaderForMonthView locale={locale} weekStartsOn={weekStartsOn} />
+        <HeaderComponentForMonthView {...headerProps} />
         <CalendarBodyForMonthView<T>
           {...commonProps}
+          style={bodyContainerStyle}
           containerHeight={height}
           events={daytimeEvents}
           eventCellStyle={eventCellStyle}
@@ -168,15 +199,19 @@ function _CalendarContainer<T>({
     )
   }
 
+  const headerProps = {
+    ...commonProps,
+    style: headerContainerStyle,
+    allDayEvents: allDayEvents,
+    onPressDateHeader: onPressDateHeader,
+  }
+
   return (
     <React.Fragment>
-      <CalendarHeader
-        {...commonProps}
-        allDayEvents={allDayEvents}
-        onPressDateHeader={onPressDateHeader}
-      />
+      <HeaderComponent {...headerProps} />
       <CalendarBody
         {...commonProps}
+        style={bodyContainerStyle}
         containerHeight={height}
         events={daytimeEvents}
         eventCellStyle={eventCellStyle}

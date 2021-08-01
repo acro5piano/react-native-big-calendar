@@ -1,6 +1,9 @@
 import { ReactElement } from 'react'
 import { RecursiveArray, ViewStyle } from 'react-native'
 
+import { CalendarHeaderProps } from './components/CalendarHeader'
+import { CalendarHeaderForMonthViewProps } from './components/CalendarHeaderForMonthView'
+
 export interface ICalendarEventBase {
   start: Date
   end: Date
@@ -34,6 +37,9 @@ export type EventRenderer<T> = (
   event: ICalendarEvent<T>,
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => JSX.Element
+
+export type HeaderRenderer<T> = React.ComponentType<CalendarHeaderProps<T> & { mode: Mode }>
+export type MonthHeaderRenderer = React.ComponentType<CalendarHeaderForMonthViewProps>
 
 /**
  * @deprecated Prefer interface ICalendarEvent instead.
