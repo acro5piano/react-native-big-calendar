@@ -23,7 +23,6 @@ storiesOf('Mobile', module)
   .add('day mode', () => (
     <View style={styles.mobile}>
       <Calendar
-        style={styles.calendar}
         height={MOBILE_HEIGHT}
         events={events}
         mode="day"
@@ -34,7 +33,6 @@ storiesOf('Mobile', module)
   .add('3days mode', () => (
     <View style={styles.mobile}>
       <Calendar
-        style={styles.calendar}
         height={MOBILE_HEIGHT}
         events={events}
         mode="3days"
@@ -44,7 +42,7 @@ storiesOf('Mobile', module)
   ))
   .add('week mode', () => (
     <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} />
+      <Calendar height={MOBILE_HEIGHT} events={events} />
     </View>
   ))
   .add('Month mode', () => {
@@ -52,7 +50,6 @@ storiesOf('Mobile', module)
     return (
       <View style={styles.mobile}>
         <Calendar
-          style={styles.calendar}
           mode="month"
           height={MOBILE_HEIGHT}
           events={state.events}
@@ -65,12 +62,12 @@ storiesOf('Mobile', module)
   .add('with app header', () => (
     <View style={styles.mobile}>
       <AppHeader />
-      <Calendar style={styles.calendar} height={MOBILE_HEIGHT - HEADER_HEIGHT} events={events} />
+      <Calendar height={MOBILE_HEIGHT - HEADER_HEIGHT} events={events} />
     </View>
   ))
   .add('do not show time', () => (
     <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} showTime={false} />
+      <Calendar height={MOBILE_HEIGHT} events={events} showTime={false} />
     </View>
   ))
   .add('on date changed', () => {
@@ -80,18 +77,13 @@ storiesOf('Mobile', module)
 
     return (
       <View style={styles.mobile}>
-        <Calendar
-          style={styles.calendar}
-          height={MOBILE_HEIGHT}
-          events={events}
-          onChangeDate={onChangeDate}
-        />
+        <Calendar height={MOBILE_HEIGHT} events={events} onChangeDate={onChangeDate} />
       </View>
     )
   })
   .add('Hidden now indocator', () => (
     <View style={styles.mobile}>
-      <Calendar style={styles.calendar} height={MOBILE_HEIGHT} events={events} hideNowIndicator />
+      <Calendar height={MOBILE_HEIGHT} events={events} hideNowIndicator />
     </View>
   ))
   .add('RTL', () => {
@@ -100,20 +92,13 @@ storiesOf('Mobile', module)
     }, [])
     return (
       <View style={styles.mobile}>
-        <Calendar
-          isRTL
-          style={styles.calendar}
-          locale="he"
-          height={MOBILE_HEIGHT}
-          events={events}
-        />
+        <Calendar isRTL locale="he" height={MOBILE_HEIGHT} events={events} />
       </View>
     )
   })
   .add('Custom week length', () => (
     <View style={styles.mobile}>
       <Calendar
-        style={styles.calendar}
         height={MOBILE_HEIGHT}
         events={events}
         mode={'custom'}
