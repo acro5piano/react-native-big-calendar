@@ -1,6 +1,6 @@
 {
   "name": "react-native-big-calendar",
-  "version": "1.0.5",
+  "version": "2.0.0-rc",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
@@ -71,7 +71,7 @@
     "ts-jest": "^25.5.1",
     "ts-loader": "^8.0.10",
     "tslib": "^2.2.0",
-    "typescript": "^4.3.5",
+    "typescript": "^5.3.5",
     "webpack-merge": "^5.8.0"
   },
   "simple-git-hooks": {

@@ -1,5 +1,49 @@
 # Changelog
 
+## 2.0.0-rc
+
+This is a release candidate for v2.0.0.
+
+### New Features
+
+- Make header injectable #473
+- Make header for month view injectable #473
+- (breaking) Enable to inject styles for header and body separately #409
+- Add theme functionality. A lot of people are requesting additional customization feature, so provided the customization option. #243 #93
+
+```tsx
+export interface ThemeInterface {
+  palette: {
+    primary: Palette
+    nowIndicator: string
+    gray: {
+      100: string
+      200: string
+      300: string
+      500: string
+      800: string
+    }
+  }
+  isRTL: boolean
+  typography: {
+    fontFamily?: string
+    xs: Typography
+    sm: Typography
+    xl: Typography
+  }
+  eventCellOverlappings: readonly Palette[]
+}
+
+```
+
+### Bug fixes
+
+- Show AM/PM format event #445
+
+### Breaking
+
+- Removed `style` prop as it is ambigious
+
 ## 1.0.5
 
 - Exported CalendarBody component #474
