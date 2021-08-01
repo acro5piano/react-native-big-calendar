@@ -32,6 +32,7 @@ function _CalendarHeader<T>({
   const theme = useTheme()
 
   const borderColor = { borderColor: theme.palette.gray['200'] }
+  const primaryBg = { backgroundColor: theme.palette.primary.main }
 
   return (
     <View
@@ -66,7 +67,7 @@ function _CalendarHeader<T>({
                 style={
                   _isToday
                     ? [
-                        { backgroundColor: theme.palette.primary.main },
+                        primaryBg,
                         u['h-36'],
                         u['w-36'],
                         u['pb-6'],
@@ -107,10 +108,14 @@ function _CalendarHeader<T>({
                   return null
                 }
                 return (
-                  <View style={eventCellCss.style} key={`${event.start}${event.title}`}>
+                  <View
+                    style={[eventCellCss.style, primaryBg]}
+                    key={`${event.start}${event.title}`}
+                  >
                     <Text
                       style={{
                         fontSize: theme.typography.sm.fontSize,
+                        color: theme.palette.primary.contrastText,
                       }}
                     >
                       {event.title}
