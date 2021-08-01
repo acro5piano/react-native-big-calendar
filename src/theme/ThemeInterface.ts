@@ -41,7 +41,7 @@ export interface ThemeInterface {
     // lg: Typography
     xl: Typography
   }
-  eventCellOverlappings: Palette[]
+  eventCellOverlappings: readonly Palette[]
 }
 
 export type PartialTheme = DeepPartial<ThemeInterface>

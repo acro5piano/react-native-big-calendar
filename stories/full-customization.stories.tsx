@@ -4,29 +4,11 @@ import React from 'react'
 import { Dimensions, Picker, Text, TouchableOpacity, View } from 'react-native'
 import tailwind from 'tailwind-rn'
 
-import { Calendar, Mode, PartialTheme, modeToNum } from '../src'
+import { Calendar, Mode, modeToNum } from '../src'
 import { events } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
-
-const themes: Record<string, PartialTheme> = {
-  default: {},
-  dark: {
-    palette: {
-      primary: {
-        main: '#6185d0',
-        contrastText: '#000',
-      },
-      gray: {
-        '100': '#333',
-        '200': '#666',
-        '300': '#888',
-        '500': '#aaa',
-        '800': '#ccc',
-      },
-    },
-  },
-} as const
+import { themes } from './themes'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
@@ -97,6 +79,7 @@ storiesOf('Full Customization', module).add('Main', () => {
         <Picker style={pickerStyle} selectedValue={theme} onValueChange={setTheme}>
           <Picker.Item value="default" label="default theme" />
           <Picker.Item value="dark" label="dark" />
+          <Picker.Item value="green" label="green" />
         </Picker>
         <Picker
           style={[pickerStyle, tailwind('mx-4')]}

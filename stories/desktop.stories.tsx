@@ -8,6 +8,7 @@ import { CONTROL_HEIGHT, Control } from './components/Control'
 import { customEventRenderer, events } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
+import { themes } from './themes'
 
 function alert(input: any) {
   // @ts-ignore
@@ -20,7 +21,7 @@ function alert(input: any) {
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
-storiesOf('Desktop', module)
+storiesOf('showcase - Desktop', module)
   .add('day mode', () => (
     <View style={styles.desktop}>
       <Calendar
@@ -268,21 +269,7 @@ storiesOf('Desktop', module)
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
-          theme={{
-            palette: {
-              primary: {
-                main: '#6185d0',
-                contrastText: '#000',
-              },
-              gray: {
-                '100': '#333',
-                '200': '#666',
-                '300': '#888',
-                '500': '#aaa',
-                '800': '#ccc',
-              },
-            },
-          }}
+          theme={themes.dark}
         />
       </View>
     )

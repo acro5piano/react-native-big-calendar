@@ -19,7 +19,7 @@ function alert(input: any) {
 
 const MOBILE_HEIGHT = 736
 
-storiesOf('Mobile', module)
+storiesOf('showcase - Mobile', module)
   .add('day mode', () => (
     <View style={styles.mobile}>
       <Calendar
