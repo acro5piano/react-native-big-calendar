@@ -90,20 +90,22 @@ export function todayInMinutes() {
   return today.diff(dayjs().startOf('day'), 'minute')
 }
 
-export function modeToNum(mode: Mode, current?: dayjs.Dayjs): number {
+export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date): number {
   if (mode === 'month') {
     if (!current) {
       throw new Error('You must specify current date if mode is month')
     }
+    if (current instanceof Date) {
+      current = dayjs(current)
+    }
     return current.daysInMonth() - current.date() + 1
   }
   switch (mode) {
+    case 'day':
+      return 1
     case '3days':
       return 3
     case 'week':
-      return 7
-    case 'day':
-      return 1
     case 'custom':
       return 7
     default:

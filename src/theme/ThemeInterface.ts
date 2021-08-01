@@ -3,6 +3,8 @@
 // https://material-ui.com/customization/default-theme/#default-theme
 import { TextStyle } from 'react-native'
 
+import { DeepPartial } from '../utility-types'
+
 export interface Palette {
   main: string
   contrastText: string
@@ -41,3 +43,5 @@ export interface ThemeInterface {
   }
   eventCellOverlappings: Palette[]
 }
+
+export type PartialTheme = DeepPartial<ThemeInterface>
