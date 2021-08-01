@@ -38,7 +38,12 @@ function _CalendarHeaderForMonthView({
             <Text
               style={[
                 u['text-center'],
-                todayWeekNum === date.day() && { color: theme.palette.primary.main },
+                {
+                  color:
+                    todayWeekNum === date.day()
+                      ? theme.palette.primary.main
+                      : theme.palette.gray['800'],
+                },
               ]}
             >
               {date.format('ddd')}

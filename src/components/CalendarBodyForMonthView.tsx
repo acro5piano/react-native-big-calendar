@@ -102,10 +102,13 @@ function _CalendarBodyForMonthView<T>({
                 <Text
                   style={[
                     { textAlign: 'center' },
-                    date &&
-                      date.format('YYYY-MM-DD') === now.format('YYYY-MM-DD') && {
-                        color: theme.palette.primary.main,
-                      },
+                    theme.typography.sm,
+                    {
+                      color:
+                        date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
+                          ? theme.palette.primary.main
+                          : theme.palette.gray['800'],
+                    },
                   ]}
                 >
                   {date && date.format('D')}
