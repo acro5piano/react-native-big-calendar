@@ -41,7 +41,7 @@
     "@rollup/plugin-typescript": "^8.2.1",
     "@storybook/react": "^6.3.4",
     "@types/jest": "^26.0.23",
-    "@types/node": "^15.6.1",
+    "@types/node": "^16.4.10",
     "@types/react-native": "^0.64.10",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
