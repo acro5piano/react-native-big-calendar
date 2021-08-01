@@ -14,9 +14,4 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     // boxSizing: 'content-box',
   },
-  calendar: {
-    borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fff',
-  },
 })

@@ -1,21 +1,13 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, ViewStyle } from 'react-native'
 
-import { dateCellStyle, guideTextStyle, u } from '../commonStyles'
+import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from '../interfaces'
+import { useTheme } from '../theme/ThemeContext'
 import {
-  formatHour,
   getCountOfEventsAtEvent,
   getOrderOfEvent,
   getRelativeTopInDay,
@@ -24,12 +16,13 @@ import {
   typedMemo,
 } from '../utils'
 import { CalendarEvent } from './CalendarEvent'
+import { HourGuideCell } from './HourGuideCell'
+import { HourGuideColumn } from './HourGuideColumn'
 
 const styles = StyleSheet.create({
   nowIndicator: {
     position: 'absolute',
     zIndex: 10000,
-    backgroundColor: 'red',
     height: 2,
     width: '100%',
   },
@@ -47,48 +40,17 @@ interface CalendarBodyProps<T> {
   eventCellStyle?: EventCellStyle<T>
   hideNowIndicator?: boolean
   overlapOffset?: number
-  isRTL: boolean
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
 }
 
-interface WithCellHeight {
-  cellHeight: number
-}
-
-const _HourGuideColumn = ({
-  cellHeight,
-  hour,
-  ampm,
-}: WithCellHeight & { hour: number; ampm: boolean }) => (
-  <View style={{ height: cellHeight }}>
-    <Text style={guideTextStyle}>{formatHour(hour, ampm)}</Text>
-  </View>
-)
-
-const HourGuideColumn = React.memo(_HourGuideColumn, () => true)
-
-interface HourCellProps extends WithCellHeight {
-  onPress: (d: dayjs.Dayjs) => void
-  date: dayjs.Dayjs
-  hour: number
-}
-
-const HourCell = ({ cellHeight, onPress, date, hour }: HourCellProps) => {
-  return (
-    <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
-      <View style={[dateCellStyle, { height: cellHeight }]} />
-    </TouchableWithoutFeedback>
-  )
-}
-
 function _CalendarBody<T>({
   containerHeight,
   cellHeight,
   dateRange,
-  style = {},
+  style,
   onPressCell,
   events,
   onPressEvent,
@@ -99,7 +61,6 @@ function _CalendarBody<T>({
   onSwipeHorizontal,
   hideNowIndicator,
   overlapOffset,
-  isRTL,
   renderEvent,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
@@ -136,7 +97,7 @@ function _CalendarBody<T>({
 
   const _renderMappedEvent = (event: ICalendarEvent<T>) => (
     <CalendarEvent
-      key={`${event.start}${event.title}`}
+      key={`${event.start}${event.title}${event.end}`}
       event={event}
       onPressEvent={onPressEvent}
       eventCellStyle={eventCellStyle}
@@ -145,8 +106,11 @@ function _CalendarBody<T>({
       eventOrder={getOrderOfEvent(event, events)}
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
+      ampm={ampm}
     />
   )
+
+  const theme = useTheme()
 
   return (
     <ScrollView
@@ -164,10 +128,10 @@ function _CalendarBody<T>({
       contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
     >
       <View
-        style={[u['flex-1'], isRTL ? u['flex-row-reverse'] : u['flex-row']]}
+        style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
         {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
       >
-        <View style={[u['bg-white'], u['z-20'], u['w-50']]}>
+        <View style={[u['z-20'], u['w-50']]}>
           {hours.map((hour) => (
             <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
           ))}
@@ -175,7 +139,7 @@ function _CalendarBody<T>({
         {dateRange.map((date) => (
           <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
             {hours.map((hour) => (
-              <HourCell
+              <HourGuideCell
                 key={hour}
                 cellHeight={cellHeight}
                 date={date}
@@ -225,7 +189,13 @@ function _CalendarBody<T>({
               .map(_renderMappedEvent)}
 
             {isToday(date) && !hideNowIndicator && (
-              <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
+              <View
+                style={[
+                  styles.nowIndicator,
+                  { backgroundColor: theme.palette.nowIndicator },
+                  { top: `${getRelativeTopInDay(now)}%` },
+                ]}
+              />
             )}
           </View>
         ))}

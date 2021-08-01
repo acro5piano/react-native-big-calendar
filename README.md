@@ -111,7 +111,6 @@ export interface CalendarProps<T> {
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
   weekEndsOn?: WeekNum
-  isRTL?: boolean
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
@@ -144,6 +143,7 @@ export interface CalendarProps<T> {
 | `overlapOffset`       | no       | `number`                                               | Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.                                                                                                                                                                                                                                                                                                                                                |
 | `isRTL`               | no       | `boolean`                                              | Switches the direction of the layout for use with RTL languages. Defaults to false.                                                                                                                                                                                                                                                                                                                                                                             |
 | `renderEvent`         | no       | `EventRenderer`                                        | Custom event renderer. See below type definition.                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `renderHeader`        | no       | `HeaderRenderer`                                       | Custom header renderer.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ## EventRenderer
 
@@ -269,3 +269,11 @@ Enterprise customers are able to obtain:
 Note that Enterprise features will be distributed to the OSS version.
 
 If you are interested in those features, please send an email to: ketsume0211@gmail.com
+
+# Hire me
+
+I'm a freelance software engineer specialized in React, React Native and TypeScript. Also available for GraphQL and RDB backend, and Node.JS applications.
+
+If you are interested in hiring me, please send an email to: ketsume0211@gmail.com
+
+I'm based in Japan (by the beautiful sea), so a remote contract job is especially welcome.

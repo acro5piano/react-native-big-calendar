@@ -13,7 +13,7 @@ import {
   ICalendarEvent,
   WeekNum,
 } from '../interfaces'
-import { Color } from '../theme'
+import { useTheme } from '../theme/ThemeContext'
 import { typedMemo } from '../utils'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 
@@ -24,7 +24,6 @@ interface CalendarBodyForMonthViewProps<T> {
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
   hideNowIndicator?: boolean
-  isRTL: boolean
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
@@ -36,14 +35,13 @@ interface CalendarBodyForMonthViewProps<T> {
 function _CalendarBodyForMonthView<T>({
   containerHeight,
   targetDate,
-  style = {},
+  style,
   onPressCell,
   events,
   onPressEvent,
   eventCellStyle,
   onSwipeHorizontal,
   hideNowIndicator,
-  isRTL,
   renderEvent,
   maxVisibleEventCount,
   weekStartsOn,
@@ -57,6 +55,7 @@ function _CalendarBodyForMonthView<T>({
   const weeks = calendarize(targetDate.toDate(), weekStartsOn)
 
   const minCellHeight = containerHeight / 6 - 30
+  const theme = useTheme()
 
   return (
     <View
@@ -75,8 +74,7 @@ function _CalendarBodyForMonthView<T>({
           key={i}
           style={[
             u['flex-1'],
-            u['bg-white'],
-            isRTL ? u['flex-row-reverse'] : u['flex-row'],
+            theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
             {
               minHeight: minCellHeight,
             },
@@ -89,9 +87,9 @@ function _CalendarBodyForMonthView<T>({
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
                 style={[
                   i > 0 && u['border-t'],
-                  isRTL && ii > 0 && u['border-r'],
-                  !isRTL && ii > 0 && u['border-l'],
-                  u['border-gray-200'],
+                  theme.isRTL && ii > 0 && u['border-r'],
+                  !theme.isRTL && ii > 0 && u['border-l'],
+                  { borderColor: theme.palette.gray['200'] },
                   u['p-8'],
                   u['flex-1'],
                   u['flex-column'],
@@ -104,10 +102,13 @@ function _CalendarBodyForMonthView<T>({
                 <Text
                   style={[
                     { textAlign: 'center' },
-                    date &&
-                      date.format('YYYY-MM-DD') === now.format('YYYY-MM-DD') && {
-                        color: Color.primary,
-                      },
+                    theme.typography.sm,
+                    {
+                      color:
+                        date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
+                          ? theme.palette.primary.main
+                          : theme.palette.gray['800'],
+                    },
                   ]}
                 >
                   {date && date.format('D')}

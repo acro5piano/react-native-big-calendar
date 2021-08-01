@@ -4,6 +4,7 @@ import * as React from 'react'
 import { OVERLAP_OFFSET, u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
 import { EventCellStyle, EventRenderer, ICalendarEvent } from '../interfaces'
+import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
@@ -25,6 +26,7 @@ interface CalendarEventProps<T> {
   eventOrder?: number
   overlapOffset?: number
   renderEvent?: EventRenderer<T>
+  ampm: boolean
 }
 
 function _CalendarEvent<T>({
@@ -36,17 +38,30 @@ function _CalendarEvent<T>({
   eventOrder = 0,
   overlapOffset = OVERLAP_OFFSET,
   renderEvent,
+  ampm,
 }: CalendarEventProps<T>) {
+  const theme = useTheme()
+
+  const palettes = React.useMemo(
+    () => [theme.palette.primary, ...theme.eventCellOverlappings],
+    [theme],
+  )
+
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
     eventCellStyle,
     onPressEvent,
     injectedStyles: [
       getEventCellPositionStyle(event.start, event.end),
-      getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset),
+      getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
       u['absolute'],
     ],
   })
+
+  const textColor = React.useMemo(() => {
+    const fgColors = palettes.map((p) => p.contrastText)
+    return fgColors[eventCount % fgColors.length] || fgColors[0]
+  }, [eventCount, palettes])
 
   if (renderEvent) {
     return renderEvent(event, touchableOpacityProps)
@@ -56,7 +71,9 @@ function _CalendarEvent<T>({
     <DefaultCalendarEventRenderer
       event={event}
       showTime={showTime}
+      ampm={ampm}
       touchableOpacityProps={touchableOpacityProps}
+      textColor={textColor}
     />
   )
 }

@@ -1,10 +1,9 @@
 import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
 import React from 'react'
 
 import { OVERLAP_PADDING } from './commonStyles'
 import { ICalendarEvent, Mode, WeekNum } from './interfaces'
-import { Color } from './theme'
+import { Palette } from './theme/ThemeInterface'
 
 export const typedMemo: <T>(c: T) => T = React.memo
 
@@ -30,7 +29,9 @@ export function getDatesInWeek(
   const days = Array(7)
     .fill(0)
     .map((_, i) => {
-      return subject.add(i - (subjectDOW < weekStartsOn ? 7 + subjectDOW : subjectDOW) + weekStartsOn, 'day').locale(locale)
+      return subject
+        .add(i - (subjectDOW < weekStartsOn ? 7 + subjectDOW : subjectDOW) + weekStartsOn, 'day')
+        .locale(locale)
     })
   return days
 }
@@ -56,30 +57,7 @@ export function getDatesInNextOneDay(date: Date | dayjs.Dayjs = new Date(), loca
 }
 
 export const hours = [
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  23,
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 ]
 
 export function formatHour(hour: number, ampm = false) {
@@ -112,20 +90,22 @@ export function todayInMinutes() {
   return today.diff(dayjs().startOf('day'), 'minute')
 }
 
-export function modeToNum(mode: Mode, current?: dayjs.Dayjs): number {
+export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date): number {
   if (mode === 'month') {
     if (!current) {
       throw new Error('You must specify current date if mode is month')
     }
+    if (current instanceof Date) {
+      current = dayjs(current)
+    }
     return current.daysInMonth() - current.date() + 1
   }
   switch (mode) {
+    case 'day':
+      return 1
     case '3days':
       return 3
     case 'week':
-      return 7
-    case 'day':
-      return 1
     case 'custom':
       return 7
     default:
@@ -133,8 +113,8 @@ export function modeToNum(mode: Mode, current?: dayjs.Dayjs): number {
   }
 }
 
-export function formatStartEnd(start: Date, end: Date) {
-  return `${dayjs(start).format('HH:mm')} - ${dayjs(end).format('HH:mm')}`
+export function formatStartEnd(start: Date, end: Date, format: string) {
+  return `${dayjs(start).format(format)} - ${dayjs(end).format(format)}`
 }
 
 export function isAllDayEvent(start: Date, end: Date) {
@@ -148,7 +128,6 @@ export function getCountOfEventsAtEvent(
   event: ICalendarEvent<any>,
   eventList: ICalendarEvent<any>[],
 ) {
-  dayjs.extend(isBetween)
   return eventList.filter(
     (e) =>
       dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
@@ -157,7 +136,6 @@ export function getCountOfEventsAtEvent(
 }
 
 export function getOrderOfEvent(event: ICalendarEvent<any>, eventList: ICalendarEvent<any>[]) {
-  dayjs.extend(isBetween)
   const events = eventList
     .filter(
       (e) =>
@@ -171,42 +149,25 @@ export function getOrderOfEvent(event: ICalendarEvent<any>, eventList: ICalendar
         return dayjs(a.start).isBefore(b.start) ? -1 : 1
       }
     })
-  return events.indexOf(event)
-}
-
-function getColorForEventPosition(eventPosition: number) {
-  switch (eventPosition % 5) {
-    case 0:
-      return Color.primary
-    case 1:
-      return Color.orange
-    case 2:
-      return Color.green
-    case 3:
-      return Color.red
-    case 4:
-      return Color.pink
-    default:
-      return Color.primary
-  }
+  const index = events.indexOf(event)
+  return index === -1 ? 0 : index
 }
 
 export function getStyleForOverlappingEvent(
-  eventCount: number,
   eventPosition: number,
   overlapOffset: number,
+  palettes: Palette[],
 ) {
   let overlapStyle = {}
-  if (eventCount > 1) {
-    const offset = overlapOffset
-    const start = eventPosition * offset
-    const zIndex = 100 + eventPosition
-    overlapStyle = {
-      start: start + OVERLAP_PADDING,
-      end: OVERLAP_PADDING,
-      backgroundColor: getColorForEventPosition(eventPosition),
-      zIndex,
-    }
+  const offset = overlapOffset
+  const start = eventPosition * offset
+  const zIndex = 100 + eventPosition
+  const bgColors = palettes.map((p) => p.main)
+  overlapStyle = {
+    start: start + OVERLAP_PADDING,
+    end: OVERLAP_PADDING,
+    backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
+    zIndex,
   }
   return overlapStyle
 }

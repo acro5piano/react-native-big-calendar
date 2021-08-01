@@ -8,6 +8,7 @@ import { CONTROL_HEIGHT, Control } from './components/Control'
 import { customEventRenderer, events } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
+import { themes } from './themes'
 
 function alert(input: any) {
   // @ts-ignore
@@ -20,11 +21,10 @@ function alert(input: any) {
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
-storiesOf('Desktop', module)
+storiesOf('showcase - Desktop', module)
   .add('day mode', () => (
     <View style={styles.desktop}>
       <Calendar
-        style={styles.calendar}
         height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={(event) => alert(event.title)}
@@ -36,7 +36,6 @@ storiesOf('Desktop', module)
   .add('3days mode', () => (
     <View style={styles.desktop}>
       <Calendar
-        style={styles.calendar}
         height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={(event) => alert(event.title)}
@@ -50,7 +49,6 @@ storiesOf('Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
-          style={styles.calendar}
           height={SCREEN_HEIGHT}
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
@@ -64,7 +62,6 @@ storiesOf('Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
-          style={styles.calendar}
           mode="month"
           height={SCREEN_HEIGHT}
           events={[
@@ -86,13 +83,12 @@ storiesOf('Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
-          style={styles.calendar}
           mode="month"
           height={SCREEN_HEIGHT}
+          isRTL
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
-          isRTL
         />
       </View>
     )
@@ -100,7 +96,6 @@ storiesOf('Desktop', module)
   .add('event cell style', () => (
     <View style={styles.desktop}>
       <Calendar
-        style={styles.calendar}
         height={SCREEN_HEIGHT}
         events={events}
         eventCellStyle={(event) => {
@@ -122,7 +117,6 @@ storiesOf('Desktop', module)
       <View style={styles.desktop}>
         <Control {...props} />
         <Calendar
-          style={styles.calendar}
           height={SCREEN_HEIGHT - CONTROL_HEIGHT}
           events={events}
           date={date.toDate()}
@@ -133,17 +127,12 @@ storiesOf('Desktop', module)
   })
   .add('scroll to some time', () => (
     <View style={styles.desktop}>
-      <Calendar
-        style={styles.calendar}
-        height={SCREEN_HEIGHT}
-        events={events}
-        scrollOffsetMinutes={300}
-      />
+      <Calendar height={SCREEN_HEIGHT} events={events} scrollOffsetMinutes={300} />
     </View>
   ))
   .add('week start on Monday', () => (
     <View style={styles.desktop}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} weekStartsOn={1} />
+      <Calendar height={SCREEN_HEIGHT} events={events} weekStartsOn={1} />
     </View>
   ))
   .add('all day event', () => {
@@ -158,12 +147,7 @@ storiesOf('Desktop', module)
 
     return (
       <View style={styles.desktop}>
-        <Calendar
-          style={styles.calendar}
-          height={SCREEN_HEIGHT}
-          events={_events}
-          weekStartsOn={1}
-        />
+        <Calendar height={SCREEN_HEIGHT} events={_events} weekStartsOn={1} />
       </View>
     )
   })
@@ -171,7 +155,6 @@ storiesOf('Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
-          style={styles.calendar}
           height={SCREEN_HEIGHT}
           events={events}
           onPressDateHeader={(date) => alert(date)}
@@ -186,25 +169,25 @@ storiesOf('Desktop', module)
     }, [])
     return (
       <View style={styles.desktop}>
-        <Calendar style={styles.calendar} locale="ja" height={SCREEN_HEIGHT} events={events} />
+        <Calendar locale="ja" height={SCREEN_HEIGHT} events={events} />
       </View>
     )
   })
   .add('AM/PM format', () => {
     return (
       <View style={styles.desktop}>
-        <Calendar style={styles.calendar} ampm height={SCREEN_HEIGHT} events={events} />
+        <Calendar ampm height={SCREEN_HEIGHT} events={events} />
       </View>
     )
   })
   .add('Hidden Now indicator', () => (
     <View style={styles.desktop}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} hideNowIndicator />
+      <Calendar height={SCREEN_HEIGHT} events={events} hideNowIndicator />
     </View>
   ))
   .add('More overlap padding', () => (
     <View style={styles.desktop}>
-      <Calendar style={styles.calendar} height={SCREEN_HEIGHT} events={events} overlapOffset={70} />
+      <Calendar height={SCREEN_HEIGHT} events={events} overlapOffset={70} />
     </View>
   ))
   .add('RTL', () => {
@@ -213,32 +196,20 @@ storiesOf('Desktop', module)
     }, [])
     return (
       <View style={styles.desktop}>
-        <Calendar
-          style={styles.calendar}
-          locale="he"
-          height={SCREEN_HEIGHT}
-          events={events}
-          isRTL={true}
-        />
+        <Calendar locale="he" height={SCREEN_HEIGHT} events={events} isRTL />
       </View>
     )
   })
   .add('Custom Event Component renderer', () => {
     return (
       <View style={styles.desktop}>
-        <Calendar
-          style={styles.calendar}
-          height={SCREEN_HEIGHT}
-          renderEvent={customEventRenderer}
-          events={events}
-        />
+        <Calendar height={SCREEN_HEIGHT} renderEvent={customEventRenderer} events={events} />
       </View>
     )
   })
   .add('Custom week length', () => (
     <View style={styles.desktop}>
       <Calendar
-        style={styles.calendar}
         height={SCREEN_HEIGHT}
         events={events}
         mode={'custom'}
@@ -250,7 +221,6 @@ storiesOf('Desktop', module)
   .add('Event spanning multiple days', () => (
     <View style={styles.desktop}>
       <Calendar
-        style={styles.calendar}
         height={SCREEN_HEIGHT}
         events={[
           {
@@ -269,3 +239,67 @@ storiesOf('Desktop', module)
       />
     </View>
   ))
+  .add('Provide custom theme', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          theme={{
+            palette: {
+              primary: {
+                main: 'purple',
+                contrastText: '#fff',
+              },
+            },
+          }}
+        />
+      </View>
+    )
+  })
+  .add('Dark mode', () => {
+    const state = useEvents(events)
+    return (
+      <View style={[styles.desktop, { backgroundColor: '#333' }]}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          theme={themes.dark}
+        />
+      </View>
+    )
+  })
+  .add('Without the header', () => {
+    const state = useEvents(events)
+    return (
+      <View style={[styles.desktop]}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          renderHeader={() => null}
+        />
+      </View>
+    )
+  })
+  .add('Without the header (month)', () => {
+    const state = useEvents(events)
+    return (
+      <View style={[styles.desktop]}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          renderHeaderForMonthView={() => null}
+          mode="month"
+        />
+      </View>
+    )
+  })

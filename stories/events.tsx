@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
-import { eventTitleStyle } from '../src/commonStyles'
 import { EventRenderer, ICalendarEvent } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils'
 
@@ -85,17 +84,15 @@ export const customEventRenderer: EventRenderer<MyCustomEventType> = (
       ]}
     >
       {dayjs(event.end).diff(event.start, 'minute') < 32 ? (
-        <Text style={[eventTitleStyle, { color: 'black' }]}>
+        <Text style={[{ color: 'black' }]}>
           {event.title},
-          <Text style={[eventTitleStyle, { color: 'black' }]}>
-            {dayjs(event.start).format('HH:mm')}
-          </Text>
+          <Text style={[{ color: 'black' }]}>{dayjs(event.start).format('HH:mm')}</Text>
         </Text>
       ) : (
         <>
-          <Text style={[eventTitleStyle, { color: 'black' }]}>{event.title}</Text>
-          <Text style={[eventTitleStyle, { color: 'black' }]}>
-            {formatStartEnd(event.start, event.end)}
+          <Text style={[{ color: 'black' }]}>{event.title}</Text>
+          <Text style={[{ color: 'black' }]}>
+            {formatStartEnd(event.start, event.end, 'HH:mm')}
           </Text>
           {event.children && event.children}
         </>

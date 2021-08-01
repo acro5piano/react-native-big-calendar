@@ -1,15 +1,12 @@
 import { Platform, StyleSheet } from 'react-native'
 
-import { Color } from './theme'
-
 export const MIN_HEIGHT = 1200
 export const HOUR_GUIDE_WIDTH = 50
 export const OVERLAP_OFFSET = Platform.OS === 'web' ? 20 : 8
 export const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0
 
-export const commonStyles = StyleSheet.create({
-  eventCell: {
-    backgroundColor: Color.primary,
+export const eventCellCss = StyleSheet.create({
+  style: {
     zIndex: 100,
     start: 3,
     end: 3,
@@ -72,14 +69,11 @@ export const u = StyleSheet.create({
   'border-b': {
     borderBottomWidth: 1,
   },
+  'border-b-2': {
+    borderBottomWidth: 2,
+  },
   'border-r': {
     borderRightWidth: 1,
-  },
-  'border-gray-100': {
-    borderColor: '#eee',
-  },
-  'border-gray-200': {
-    borderColor: '#ddd',
   },
 
   /*
@@ -116,29 +110,8 @@ export const u = StyleSheet.create({
   /*
    * Text
    */
-  'text-gray-800': {
-    color: '#444',
-  },
-  'text-gray-300': {
-    color: '#888',
-  },
-  'text-2xl': {
-    fontSize: 22,
-  },
   'text-center': {
     textAlign: 'center',
-  },
-  'text-white': {
-    color: '#fff',
-  },
-  'text-primary': {
-    color: Color.primary,
-  },
-  'text-xs': {
-    fontSize: 10,
-  },
-  'text-sm': {
-    fontSize: 12,
   },
 
   /*
@@ -162,16 +135,6 @@ export const u = StyleSheet.create({
   },
   'z-20': {
     zIndex: 20,
-  },
-
-  /*
-   * Backgrond
-   */
-  'bg-primary': {
-    backgroundColor: Color.primary,
-  },
-  'bg-white': {
-    backgroundColor: '#fff',
   },
 
   /*
@@ -205,9 +168,3 @@ export const u = StyleSheet.create({
         }
       : {},
 })
-
-export const eventTitleStyle = [u['text-white'], u['text-sm']]
-
-export const dateCellStyle = [u['border-l'], u['border-b'], u['border-gray-100'], u['bg-white']]
-
-export const guideTextStyle = [u['text-gray-300'], u['text-xs'], u['text-center']]

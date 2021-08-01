@@ -1,6 +1,10 @@
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import * as R from 'remeda'
+
 import * as utils from '../utils'
+
+dayjs.extend(isBetween)
 
 const events: Event[] = [
   {
