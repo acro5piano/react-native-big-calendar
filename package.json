@@ -38,7 +38,7 @@
     "@babel/core": "^7.14.6",
     "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
     "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
-    "@rollup/plugin-typescript": "^8.2.1",
+    "@rollup/plugin-typescript": "^8.2.5",
     "@storybook/react": "^6.3.4",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.6.1",
