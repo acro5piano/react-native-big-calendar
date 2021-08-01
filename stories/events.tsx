@@ -91,7 +91,9 @@ export const customEventRenderer: EventRenderer<MyCustomEventType> = (
       ) : (
         <>
           <Text style={[{ color: 'black' }]}>{event.title}</Text>
-          <Text style={[{ color: 'black' }]}>{formatStartEnd(event.start, event.end)}</Text>
+          <Text style={[{ color: 'black' }]}>
+            {formatStartEnd(event.start, event.end, 'HH:mm')}
+          </Text>
           {event.children && event.children}
         </>
       )}
