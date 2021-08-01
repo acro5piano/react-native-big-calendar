@@ -54,7 +54,7 @@ function _CalendarBodyForMonthView<T>({
 
   const weeks = calendarize(targetDate.toDate(), weekStartsOn)
 
-  const minCellHeight = containerHeight / 6 - 30
+  const minCellHeight = containerHeight / 5 - 30
   const theme = useTheme()
 
   return (
@@ -65,6 +65,11 @@ function _CalendarBodyForMonthView<T>({
         },
         u['flex-column'],
         u['flex-1'],
+        u['border-b'],
+        u['border-l'],
+        u['border-r'],
+        u['rounded'],
+        { borderColor: theme.palette.gray['200'] },
         style,
       ]}
       {...panResponder.panHandlers}
@@ -91,6 +96,7 @@ function _CalendarBodyForMonthView<T>({
                   theme.isRTL && ii > 0 && u['border-r'],
                   !theme.isRTL && ii > 0 && u['border-l'],
                   { borderColor: theme.palette.gray['200'] },
+                  u['p-2'],
                   u['flex-1'],
                   u['flex-column'],
                   {

@@ -93,6 +93,9 @@ export const u = StyleSheet.create({
     marginLeft: 3,
     marginRight: 3,
   },
+  'p-2': {
+    padding: 2,
+  },
   'p-8': {
     padding: 8,
   },
