@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "calendarize": "^1.1.1",
-    "dayjs": "^1.10.4"
+    "dayjs": "^1.10.4",
+    "merge-anything": "^4.0.1"
   },
   "peerDependencies": {
     "react": "^16.8.3",
@@ -38,9 +39,9 @@
     "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
     "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
     "@rollup/plugin-typescript": "^8.2.1",
-    "@storybook/react": "^6.2.9",
+    "@storybook/react": "^6.3.4",
     "@types/jest": "^26.0.23",
-    "@types/node": "^15.6.1",
+    "@types/node": "^16.4.9",
     "@types/react-native": "^0.64.10",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.26.0",
@@ -62,9 +63,11 @@
     "react-native-web": "^0.16.3",
     "remeda": "^0.0.27",
     "rimraf": "^3.0.2",
+    "rn-tailwind": "^1.0.16",
     "rollup": "^2.52.6",
     "rollup-plugin-typescript2": "^0.30.0",
     "simple-git-hooks": "^2.5.1",
+    "tailwind-rn": "^3.0.1",
     "ts-jest": "^25.5.1",
     "ts-loader": "^8.0.10",
     "tslib": "^2.2.0",
@@ -88,5 +91,8 @@
       "style": "module",
       "parser": "typescript"
     }
+  },
+  "resolutions": {
+    "typescript": "^4.3.5"
   }
 }
