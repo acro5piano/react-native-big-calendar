@@ -1,7 +1,7 @@
 import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -75,6 +75,7 @@ function _CalendarBodyForMonthView<T>({
           style={[
             u['flex-1'],
             theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
+            Platform.OS === 'android' && style, // TODO: in Android, backgroundColor is not applied to child components
             {
               minHeight: minCellHeight,
             },
