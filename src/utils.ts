@@ -113,8 +113,8 @@ export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date): number {
   }
 }
 
-export function formatStartEnd(start: Date, end: Date) {
-  return `${dayjs(start).format('HH:mm')} - ${dayjs(end).format('HH:mm')}`
+export function formatStartEnd(start: Date, end: Date, format: string) {
+  return `${dayjs(start).format(format)} - ${dayjs(end).format(format)}`
 }
 
 export function isAllDayEvent(start: Date, end: Date) {

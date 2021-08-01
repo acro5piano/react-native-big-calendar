@@ -26,6 +26,7 @@ interface CalendarEventProps<T> {
   eventOrder?: number
   overlapOffset?: number
   renderEvent?: EventRenderer<T>
+  ampm: boolean
 }
 
 function _CalendarEvent<T>({
@@ -37,6 +38,7 @@ function _CalendarEvent<T>({
   eventOrder = 0,
   overlapOffset = OVERLAP_OFFSET,
   renderEvent,
+  ampm,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -69,6 +71,7 @@ function _CalendarEvent<T>({
     <DefaultCalendarEventRenderer
       event={event}
       showTime={showTime}
+      ampm={ampm}
       touchableOpacityProps={touchableOpacityProps}
       textColor={textColor}
     />

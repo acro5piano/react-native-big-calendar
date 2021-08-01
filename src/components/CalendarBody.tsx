@@ -106,6 +106,7 @@ function _CalendarBody<T>({
       eventOrder={getOrderOfEvent(event, events)}
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
+      ampm={ampm}
     />
   )
 
