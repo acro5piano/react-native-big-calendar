@@ -1,15 +1,8 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, ViewStyle } from 'react-native'
 
-import { dateCellStyle, u } from '../commonStyles'
+import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from '../interfaces'
@@ -23,6 +16,7 @@ import {
   typedMemo,
 } from '../utils'
 import { CalendarEvent } from './CalendarEvent'
+import { HourGuideCell } from './HourGuideCell'
 import { HourGuideColumn } from './HourGuideColumn'
 
 const styles = StyleSheet.create({
@@ -51,24 +45,6 @@ interface CalendarBodyProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
-}
-
-interface WithCellHeight {
-  cellHeight: number
-}
-
-interface HourCellProps extends WithCellHeight {
-  onPress: (d: dayjs.Dayjs) => void
-  date: dayjs.Dayjs
-  hour: number
-}
-
-const HourCell = ({ cellHeight, onPress, date, hour }: HourCellProps) => {
-  return (
-    <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
-      <View style={[dateCellStyle, { height: cellHeight }]} />
-    </TouchableWithoutFeedback>
-  )
 }
 
 function _CalendarBody<T>({
@@ -122,7 +98,7 @@ function _CalendarBody<T>({
 
   const _renderMappedEvent = (event: ICalendarEvent<T>) => (
     <CalendarEvent
-      key={`${event.start}${event.title}`}
+      key={`${event.start}${event.title}${event.end}`}
       event={event}
       onPressEvent={onPressEvent}
       eventCellStyle={eventCellStyle}
@@ -155,7 +131,7 @@ function _CalendarBody<T>({
         style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
         {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
       >
-        <View style={[u['bg-white'], u['z-20'], u['w-50']]}>
+        <View style={[u['z-20'], u['w-50']]}>
           {hours.map((hour) => (
             <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
           ))}
@@ -163,7 +139,7 @@ function _CalendarBody<T>({
         {dateRange.map((date) => (
           <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
             {hours.map((hour) => (
-              <HourCell
+              <HourGuideCell
                 key={hour}
                 cellHeight={cellHeight}
                 date={date}

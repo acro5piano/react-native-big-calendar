@@ -51,8 +51,7 @@ function _CalendarEvent<T>({
     onPressEvent,
     injectedStyles: [
       getEventCellPositionStyle(event.start, event.end),
-      { backgroundColor: theme.palette.primary.main },
-      getStyleForOverlappingEvent(eventCount, eventOrder, overlapOffset, palettes),
+      getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
       u['absolute'],
     ],
   })

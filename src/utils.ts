@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
 import React from 'react'
 
 import { OVERLAP_PADDING } from './commonStyles'
@@ -127,7 +126,6 @@ export function getCountOfEventsAtEvent(
   event: ICalendarEvent<any>,
   eventList: ICalendarEvent<any>[],
 ) {
-  dayjs.extend(isBetween)
   return eventList.filter(
     (e) =>
       dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
@@ -136,7 +134,6 @@ export function getCountOfEventsAtEvent(
 }
 
 export function getOrderOfEvent(event: ICalendarEvent<any>, eventList: ICalendarEvent<any>[]) {
-  dayjs.extend(isBetween)
   const events = eventList
     .filter(
       (e) =>
@@ -150,27 +147,25 @@ export function getOrderOfEvent(event: ICalendarEvent<any>, eventList: ICalendar
         return dayjs(a.start).isBefore(b.start) ? -1 : 1
       }
     })
-  return events.indexOf(event)
+  const index = events.indexOf(event)
+  return index === -1 ? 0 : index
 }
 
 export function getStyleForOverlappingEvent(
-  eventCount: number,
   eventPosition: number,
   overlapOffset: number,
   palettes: Palette[],
 ) {
   let overlapStyle = {}
-  if (eventCount > 1) {
-    const offset = overlapOffset
-    const start = eventPosition * offset
-    const zIndex = 100 + eventPosition
-    const bgColors = palettes.map((p) => p.main)
-    overlapStyle = {
-      start: start + OVERLAP_PADDING,
-      end: OVERLAP_PADDING,
-      backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
-      zIndex,
-    }
+  const offset = overlapOffset
+  const start = eventPosition * offset
+  const zIndex = 100 + eventPosition
+  const bgColors = palettes.map((p) => p.main)
+  overlapStyle = {
+    start: start + OVERLAP_PADDING,
+    end: OVERLAP_PADDING,
+    backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
+    zIndex,
   }
   return overlapStyle
 }

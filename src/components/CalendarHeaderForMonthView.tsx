@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { Text, View, ViewStyle } from 'react-native'
 
-import { guideTextStyle, u } from '../commonStyles'
+import { u } from '../commonStyles'
 import { WeekNum } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { getDatesInWeek, typedMemo } from '../utils'
@@ -23,8 +23,7 @@ function _CalendarHeaderForMonthView({ locale, weekStartsOn, style = {} }: Calen
     <View
       style={[
         u['border-b'],
-        u['border-gray-100'],
-        u['bg-white'],
+        { borderColor: theme.palette.gray['100'] },
         theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
@@ -32,7 +31,12 @@ function _CalendarHeaderForMonthView({ locale, weekStartsOn, style = {} }: Calen
       {dates.map((date) => (
         <View style={{ flex: 1, paddingTop: 2 }} key={date.toISOString()}>
           <View style={{ height: 30 }}>
-            <Text style={[guideTextStyle, todayWeekNum === date.day() && u['text-primary']]}>
+            <Text
+              style={[
+                u['text-center'],
+                todayWeekNum === date.day() && { color: theme.palette.primary.main },
+              ]}
+            >
               {date.format('ddd')}
             </Text>
           </View>

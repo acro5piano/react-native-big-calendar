@@ -91,7 +91,7 @@ function _CalendarBodyForMonthView<T>({
                   i > 0 && u['border-t'],
                   theme.isRTL && ii > 0 && u['border-r'],
                   !theme.isRTL && ii > 0 && u['border-l'],
-                  u['border-gray-200'],
+                  { borderColor: theme.palette.gray['200'] },
                   u['p-8'],
                   u['flex-1'],
                   u['flex-column'],

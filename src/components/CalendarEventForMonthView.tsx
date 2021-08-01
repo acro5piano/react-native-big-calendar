@@ -4,6 +4,7 @@ import { Text, TouchableOpacity } from 'react-native'
 import { u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
 import { EventCellStyle, EventRenderer, ICalendarEvent } from '../interfaces'
+import { useTheme } from '../theme/ThemeContext'
 import { typedMemo } from '../utils'
 
 interface CalendarEventProps<T> {
@@ -19,11 +20,13 @@ function _CalendarEventForMonthView<T>({
   eventCellStyle,
   renderEvent,
 }: CalendarEventProps<T>) {
+  const theme = useTheme()
+
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
     eventCellStyle,
     onPressEvent,
-    injectedStyles: [u['mt-2']],
+    injectedStyles: [{ backgroundColor: theme.palette.primary.main }, u['mt-2']],
   })
 
   if (renderEvent) {
@@ -32,7 +35,10 @@ function _CalendarEventForMonthView<T>({
 
   return (
     <TouchableOpacity {...touchableOpacityProps}>
-      <Text style={[u['text-white'], u['text-xs'], u['truncate']]} numberOfLines={1}>
+      <Text
+        style={[{ color: theme.palette.primary.contrastText }, theme.typography.xs, u['truncate']]}
+        numberOfLines={1}
+      >
         {event.title}
       </Text>
     </TouchableOpacity>

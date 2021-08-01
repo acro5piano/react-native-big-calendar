@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
-import { dateCellStyle, eventCellCss, u } from '../commonStyles'
+import { eventCellCss, u } from '../commonStyles'
 import { ICalendarEvent } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday, typedMemo } from '../utils'
@@ -31,22 +31,23 @@ function _CalendarHeader<T>({
 
   const theme = useTheme()
 
+  const borderColor = { borderColor: theme.palette.gray['200'] }
+
   return (
     <View
       style={[
-        u['border-b'],
-        u['border-gray-100'],
-        u['bg-white'],
+        u['border-b-2'],
+        borderColor,
         theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
     >
-      <View style={[u['bg-white'], u['z-10'], u['w-50'], u['border-b'], u['border-gray-100']]} />
+      <View style={[u['z-10'], u['w-50'], borderColor]} />
       {dateRange.map((date) => {
         const _isToday = isToday(date)
         return (
           <TouchableOpacity
-            style={[u['bg-white'], u['flex-1'], u['pt-2']]}
+            style={[u['flex-1'], u['pt-2']]}
             onPress={() => _onPress(date.toDate())}
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
@@ -54,9 +55,9 @@ function _CalendarHeader<T>({
             <View style={[u['justify-between'], { height: cellHeight }]}>
               <Text
                 style={[
-                  theme.typography.sm,
+                  theme.typography.xs,
                   u['text-center'],
-                  _isToday && { color: theme.palette.primary.main },
+                  { color: _isToday ? theme.palette.primary.main : theme.palette.gray['500'] },
                 ]}
               >
                 {date.format('ddd')}
@@ -65,9 +66,9 @@ function _CalendarHeader<T>({
                 style={
                   _isToday
                     ? [
+                        { backgroundColor: theme.palette.primary.main },
                         u['h-36'],
                         u['w-36'],
-                        { backgroundColor: theme.palette.primary.main },
                         u['pb-6'],
                         u['rounded-full'],
                         u['items-center'],
@@ -80,10 +81,13 @@ function _CalendarHeader<T>({
               >
                 <Text
                   style={[
-                    u['text-gray-800'],
-                    u['text-2xl'],
+                    {
+                      color: _isToday
+                        ? theme.palette.primary.contrastText
+                        : theme.palette.gray['800'],
+                    },
+                    theme.typography.xl,
                     u['text-center'],
-                    _isToday && u['text-white'],
                     Platform.OS === 'web' && _isToday && u['mt-6'],
                   ]}
                 >
@@ -91,14 +95,26 @@ function _CalendarHeader<T>({
                 </Text>
               </View>
             </View>
-            <View style={[dateCellStyle, { height: cellHeight }]}>
+            <View
+              style={[
+                u['border-l'],
+                { borderColor: theme.palette.gray['200'] },
+                { height: cellHeight },
+              ]}
+            >
               {allDayEvents.map((event) => {
                 if (!dayjs(event.start).isSame(date, 'day')) {
                   return null
                 }
                 return (
                   <View style={eventCellCss.style} key={`${event.start}${event.title}`}>
-                    <Text style={{ fontSize: theme.typography.sm.fontSize }}>{event.title}</Text>
+                    <Text
+                      style={{
+                        fontSize: theme.typography.sm.fontSize,
+                      }}
+                    >
+                      {event.title}
+                    </Text>
                   </View>
                 )
               })}
