@@ -13,7 +13,6 @@ import {
   ICalendarEvent,
   WeekNum,
 } from '../interfaces'
-import { Color } from '../theme'
 import { useTheme } from '../theme/ThemeContext'
 import { typedMemo } from '../utils'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
@@ -75,7 +74,6 @@ function _CalendarBodyForMonthView<T>({
           key={i}
           style={[
             u['flex-1'],
-            u['bg-white'],
             theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
             {
               minHeight: minCellHeight,
@@ -106,7 +104,7 @@ function _CalendarBodyForMonthView<T>({
                     { textAlign: 'center' },
                     date &&
                       date.format('YYYY-MM-DD') === now.format('YYYY-MM-DD') && {
-                        color: Color.primary,
+                        color: theme.palette.primary.main,
                       },
                   ]}
                 >

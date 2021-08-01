@@ -1,7 +1,5 @@
 import { Platform, StyleSheet } from 'react-native'
 
-import { Color } from './theme'
-
 export const MIN_HEIGHT = 1200
 export const HOUR_GUIDE_WIDTH = 50
 export const OVERLAP_OFFSET = Platform.OS === 'web' ? 20 : 8
@@ -138,14 +136,6 @@ export const u = StyleSheet.create({
   'z-20': {
     zIndex: 20,
   },
-
-  /*
-   * Backgrond
-   */
-  'bg-primary': {
-    backgroundColor: Color.primary,
-  },
-  'bg-white': {},
 
   /*
    * Width
