@@ -11,7 +11,7 @@ This is a release candidate for v2.0.0.
 - (breaking) Enable to inject styles for header and body separately #409
 - Add theme functionality. A lot of people are requesting additional customization feature, so provided the customization option. #243 #93
 
-```tsx
+```typescript
 export interface ThemeInterface {
   palette: {
     primary: Palette
@@ -38,10 +38,18 @@ export interface ThemeInterface {
 ### Bug fixes
 
 - Show AM/PM format event #445
+- Fix Android start/end property and month view style
+- Fix Android css #486
+
+### Chore
+
+- Update deps
 
 ### Breaking
 
 - Removed `style` prop as it is ambigious
+
+For more details, see #475 #486
 
 ## 1.0.5
 
