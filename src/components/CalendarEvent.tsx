@@ -40,7 +40,10 @@ function _CalendarEvent<T>({
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
-  const palettes = [theme.palette.primary, ...theme.eventCellOverlappings]
+  const palettes = React.useMemo(
+    () => [theme.palette.primary, ...theme.eventCellOverlappings],
+    [theme],
+  )
 
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
@@ -54,8 +57,10 @@ function _CalendarEvent<T>({
     ],
   })
 
-  const fgColors = palettes.map((p) => p.contrastText)
-  const textColor = fgColors[eventCount % fgColors.length] || fgColors[0]
+  const textColor = React.useMemo(() => {
+    const fgColors = palettes.map((p) => p.contrastText)
+    return fgColors[eventCount % fgColors.length] || fgColors[0]
+  }, [eventCount, palettes])
 
   if (renderEvent) {
     return renderEvent(event, touchableOpacityProps)

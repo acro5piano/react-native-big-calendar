@@ -1,7 +1,6 @@
 import { ThemeInterface } from './ThemeInterface'
 
 export const defaultTheme: ThemeInterface = {
-  direction: 'ltr',
   isRTL: false,
   palette: {
     primary: {
@@ -22,11 +21,9 @@ export const defaultTheme: ThemeInterface = {
     },
   },
   eventCellOverlappings: [
-    { main: '#C80B22', contrastText: '#fff' }, // red
-    { main: '#F8E71C', contrastText: '#333' }, // yellow
-    { main: '#4AC001', contrastText: '#fff' }, // green
     { main: '#E26245', contrastText: '#fff' }, // orange
-    { main: '#5934C7', contrastText: '#fff' }, // pink
+    { main: '#4AC001', contrastText: '#fff' }, // green
+    { main: '#5934C7', contrastText: '#fff' }, // purple
   ],
   typography: {
     xs: {

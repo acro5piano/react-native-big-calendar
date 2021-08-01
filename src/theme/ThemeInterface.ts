@@ -1,21 +1,17 @@
 // We don't use Material UI, but this theme structure is inspired by the theme.
 //
 // https://material-ui.com/customization/default-theme/#default-theme
+import { TextStyle } from 'react-native'
 
 export interface Palette {
   main: string
   contrastText: string
 }
 
-export type Direction = 'rtl' | 'ltr'
-
-export interface Typography {
-  fontFamily?: string
-  fontWeight?: string
-  fontSize: number
-  lineHeight?: number
-  letterSpacing?: number
-}
+export type Typography = Pick<
+  TextStyle,
+  'fontFamily' | 'fontWeight' | 'fontSize' | 'lineHeight' | 'letterSpacing'
+>
 
 export interface ThemeInterface {
   palette: {
@@ -33,7 +29,6 @@ export interface ThemeInterface {
       900: string
     }
   }
-  direction: Direction
   isRTL: boolean
   typography: {
     fontFamily?: string

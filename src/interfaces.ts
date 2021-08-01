@@ -39,6 +39,7 @@ export type EventRenderer<T> = (
  * @deprecated Prefer interface ICalendarEvent instead.
  */
 export type DayJSConvertedEvent<T = any> = ICalendarEvent<T>
+
 /**
  * @deprecated Prefer interface ICalendarEvent instead.
  */

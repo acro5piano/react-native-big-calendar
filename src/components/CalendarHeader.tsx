@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
-import { commonStyles, dateCellStyle, eventTitleStyle, guideTextStyle, u } from '../commonStyles'
+import { dateCellStyle, eventCellCss, u } from '../commonStyles'
 import { ICalendarEvent } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday, typedMemo } from '../utils'
@@ -52,7 +52,13 @@ function _CalendarHeader<T>({
             key={date.toString()}
           >
             <View style={[u['justify-between'], { height: cellHeight }]}>
-              <Text style={[guideTextStyle, _isToday && { color: theme.palette.primary.main }]}>
+              <Text
+                style={[
+                  theme.typography.sm,
+                  u['text-center'],
+                  _isToday && { color: theme.palette.primary.main },
+                ]}
+              >
                 {date.format('ddd')}
               </Text>
               <View
@@ -91,8 +97,8 @@ function _CalendarHeader<T>({
                   return null
                 }
                 return (
-                  <View style={commonStyles.eventCell} key={`${event.start}${event.title}`}>
-                    <Text style={eventTitleStyle}>{event.title}</Text>
+                  <View style={eventCellCss.style} key={`${event.start}${event.title}`}>
+                    <Text style={{ fontSize: theme.typography.sm.fontSize }}>{event.title}</Text>
                   </View>
                 )
               })}

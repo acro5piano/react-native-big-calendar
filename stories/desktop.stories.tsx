@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Dimensions, View } from 'react-native'
 
-import { Calendar, ThemeProvider } from '../src'
+import { Calendar } from '../src'
 import { CONTROL_HEIGHT, Control } from './components/Control'
 import { customEventRenderer, events } from './events'
 import { useEvents } from './hooks'
@@ -85,16 +85,15 @@ storiesOf('Desktop', module)
     const state = useEvents(events)
     return (
       <View style={styles.desktop}>
-        <ThemeProvider value={{ direction: 'rtl' }}>
-          <Calendar
-            style={styles.calendar}
-            mode="month"
-            height={SCREEN_HEIGHT}
-            events={state.events}
-            onPressEvent={(event) => alert(event.title)}
-            onPressCell={state.addEvent}
-          />
-        </ThemeProvider>
+        <Calendar
+          style={styles.calendar}
+          mode="month"
+          height={SCREEN_HEIGHT}
+          isRTL
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+        />
       </View>
     )
   })
@@ -214,9 +213,13 @@ storiesOf('Desktop', module)
     }, [])
     return (
       <View style={styles.desktop}>
-        <ThemeProvider value={{ direction: 'rtl' }}>
-          <Calendar style={styles.calendar} locale="he" height={SCREEN_HEIGHT} events={events} />
-        </ThemeProvider>
+        <Calendar
+          style={styles.calendar}
+          locale="he"
+          height={SCREEN_HEIGHT}
+          events={events}
+          isRTL
+        />
       </View>
     )
   })
@@ -270,8 +273,13 @@ storiesOf('Desktop', module)
     const state = useEvents(events)
     return (
       <View style={styles.desktop}>
-        <ThemeProvider
-          value={{
+        <Calendar
+          style={styles.calendar}
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          theme={{
             palette: {
               primary: {
                 main: 'purple',
@@ -279,15 +287,7 @@ storiesOf('Desktop', module)
               },
             },
           }}
-        >
-          <Calendar
-            style={styles.calendar}
-            height={SCREEN_HEIGHT}
-            events={state.events}
-            onPressEvent={(event) => alert(event.title)}
-            onPressCell={state.addEvent}
-          />
-        </ThemeProvider>
+        />
       </View>
     )
   })

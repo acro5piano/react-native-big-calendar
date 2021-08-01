@@ -1,7 +1,8 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import { ViewStyle } from 'react-native'
-import { commonStyles } from '../commonStyles'
+
+import { eventCellCss } from '../commonStyles'
 import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEvent } from '../interfaces'
 
 interface UseCalendarTouchableOpacityPropsProps<T> {
@@ -38,7 +39,7 @@ export function useCalendarTouchableOpacityProps<T>({
   const touchableOpacityProps: CalendarTouchableOpacityProps = {
     delayPressIn: 20,
     key: event.start.toString(),
-    style: [commonStyles.eventCell, ...injectedStyles, getEventStyle(plainJsEvent)],
+    style: [eventCellCss.style, ...injectedStyles, getEventStyle(plainJsEvent)],
     onPress: _onPress,
     disabled: !onPressEvent,
   }
