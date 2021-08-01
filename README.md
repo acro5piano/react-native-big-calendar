@@ -24,13 +24,13 @@ Cross-platform gcal/outlook like calendar component for React Native.
 # Install
 
 ```
-npm install --save react-native-big-calendar
+npm install --save react-native-big-calendar@2.0.0-rc
 ```
 
 Or if you use Yarn:
 
 ```
-yarn add react-native-big-calendar
+yarn add react-native-big-calendar@2.0.0-rc
 ```
 
 ### Other dependencies
@@ -107,7 +107,6 @@ export interface CalendarProps<T> {
   mode?: Mode
   scrollOffsetMinutes?: number
   showTime?: boolean
-  style?: ViewStyle
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
   weekEndsOn?: WeekNum
@@ -130,7 +129,6 @@ export interface CalendarProps<T> {
 | `onPressCell`         | no       | `(date: Date) => void`                                 | Event handler which will be fired when the current date cell is clicked. The minute set to 0.                                                                                                                                                                                                                                                                                                                                                                   |
 | `onPressDateHeader`   | no       | `(date: Date) => void`                                 | Event handler which will be fired when the user clicks a date from the header.                                                                                                                                                                                                                                                                                                                                                                                  |
 | `mode`                | no       | 'month' \| 'week' \| `'3days' \| 'day' \| 'custom'`    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `style`               | no       | `import('react-native').ViewStyle`                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `eventCellStyle`      | no       | `ViewStyle \| (event: ICalendarEvent<T>) => ViewStyle` | The style of Event cell. Accepts either style object (static) or function (dynamic).                                                                                                                                                                                                                                                                                                                                                                            |
 | `scrollOffsetMinutes` | no       | `number`                                               | Scroll to specific minutes in a day. e.g.) set `480` to scroll to 8am when the calendar rendered.                                                                                                                                                                                                                                                                                                                                                               |
 | `date`                | no       | `Date`                                                 | Initial date. Defualts to `Date`                                                                                                                                                                                                                                                                                                                                                                                                                                |
