@@ -89,5 +89,8 @@
       "style": "module",
       "parser": "typescript"
     }
+  },
+  "resolutions": {
+    "typescript": "^4.3.5"
   }
 }
