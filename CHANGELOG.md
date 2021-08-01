@@ -33,7 +33,6 @@ export interface ThemeInterface {
   }
   eventCellOverlappings: readonly Palette[]
 }
-
 ```
 
 ### Bug fixes
