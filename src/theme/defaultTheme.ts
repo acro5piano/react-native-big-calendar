@@ -7,6 +7,7 @@ export const defaultTheme: ThemeInterface = {
       main: 'rgb(66, 133, 244)',
       contrastText: '#fff',
     },
+    nowIndicator: 'red',
     gray: {
       // 50: '#fafafa',
       100: '#f5f5f5',

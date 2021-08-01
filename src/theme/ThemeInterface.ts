@@ -16,6 +16,7 @@ export type Typography = Pick<
 export interface ThemeInterface {
   palette: {
     primary: Palette
+    nowIndicator: string
     gray: {
       // 50: string
       100: string

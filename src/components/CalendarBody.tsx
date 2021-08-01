@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   nowIndicator: {
     position: 'absolute',
     zIndex: 10000,
-    backgroundColor: 'red',
     height: 2,
     width: '100%',
   },
@@ -189,7 +188,13 @@ function _CalendarBody<T>({
               .map(_renderMappedEvent)}
 
             {isToday(date) && !hideNowIndicator && (
-              <View style={[styles.nowIndicator, { top: `${getRelativeTopInDay(now)}%` }]} />
+              <View
+                style={[
+                  styles.nowIndicator,
+                  { backgroundColor: theme.palette.nowIndicator },
+                  { top: `${getRelativeTopInDay(now)}%` },
+                ]}
+              />
             )}
           </View>
         ))}
