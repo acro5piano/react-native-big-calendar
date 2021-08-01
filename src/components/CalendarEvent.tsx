@@ -55,6 +55,8 @@ function _CalendarEvent<T>({
       getEventCellPositionStyle(event.start, event.end),
       getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
       u['absolute'],
+      u['mt-2'],
+      u['mx-3'],
     ],
   })
 

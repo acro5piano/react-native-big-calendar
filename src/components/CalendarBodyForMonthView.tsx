@@ -91,7 +91,6 @@ function _CalendarBodyForMonthView<T>({
                   theme.isRTL && ii > 0 && u['border-r'],
                   !theme.isRTL && ii > 0 && u['border-l'],
                   { borderColor: theme.palette.gray['200'] },
-                  u['p-8'],
                   u['flex-1'],
                   u['flex-column'],
                   {
@@ -127,7 +126,7 @@ function _CalendarBodyForMonthView<T>({
                             key={index}
                             style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}
                           >
-                            {events.length - 3} More
+                            {events.length - maxVisibleEventCount} More
                           </Text>
                         ) : (
                           <CalendarEventForMonthView
