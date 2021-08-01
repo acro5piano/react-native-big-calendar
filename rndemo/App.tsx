@@ -37,15 +37,17 @@ export const App = () => {
 
   return (
     <React.Fragment>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <SafeAreaView>
-        <View style={{ height: 60, borderBottomWidth: 0.5, backgroundColor: '#fff' }}>
-          <Picker onValueChange={setMode}>
-            <Picker.Item value="week" label="week" />
-            <Picker.Item value="day" label="day" />
-            <Picker.Item value="3days" label="3days" />
-            <Picker.Item value="month" label="month" />
-          </Picker>
+        <View style={{ height: 60, borderBottomWidth: 0.5 }}>
+          <View style={{ width: '50%', marginLeft: 'auto' }}>
+            <Picker onValueChange={setMode} mode="dropdown">
+              <Picker.Item value="week" label="week" />
+              <Picker.Item value="day" label="day" />
+              <Picker.Item value="3days" label="3days" />
+              <Picker.Item value="month" label="month" />
+            </Picker>
+          </View>
         </View>
         <Calendar
           height={Dimensions.get('window').height - 60}
