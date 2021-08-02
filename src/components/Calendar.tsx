@@ -107,6 +107,8 @@ function _Calendar<T>({
         return getDatesInNextThreeDays(targetDate, locale)
       case 'day':
         return getDatesInNextOneDay(targetDate, locale)
+      case 'headerless':
+          return getDatesInNextOneDay(targetDate, locale)
       case 'custom':
         return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
       default:
@@ -164,6 +166,28 @@ function _Calendar<T>({
           targetDate={targetDate}
           maxVisibleEventCount={maxVisibleEventCount}
         />
+      </React.Fragment>
+    )
+  }
+
+  if (mode === 'headerless') {
+    return (
+      <React.Fragment>
+      <CalendarBody
+        {...commonProps}
+        containerHeight={height}
+        events={daytimeEvents}
+        eventCellStyle={eventCellStyle}
+        hideNowIndicator={hideNowIndicator}
+        overlapOffset={overlapOffset}
+        scrollOffsetMinutes={scrollOffsetMinutes}
+        ampm={ampm}
+        showTime={showTime}
+        onPressCell={onPressCell}
+        onPressEvent={onPressEvent}
+        onSwipeHorizontal={onSwipeHorizontal}
+        renderEvent={renderEvent}
+      />
       </React.Fragment>
     )
   }

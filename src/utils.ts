@@ -126,6 +126,8 @@ export function modeToNum(mode: Mode, current?: dayjs.Dayjs): number {
       return 7
     case 'day':
       return 1
+    case 'headerless':
+        return 1
     case 'custom':
       return 7
     default:
