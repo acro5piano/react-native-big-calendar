@@ -10887,10 +10887,10 @@ remark-squeeze-paragraphs@4.0.0:
   dependencies:
     mdast-squeeze-paragraphs "^4.0.0"
 
-remeda@^0.0.27:
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/remeda/-/remeda-0.0.27.tgz#5924d656c5f8e9c7c692324cd7f4c43ce8552997"
-  integrity sha512-nkQnPLMXtSirvF8OxjuvbZhwBawDD6ZQAvg7hiq4/nZEFIgB4u80fS/NUm6PMJgSUfwfzQ6ZwVyVn8DTJcmkCw==
+remeda@^0.0.30:
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/remeda/-/remeda-0.0.30.tgz#34a80efdab9053df2d59ed10cac20c4ca5bb1270"
+  integrity sha512-ygbf/pXioUbbNOYSRFu6oUEa72HiIcsiS6CFuhWEwoIByoyNzzofm/cVgHEnfQVeSkwTGHceuDOEHo5hHFv9Uw==
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
