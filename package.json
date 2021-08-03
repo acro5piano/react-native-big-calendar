@@ -1,7 +1,7 @@
 {
   "name": "react-native-big-calendar",
   "version": "2.0.0-rc",
-  "main": "build/index.js",
+  "main": "src/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
