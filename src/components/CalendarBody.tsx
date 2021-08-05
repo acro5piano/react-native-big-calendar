@@ -46,6 +46,7 @@ interface CalendarBodyProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
+  todayHighlight?: boolean
 }
 
 function _CalendarBody<T>({
@@ -66,6 +67,7 @@ function _CalendarBody<T>({
   hideNowIndicator,
   overlapOffset,
   renderEvent,
+  todayHighlight
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -166,6 +168,7 @@ function _CalendarBody<T>({
                 date={date}
                 hour={hour}
                 onPress={_onPressCell}
+                todayHighlight={todayHighlight}
               />
             ))}
 

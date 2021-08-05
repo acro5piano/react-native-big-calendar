@@ -107,6 +107,7 @@ function _CalendarContainer<T>({
   renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
+  todayHighlight = false
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -230,6 +231,7 @@ function _CalendarContainer<T>({
         onPressEvent={onPressEvent}
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}
+        todayHighlight={todayHighlight}
       />
     </React.Fragment>
   )
