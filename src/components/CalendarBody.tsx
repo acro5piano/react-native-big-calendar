@@ -34,6 +34,8 @@ interface CalendarBodyProps<T> {
   dateRange: dayjs.Dayjs[]
   events: ICalendarEvent<T>[]
   scrollOffsetMinutes: number
+  delayScrollOffsetMinutes?: number
+  animationScrollTo: boolean
   ampm: boolean
   showTime: boolean
   style: ViewStyle
@@ -58,6 +60,8 @@ function _CalendarBody<T>({
   ampm,
   showTime,
   scrollOffsetMinutes,
+  delayScrollOffsetMinutes,
+  animationScrollTo,
   onSwipeHorizontal,
   hideNowIndicator,
   overlapOffset,
@@ -69,22 +73,29 @@ function _CalendarBody<T>({
   const [cellWidth, setCellWidth] = React.useState(0);
 
   React.useEffect(() => {
-    if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
+    let timeout: any;
+    if (scrollView.current && scrollOffsetMinutes) { //  && Platform.OS !== 'ios' is IOS use contentOffset below but not animation
       // We add delay here to work correct on React Native
       // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
-      setTimeout(
+      timeout =  setTimeout(
         () => {
           if (scrollView && scrollView.current) {
             scrollView.current.scrollTo({
+              x: 0,
               y: (cellHeight * scrollOffsetMinutes) / 60,
-              animated: false,
+              animated: animationScrollTo,
             })
           }
         },
-        Platform.OS === 'web' ? 0 : 10,
+        Platform.OS === 'web' ? 0 : delayScrollOffsetMinutes ?? 500,
       )
     }
-  }, [scrollView, scrollOffsetMinutes, cellHeight])
+
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, [scrollView, scrollOffsetMinutes, cellHeight, dateRange])
+
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -128,7 +139,7 @@ function _CalendarBody<T>({
       {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
       showsVerticalScrollIndicator={false}
       nestedScrollEnabled
-      contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
+      // contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
     >
       <View
         style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
