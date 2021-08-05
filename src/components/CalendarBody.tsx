@@ -66,6 +66,8 @@ function _CalendarBody<T>({
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
 
+  const [cellWidth, setCellWidth] = React.useState(0);
+
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
       // We add delay here to work correct on React Native
@@ -105,6 +107,7 @@ function _CalendarBody<T>({
       eventCount={getCountOfEventsAtEvent(event, events)}
       eventOrder={getOrderOfEvent(event, events)}
       overlapOffset={overlapOffset}
+      cellWidth={cellWidth-6} // 6 is padding left + right
       renderEvent={renderEvent}
       ampm={ampm}
     />
@@ -136,8 +139,15 @@ function _CalendarBody<T>({
             <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
           ))}
         </View>
-        {dateRange.map((date) => (
-          <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
+        {dateRange.map((date, i) => (
+          <View
+            style={[u['flex-1'], u['overflow-hidden']]}
+            key={date.toString()}
+            onLayout={e => {
+              const _cellWidth = e.nativeEvent.layout.width;;
+              if (_cellWidth !== cellWidth && i === 0) setCellWidth(_cellWidth);
+            }}
+          >
             {hours.map((hour) => (
               <HourGuideCell
                 key={hour}
@@ -193,7 +203,7 @@ function _CalendarBody<T>({
                 style={[
                   styles.nowIndicator,
                   { backgroundColor: theme.palette.nowIndicator },
-                  { top: `${getRelativeTopInDay(now)}%` },
+                  { top: `${getRelativeTopInDay(now)}%`, opacity: 0.5 },
                 ]}
               />
             )}
