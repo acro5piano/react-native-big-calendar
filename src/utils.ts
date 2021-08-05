@@ -168,6 +168,7 @@ export function getStyleForOverlappingEvent(
     end: OVERLAP_PADDING,
     backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
     zIndex,
+    width: offset
   }
   return overlapStyle
 }

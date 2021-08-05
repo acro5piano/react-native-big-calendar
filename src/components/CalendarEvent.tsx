@@ -37,6 +37,7 @@ function _CalendarEvent<T>({
   eventCount = 1,
   eventOrder = 0,
   overlapOffset = OVERLAP_OFFSET,
+  cellWidth,
   renderEvent,
   ampm,
 }: CalendarEventProps<T>) {
@@ -53,7 +54,7 @@ function _CalendarEvent<T>({
     onPressEvent,
     injectedStyles: [
       getEventCellPositionStyle(event.start, event.end),
-      getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
+      getStyleForOverlappingEvent(eventOrder, cellWidth/eventCount, palettes),
       u['absolute'],
       u['mt-2'],
       u['mx-3'],

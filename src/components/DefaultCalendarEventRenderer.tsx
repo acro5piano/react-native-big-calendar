@@ -28,17 +28,17 @@ export function DefaultCalendarEventRenderer<T>({
   return (
     <TouchableOpacity {...touchableOpacityProps}>
       {dayjs(event.end).diff(event.start, 'minute') < 32 && showTime ? (
-        <Text style={eventTitleStyle}>
+        <Text numberOfLines={1} style={eventTitleStyle}>
           {event.title},
-          <Text style={eventTimeStyle}>
+          <Text numberOfLines={1} style={eventTimeStyle}>
             {dayjs(event.start).format(ampm ? 'hh:mm a' : 'HH:mm')}
           </Text>
         </Text>
       ) : (
         <>
-          <Text style={eventTitleStyle}>{event.title}</Text>
+          <Text numberOfLines={1} style={eventTitleStyle}>{event.title}</Text>
           {showTime && (
-            <Text style={eventTimeStyle}>
+            <Text numberOfLines={1} style={eventTimeStyle}>
               {formatStartEnd(event.start, event.end, ampm ? 'h:mm a' : 'HH:mm')}
             </Text>
           )}
