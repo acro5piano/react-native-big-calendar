@@ -25,4 +25,4 @@ const _HourGuideColumn = ({ cellHeight, hour, ampm }: HourGuideColumnProps) => {
   )
 }
 
-export const HourGuideColumn = React.memo(_HourGuideColumn, () => true)
+export const HourGuideColumn = React.memo(_HourGuideColumn)
