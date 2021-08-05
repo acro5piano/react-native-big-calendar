@@ -64,6 +64,8 @@ export interface CalendarContainerProps<T> {
   hideNowIndicator?: boolean
   mode?: Mode
   scrollOffsetMinutes?: number
+  delayScrollOffsetMinutes?: number
+  animationScrollTo?: boolean
   showTime?: boolean
 
   swipeEnabled?: boolean
@@ -89,6 +91,8 @@ function _CalendarContainer<T>({
   mode = 'week',
   overlapOffset,
   scrollOffsetMinutes = 0,
+  delayScrollOffsetMinutes,
+  animationScrollTo = true,
   showTime = true,
   headerContainerStyle = {},
   bodyContainerStyle = {},
@@ -221,6 +225,8 @@ function _CalendarContainer<T>({
         ampm={ampm}
         showTime={showTime}
         onPressCell={onPressCell}
+        delayScrollOffsetMinutes={delayScrollOffsetMinutes}
+        animationScrollTo={animationScrollTo}
         onPressEvent={onPressEvent}
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}
