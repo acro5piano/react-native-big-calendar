@@ -47,6 +47,7 @@ interface CalendarBodyProps<T> {
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   todayHighlight?: boolean
+  onlyDuringDay: boolean
 }
 
 function _CalendarBody<T>({
@@ -67,7 +68,8 @@ function _CalendarBody<T>({
   hideNowIndicator,
   overlapOffset,
   renderEvent,
-  todayHighlight
+  todayHighlight,
+  onlyDuringDay = true
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -170,6 +172,7 @@ function _CalendarBody<T>({
   {/* M  T  (W)  T  F  S  S */}
   {/* S------E              */}
   const _renderEventBeforeThisDate = (date) => {
+    if(onlyDuringDay) return null;
     const _events = events.filter(({ start, end }) => _isBeforeCurrentDate(start, end, date));
     const _reformat = _events.map((event) => ({ ...event, start: dayjs(event.end).startOf('day') }));
     const _mapToComponents = _reformat.map(_renderMappedEvent);
@@ -180,6 +183,7 @@ function _CalendarBody<T>({
   {/* M  T  (W)  T  F  S  S */}
   {/*    S-------E          */}
   const _renderEventAfterthisDate = (date) => {
+    if(onlyDuringDay) return null;
     const _events = events.filter(({ start, end }) => _isAfterCurrentDate(start, end, date));
     const _reformat = _events.map((event) => ({
       ...event,

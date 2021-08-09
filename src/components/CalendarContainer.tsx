@@ -76,6 +76,8 @@ export interface CalendarContainerProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
+  todayHighlight: boolean
+  onlyDuringDay: boolean // Ignore render before after time event
 }
 
 dayjs.extend(isBetween)
@@ -107,7 +109,8 @@ function _CalendarContainer<T>({
   renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
-  todayHighlight = false
+  todayHighlight = false,
+  onlyDuringDay = true
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -232,6 +235,7 @@ function _CalendarContainer<T>({
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}
         todayHighlight={todayHighlight}
+        onlyDuringDay={onlyDuringDay}
       />
     </React.Fragment>
   )
