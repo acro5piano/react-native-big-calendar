@@ -110,6 +110,30 @@ function _CalendarBody<T>({
     [onPressCell],
   )
 
+  const _renderHourGuideCell = (date) => {
+    const cells = hours.map((hour) => (
+      <HourGuideCell
+        key={hour}
+        cellHeight={cellHeight}
+        date={date}
+        hour={hour}
+        onPress={_onPressCell}
+        todayHighlight={todayHighlight}
+      />
+    ))
+    return cells;
+  }
+
+  const _renderHourGuideColumn = () => {
+    const columns = hours.map((hour) => (
+      <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
+    ));
+    
+    return (<View style={[u['z-20'], u['w-50']]}>
+    {columns}
+  </View>)
+  }
+
   const _renderMappedEvent = (event: ICalendarEvent<T>) => (
     <CalendarEvent
       key={`${event.start}${event.title}${event.end}`}
@@ -125,6 +149,46 @@ function _CalendarBody<T>({
       ampm={ampm}
     />
   )
+
+  // conditions
+  const _isStartInCurrentDate = (start, date) => dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)');
+  const _isBeforeCurrentDate = (start, end, date) => dayjs(start).isBefore(date.startOf('day')) &&
+    dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)');
+  const _isAfterCurrentDate = (start, end, date) => dayjs(start).isBefore(date.startOf('day')) &&
+    dayjs(end).isAfter(date.endOf('day'))
+
+  {/* Render events of this date */}
+  {/* M  T  (W)  T  F  S  S */}
+  {/*       S-E             */}
+  const _renderEventOfThisDate = (date) => {
+    const _events = events.filter(({ start }) => _isStartInCurrentDate(start, date))
+    const _mapToComponents = _events.map(_renderMappedEvent);
+    return _mapToComponents;
+  }
+
+  {/* Render events which starts before this date and ends on this date */}
+  {/* M  T  (W)  T  F  S  S */}
+  {/* S------E              */}
+  const _renderEventBeforeThisDate = (date) => {
+    const _events = events.filter(({ start, end }) => _isBeforeCurrentDate(start, end, date));
+    const _reformat = _events.map((event) => ({ ...event, start: dayjs(event.end).startOf('day') }));
+    const _mapToComponents = _reformat.map(_renderMappedEvent);
+    return _mapToComponents;
+  }
+
+  {/* Render events which starts before this date and ends after this date */}
+  {/* M  T  (W)  T  F  S  S */}
+  {/*    S-------E          */}
+  const _renderEventAfterthisDate = (date) => {
+    const _events = events.filter(({ start, end }) => _isAfterCurrentDate(start, end, date));
+    const _reformat = _events.map((event) => ({
+      ...event,
+      start: dayjs(event.end).startOf('day'),
+      end: dayjs(event.end).endOf('day'),
+    }));
+    const _mapToComponents = _reformat.map(_renderMappedEvent);
+    return _mapToComponents;
+  }
 
   const theme = useTheme()
 
@@ -147,11 +211,7 @@ function _CalendarBody<T>({
         style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
         {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
       >
-        <View style={[u['z-20'], u['w-50']]}>
-          {hours.map((hour) => (
-            <HourGuideColumn key={hour} cellHeight={cellHeight} hour={hour} ampm={ampm} />
-          ))}
-        </View>
+        {_renderHourGuideColumn()}
         {dateRange.map((date, i) => (
           <View
             style={[u['flex-1'], u['overflow-hidden']]}
@@ -161,30 +221,22 @@ function _CalendarBody<T>({
               if (_cellWidth !== cellWidth && i === 0) setCellWidth(_cellWidth);
             }}
           >
-            {hours.map((hour) => (
-              <HourGuideCell
-                key={hour}
-                cellHeight={cellHeight}
-                date={date}
-                hour={hour}
-                onPress={_onPressCell}
-                todayHighlight={todayHighlight}
-              />
-            ))}
+            {_renderHourGuideCell(date)}
 
             {/* Render events of this date */}
             {/* M  T  (W)  T  F  S  S */}
             {/*       S-E             */}
-            {events
+            {/* {events
               .filter(({ start }) =>
                 dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
               )
-              .map(_renderMappedEvent)}
+              .map(_renderMappedEvent)} */}
+            {_renderEventOfThisDate(date)}
 
             {/* Render events which starts before this date and ends on this date */}
             {/* M  T  (W)  T  F  S  S */}
             {/* S------E              */}
-            {events
+            {/* {events
               .filter(
                 ({ start, end }) =>
                   dayjs(start).isBefore(date.startOf('day')) &&
@@ -194,12 +246,13 @@ function _CalendarBody<T>({
                 ...event,
                 start: dayjs(event.end).startOf('day'),
               }))
-              .map(_renderMappedEvent)}
+              .map(_renderMappedEvent)} */}
+            {_renderEventBeforeThisDate(date)}
 
             {/* Render events which starts before this date and ends after this date */}
             {/* M  T  (W)  T  F  S  S */}
             {/*    S-------E          */}
-            {events
+            {/* {events
               .filter(
                 ({ start, end }) =>
                   dayjs(start).isBefore(date.startOf('day')) &&
@@ -210,7 +263,8 @@ function _CalendarBody<T>({
                 start: dayjs(event.end).startOf('day'),
                 end: dayjs(event.end).endOf('day'),
               }))
-              .map(_renderMappedEvent)}
+              .map(_renderMappedEvent)} */}
+            {_renderEventAfterthisDate(date)}
 
             {isToday(date) && !hideNowIndicator && (
               <View
