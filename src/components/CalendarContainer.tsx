@@ -38,11 +38,6 @@ export interface CalendarContainerProps<T> {
   events: ICalendarEvent<T>[]
 
   /**
-   * The height of calendar component. This is a required prop.
-   */
-  height: number
-
-  /**
    * Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.
    */
   overlapOffset?: number
@@ -76,13 +71,15 @@ export interface CalendarContainerProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
+  todayHighlight: boolean;
+  slotDuration?: number // minute in hour 1 -> 60p
+  cellHeightInHour?: number;
 }
 
 dayjs.extend(isBetween)
 
 function _CalendarContainer<T>({
   events,
-  height,
   ampm = false,
   date,
   eventCellStyle,
@@ -107,9 +104,16 @@ function _CalendarContainer<T>({
   renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
-  todayHighlight = false
+  todayHighlight = false,
+  slotDuration = 15,
+  cellHeightInHour = 24,
+  
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
+
+  const height = React.useMemo(() => {
+    return (60 / slotDuration) * cellHeightInHour * 24; // 24h
+  }, [slotDuration, cellHeightInHour]);
 
   React.useEffect(() => {
     if (date) {
@@ -232,6 +236,7 @@ function _CalendarContainer<T>({
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}
         todayHighlight={todayHighlight}
+        slotDuration={slotDuration}
       />
     </React.Fragment>
   )
