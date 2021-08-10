@@ -46,6 +46,16 @@ export function getDatesInNextThreeDays(date: Date | dayjs.Dayjs = new Date(), l
   return days
 }
 
+export function getDatesInNextFourDays(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
+  const subject = dayjs(date).locale(locale)
+  const days = Array(4)
+    .fill(0)
+    .map((_, i) => {
+      return subject.add(i, 'day')
+    })
+  return days
+}
+
 export function getDatesInNextOneDay(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
   const subject = dayjs(date).locale(locale)
   const days = Array(1)

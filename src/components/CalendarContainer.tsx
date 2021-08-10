@@ -25,6 +25,7 @@ import {
   isAllDayEvent,
   modeToNum,
   typedMemo,
+  getDatesInNextFourDays
 } from '../utils'
 import { CalendarBody } from './CalendarBody'
 import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
@@ -135,6 +136,8 @@ function _CalendarContainer<T>({
         return getDatesInWeek(targetDate, weekStartsOn, locale)
       case '3days':
         return getDatesInNextThreeDays(targetDate, locale)
+      case '4days':
+          return getDatesInNextFourDays(targetDate, locale)
       case 'day':
         return getDatesInNextOneDay(targetDate, locale)
       case 'custom':
