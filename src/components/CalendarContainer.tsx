@@ -72,7 +72,8 @@ export interface CalendarContainerProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
-  todayHighlight: boolean;
+  todayHighlight: boolean
+  onlyDuringDay: boolean // Ignore render before after time event
   slotDuration?: number // minute in hour 1 -> 60p
   cellHeightInHour?: number; // default 24px
 }
@@ -106,6 +107,7 @@ function _CalendarContainer<T>({
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
   todayHighlight = false,
+  onlyDuringDay = true,
   slotDuration = 15,
   cellHeightInHour = 24,
   
@@ -239,6 +241,7 @@ function _CalendarContainer<T>({
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}
         todayHighlight={todayHighlight}
+        onlyDuringDay={onlyDuringDay}
         slotDuration={slotDuration}
       />
     </React.Fragment>
