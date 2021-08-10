@@ -31,7 +31,7 @@ export const HourGuideCell = ({ cellHeight, onPress, date, hour, todayHighlight,
       >
         {Array(60 / slotDuration).fill(0).map((_: any, index: number) => {
           return (
-            <TouchableWithoutFeedback onPress={() => {
+            <TouchableWithoutFeedback key={`${index}`} onPress={() => {
               onPress(dayjs(date.hour(hour).minute(0)).minute(index * 15).second(0));
               console.log(dayjs(date.hour(hour).minute(0)).minute(index * 15).second(0));
             }}>
