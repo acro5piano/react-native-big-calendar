@@ -73,7 +73,7 @@ export interface CalendarContainerProps<T> {
   maxVisibleEventCount?: number
   todayHighlight: boolean;
   slotDuration?: number // minute in hour 1 -> 60p
-  cellHeightInHour?: number;
+  cellHeightInHour?: number; // default 24px
 }
 
 dayjs.extend(isBetween)
