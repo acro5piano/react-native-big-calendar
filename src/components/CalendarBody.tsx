@@ -53,6 +53,7 @@ interface CalendarBodyProps<T> {
   renderEvent?: EventRenderer<T>
   todayHighlight?: boolean
   onlyDuringDay: boolean
+  slotDuration: number
 }
 
 function _CalendarBody<T>({
@@ -74,7 +75,8 @@ function _CalendarBody<T>({
   overlapOffset,
   renderEvent,
   todayHighlight,
-  onlyDuringDay = true
+  onlyDuringDay = true,
+  slotDuration
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -126,6 +128,7 @@ function _CalendarBody<T>({
         hour={hour}
         onPress={_onPressCell}
         todayHighlight={todayHighlight}
+        slotDuration={slotDuration}
       />
     ))
     return cells;

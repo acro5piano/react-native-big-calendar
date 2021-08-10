@@ -11,10 +11,11 @@ interface HourGuideCellProps {
   onPress: (d: dayjs.Dayjs) => void
   date: dayjs.Dayjs
   hour: number,
-  todayHighlight: boolean
+  todayHighlight?: boolean
+  slotDuration?: number
 }
 
-export const HourGuideCell = ({ cellHeight, onPress, date, hour, todayHighlight }: HourGuideCellProps) => {
+export const HourGuideCell = ({ cellHeight, onPress, date, hour, todayHighlight, slotDuration =15 }: HourGuideCellProps) => {
   const theme = useTheme()
 
   return (
@@ -28,7 +29,7 @@ export const HourGuideCell = ({ cellHeight, onPress, date, hour, todayHighlight 
           todayHighlight && {backgroundColor: isToday(dayjs(date)) ? 'rgba(255,187,0, 0.1)' : 'white'}
         ]}
       >
-        {[1, 2, 3, 4].map((item, index) => {
+        {Array(60 / slotDuration).fill(0).map((_: any, index: number) => {
           return (
             <TouchableWithoutFeedback onPress={() => {
               onPress(dayjs(date.hour(hour).minute(0)).minute(index * 15).second(0));

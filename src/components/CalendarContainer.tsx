@@ -25,6 +25,7 @@ import {
   isAllDayEvent,
   modeToNum,
   typedMemo,
+  getDatesInNextFourDays
 } from '../utils'
 import { CalendarBody } from './CalendarBody'
 import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
@@ -36,11 +37,6 @@ export interface CalendarContainerProps<T> {
    * Events to be rendered. This is a required prop.
    */
   events: ICalendarEvent<T>[]
-
-  /**
-   * The height of calendar component. This is a required prop.
-   */
-  height: number
 
   /**
    * Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.
@@ -78,13 +74,14 @@ export interface CalendarContainerProps<T> {
   maxVisibleEventCount?: number
   todayHighlight: boolean
   onlyDuringDay: boolean // Ignore render before after time event
+  slotDuration?: number // minute in hour 1 -> 60p
+  cellHeightInHour?: number; // default 24px
 }
 
 dayjs.extend(isBetween)
 
 function _CalendarContainer<T>({
   events,
-  height,
   ampm = false,
   date,
   eventCellStyle,
@@ -110,9 +107,16 @@ function _CalendarContainer<T>({
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
   todayHighlight = false,
-  onlyDuringDay = true
+  onlyDuringDay = true,
+  slotDuration = 15,
+  cellHeightInHour = 24,
+  
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
+
+  const height = React.useMemo(() => {
+    return (60 / slotDuration) * cellHeightInHour * 24; // 24h
+  }, [slotDuration, cellHeightInHour]);
 
   React.useEffect(() => {
     if (date) {
@@ -138,6 +142,8 @@ function _CalendarContainer<T>({
         return getDatesInWeek(targetDate, weekStartsOn, locale)
       case '3days':
         return getDatesInNextThreeDays(targetDate, locale)
+      case '4days':
+          return getDatesInNextFourDays(targetDate, locale)
       case 'day':
         return getDatesInNextOneDay(targetDate, locale)
       case 'custom':
@@ -236,6 +242,7 @@ function _CalendarContainer<T>({
         renderEvent={renderEvent}
         todayHighlight={todayHighlight}
         onlyDuringDay={onlyDuringDay}
+        slotDuration={slotDuration}
       />
     </React.Fragment>
   )
