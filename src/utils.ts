@@ -73,7 +73,7 @@ export const hours = [
 export function formatHour(hour: number, ampm = false) {
   if (ampm) {
     if (hour === 0) {
-      return ''
+      return '12 AM'
     }
     if (hour === 12) {
       return `12 PM`
@@ -169,18 +169,21 @@ export function getStyleForOverlappingEvent(
   eventPosition: number,
   overlapOffset: number,
   palettes: Palette[],
+  cellWidth: number,
+  eventCount: number,
 ) {
   let overlapStyle = {}
   const offset = overlapOffset
   const start = eventPosition * offset
-  const zIndex = 100 + eventPosition
+  const zIndex = 10 + eventPosition
   const bgColors = palettes.map((p) => p.main)
+  console.log("zIndex", zIndex);
   overlapStyle = {
     start: start + OVERLAP_PADDING,
     end: OVERLAP_PADDING,
     backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
     zIndex,
-    width: offset
+    width: offset < 45 && cellWidth > 100 ? 45 : offset
   }
   return overlapStyle
 }

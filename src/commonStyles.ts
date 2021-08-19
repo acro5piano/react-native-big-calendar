@@ -7,7 +7,7 @@ export const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0
 
 export const eventCellCss = StyleSheet.create({
   style: {
-    zIndex: 100,
+    zIndex: 5,
     borderRadius: 3,
     padding: 4,
     overflow: 'hidden',

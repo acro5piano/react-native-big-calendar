@@ -42,6 +42,7 @@ function _CalendarEvent<T>({
   renderEvent,
   ampm,
 }: CalendarEventProps<T>) {
+  
   const theme = useTheme()
   const eventCellPositionStyle = getEventCellPositionStyle(event.start, event.end);
 
@@ -57,7 +58,7 @@ function _CalendarEvent<T>({
     onPressEvent,
     injectedStyles: [
       eventCellPositionStyle,
-      getStyleForOverlappingEvent(eventOrder, cellWidth/eventCount, palettes),
+      getStyleForOverlappingEvent(eventOrder, cellWidth/eventCount, palettes, cellWidth, eventCount),
       u['absolute'],
       u['mt-2'],
       u['mx-3'],
