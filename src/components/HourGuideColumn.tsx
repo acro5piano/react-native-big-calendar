@@ -14,13 +14,13 @@ interface HourGuideColumnProps {
 const _HourGuideColumn = ({ cellHeight, hour, ampm }: HourGuideColumnProps) => {
   const theme = useTheme()
   const textStyle = React.useMemo(
-    () => ({ color: '#7a83a6', fontSize: 13, fontWeight: '300', lineHeight: 14 }),
+    () => ({ color: '#7a83a6', fontSize: 13, fontWeight: '300' }),
     [theme],
   )
 
   return (
     <View style={{ height: cellHeight }}>
-      <Text style={[textStyle, u['text-center']]}>{formatHour(hour, ampm)}</Text>
+      <Text style={[textStyle, u['text-center'], { marginTop: hour === 0 ? 2 : -10 }]}>{formatHour(hour, ampm)}</Text>
     </View>
   )
 }

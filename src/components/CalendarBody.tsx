@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, ScrollView, StyleSheet, View, ViewStyle } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -22,7 +22,7 @@ import { HourGuideColumn } from './HourGuideColumn'
 const styles = StyleSheet.create({
   nowIndicator: {
     position: 'absolute',
-    zIndex: 10000,
+    zIndex: 9999,
     height: 2,
     width: '100%',
   },
@@ -213,7 +213,9 @@ function _CalendarBody<T>({
       >
         {_renderHourGuideColumn()}
         {dateRange.map((date, i) => (
-          <View
+          <>
+             <View
+            activeOpacity={1}
             style={[u['flex-1'], u['overflow-hidden']]}
             key={date.toString()}
             onLayout={e => {
@@ -221,6 +223,7 @@ function _CalendarBody<T>({
               if (_cellWidth !== cellWidth && i === 0) setCellWidth(_cellWidth);
             }}
           >
+   
             {_renderHourGuideCell(date)}
 
             {/* Render events of this date */}
@@ -246,8 +249,8 @@ function _CalendarBody<T>({
               events={_getEventsAfterThisDate(date)}
               renderMappedEvent={_renderMappedEvent}
             />}
-
-            {isToday(date) && !hideNowIndicator && (
+          </View>
+          {isToday(date) && !hideNowIndicator && (
               <View
                 style={[
                   styles.nowIndicator,
@@ -256,7 +259,7 @@ function _CalendarBody<T>({
                 ]}
               />
             )}
-          </View>
+         </>
         ))}
       </View>
     </ScrollView>
