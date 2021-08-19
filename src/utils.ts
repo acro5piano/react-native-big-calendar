@@ -177,7 +177,7 @@ export function getStyleForOverlappingEvent(
   const start = eventPosition * offset
   const zIndex = 10 + eventPosition
   const bgColors = palettes.map((p) => p.main)
-  console.log("zIndex", zIndex);
+
   overlapStyle = {
     start: start + OVERLAP_PADDING,
     end: OVERLAP_PADDING,
