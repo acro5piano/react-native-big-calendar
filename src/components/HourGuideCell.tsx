@@ -17,7 +17,7 @@ interface HourGuideCellProps {
 
 export const HourGuideCell = ({ cellHeight, onPress, date, hour, todayHighlight, slotDuration =15 }: HourGuideCellProps) => {
   const theme = useTheme()
-
+  const lineArray = Array(60 / slotDuration).fill(0);
   return (
     <TouchableWithoutFeedback>
       <View
@@ -29,16 +29,18 @@ export const HourGuideCell = ({ cellHeight, onPress, date, hour, todayHighlight,
           todayHighlight && {backgroundColor: isToday(dayjs(date)) ? 'rgba(255,187,0, 0.1)' : 'white'}
         ]}
       >
-        {Array(60 / slotDuration).fill(0).map((_: any, index: number) => {
+        {lineArray.map((_: any, index: number) => {
+        const isNotLast = index !== lineArray.length - 1
+
           return (
             <TouchableWithoutFeedback key={`${index}`} onPress={() => {
               onPress(dayjs(date.hour(hour).minute(0)).minute(index * 15).second(0));
               console.log(dayjs(date.hour(hour).minute(0)).minute(index * 15).second(0));
             }}>
               <View style={[
-                index !== 3 && u['border-b'],
+                isNotLast && u['border-b'],
                 { flex: 1 },
-                index !== 3 && { borderBottomWidth: 1, borderColor: theme.palette.gray['200'] }
+                isNotLast && { borderBottomWidth: 1, borderColor: theme.palette.gray['200'] }
               ]} />
             </TouchableWithoutFeedback>
           )

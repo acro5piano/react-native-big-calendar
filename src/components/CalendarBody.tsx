@@ -105,7 +105,7 @@ function _CalendarBody<T>({
     return () => {
       clearTimeout(timeout);
     }
-  }, [scrollView, scrollOffsetMinutes, cellHeight, dateRange])
+  }, [scrollView, scrollOffsetMinutes, cellHeight])
 
 
   const panResponder = usePanResponder({
