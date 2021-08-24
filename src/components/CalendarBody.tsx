@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View,
   ViewStyle,
-  TouchableOpacity,
 } from "react-native";
 
 import { u } from "../commonStyles";
@@ -97,12 +96,12 @@ const EventPositioned = React.memo(
   },
   (preProps, nextProps) => {
     // debug
-    // const typeEq = preProps.type == nextProps.type;
-    // const eventsEq = isEqual(preProps.events, nextProps.events);
-    // const renderMappedEventEq = preProps.renderMappedEvent == nextProps.renderMappedEvent;
-    // const countRenderEventEq = preProps.countRenderEvent == nextProps.countRenderEvent;
-    // const timeoutCountRenderEq = preProps.timeoutCountRender == nextProps.timeoutCountRender;
-    // console.log("isRender",isEqual(preProps, nextProps), {typeEq, eventsEq, renderMappedEventEq, countRenderEventEq, timeoutCountRenderEq});
+    const typeEq = preProps.type == nextProps.type;
+    const eventsEq = isEqual(preProps.events, nextProps.events);
+    const renderMappedEventEq = preProps.renderMappedEvent == nextProps.renderMappedEvent;
+    const countRenderEventEq = preProps.countRenderEvent == nextProps.countRenderEvent;
+    const timeoutCountRenderEq = preProps.timeoutCountRender == nextProps.timeoutCountRender;
+    console.log("isRender",isEqual(preProps, nextProps), {typeEq, eventsEq, renderMappedEventEq, countRenderEventEq, timeoutCountRenderEq});
     
     return isEqual(preProps, nextProps);
   }
@@ -161,6 +160,8 @@ function _CalendarBody<T>({
   const { now } = useNow(!hideNowIndicator);
 
   const [cellWidth, setCellWidth] = React.useState(0);
+
+  const eventsRef = React.useRef(events)
 
   React.useEffect(() => {
     let timeout: any;
@@ -226,6 +227,9 @@ function _CalendarBody<T>({
     return <View style={[u["z-20"], u["w-50"]]}>{columns}</View>;
   };
 
+  React.useEffect(() => {
+    eventsRef.current = events
+  }, [events])
 
   const _renderMappedEvent = React.useCallback((event: ICalendarEvent<T>) => {
     return (
@@ -235,15 +239,15 @@ function _CalendarBody<T>({
         onPressEvent={onPressEvent}
         eventCellStyle={eventCellStyle}
         showTime={showTime}
-        eventCount={getCountOfEventsAtEvent(event, events)}
-        eventOrder={getOrderOfEvent(event, events)}
+        eventCount={getCountOfEventsAtEvent(event, eventsRef.current)}
+        eventOrder={getOrderOfEvent(event, eventsRef.current)}
         overlapOffset={overlapOffset}
         cellWidth={cellWidth - 6} // 6 is padding left + right
         renderEvent={renderEvent}
         ampm={ampm}
       />
     );
-  }, [events, onPressEvent, renderEvent, cellWidth, eventCellStyle, showTime, ampm, overlapOffset])
+  }, [onPressEvent, cellWidth, eventCellStyle, showTime, ampm, overlapOffset])
   
   // conditions
   const _isStartInCurrentDate = (start, date) =>
