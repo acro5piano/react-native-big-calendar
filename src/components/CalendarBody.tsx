@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View,
   ViewStyle,
-  TouchableOpacity,
 } from "react-native";
 
 import { u } from "../commonStyles";
@@ -59,7 +58,7 @@ const EventPositioned = React.memo(
     };
 
     React.useEffect(() => {
-      console.log("useEffect isEqual", isEqual(preEvents.current, events));
+      // console.log("useEffect isEqual", isEqual(preEvents.current, events));
       if (isEqual(preEvents.current, events)) {
         preEvents.current = events;
         return;
@@ -162,6 +161,8 @@ function _CalendarBody<T>({
 
   const [cellWidth, setCellWidth] = React.useState(0);
 
+  const eventsRef = React.useRef(events)
+
   React.useEffect(() => {
     let timeout: any;
     if (scrollView.current && scrollOffsetMinutes) {
@@ -226,6 +227,9 @@ function _CalendarBody<T>({
     return <View style={[u["z-20"], u["w-50"]]}>{columns}</View>;
   };
 
+  React.useEffect(() => {
+    eventsRef.current = events
+  }, [events])
 
   const _renderMappedEvent = React.useCallback((event: ICalendarEvent<T>) => {
     return (
@@ -235,15 +239,15 @@ function _CalendarBody<T>({
         onPressEvent={onPressEvent}
         eventCellStyle={eventCellStyle}
         showTime={showTime}
-        eventCount={getCountOfEventsAtEvent(event, events)}
-        eventOrder={getOrderOfEvent(event, events)}
+        eventCount={getCountOfEventsAtEvent(event, eventsRef.current)}
+        eventOrder={getOrderOfEvent(event, eventsRef.current)}
         overlapOffset={overlapOffset}
         cellWidth={cellWidth - 6} // 6 is padding left + right
         renderEvent={renderEvent}
         ampm={ampm}
       />
     );
-  }, [events, onPressEvent, renderEvent, cellWidth, eventCellStyle, showTime, ampm, overlapOffset])
+  }, [onPressEvent, cellWidth, eventCellStyle, showTime, ampm, overlapOffset])
   
   // conditions
   const _isStartInCurrentDate = (start, date) =>
