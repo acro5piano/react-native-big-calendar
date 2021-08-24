@@ -51,7 +51,6 @@ function _CalendarEvent<T>({
     [theme],
   )
 
-
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
     eventCellStyle,
