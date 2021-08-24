@@ -24,7 +24,6 @@ import {
   getDatesInWeek,
   isAllDayEvent,
   modeToNum,
-  typedMemo,
   getDatesInNextFourDays
 } from '../utils'
 import { CalendarBody } from './CalendarBody'
@@ -76,6 +75,8 @@ export interface CalendarContainerProps<T> {
   onlyDuringDay: boolean // Ignore render before after time event
   slotDuration?: number // minute in hour 1 -> 60p
   cellHeightInHour?: number; // default 24px
+  countRenderEvent?: number
+  timeoutCountRender?: number; // timeout between countRenderEvent
 }
 
 dayjs.extend(isBetween)
@@ -110,6 +111,8 @@ function _CalendarContainer<T>({
   onlyDuringDay = true,
   slotDuration = 15,
   cellHeightInHour = 24,
+  countRenderEvent = 20,
+  timeoutCountRender = 500,
   
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
@@ -130,10 +133,13 @@ function _CalendarContainer<T>({
   )
 
   const daytimeEvents = React.useMemo(
-    () => events.filter((event) => !isAllDayEvent(event.start, event.end)),
+    () => {
+      console.log("daytimeEvents", events);
+      return events.filter((event) => !isAllDayEvent(event.start, event.end));
+    },
     [events],
   )
-
+    
   const dateRange = React.useMemo(() => {
     switch (mode) {
       case 'month':
@@ -179,11 +185,11 @@ function _CalendarContainer<T>({
     [swipeEnabled, targetDate, mode, theme.isRTL],
   )
 
-  const commonProps = {
+  const commonProps = React.useMemo(() => ({
     cellHeight,
     dateRange,
     mode,
-  }
+  }), [mode, dateRange, cellHeight])
 
   if (mode === 'month') {
     const headerProps = {
@@ -243,9 +249,11 @@ function _CalendarContainer<T>({
         todayHighlight={todayHighlight}
         onlyDuringDay={onlyDuringDay}
         slotDuration={slotDuration}
+        countRenderEvent={countRenderEvent}
+        timeoutCountRender={timeoutCountRender}
       />
     </React.Fragment>
   )
 }
 
-export const CalendarContainer = typedMemo(_CalendarContainer)
+export const CalendarContainer = React.memo(_CalendarContainer)

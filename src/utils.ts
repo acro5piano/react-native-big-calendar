@@ -179,12 +179,13 @@ export function getStyleForOverlappingEvent(
   const bgColors = palettes.map((p) => p.main)
 
   overlapStyle = {
-    start: start + OVERLAP_PADDING,
+    start: Number.isNaN(start) ? 0 : start + OVERLAP_PADDING,
     end: OVERLAP_PADDING,
     backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
     zIndex,
     width: offset < 45 && cellWidth > 100 ? 45 : offset
   }
+  
   return overlapStyle
 }
 
