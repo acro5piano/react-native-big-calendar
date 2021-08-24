@@ -58,7 +58,7 @@ const EventPositioned = React.memo(
     };
 
     React.useEffect(() => {
-      console.log("useEffect isEqual", isEqual(preEvents.current, events));
+      // console.log("useEffect isEqual", isEqual(preEvents.current, events));
       if (isEqual(preEvents.current, events)) {
         preEvents.current = events;
         return;
@@ -96,12 +96,12 @@ const EventPositioned = React.memo(
   },
   (preProps, nextProps) => {
     // debug
-    const typeEq = preProps.type == nextProps.type;
-    const eventsEq = isEqual(preProps.events, nextProps.events);
-    const renderMappedEventEq = preProps.renderMappedEvent == nextProps.renderMappedEvent;
-    const countRenderEventEq = preProps.countRenderEvent == nextProps.countRenderEvent;
-    const timeoutCountRenderEq = preProps.timeoutCountRender == nextProps.timeoutCountRender;
-    console.log("isRender",isEqual(preProps, nextProps), {typeEq, eventsEq, renderMappedEventEq, countRenderEventEq, timeoutCountRenderEq});
+    // const typeEq = preProps.type == nextProps.type;
+    // const eventsEq = isEqual(preProps.events, nextProps.events);
+    // const renderMappedEventEq = preProps.renderMappedEvent == nextProps.renderMappedEvent;
+    // const countRenderEventEq = preProps.countRenderEvent == nextProps.countRenderEvent;
+    // const timeoutCountRenderEq = preProps.timeoutCountRender == nextProps.timeoutCountRender;
+    // console.log("isRender",isEqual(preProps, nextProps), {typeEq, eventsEq, renderMappedEventEq, countRenderEventEq, timeoutCountRenderEq});
     
     return isEqual(preProps, nextProps);
   }
