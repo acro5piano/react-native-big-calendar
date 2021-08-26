@@ -121,8 +121,19 @@ function _CalendarBodyForMonthView<T>({
                 </Text>
                 {date &&
                   events
-                    .filter(({ start }) =>
-                      dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                    .sort((a, b) => a.start.getUTCDate() - b.start.getUTCDate())
+                    .sort((a, b) => {
+                      const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
+                      const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
+                      return bDuration - aDuration
+                    })
+                    .filter(({ start, end }) =>
+                      date.isBetween(
+                        dayjs(start).startOf('day'),
+                        dayjs(end).endOf('day'),
+                        null,
+                        '[)',
+                      ),
                     )
                     .reduce(
                       (elements, event, index, events) => [
@@ -141,6 +152,8 @@ function _CalendarBodyForMonthView<T>({
                             eventCellStyle={eventCellStyle}
                             onPressEvent={onPressEvent}
                             renderEvent={renderEvent}
+                            date={date}
+                            dayOfTheWeek={ii}
                           />
                         ),
                       ],
