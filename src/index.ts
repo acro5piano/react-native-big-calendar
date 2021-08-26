@@ -1,4 +1,9 @@
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+
 import { Calendar } from './components/Calendar'
+
+dayjs.extend(duration)
 
 export * from './components/Calendar'
 export * from './components/CalendarBody'
