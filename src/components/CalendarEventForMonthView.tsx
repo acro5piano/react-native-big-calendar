@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
@@ -26,22 +26,26 @@ function _CalendarEventForMonthView<T>({
   dayOfTheWeek,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
+  const { width } = Dimensions.get('window')
+  const dayWidth = width / 7
 
   // adding + 1 because durations start at 0
   const eventDuration = dayjs.duration(dayjs(event.end).diff(dayjs(event.start))).days() + 1
   const eventDaysLeft = dayjs.duration(dayjs(event.end).diff(date)).days() + 1
   const weekDaysLeft = 7 - dayOfTheWeek
-  //
+  const isMultipleDays = eventDuration > 1
+  // This is to determine how many days from the event to show during a week
   const eventWeekDuration =
     eventDuration > weekDaysLeft
       ? weekDaysLeft
       : dayOfTheWeek === 0 && eventDaysLeft < eventDuration
       ? eventDaysLeft
       : eventDuration
-  const isMultipleDays = eventDuration > 1
   const isMultipleDaysStart =
     isMultipleDays &&
     (date.isSame(event.start, 'day') || (dayOfTheWeek === 0 && date.isAfter(event.start)))
+  // - 6 to take in account the padding
+  const eventWidth = dayWidth * eventWeekDuration - 6
 
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
@@ -49,9 +53,7 @@ function _CalendarEventForMonthView<T>({
     onPressEvent,
     injectedStyles: [
       { backgroundColor: theme.palette.primary.main },
-      isMultipleDaysStart
-        ? { position: 'absolute', width: `${eventWeekDuration * 100}%`, zIndex: 100000 }
-        : {},
+      isMultipleDaysStart ? { position: 'absolute', width: eventWidth, zIndex: 100000 } : {},
       u['mt-2'],
     ],
   })
