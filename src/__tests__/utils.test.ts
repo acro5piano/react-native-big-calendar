@@ -176,7 +176,7 @@ describe('modeToNum', () => {
 describe('spanning events', () => {
   test('first day', () => {
     const date = dayjs().subtract(1, 'week').set('day', 3)
-    const { eventWidth, isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+    const { isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
       events[7],
       date,
       date.day(),
@@ -187,7 +187,7 @@ describe('spanning events', () => {
   })
   test('second day', () => {
     const date = dayjs().subtract(1, 'week').set('day', 4)
-    const { eventWidth, isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+    const { isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
       events[7],
       date,
       date.day(),
@@ -199,7 +199,7 @@ describe('spanning events', () => {
   test('first day of second week', () => {
     const date = dayjs().set('day', 0)
 
-    const { eventWidth, isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+    const { isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
       events[7],
       date,
       date.day(),
