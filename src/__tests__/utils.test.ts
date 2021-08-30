@@ -1,10 +1,12 @@
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as R from 'remeda'
 
 import * as utils from '../utils'
 
 dayjs.extend(isBetween)
+dayjs.extend(duration)
 
 const events: Event[] = [
   {
@@ -41,6 +43,11 @@ const events: Event[] = [
     title: 'Laundry',
     start: dayjs().add(1, 'day').set('hour', 8).set('minute', 25),
     end: dayjs().add(1, 'day').set('hour', 11).set('minute', 0),
+  },
+  {
+    title: 'Vacation',
+    start: dayjs().subtract(1, 'week').set('day', 3).set('hour', 8).set('minute', 25),
+    end: dayjs().add(1, 'week').set('hour', 11).set('minute', 0),
   },
 ]
 
@@ -163,5 +170,42 @@ describe('modeToNum', () => {
     const mode = 'custom'
     const num = utils.modeToNum(mode)
     expect(num).toEqual(7)
+  })
+})
+
+describe('spanning events', () => {
+  test('first day', () => {
+    const date = dayjs().subtract(1, 'week').set('day', 3)
+    const { eventWidth, isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+      events[7],
+      date,
+      date.day(),
+    )
+
+    expect(isMultipleDays).toBe(true)
+    expect(isMultipleDaysStart).toBe(true)
+  })
+  test('second day', () => {
+    const date = dayjs().subtract(1, 'week').set('day', 4)
+    const { eventWidth, isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+      events[7],
+      date,
+      date.day(),
+    )
+
+    expect(isMultipleDays).toBe(true)
+    expect(isMultipleDaysStart).toBe(false)
+  })
+  test('first day of second week', () => {
+    const date = dayjs().set('day', 0)
+
+    const { eventWidth, isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+      events[7],
+      date,
+      date.day(),
+    )
+
+    expect(isMultipleDays).toBe(true)
+    expect(isMultipleDaysStart).toBe(true)
   })
 })
