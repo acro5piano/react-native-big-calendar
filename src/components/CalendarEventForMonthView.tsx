@@ -6,7 +6,7 @@ import { u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
 import { EventCellStyle, EventRenderer, ICalendarEvent } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { typedMemo } from '../utils'
+import { getEventSpanningInfo, typedMemo } from '../utils'
 
 interface CalendarEventProps<T> {
   event: ICalendarEvent<T>
@@ -26,26 +26,11 @@ function _CalendarEventForMonthView<T>({
   dayOfTheWeek,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
-  const { width } = Dimensions.get('window')
-  const dayWidth = width / 7
 
-  // adding + 1 because durations start at 0
-  const eventDuration = dayjs.duration(dayjs(event.end).diff(dayjs(event.start))).days() + 1
-  const eventDaysLeft = dayjs.duration(dayjs(event.end).diff(date)).days() + 1
-  const weekDaysLeft = 7 - dayOfTheWeek
-  const isMultipleDays = eventDuration > 1
-  // This is to determine how many days from the event to show during a week
-  const eventWeekDuration =
-    eventDuration > weekDaysLeft
-      ? weekDaysLeft
-      : dayOfTheWeek === 0 && eventDaysLeft < eventDuration
-      ? eventDaysLeft
-      : eventDuration
-  const isMultipleDaysStart =
-    isMultipleDays &&
-    (date.isSame(event.start, 'day') || (dayOfTheWeek === 0 && date.isAfter(event.start)))
-  // - 6 to take in account the padding
-  const eventWidth = dayWidth * eventWeekDuration - 6
+  const { eventWidth, isMultipleDays, isMultipleDaysStart } = React.useMemo(
+    () => getEventSpanningInfo(event, date, dayOfTheWeek),
+    [date, dayOfTheWeek, event],
+  )
 
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
