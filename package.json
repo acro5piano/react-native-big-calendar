@@ -64,7 +64,7 @@
     "remeda": "^0.0.30",
     "rimraf": "^3.0.2",
     "rn-tailwind": "^1.0.16",
-    "rollup": "^2.52.6",
+    "rollup": "^2.56.3",
     "rollup-plugin-typescript2": "^0.30.0",
     "simple-git-hooks": "^2.5.1",
     "tailwind-rn": "^3.0.1",
