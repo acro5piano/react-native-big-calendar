@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { Dimensions } from 'react-native'
 
 import { OVERLAP_PADDING } from './commonStyles'
 import { ICalendarEvent, Mode, WeekNum } from './interfaces'
@@ -220,9 +219,9 @@ export function getEventSpanningInfo(
   event: ICalendarEvent<any>,
   date: dayjs.Dayjs,
   dayOfTheWeek: number,
+  calendarWidth: number,
 ) {
-  const { width } = Dimensions.get('window')
-  const dayWidth = width / 7
+  const dayWidth = calendarWidth / 7
 
   // adding + 1 because durations start at 0
   const eventDuration = dayjs.duration(dayjs(event.end).diff(dayjs(event.start))).days() + 1
@@ -244,5 +243,5 @@ export function getEventSpanningInfo(
   // - 6 to take in account the padding
   const eventWidth = dayWidth * eventWeekDuration - 6
 
-  return { eventWidth, isMultipleDays, isMultipleDaysStart }
+  return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
 }

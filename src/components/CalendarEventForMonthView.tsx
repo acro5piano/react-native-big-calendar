@@ -15,6 +15,7 @@ interface CalendarEventProps<T> {
   renderEvent?: EventRenderer<T>
   date: dayjs.Dayjs
   dayOfTheWeek: number
+  calendarWidth: number
 }
 
 function _CalendarEventForMonthView<T>({
@@ -24,12 +25,13 @@ function _CalendarEventForMonthView<T>({
   renderEvent,
   date,
   dayOfTheWeek,
+  calendarWidth,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
-  const { eventWidth, isMultipleDays, isMultipleDaysStart } = React.useMemo(
-    () => getEventSpanningInfo(event, date, dayOfTheWeek),
-    [date, dayOfTheWeek, event],
+  const { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration } = React.useMemo(
+    () => getEventSpanningInfo(event, date, dayOfTheWeek, calendarWidth),
+    [date, dayOfTheWeek, event, calendarWidth],
   )
 
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
@@ -38,7 +40,13 @@ function _CalendarEventForMonthView<T>({
     onPressEvent,
     injectedStyles: [
       { backgroundColor: theme.palette.primary.main },
-      isMultipleDaysStart ? { position: 'absolute', width: eventWidth, zIndex: 100000 } : {},
+      isMultipleDaysStart && eventWeekDuration > 1
+        ? {
+            position: 'absolute',
+            width: eventWidth,
+            zIndex: 100000,
+          }
+        : {},
       u['mt-2'],
     ],
   })
@@ -48,7 +56,7 @@ function _CalendarEventForMonthView<T>({
   }
 
   return (
-    <View style={{ minHeight: 22 }}>
+    <View style={{ minHeight: 22, position: 'relative' }}>
       {((!isMultipleDays && date.isSame(event.start, 'day')) ||
         (isMultipleDays && isMultipleDaysStart)) && (
         <TouchableOpacity {...touchableOpacityProps}>
