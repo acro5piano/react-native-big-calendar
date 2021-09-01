@@ -46,8 +46,8 @@ const events: Event[] = [
   },
   {
     title: 'Vacation',
-    start: dayjs().subtract(1, 'week').set('day', 3).set('hour', 8).set('minute', 25),
-    end: dayjs().add(1, 'week').set('hour', 11).set('minute', 0),
+    start: dayjs().add(1, 'week').set('day', 3).set('hour', 8).set('minute', 25),
+    end: dayjs().add(2, 'week').set('hour', 11).set('minute', 0),
   },
 ]
 
@@ -175,37 +175,43 @@ describe('modeToNum', () => {
 
 describe('spanning events', () => {
   test('first day', () => {
-    const date = dayjs().subtract(1, 'week').set('day', 3)
-    const { isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+    const date = dayjs().add(1, 'week').set('day', 3)
+    const { isMultipleDays, isMultipleDaysStart, eventWeekDuration } = utils.getEventSpanningInfo(
       events[7],
       date,
       date.day(),
+      0,
     )
 
     expect(isMultipleDays).toBe(true)
     expect(isMultipleDaysStart).toBe(true)
+    expect(eventWeekDuration).toBe(4)
   })
   test('second day', () => {
-    const date = dayjs().subtract(1, 'week').set('day', 4)
-    const { isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+    const date = dayjs().add(1, 'week').set('day', 4)
+    const { isMultipleDays, isMultipleDaysStart, eventWeekDuration } = utils.getEventSpanningInfo(
       events[7],
       date,
       date.day(),
+      0,
     )
 
     expect(isMultipleDays).toBe(true)
     expect(isMultipleDaysStart).toBe(false)
+    expect(eventWeekDuration).toBe(3)
   })
   test('first day of second week', () => {
-    const date = dayjs().set('day', 0)
+    const date = dayjs().add(2, 'week').set('day', 0)
 
-    const { isMultipleDays, isMultipleDaysStart } = utils.getEventSpanningInfo(
+    const { isMultipleDays, isMultipleDaysStart, eventWeekDuration } = utils.getEventSpanningInfo(
       events[7],
       date,
       date.day(),
+      0,
     )
 
     expect(isMultipleDays).toBe(true)
     expect(isMultipleDaysStart).toBe(true)
+    expect(eventWeekDuration).toBe(7)
   })
 })
