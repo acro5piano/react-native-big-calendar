@@ -1,3 +1,5 @@
+import 'dayjs/locale/ja'
+
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
@@ -193,9 +195,6 @@ storiesOf('showcase - Desktop', module)
     )
   })
   .add('locale', () => {
-    React.useEffect(() => {
-      require('dayjs/locale/ja')
-    }, [])
     return (
       <View style={styles.desktop}>
         <Calendar locale="ja" height={SCREEN_HEIGHT} events={events} />
