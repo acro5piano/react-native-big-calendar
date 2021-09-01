@@ -46,7 +46,7 @@ function _CalendarEventForMonthView<T>({
         ? {
             position: 'absolute',
             width: eventWidth,
-            zIndex: 100000,
+            zIndex: 10000,
           }
         : {},
       isRTL ? { right: 0 } : { left: 0 },
@@ -59,7 +59,7 @@ function _CalendarEventForMonthView<T>({
   }
 
   return (
-    <View style={{ minHeight: 22, position: 'relative' }}>
+    <View style={{ minHeight: 22 }}>
       {((!isMultipleDays && date.isSame(event.start, 'day')) ||
         (isMultipleDays && isMultipleDaysStart)) && (
         <TouchableOpacity {...touchableOpacityProps}>
@@ -68,6 +68,7 @@ function _CalendarEventForMonthView<T>({
               { color: theme.palette.primary.contrastText },
               theme.typography.xs,
               u['truncate'],
+              isRTL && { textAlign: 'right' },
             ]}
             numberOfLines={1}
           >
