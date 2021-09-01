@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.1
+
+### New features
+
+- Support event spanning on month mode #495
+
+### Chore
+
+- Update deps
+
 ## 2.0.0-rc
 
 This is a release candidate for v2.0.0.
