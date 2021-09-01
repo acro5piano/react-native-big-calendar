@@ -220,7 +220,65 @@ export const myEvents: ICalendarEvent[] = [
 ]
 ```
 
-# I18n
+## Theme
+
+You can customize the calendar by passing the `theme` prop. `theme` should be like this interface partially:
+
+```typescript
+export interface Palette {
+  main: string
+  contrastText: string
+}
+
+export interface ThemeInterface {
+  palette: {
+    primary: Palette
+    nowIndicator: string
+    gray: {
+      100: string
+      200: string
+      300: string
+      500: string
+      800: string
+    }
+  }
+  isRTL: boolean
+  typography: {
+    fontFamily?: string
+    xs: Typography
+    sm: Typography
+    xl: Typography
+  }
+  eventCellOverlappings: readonly Palette[]
+}
+```
+
+For example:
+
+```typescript
+const darkTheme = {
+  palette: {
+    primary: {
+      main: '#6185d0',
+      contrastText: '#000',
+    },
+    gray: {
+      '100': '#333',
+      '200': '#666',
+      '300': '#888',
+      '500': '#aaa',
+      '800': '#ccc',
+    },
+  },
+}
+
+<Calendar
+  height={SCREEN_HEIGHT}
+  theme={darkTheme}
+/>
+```
+
+## I18n
 
 Please specity your locale via `locale` prop **and** import day.js locale file:
 
