@@ -214,3 +214,34 @@ function weekDaysCount(weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
   // default
   return 1
 }
+
+export function getEventSpanningInfo(
+  event: ICalendarEvent<any>,
+  date: dayjs.Dayjs,
+  dayOfTheWeek: number,
+  calendarWidth: number,
+) {
+  const dayWidth = calendarWidth / 7
+
+  // adding + 1 because durations start at 0
+  const eventDuration = dayjs.duration(dayjs(event.end).diff(dayjs(event.start))).days() + 1
+  const eventDaysLeft = dayjs.duration(dayjs(event.end).diff(date)).days() + 1
+  const weekDaysLeft = 7 - dayOfTheWeek
+  const isMultipleDays = eventDuration > 1
+  // This is to determine how many days from the event to show during a week
+  const eventWeekDuration =
+    eventDuration > weekDaysLeft
+      ? weekDaysLeft
+      : dayOfTheWeek === 0 && eventDaysLeft < eventDuration
+      ? eventDaysLeft
+      : eventDuration
+  const isMultipleDaysStart =
+    isMultipleDays &&
+    (date.isSame(event.start, 'day') ||
+      (dayOfTheWeek === 0 && date.isAfter(event.start)) ||
+      date.get('date') === 1)
+  // - 6 to take in account the padding
+  const eventWidth = dayWidth * eventWeekDuration - 6
+
+  return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
+}

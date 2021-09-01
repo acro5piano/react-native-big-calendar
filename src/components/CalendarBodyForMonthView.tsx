@@ -47,6 +47,7 @@ function _CalendarBodyForMonthView<T>({
   weekStartsOn,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
+  const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -72,6 +73,7 @@ function _CalendarBodyForMonthView<T>({
         { borderColor: theme.palette.gray['200'] },
         style,
       ]}
+      onLayout={({ nativeEvent: { layout } }) => setCalendarWidth(layout.width)}
       {...panResponder.panHandlers}
     >
       {weeks.map((week, i) => (
@@ -121,8 +123,21 @@ function _CalendarBodyForMonthView<T>({
                 </Text>
                 {date &&
                   events
-                    .filter(({ start }) =>
-                      dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                    .sort((a, b) => {
+                      if (dayjs(a.start).isSame(b.start, 'day')) {
+                        const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
+                        const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
+                        return bDuration - aDuration
+                      }
+                      return a.start.getTime() - b.start.getTime()
+                    })
+                    .filter(({ start, end }) =>
+                      date.isBetween(
+                        dayjs(start).startOf('day'),
+                        dayjs(end).endOf('day'),
+                        null,
+                        '[)',
+                      ),
                     )
                     .reduce(
                       (elements, event, index, events) => [
@@ -141,6 +156,10 @@ function _CalendarBodyForMonthView<T>({
                             eventCellStyle={eventCellStyle}
                             onPressEvent={onPressEvent}
                             renderEvent={renderEvent}
+                            date={date}
+                            dayOfTheWeek={ii}
+                            calendarWidth={calendarWidth}
+                            isRTL={theme.isRTL}
                           />
                         ),
                       ],
