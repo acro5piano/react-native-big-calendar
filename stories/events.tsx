@@ -57,6 +57,34 @@ export const events: ICalendarEvent<{ color?: string }>[] = [
   },
 ]
 
+export const spanningEvents: ICalendarEvent<{ color?: string }>[] = [
+  {
+    title: 'Watch Boxing',
+    start: dayjs().subtract(1, 'week').set('hour', 14).set('minute', 30).toDate(),
+    end: dayjs().subtract(1, 'week').set('hour', 15).set('minute', 30).toDate(),
+  },
+  {
+    title: 'Laundry',
+    start: dayjs().subtract(1, 'week').set('hour', 1).set('minute', 30).toDate(),
+    end: dayjs().subtract(1, 'week').set('hour', 2).set('minute', 30).toDate(),
+  },
+  {
+    title: 'Meeting',
+    start: dayjs().subtract(1, 'week').set('hour', 10).set('minute', 0).toDate(),
+    end: dayjs().add(1, 'week').set('hour', 10).set('minute', 30).toDate(),
+  },
+  {
+    title: 'Coffee break',
+    start: dayjs().set('hour', 14).set('minute', 30).toDate(),
+    end: dayjs().add(1, 'week').set('hour', 15).set('minute', 30).toDate(),
+  },
+  {
+    title: 'Repair my car',
+    start: dayjs().add(1, 'day').set('hour', 7).set('minute', 45).toDate(),
+    end: dayjs().add(4, 'day').set('hour', 13).set('minute', 30).toDate(),
+  },
+]
+
 export interface MyCustomEventType {
   color?: string
 }
