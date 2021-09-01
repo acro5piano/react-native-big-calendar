@@ -16,6 +16,7 @@ interface CalendarEventProps<T> {
   date: dayjs.Dayjs
   dayOfTheWeek: number
   calendarWidth: number
+  isRTL: boolean
 }
 
 function _CalendarEventForMonthView<T>({
@@ -26,6 +27,7 @@ function _CalendarEventForMonthView<T>({
   date,
   dayOfTheWeek,
   calendarWidth,
+  isRTL,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -47,6 +49,7 @@ function _CalendarEventForMonthView<T>({
             zIndex: 100000,
           }
         : {},
+      isRTL ? { right: 0 } : { left: 0 },
       u['mt-2'],
     ],
   })

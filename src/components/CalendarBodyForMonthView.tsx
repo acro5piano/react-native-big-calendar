@@ -159,6 +159,7 @@ function _CalendarBodyForMonthView<T>({
                             date={date}
                             dayOfTheWeek={ii}
                             calendarWidth={calendarWidth}
+                            isRTL={theme.isRTL}
                           />
                         ),
                       ],
