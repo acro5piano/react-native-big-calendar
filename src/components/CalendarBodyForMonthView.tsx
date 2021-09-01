@@ -47,6 +47,7 @@ function _CalendarBodyForMonthView<T>({
   weekStartsOn,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
+  const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -72,6 +73,7 @@ function _CalendarBodyForMonthView<T>({
         { borderColor: theme.palette.gray['200'] },
         style,
       ]}
+      onLayout={({ nativeEvent: { layout } }) => setCalendarWidth(layout.width)}
       {...panResponder.panHandlers}
     >
       {weeks.map((week, i) => (
@@ -156,6 +158,7 @@ function _CalendarBodyForMonthView<T>({
                             renderEvent={renderEvent}
                             date={date}
                             dayOfTheWeek={ii}
+                            calendarWidth={calendarWidth}
                           />
                         ),
                       ],
