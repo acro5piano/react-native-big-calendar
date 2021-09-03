@@ -1,6 +1,6 @@
 {
   "name": "@axsy-dev/react-native-big-calendar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",

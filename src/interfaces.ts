@@ -4,6 +4,7 @@ import { RecursiveArray, ViewStyle } from 'react-native'
 interface ICalendarEventBase<T> {
   start: Date
   end: Date
+  isAllDayEvent: boolean
   title: string
   children?: ReactElement | null
   eventRenderer?: (

@@ -242,3 +242,26 @@ function weekDaysCount(weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
   // default
   return 1
 }
+
+export const getDateRangeFromDate = (
+  mode: Mode,
+  targetDate: any,
+  locale: string,
+  weekEndsOn: WeekNum,
+  weekStartsOn: WeekNum,
+): any[] => {
+  switch (mode) {
+    case 'month':
+      return getDatesInMonth(targetDate, locale)
+    case 'week':
+      return getDatesInWeek(targetDate, weekStartsOn, locale)
+    case '3days':
+      return getDatesInNextThreeDays(targetDate, locale)
+    case 'day':
+      return getDatesInNextOneDay(targetDate, locale)
+    case 'custom':
+      return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
+    default:
+      throw new Error('undefined mode')
+  }
+}
