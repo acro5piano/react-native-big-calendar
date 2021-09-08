@@ -326,7 +326,7 @@ Enterprise customers are able to obtain:
 - Priority response and development.
 - Consultancy for React, TypeScript, and React Native application.
 
-Note that Enterprise features will be distributed to the OSS version.
+Note that some Enterprise features will be merged to the OSS version too.
 
 If you are interested in those features, please send an email to: ketsume0211@gmail.com
 
