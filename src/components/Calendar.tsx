@@ -2,26 +2,17 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { ViewStyle } from 'react-native'
 
-import { MIN_HEIGHT } from '../commonStyles'
 import {
   DateRangeHandler,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
+  HourNum,
   ICalendarEvent,
   Mode,
   WeekNum,
 } from '../interfaces'
-import {
-  getDatesInMonth,
-  getDatesInNextCustomDays,
-  getDatesInNextOneDay,
-  getDatesInNextThreeDays,
-  getDatesInWeek,
-  isAllDayEvent,
-  modeToNum,
-  typedMemo,
-} from '../utils'
+import { getDateRangeFromDate, isAllDayEvent, modeToNum, typedMemo } from '../utils'
 import { CalendarBody } from './CalendarBody'
 import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
 import { CalendarHeader } from './CalendarHeader'
@@ -42,8 +33,12 @@ export interface CalendarProps<T> {
   style?: ViewStyle
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
+  dayStartsOn?: HourNum
+  dayEndsOn?: HourNum
+  extendDaysTimeWithEvents?: boolean
   isRTL?: boolean
   onChangeDate?: DateRangeHandler
+  onSwipeChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
@@ -67,8 +62,12 @@ function _Calendar<T>({
   style = {},
   swipeEnabled = true,
   weekStartsOn = 0,
+  dayStartsOn = 0,
+  dayEndsOn = 23,
+  extendDaysTimeWithEvents = false,
   isRTL = false,
   onChangeDate,
+  onSwipeChangeDate,
   onPressCell,
   onPressDateHeader,
   onPressEvent,
@@ -85,7 +84,7 @@ function _Calendar<T>({
   }, [date])
 
   const allDayEvents = React.useMemo(
-    () => events.filter((event) => isAllDayEvent(event.start, event.end)),
+    () => events.filter((event) => event.isAllDayEvent || isAllDayEvent(event.start, event.end)),
     [events],
   )
 
@@ -95,20 +94,7 @@ function _Calendar<T>({
   )
 
   const dateRange = React.useMemo(() => {
-    switch (mode) {
-      case 'month':
-        return getDatesInMonth(targetDate, locale)
-      case 'week':
-        return getDatesInWeek(targetDate, weekStartsOn, locale)
-      case '3days':
-        return getDatesInNextThreeDays(targetDate, locale)
-      case 'day':
-        return getDatesInNextOneDay(targetDate, locale)
-      case 'custom':
-        return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
-      default:
-        throw new Error('undefined mode')
-    }
+    return getDateRangeFromDate(mode, targetDate, locale, weekEndsOn, weekStartsOn)
   }, [mode, targetDate, locale, weekEndsOn, weekStartsOn])
 
   React.useEffect(() => {
@@ -117,25 +103,50 @@ function _Calendar<T>({
     }
   }, [dateRange, onChangeDate])
 
-  const cellHeight = React.useMemo(() => Math.max(height - 30, MIN_HEIGHT) / 24, [height])
+  const hoursRange = dayEndsOn - dayStartsOn + 1
+  const viewHeight = hoursRange * 50
+
+  const cellHeight = React.useMemo(
+    () => Math.max(height - 30, viewHeight) / hoursRange,
+    [height, hoursRange, viewHeight],
+  )
 
   const onSwipeHorizontal = React.useCallback(
     (direction: HorizontalDirection) => {
       if (!swipeEnabled) {
         return
       }
+
+      let newTargetDate
+
       if ((direction === 'LEFT' && !isRTL) || (direction === 'RIGHT' && isRTL)) {
-        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
+        newTargetDate = targetDate.add(modeToNum(mode, targetDate), 'day')
       } else {
-        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
+        newTargetDate = targetDate.add(modeToNum(mode, targetDate) * -1, 'day')
+      }
+
+      setTargetDate(newTargetDate)
+
+      if (onSwipeChangeDate) {
+        const dateRange = getDateRangeFromDate(
+          mode,
+          newTargetDate,
+          locale,
+          weekEndsOn,
+          weekStartsOn,
+        )
+        onSwipeChangeDate([dateRange[0].toDate(), dateRange.slice(-1)[0].toDate()])
       }
     },
-    [swipeEnabled, targetDate, mode, isRTL],
+    [swipeEnabled, targetDate, mode, isRTL, locale, weekEndsOn, weekStartsOn, onSwipeChangeDate],
   )
 
   const commonProps = {
     cellHeight,
     dateRange,
+    dayStartsOn,
+    dayEndsOn,
+    extendDaysTimeWithEvents,
     style,
     isRTL,
     mode,

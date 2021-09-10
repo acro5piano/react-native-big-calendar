@@ -13,6 +13,8 @@ interface CalendarHeaderProps {
   style?: ViewStyle
 }
 
+export const CALENDAR_HEADER_MONTH_VIEW_HEIGHT = 30
+
 function _CalendarHeaderForMonthView({
   locale,
   isRTL,
@@ -25,15 +27,18 @@ function _CalendarHeaderForMonthView({
   return (
     <View
       style={[
-        u['flex-1'],
         u['border-b'],
         u['border-gray-100'],
         isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
+        { height: CALENDAR_HEADER_MONTH_VIEW_HEIGHT },
       ]}
     >
       {dates.map((date) => (
-        <View style={{ flex: 1, paddingTop: 2 }} key={date.toISOString()}>
+        <View
+          style={{ flex: 1, paddingTop: 2, height: CALENDAR_HEADER_MONTH_VIEW_HEIGHT }}
+          key={date.toISOString()}
+        >
           <View style={{ height: 30 }}>
             <Text style={[guideTextStyle, todayWeekNum === date.day() && u['text-primary']]}>
               {date.format('ddd')}
