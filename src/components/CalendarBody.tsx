@@ -40,72 +40,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const EventPositioned = React.memo(
-  ({type, events = [], renderMappedEvent = () => {}, countRenderEvent = 20, timeoutCountRender = 500 }: any) => {
-    if (events?.length <= 0) return <View />;
-
-    const [eventComponents, setEventComponents] = React.useState([]);
-    const preEvents = React.useRef([]);
-
-    const setPagingData = (start, end) => {
-      setEventComponents((preEvents: any[]) => {
-        // console.log("pushItem", {start, end});
-        const itemsNextPage = events.slice(start, end);
-        const nextData = [...preEvents, ...itemsNextPage];
-        // console.log("eventCalendarOffline paging",type, events.length <= nextData.length, events.length, nextData.length, itemsNextPage);
-        return nextData;
-      });
-    };
-
-    React.useEffect(() => {
-      // console.log("useEffect isEqual", isEqual(preEvents.current, events));
-      if (isEqual(preEvents.current, events)) {
-        preEvents.current = events;
-        return;
-      }
-      // console.log("useEffect start paging");
-
-      const pushItem = (page: number) => {
-        const start = page * countRenderEvent;
-        const end = start + countRenderEvent;
-        
-        if (start >= events.length) {
-          return;
-        }
-
-        if (start == 0) {
-          setPagingData(start, end);
-          pushItem(++page);
-        } else {
-          setTimeout(() => {
-            if (!isEqual(preEvents.current, events)) {
-              return;
-            }
-            setPagingData(start, end);
-            pushItem(++page);
-          }, timeoutCountRender);
-        }
-      };
-
-      setEventComponents([]);
-      pushItem(0);
-      preEvents.current = events;
-    }, [events, countRenderEvent]);
-
-    return eventComponents.map(renderMappedEvent);
-  },
-  (preProps, nextProps) => {
-    // debug
-    // const typeEq = preProps.type == nextProps.type;
-    // const eventsEq = isEqual(preProps.events, nextProps.events);
-    // const renderMappedEventEq = preProps.renderMappedEvent == nextProps.renderMappedEvent;
-    // const countRenderEventEq = preProps.countRenderEvent == nextProps.countRenderEvent;
-    // const timeoutCountRenderEq = preProps.timeoutCountRender == nextProps.timeoutCountRender;
-    // console.log("isRender",isEqual(preProps, nextProps), {typeEq, eventsEq, renderMappedEventEq, countRenderEventEq, timeoutCountRenderEq});
-    
-    return isEqual(preProps, nextProps);
-  }
-);
+const EventPositioned = React.memo(({ events = [], renderMappedEvent = () => {} }) => {
+  if (events?.length <= 0) return <View />;
+  return events.map(renderMappedEvent);
+});
 
 interface CalendarBodyProps<T> {
   cellHeight: number;
@@ -128,8 +66,6 @@ interface CalendarBodyProps<T> {
   todayHighlight?: boolean;
   onlyDuringDay: boolean;
   slotDuration: number;
-  countRenderEvent: number;
-  timeoutCountRender: number;
 }
 
 function _CalendarBody<T>({
@@ -160,8 +96,6 @@ function _CalendarBody<T>({
   const { now } = useNow(!hideNowIndicator);
 
   const [cellWidth, setCellWidth] = React.useState(0);
-
-  const eventsRef = React.useRef(events)
 
   React.useEffect(() => {
     let timeout: any;
@@ -227,10 +161,6 @@ function _CalendarBody<T>({
     return <View style={[u["z-20"], u["w-50"]]}>{columns}</View>;
   };
 
-  React.useEffect(() => {
-    eventsRef.current = events
-  }, [events])
-
   const _renderMappedEvent = React.useCallback((event: ICalendarEvent<T>) => {
     return (
       <CalendarEvent
@@ -239,8 +169,8 @@ function _CalendarBody<T>({
         onPressEvent={onPressEvent}
         eventCellStyle={eventCellStyle}
         showTime={showTime}
-        eventCount={getCountOfEventsAtEvent(event, eventsRef.current)}
-        eventOrder={getOrderOfEvent(event, eventsRef.current)}
+        eventCount={getCountOfEventsAtEvent(event, events)}
+        eventOrder={getOrderOfEvent(event, events)}
         overlapOffset={overlapOffset}
         cellWidth={cellWidth - 6} // 6 is padding left + right
         renderEvent={renderEvent}
@@ -298,7 +228,6 @@ function _CalendarBody<T>({
   }
 
   const theme = useTheme();
-  console.log("cellWidth", cellWidth);
   
   return (
     <ScrollView
@@ -339,8 +268,6 @@ function _CalendarBody<T>({
               <EventPositioned
                 events={_getEventsOfThisDate(date)}
                 renderMappedEvent={_renderMappedEvent}
-                countRenderEvent={countRenderEvent}
-                timeoutCountRender={timeoutCountRender}
               />
 
               {/* Render events which starts before this date and ends on this date */}
@@ -350,8 +277,6 @@ function _CalendarBody<T>({
                 <EventPositioned
                   events={_getEventsBeforeThisDate(date)}
                   renderMappedEvent={_renderMappedEvent}
-                  countRenderEvent={countRenderEvent}
-                  timeoutCountRender={timeoutCountRender}
                 />
               )}
 
@@ -362,8 +287,6 @@ function _CalendarBody<T>({
                 <EventPositioned
                   events={_getEventsAfterThisDate(date)}
                   renderMappedEvent={_renderMappedEvent}
-                  countRenderEvent={countRenderEvent}
-                  timeoutCountRender={timeoutCountRender}
                 />
               )}
             </View>
