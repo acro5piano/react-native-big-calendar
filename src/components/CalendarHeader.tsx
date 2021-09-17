@@ -109,7 +109,7 @@ function _CalendarHeader<T>({
                 }
                 return (
                   <View
-                    style={[eventCellCss.style, primaryBg]}
+                    style={[eventCellCss.style, primaryBg, u['mt-2']]}
                     key={`${event.start}${event.title}`}
                   >
                     <Text
