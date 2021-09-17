@@ -104,7 +104,7 @@ function _CalendarHeader<T>({
               ]}
             >
               {allDayEvents.map((event) => {
-                if (!dayjs(event.start).isSame(date, 'day')) {
+                if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
                   return null
                 }
                 return (
