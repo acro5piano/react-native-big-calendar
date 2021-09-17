@@ -1,9 +1,12 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
+import Mockdate from 'mockdate'
 import * as R from 'remeda'
 
 import * as utils from '../utils'
+
+Mockdate.set('2021-09-17T04:00:00.000Z')
 
 dayjs.extend(isBetween)
 dayjs.extend(duration)

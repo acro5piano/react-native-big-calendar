@@ -167,12 +167,17 @@ storiesOf('showcase - Desktop', module)
     </View>
   ))
   .add('all day event', () => {
+    const monday = dayjs().day(1)
     const _events = [
-      ...events,
       {
         title: 'Vacation',
-        start: dayjs().add(1, 'day').set('hour', 0).set('minute', 0).toDate(),
-        end: dayjs().add(1, 'day').set('hour', 0).set('minute', 0).toDate(),
+        start: monday.set('hour', 0).set('minute', 0).toDate(),
+        end: monday.add(2, 'day').set('hour', 0).set('minute', 0).toDate(),
+      },
+      {
+        title: 'Vacation Recovery',
+        start: monday.add(4, 'day').set('hour', 0).set('minute', 0).toDate(),
+        end: monday.add(4, 'day').set('hour', 0).set('minute', 0).toDate(),
       },
     ]
 

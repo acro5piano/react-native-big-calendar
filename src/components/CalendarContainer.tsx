@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
 import React from 'react'
 import { ViewStyle } from 'react-native'
 
@@ -75,8 +74,6 @@ export interface CalendarContainerProps<T> {
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
 }
-
-dayjs.extend(isBetween)
 
 function _CalendarContainer<T>({
   events,
