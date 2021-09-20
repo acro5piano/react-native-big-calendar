@@ -75,6 +75,8 @@ export interface CalendarContainerProps<T> {
   onlyDuringDay: boolean // Ignore render before after time event
   slotDuration?: number // minute in hour 1 -> 60p
   cellHeightInHour?: number; // default 24px
+  countRenderEvent?: number
+  timeoutCountRender?: number; // timeout between countRenderEvent
 }
 
 dayjs.extend(isBetween)
@@ -108,7 +110,9 @@ function _CalendarContainer<T>({
   todayHighlight = false,
   onlyDuringDay = true,
   slotDuration = 15,
-  cellHeightInHour = 24,  
+  cellHeightInHour = 24,
+  countRenderEvent = 20,
+  timeoutCountRender = 500,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -243,6 +247,8 @@ function _CalendarContainer<T>({
         todayHighlight={todayHighlight}
         onlyDuringDay={onlyDuringDay}
         slotDuration={slotDuration}
+        countRenderEvent={countRenderEvent}
+        timeoutCountRender={timeoutCountRender}
       />
     </React.Fragment>
   )
