@@ -40,9 +40,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const EventPositioned = React.memo(({ events = [], renderMappedEvent = () => {} }) => {
-  if (events?.length <= 0) return <View />;
-  return events.map(renderMappedEvent);
+const EventPositioned = React.memo(({ events = [], renderMappedEvent = () => { } }) => {
+  const [temp, setTemp] = React.useState([]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setTemp(events);
+    }, 25); // timeout for smoothier when changing date
+  }, [events])
+
+  if (temp?.length <= 0) return <View />;
+  return temp.map(renderMappedEvent);
+}, (pre, nxt) => {
+  return isEqual(pre.events, nxt.events)
 });
 
 interface CalendarBodyProps<T> {
@@ -66,6 +76,8 @@ interface CalendarBodyProps<T> {
   todayHighlight?: boolean;
   onlyDuringDay: boolean;
   slotDuration: number;
+  countRenderEvent: number;
+  timeoutCountRender: number;
 }
 
 function _CalendarBody<T>({
@@ -87,10 +99,7 @@ function _CalendarBody<T>({
   overlapOffset,
   renderEvent,
   todayHighlight,
-  onlyDuringDay = true,
   slotDuration,
-  countRenderEvent,
-  timeoutCountRender,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null);
   const { now } = useNow(!hideNowIndicator);
@@ -161,7 +170,7 @@ function _CalendarBody<T>({
     return <View style={[u["z-20"], u["w-50"]]}>{columns}</View>;
   };
 
-  const _renderMappedEvent = React.useCallback((event: ICalendarEvent<T>) => {
+  const _renderMappedEvent = (event: ICalendarEvent<T>) => {
     return (
       <CalendarEvent
         key={event.key}
@@ -177,49 +186,18 @@ function _CalendarBody<T>({
         ampm={ampm}
       />
     );
-  }, [onPressEvent, cellWidth, eventCellStyle, showTime, ampm, overlapOffset])
+  }
   
   // conditions
   const _isStartInCurrentDate = (start, date) =>
     dayjs(start).isBetween(date.startOf("day"), date.endOf("day"), null, "[)");
-  const _isBeforeCurrentDate = (start, end, date) =>
-    dayjs(start).isBefore(date.startOf("day")) &&
-    dayjs(end).isBetween(date.startOf("day"), date.endOf("day"), null, "[)");
-  const _isAfterCurrentDate = (start, end, date) =>
-    dayjs(start).isBefore(date.startOf("day")) &&
-    dayjs(end).isAfter(date.endOf("day"));
 
-  const _getEventsOfThisDate = (date) => {
+  const _getEventsOfThisDate =(date) => {
       const result = events.filter(({ start }) =>
         _isStartInCurrentDate(start, date),
       );
       return result;
-    };
-
-  const _getEventsBeforeThisDate = (date) => {
-    let result = events.filter(({ start, end }) =>
-      _isBeforeCurrentDate(start, end, date),
-    );
-    // reformat
-    result = result.map((event) => ({
-      ...event,
-      start: dayjs(event.end).startOf("day"),
-    }));
-    return result;
-  };
-
-  const _getEventsAfterThisDate = (date) => {
-    let result = events.filter(({ start, end }) =>
-      _isAfterCurrentDate(start, end, date),
-    );
-    // reformat
-    result = result.map((event) => ({
-      ...event,
-      start: dayjs(event.end).startOf("day"),
-      end: dayjs(event.end).endOf("day"),
-    }));
-    return result;
-  };
+    }
 
   const _onLayoutViewDay = (i) => (e) => {
     const _cellWidth = e.nativeEvent.layout.width;
@@ -273,22 +251,10 @@ function _CalendarBody<T>({
               {/* Render events which starts before this date and ends on this date */}
               {/* M  T  (W)  T  F  S  S */}
               {/* S------E              */}
-              {!onlyDuringDay && (
-                <EventPositioned
-                  events={_getEventsBeforeThisDate(date)}
-                  renderMappedEvent={_renderMappedEvent}
-                />
-              )}
 
               {/* Render events which starts before this date and ends after this date */}
               {/* M  T  (W)  T  F  S  S */}
               {/*    S-------E          */}
-              {!onlyDuringDay && (
-                <EventPositioned
-                  events={_getEventsAfterThisDate(date)}
-                  renderMappedEvent={_renderMappedEvent}
-                />
-              )}
             </View>
             {isToday(date) && !hideNowIndicator && (
               <View
@@ -306,4 +272,4 @@ function _CalendarBody<T>({
   );
 }
 
-export const CalendarBody = React.memo(_CalendarBody, isEqual);
+export const CalendarBody = React.memo(_CalendarBody);

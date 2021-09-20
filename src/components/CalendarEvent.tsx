@@ -8,6 +8,8 @@ import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
+import isEqual from "../fastCompare";
+
 const getEventCellPositionStyle = (start: Date, end: Date) => {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
   const relativeTop = getRelativeTopInDay(dayjs(start))
@@ -42,7 +44,7 @@ function _CalendarEvent<T>({
   renderEvent,
   ampm,
 }: CalendarEventProps<T>) {
-  
+
   const theme = useTheme()
   const eventCellPositionStyle = getEventCellPositionStyle(event.start, event.end);
 
@@ -86,4 +88,9 @@ function _CalendarEvent<T>({
   )
 }
 
-export const CalendarEvent = typedMemo(_CalendarEvent)
+export const CalendarEvent = React.memo(_CalendarEvent, (pre, nxt) => {
+  return isEqual(pre.event, nxt.event) &&
+    pre.eventCount === nxt.eventCount &&
+    pre.eventOrder === nxt.eventOrder &&
+    pre.cellWidth === nxt.cellWidth
+})
