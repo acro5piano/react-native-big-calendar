@@ -89,8 +89,5 @@ function _CalendarEvent<T>({
 }
 
 export const CalendarEvent = React.memo(_CalendarEvent, (pre, nxt) => {
-  return isEqual(pre.event, nxt.event) &&
-    pre.eventCount === nxt.eventCount &&
-    pre.eventOrder === nxt.eventOrder &&
-    pre.cellWidth === nxt.cellWidth
+  return isEqual(pre.event, nxt.event)
 })
