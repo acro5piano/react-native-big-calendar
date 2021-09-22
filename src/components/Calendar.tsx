@@ -28,7 +28,7 @@ function _Calendar<T>({ theme = defaultTheme, isRTL, ...props }: CalendarProps<T
 
 // export const Calendar = typedMemo(_Calendar)
 export const Calendar = React.memo(_Calendar, (pre, nxt) => {
-  return pre.events.length === nxt.events.length &&
+  return pre.events === nxt.events &&
     pre.date === nxt.date &&
     pre.mode === nxt.mode &&
     pre.ampm === nxt.ampm &&
