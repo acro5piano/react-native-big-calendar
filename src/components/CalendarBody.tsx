@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const EventPositioned = React.memo(({ events = [], renderMappedEvent = () => { } }) => {
+const EventPositioned = React.memo(({ events = [], renderMappedEvent = () => { }, cellWidth }) => {
   const [temp, setTemp] = React.useState([]);
 
   React.useEffect(() => {
@@ -52,7 +52,7 @@ const EventPositioned = React.memo(({ events = [], renderMappedEvent = () => { }
   if (temp?.length <= 0) return <View />;
   return temp.map(renderMappedEvent);
 }, (pre, nxt) => {
-  return isEqual(pre.events, nxt.events)
+  return isEqual(pre.events, nxt.events) && pre.cellWidth === nxt.cellWidth
 });
 
 interface CalendarBodyProps<T> {
@@ -246,6 +246,7 @@ function _CalendarBody<T>({
               <EventPositioned
                 events={_getEventsOfThisDate(date)}
                 renderMappedEvent={_renderMappedEvent}
+                cellWidth={cellWidth}
               />
 
               {/* Render events which starts before this date and ends on this date */}
