@@ -118,6 +118,7 @@ export interface CalendarProps<T> {
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
+  startDate?: Date
 }
 ```
 
@@ -146,6 +147,7 @@ export interface CalendarProps<T> {
 | `isRTL`               | no       | `boolean`                                              | Switches the direction of the layout for use with RTL languages. Defaults to false.                                                                                                                                                                                                                                                                                                                                                                             |
 | `renderEvent`         | no       | `EventRenderer`                                        | Custom event renderer. See below type definition.                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `renderHeader`        | no       | `HeaderRenderer`                                       | Custom header renderer.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `startDate`           | no       | `Date`                                                 | If provided, the calendar will show preview of date-range having this date.                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## EventRenderer
 
