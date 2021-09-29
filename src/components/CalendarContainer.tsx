@@ -73,6 +73,7 @@ export interface CalendarContainerProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
+  startDate?: Date
 }
 
 function _CalendarContainer<T>({
@@ -100,8 +101,9 @@ function _CalendarContainer<T>({
   renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
+  startDate,
 }: CalendarContainerProps<T>) {
-  const [targetDate, setTargetDate] = React.useState(dayjs(date))
+  const [targetDate, setTargetDate] = React.useState(dayjs(startDate ?? date))
 
   React.useEffect(() => {
     if (date) {
