@@ -28,13 +28,13 @@ It's a hard task to debug three platforms. I usually develop with the Web versio
 # Install
 
 ```
-npm install --save react-native-big-calendar@2.0.0-rc
+npm install --save react-native-big-calendar
 ```
 
 Or if you use Yarn:
 
 ```
-yarn add react-native-big-calendar@2.0.0-rc
+yarn add react-native-big-calendar
 ```
 
 ### Other dependencies
@@ -135,7 +135,7 @@ export interface CalendarProps<T> {
 | `mode`                | no       | 'month' \| 'week' \| `'3days' \| 'day' \| 'custom'`    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `eventCellStyle`      | no       | `ViewStyle \| (event: ICalendarEvent<T>) => ViewStyle` | The style of Event cell. Accepts either style object (static) or function (dynamic).                                                                                                                                                                                                                                                                                                                                                                            |
 | `scrollOffsetMinutes` | no       | `number`                                               | Scroll to specific minutes in a day. e.g.) set `480` to scroll to 8am when the calendar rendered.                                                                                                                                                                                                                                                                                                                                                               |
-| `date`                | no       | `Date`                                                 | Initial date. Defualts to `Date`                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `date`                | no       | `Date`                                                 | Initial date of calendar. Defualts to `new Date` (current time).                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `swipeEnabled`        | no       | `boolean`                                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `showTime`            | no       | `boolean`                                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `ampm`                | no       | `boolean`                                              | Use 12 hours time format instead of 24 hours.                                                                                                                                                                                                                                                                                                                                                                                                                   |
