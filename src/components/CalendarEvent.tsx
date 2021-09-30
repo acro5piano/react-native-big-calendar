@@ -47,6 +47,7 @@ function _CalendarEvent<T>({
 
   const theme = useTheme()
   const eventCellPositionStyle = getEventCellPositionStyle(event.start, event.end);
+  const eventWidth = eventCount > 0 ? cellWidth / eventCount : cellWidth;
 
   const palettes = React.useMemo(
     () => [theme.palette.primary, ...theme.eventCellOverlappings],
@@ -59,7 +60,7 @@ function _CalendarEvent<T>({
     onPressEvent,
     injectedStyles: [
       eventCellPositionStyle,
-      getStyleForOverlappingEvent(eventOrder, cellWidth/eventCount, palettes, cellWidth, eventCount),
+      getStyleForOverlappingEvent(eventOrder, eventWidth, palettes, cellWidth, eventCount),
       u['absolute'],
       u['mt-2'],
       u['mx-3'],
