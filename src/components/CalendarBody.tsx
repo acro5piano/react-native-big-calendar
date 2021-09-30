@@ -50,7 +50,7 @@ const EventPositioned = React.memo(({ events = [], renderMappedEvent = () => { }
   }, [events])
 
   if (temp?.length <= 0) return <View />;
-  return temp.map(renderMappedEvent);
+  return temp.map(event => renderMappedEvent(event, cellWidth));
 }, (pre, nxt) => {
   return isEqual(pre.events, nxt.events) && pre.cellWidth === nxt.cellWidth
 });
@@ -170,7 +170,7 @@ function _CalendarBody<T>({
     return <View style={[u["z-20"], u["w-50"]]}>{columns}</View>;
   };
 
-  const _renderMappedEvent = (event: ICalendarEvent<T>) => {
+  const _renderMappedEvent = (event: ICalendarEvent<T>, _cellWidth = 6) => {
     return (
       <CalendarEvent
         key={event.key}
@@ -181,7 +181,7 @@ function _CalendarBody<T>({
         eventCount={getCountOfEventsAtEvent(event, events)}
         eventOrder={getOrderOfEvent(event, events)}
         overlapOffset={overlapOffset}
-        cellWidth={cellWidth - 6} // 6 is padding left + right
+        cellWidth={_cellWidth - 6} // 6 is padding left + right
         renderEvent={renderEvent}
         ampm={ampm}
       />
