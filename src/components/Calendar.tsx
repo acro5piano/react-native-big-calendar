@@ -1,3 +1,8 @@
+import 'dayjs/locale/de'
+import 'dayjs/locale/es'
+import 'dayjs/locale/fr'
+import 'dayjs/locale/pt'
+
 import dayjs from 'dayjs'
 import React from 'react'
 import { ViewStyle } from 'react-native'
