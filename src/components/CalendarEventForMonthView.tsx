@@ -49,7 +49,6 @@ function _CalendarEventForMonthView<T>({
             position: 'absolute',
             width: eventWidth,
             zIndex: 10000,
-            borderWidth: 1,
           }
         : {},
       isRTL ? { right: 0 } : { left: 0 },
