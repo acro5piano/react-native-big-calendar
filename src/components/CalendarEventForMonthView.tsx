@@ -17,6 +17,7 @@ interface CalendarEventProps<T> {
   dayOfTheWeek: number
   calendarWidth: number
   isRTL: boolean
+  eventMinHeight: number
 }
 
 function _CalendarEventForMonthView<T>({
@@ -28,6 +29,7 @@ function _CalendarEventForMonthView<T>({
   dayOfTheWeek,
   calendarWidth,
   isRTL,
+  eventMinHeight,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -47,6 +49,7 @@ function _CalendarEventForMonthView<T>({
             position: 'absolute',
             width: eventWidth,
             zIndex: 10000,
+            borderWidth: 1,
           }
         : {},
       isRTL ? { right: 0 } : { left: 0 },
@@ -54,28 +57,28 @@ function _CalendarEventForMonthView<T>({
     ],
   })
 
-  if (renderEvent) {
-    return renderEvent(event, touchableOpacityProps)
-  }
-
   return (
-    <View style={{ minHeight: 22 }}>
-      {((!isMultipleDays && date.isSame(event.start, 'day')) ||
-        (isMultipleDays && isMultipleDaysStart)) && (
-        <TouchableOpacity {...touchableOpacityProps}>
-          <Text
-            style={[
-              { color: theme.palette.primary.contrastText },
-              theme.typography.xs,
-              u['truncate'],
-              isRTL && { textAlign: 'right' },
-            ]}
-            numberOfLines={1}
-          >
-            {event.title}
-          </Text>
-        </TouchableOpacity>
-      )}
+    <View style={{ minHeight: eventMinHeight }}>
+      {(!isMultipleDays && date.isSame(event.start, 'day')) ||
+      (isMultipleDays && isMultipleDaysStart) ? (
+        renderEvent ? (
+          renderEvent(event, touchableOpacityProps)
+        ) : (
+          <TouchableOpacity {...touchableOpacityProps}>
+            <Text
+              style={[
+                { color: theme.palette.primary.contrastText },
+                theme.typography.xs,
+                u['truncate'],
+                isRTL && { textAlign: 'right' },
+              ]}
+              numberOfLines={1}
+            >
+              {event.title}
+            </Text>
+          </TouchableOpacity>
+        )
+      ) : null}
     </View>
   )
 }

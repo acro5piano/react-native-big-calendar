@@ -30,6 +30,7 @@ interface CalendarBodyForMonthViewProps<T> {
   renderEvent?: EventRenderer<T>
   maxVisibleEventCount: number
   weekStartsOn: WeekNum
+  eventMinHeight: number
 }
 
 function _CalendarBodyForMonthView<T>({
@@ -45,6 +46,7 @@ function _CalendarBodyForMonthView<T>({
   renderEvent,
   maxVisibleEventCount,
   weekStartsOn,
+  eventMinHeight,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -160,6 +162,7 @@ function _CalendarBodyForMonthView<T>({
                             dayOfTheWeek={ii}
                             calendarWidth={calendarWidth}
                             isRTL={theme.isRTL}
+                            eventMinHeight={eventMinHeight}
                           />
                         ),
                       ],
