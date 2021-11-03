@@ -73,7 +73,7 @@ export interface CalendarContainerProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
-  eventMinHeight?: number
+  eventMinHeightForMonthView?: number
 }
 
 function _CalendarContainer<T>({
@@ -101,7 +101,7 @@ function _CalendarContainer<T>({
   renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
-  eventMinHeight = 22,
+  eventMinHeightForMonthView = 22,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -193,7 +193,7 @@ function _CalendarContainer<T>({
           renderEvent={renderEvent}
           targetDate={targetDate}
           maxVisibleEventCount={maxVisibleEventCount}
-          eventMinHeight={eventMinHeight}
+          eventMinHeightForMonthView={eventMinHeightForMonthView}
         />
       </React.Fragment>
     )

@@ -17,7 +17,7 @@ interface CalendarEventProps<T> {
   dayOfTheWeek: number
   calendarWidth: number
   isRTL: boolean
-  eventMinHeight: number
+  eventMinHeightForMonthView: number
 }
 
 function _CalendarEventForMonthView<T>({
@@ -29,7 +29,7 @@ function _CalendarEventForMonthView<T>({
   dayOfTheWeek,
   calendarWidth,
   isRTL,
-  eventMinHeight,
+  eventMinHeightForMonthView,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -57,7 +57,7 @@ function _CalendarEventForMonthView<T>({
   })
 
   return (
-    <View style={{ minHeight: eventMinHeight }}>
+    <View style={{ minHeight: eventMinHeightForMonthView }}>
       {(!isMultipleDays && date.isSame(event.start, 'day')) ||
       (isMultipleDays && isMultipleDaysStart) ? (
         renderEvent ? (
