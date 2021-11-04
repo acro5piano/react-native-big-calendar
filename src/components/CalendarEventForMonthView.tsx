@@ -17,6 +17,7 @@ interface CalendarEventProps<T> {
   dayOfTheWeek: number
   calendarWidth: number
   isRTL: boolean
+  eventMinHeightForMonthView: number
 }
 
 function _CalendarEventForMonthView<T>({
@@ -28,6 +29,7 @@ function _CalendarEventForMonthView<T>({
   dayOfTheWeek,
   calendarWidth,
   isRTL,
+  eventMinHeightForMonthView,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -54,28 +56,28 @@ function _CalendarEventForMonthView<T>({
     ],
   })
 
-  if (renderEvent) {
-    return renderEvent(event, touchableOpacityProps)
-  }
-
   return (
-    <View style={{ minHeight: 22 }}>
-      {((!isMultipleDays && date.isSame(event.start, 'day')) ||
-        (isMultipleDays && isMultipleDaysStart)) && (
-        <TouchableOpacity {...touchableOpacityProps}>
-          <Text
-            style={[
-              { color: theme.palette.primary.contrastText },
-              theme.typography.xs,
-              u['truncate'],
-              isRTL && { textAlign: 'right' },
-            ]}
-            numberOfLines={1}
-          >
-            {event.title}
-          </Text>
-        </TouchableOpacity>
-      )}
+    <View style={{ minHeight: eventMinHeightForMonthView }}>
+      {(!isMultipleDays && date.isSame(event.start, 'day')) ||
+      (isMultipleDays && isMultipleDaysStart) ? (
+        renderEvent ? (
+          renderEvent(event, touchableOpacityProps)
+        ) : (
+          <TouchableOpacity {...touchableOpacityProps}>
+            <Text
+              style={[
+                { color: theme.palette.primary.contrastText },
+                theme.typography.xs,
+                u['truncate'],
+                isRTL && { textAlign: 'right' },
+              ]}
+              numberOfLines={1}
+            >
+              {event.title}
+            </Text>
+          </TouchableOpacity>
+        )
+      ) : null}
     </View>
   )
 }
