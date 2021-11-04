@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.0
+
+### New features
+
+- Make month event min height customizable and fix for custom events #534
+
+### Chore
+
+- Update deps
+
 ## 2.1.0
 
 ### New features
