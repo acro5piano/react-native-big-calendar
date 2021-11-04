@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "calendarize": "^1.1.1",
-    "dayjs": "^1.10.6",
+    "dayjs": "^1.10.7",
     "merge-anything": "^4.0.1"
   },
   "peerDependencies": {
@@ -49,14 +49,14 @@
     "babel-loader": "^8.2.2",
     "eslint": "^7.30.0",
     "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-react": "^7.25.2",
+    "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "import-sort-style-module": "^6.0.0",
     "jest": "^25.5.4",
     "lint-staged": "^11.1.2",
     "mockdate": "^3.0.5",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.3.2",
+    "prettier": "^2.4.1",
     "prettier-plugin-import-sort": "^0.0.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -70,7 +70,7 @@
     "simple-git-hooks": "^2.6.1",
     "tailwind-rn": "^3.0.1",
     "ts-jest": "^25.5.1",
-    "ts-loader": "^9.2.5",
+    "ts-loader": "^9.2.6",
     "tslib": "^2.3.1",
     "typescript": "^4.4.3",
     "webpack-merge": "^5.8.0"
