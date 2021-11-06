@@ -5,7 +5,7 @@ import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { eventCellCss, u } from '../commonStyles'
 import { ICalendarEvent } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { isActiveDay, isToday, typedMemo } from '../utils'
+import { isActiveDate, isToday, typedMemo } from '../utils'
 
 export interface CalendarHeaderProps<T> {
   dateRange: dayjs.Dayjs[]
@@ -13,7 +13,7 @@ export interface CalendarHeaderProps<T> {
   style: ViewStyle
   allDayEvents: ICalendarEvent<T>[]
   onPressDateHeader?: (date: Date) => void
-  activeDate?: dayjs.Dayjs
+  activeDate?: Date
 }
 
 function _CalendarHeader<T>({
@@ -48,7 +48,7 @@ function _CalendarHeader<T>({
       <View style={[u['z-10'], u['w-50'], borderColor]} />
       {dateRange.map((date) => {
         const _isToday = isToday(date)
-        const _isActiveDay = activeDate ? isActiveDay(date, activeDate) : _isToday
+        const _isActiveDate = activeDate ? isActiveDate(date, activeDate) : _isToday
         return (
           <TouchableOpacity
             style={[u['flex-1'], u['pt-2']]}
@@ -61,14 +61,14 @@ function _CalendarHeader<T>({
                 style={[
                   theme.typography.xs,
                   u['text-center'],
-                  { color: _isActiveDay ? theme.palette.primary.main : theme.palette.gray['500'] },
+                  { color: _isActiveDate ? theme.palette.primary.main : theme.palette.gray['500'] },
                 ]}
               >
                 {date.format('ddd')}
               </Text>
               <View
                 style={
-                  _isActiveDay
+                  _isActiveDate
                     ? [
                         primaryBg,
                         u['h-36'],
@@ -86,13 +86,13 @@ function _CalendarHeader<T>({
                 <Text
                   style={[
                     {
-                      color: _isActiveDay
+                      color: _isActiveDate
                         ? theme.palette.primary.contrastText
                         : theme.palette.gray['800'],
                     },
                     theme.typography.xl,
                     u['text-center'],
-                    Platform.OS === 'web' && _isActiveDay && u['mt-6'],
+                    Platform.OS === 'web' && _isActiveDate && u['mt-6'],
                   ]}
                 >
                   {date.format('D')}

@@ -81,8 +81,8 @@ export function isToday(date: dayjs.Dayjs) {
   return today.isSame(date, 'day')
 }
 
-export function isActiveDay(date: dayjs.Dayjs, activeDay: dayjs.Dayjs) {
-  return activeDay.isSame(date, 'day')
+export function isActiveDate(date: dayjs.Dayjs, activeDate: Date) {
+  return date.isSame(activeDate, 'day')
 }
 
 export function getRelativeTopInDay(date: dayjs.Dayjs) {
