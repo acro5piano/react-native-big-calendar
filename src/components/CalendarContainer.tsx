@@ -74,6 +74,7 @@ export interface CalendarContainerProps<T> {
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
   eventMinHeightForMonthView?: number
+  activeDate?: Date
 }
 
 function _CalendarContainer<T>({
@@ -102,6 +103,7 @@ function _CalendarContainer<T>({
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
   eventMinHeightForMonthView = 22,
+  activeDate,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -204,6 +206,7 @@ function _CalendarContainer<T>({
     style: headerContainerStyle,
     allDayEvents: allDayEvents,
     onPressDateHeader: onPressDateHeader,
+    activeDate,
   }
 
   return (
