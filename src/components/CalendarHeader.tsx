@@ -48,7 +48,7 @@ function _CalendarHeader<T>({
       <View style={[u['z-10'], u['w-50'], borderColor]} />
       {dateRange.map((date) => {
         const _isToday = isToday(date)
-        const _isActiveDate = activeDate ? isActiveDate(date, activeDate) : _isToday
+        const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : _isToday
         return (
           <TouchableOpacity
             style={[u['flex-1'], u['pt-2']]}
@@ -61,14 +61,16 @@ function _CalendarHeader<T>({
                 style={[
                   theme.typography.xs,
                   u['text-center'],
-                  { color: _isActiveDate ? theme.palette.primary.main : theme.palette.gray['500'] },
+                  {
+                    color: shouldHighlight ? theme.palette.primary.main : theme.palette.gray['500'],
+                  },
                 ]}
               >
                 {date.format('ddd')}
               </Text>
               <View
                 style={
-                  _isActiveDate
+                  shouldHighlight
                     ? [
                         primaryBg,
                         u['h-36'],
@@ -86,13 +88,13 @@ function _CalendarHeader<T>({
                 <Text
                   style={[
                     {
-                      color: _isActiveDate
+                      color: shouldHighlight
                         ? theme.palette.primary.contrastText
                         : theme.palette.gray['800'],
                     },
                     theme.typography.xl,
                     u['text-center'],
-                    Platform.OS === 'web' && _isActiveDate && u['mt-6'],
+                    Platform.OS === 'web' && shouldHighlight && u['mt-6'],
                   ]}
                 >
                   {date.format('D')}
