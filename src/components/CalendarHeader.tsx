@@ -47,8 +47,8 @@ function _CalendarHeader<T>({
     >
       <View style={[u['z-10'], u['w-50'], borderColor]} />
       {dateRange.map((date) => {
-        const _isToday = isToday(date)
-        const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : _isToday
+        const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
+
         return (
           <TouchableOpacity
             style={[u['flex-1'], u['pt-2']]}
