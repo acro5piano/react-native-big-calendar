@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0
+
+- add active date props to header #544
+
 ## 2.2.0
 
 ### New features
