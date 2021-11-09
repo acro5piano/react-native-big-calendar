@@ -119,6 +119,7 @@ export interface CalendarProps<T> {
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   eventMinHeightForMonthView?: number
+  activeDate?: Date
 }
 ```
 
@@ -148,6 +149,7 @@ export interface CalendarProps<T> {
 | `renderEvent`                | no       | `EventRenderer`                                        | Custom event renderer. See below type definition.                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `renderHeader`               | no       | `HeaderRenderer`                                       | Custom header renderer.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `eventMinHeightForMonthView` | no       | `number`                                               | Minimun height for events in month view. Should match the min-height of your custom events. Defaults to 22.                                                                                                                                                                                                                                                                                                                                                     |
+| `activeDate`                 | no       | `Date`                                                 | Date highlighted in header. Defualts to today (current time).                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ## EventRenderer
 
