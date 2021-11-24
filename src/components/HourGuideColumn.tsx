@@ -20,11 +20,11 @@ const _HourGuideColumn = ({ cellHeight, hour, ampm, index }: HourGuideColumnProp
     () => ({ color: theme.palette.gray[500], fontSize: theme.typography.xs.fontSize }),
     [theme],
   )
-  const pairCellBg = { backgroundColor: theme.palette.primary.pairCellBg }
+  const evenCellBg = { backgroundColor: theme.palette.primary.evenCellBg }
   const oddCellBg = { backgroundColor: theme.palette.primary.oddCellBg }
 
   return (
-    <View style={{ height: cellHeight, backgroundColor: isPair(index) ? pairCellBg : oddCellBg }}>
+    <View style={{ height: cellHeight, backgroundColor: isPair(index) ? evenCellBg : oddCellBg }}>
       <Text style={[textStyle, u['text-center']]}>{formatHour(hour, ampm)}</Text>
     </View>
   )
