@@ -8,6 +8,8 @@ import { DeepPartial } from '../utility-types'
 export interface Palette {
   main: string
   contrastText: string
+  pairCellBg: string
+  oddCellBg: string
 }
 
 export type Typography = Pick<
