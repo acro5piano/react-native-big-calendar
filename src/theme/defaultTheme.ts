@@ -7,7 +7,7 @@ export const defaultTheme: ThemeInterface = {
       main: 'rgb(66, 133, 244)',
       contrastText: '#fff',
       evenCellBg: '#fff',
-      oddCellBg: '#fff'
+      oddCellBg: '#fff',
     },
     nowIndicator: 'red',
     gray: {
@@ -24,9 +24,9 @@ export const defaultTheme: ThemeInterface = {
     },
   },
   eventCellOverlappings: [
-    { main: '#E26245', contrastText: '#fff' }, // orange
-    { main: '#4AC001', contrastText: '#fff' }, // green
-    { main: '#5934C7', contrastText: '#fff' }, // purple
+    { main: '#E26245', contrastText: '#fff', evenCellBg: '#fff', oddCellBg: '#fff' }, // orange
+    { main: '#4AC001', contrastText: '#fff', evenCellBg: '#fff', oddCellBg: '#fff' }, // green
+    { main: '#5934C7', contrastText: '#fff', evenCellBg: '#fff', oddCellBg: '#fff' }, // purple
   ],
   typography: {
     xs: {
