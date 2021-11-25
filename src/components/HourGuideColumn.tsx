@@ -12,7 +12,7 @@ interface HourGuideColumnProps {
   index: number
 }
 
-const isPair = (i: number) => i % 2
+const isPair = (i: number) => i % 2 === 0
 
 const _HourGuideColumn = ({ cellHeight, hour, ampm, index }: HourGuideColumnProps) => {
   const theme = useTheme()
