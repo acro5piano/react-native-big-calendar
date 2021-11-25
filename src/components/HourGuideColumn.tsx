@@ -20,8 +20,8 @@ const _HourGuideColumn = ({ cellHeight, hour, ampm, index }: HourGuideColumnProp
     () => ({ color: theme.palette.gray[500], fontSize: theme.typography.xs.fontSize }),
     [theme],
   )
-  const evenCellBg = { backgroundColor: theme.palette.primary.evenCellBg }
-  const oddCellBg = { backgroundColor: theme.palette.primary.oddCellBg }
+  const evenCellBg = theme.palette.primary.evenCellBg
+  const oddCellBg = theme.palette.primary.oddCellBg
 
   return (
     <View style={{ height: cellHeight, backgroundColor: isPair(index) ? evenCellBg : oddCellBg }}>
