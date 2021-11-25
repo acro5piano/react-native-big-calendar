@@ -7,6 +7,8 @@ export const themes: Record<string, PartialTheme> = {
       primary: {
         main: '#6185d0',
         contrastText: '#000',
+        evenCellBg: '#000',
+        oddCellBg: '#000',
       },
       gray: {
         '100': '#333',
@@ -22,16 +24,22 @@ export const themes: Record<string, PartialTheme> = {
       primary: {
         main: '#4caf50',
         contrastText: '#fff',
+        evenCellBg: '#fff',
+        oddCellBg: '#fff',
       },
     },
     eventCellOverlappings: [
       {
         main: '#17651a',
         contrastText: '#fff',
+        evenCellBg: '#fff',
+        oddCellBg: '#fff',
       },
       {
         main: '#08540b',
         contrastText: '#fff',
+        evenCellBg: '#fff',
+        oddCellBg: '#fff',
       },
     ],
   },
