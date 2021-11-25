@@ -51,6 +51,7 @@ export const App = () => {
         </View>
         <Calendar
           height={Dimensions.get('window').height - 60}
+          hourRowHeight={200}
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
           mode={mode}
