@@ -43,4 +43,28 @@ export const themes: Record<string, PartialTheme> = {
       },
     ],
   },
+  green_bg: {
+    palette: {
+      primary: {
+        main: '#4caf50',
+        contrastText: '#fff',
+        evenCellBg: '#f1f1f1',
+        oddCellBg: '#fff',
+      },
+    },
+    eventCellOverlappings: [
+      {
+        main: '#17651a',
+        contrastText: '#fff',
+        evenCellBg: '#fff',
+        oddCellBg: '#fff',
+      },
+      {
+        main: '#08540b',
+        contrastText: '#fff',
+        evenCellBg: '#fff',
+        oddCellBg: '#fff',
+      },
+    ],
+  },
 } as const

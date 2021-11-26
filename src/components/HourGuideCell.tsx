@@ -10,10 +10,16 @@ interface HourGuideCellProps {
   onPress: (d: dayjs.Dayjs) => void
   date: dayjs.Dayjs
   hour: number
+  index: number
 }
 
-export const HourGuideCell = ({ cellHeight, onPress, date, hour }: HourGuideCellProps) => {
+const isPair = (i: number) => i % 2 === 0
+
+export const HourGuideCell = ({ cellHeight, onPress, date, hour, index }: HourGuideCellProps) => {
   const theme = useTheme()
+
+  const evenCellBg = theme.palette.primary.evenCellBg
+  const oddCellBg = theme.palette.primary.oddCellBg
 
   return (
     <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
@@ -23,6 +29,7 @@ export const HourGuideCell = ({ cellHeight, onPress, date, hour }: HourGuideCell
           u['border-b'],
           { borderColor: theme.palette.gray['200'] },
           { height: cellHeight },
+          { backgroundColor: isPair(index) ? evenCellBg : oddCellBg },
         ]}
       />
     </TouchableWithoutFeedback>
