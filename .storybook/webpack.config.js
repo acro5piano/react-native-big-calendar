@@ -21,23 +21,4 @@ module.exports = ({ config }) =>
         '@storybook/react-native': path.resolve(__dirname, '../node_modules/react-native-web'),
       },
     },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          exclude: /node_modules/,
-          use: [
-            {
-              loader: 'ts-loader',
-              options: {
-                transpileOnly: true,
-                compilerOptions: {
-                  jsx: 'react',
-                },
-              },
-            },
-          ],
-        },
-      ],
-    },
   })
