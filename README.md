@@ -267,6 +267,8 @@ const darkTheme = {
     primary: {
       main: '#6185d0',
       contrastText: '#000',
+      evenCellBg: '#000',
+      oddCellBg: '#000',
     },
     gray: {
       '100': '#333',
