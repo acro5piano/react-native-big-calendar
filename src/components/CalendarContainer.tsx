@@ -42,6 +42,11 @@ export interface CalendarContainerProps<T> {
   height: number
 
   /**
+   * The height of each hour row.
+   */
+  hourRowHeight?: number
+
+  /**
    * Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.
    */
   overlapOffset?: number
@@ -80,6 +85,7 @@ export interface CalendarContainerProps<T> {
 function _CalendarContainer<T>({
   events,
   height,
+  hourRowHeight,
   ampm = false,
   date,
   eventCellStyle,
@@ -148,7 +154,10 @@ function _CalendarContainer<T>({
     }
   }, [dateRange, onChangeDate])
 
-  const cellHeight = React.useMemo(() => Math.max(height - 30, MIN_HEIGHT) / 24, [height])
+  const cellHeight = React.useMemo(
+    () => hourRowHeight || Math.max(height - 30, MIN_HEIGHT) / 24,
+    [height, hourRowHeight],
+  )
 
   const theme = useTheme()
 
