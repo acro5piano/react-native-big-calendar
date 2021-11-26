@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0
+
+- Add option for Hour Row Height #549
+
 ## 2.3.0
 
 - add active date props to header #544
