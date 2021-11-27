@@ -4,6 +4,7 @@ import { TouchableWithoutFeedback, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
+import { isPair } from '../utils'
 
 interface HourGuideCellProps {
   cellHeight: number
@@ -12,8 +13,6 @@ interface HourGuideCellProps {
   hour: number
   index: number
 }
-
-const isPair = (i: number) => i % 2 === 0
 
 export const HourGuideCell = ({ cellHeight, onPress, date, hour, index }: HourGuideCellProps) => {
   const theme = useTheme()

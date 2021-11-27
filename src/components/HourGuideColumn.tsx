@@ -4,6 +4,7 @@ import { Text, View } from 'react-native'
 import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
 import { formatHour } from '../utils'
+import { isPair } from '../utils'
 
 interface HourGuideColumnProps {
   cellHeight: number
@@ -11,8 +12,6 @@ interface HourGuideColumnProps {
   ampm: boolean
   index: number
 }
-
-const isPair = (i: number) => i % 2 === 0
 
 const _HourGuideColumn = ({ cellHeight, hour, ampm, index }: HourGuideColumnProps) => {
   const theme = useTheme()
