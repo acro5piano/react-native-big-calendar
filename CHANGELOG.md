@@ -4,6 +4,8 @@
 
 - Add rows background Color #548
 
+New contributor: @titanve
+
 ## 2.4.0
 
 - Add option for Hour Row Height #549
