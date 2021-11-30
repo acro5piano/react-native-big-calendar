@@ -14,6 +14,11 @@ export interface CalendarHeaderProps<T> {
   allDayEvents: ICalendarEvent<T>[]
   onPressDateHeader?: (date: Date) => void
   activeDate?: Date
+  headerContentStyle?: ViewStyle
+}
+
+function objHasContent(obj: ViewStyle): boolean {
+  return Object.keys(obj).length > 0
 }
 
 function _CalendarHeader<T>({
@@ -23,6 +28,7 @@ function _CalendarHeader<T>({
   allDayEvents,
   onPressDateHeader,
   activeDate,
+  headerContentStyle = {},
 }: CalendarHeaderProps<T>) {
   const _onPress = React.useCallback(
     (date: Date) => {
@@ -56,7 +62,12 @@ function _CalendarHeader<T>({
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
           >
-            <View style={[u['justify-between'], { height: cellHeight }]}>
+            <View
+              style={[
+                { height: cellHeight },
+                objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
+              ]}
+            >
               <Text
                 style={[
                   theme.typography.xs,

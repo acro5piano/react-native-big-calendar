@@ -101,6 +101,11 @@ storiesOf('Full Customization', module).add('Main', () => {
           onPressCell={addEvent}
           mode={mode}
           theme={themes[theme]}
+          headerContentStyle={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         />
       </View>
     </View>

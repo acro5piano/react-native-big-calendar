@@ -55,6 +55,7 @@ export interface CalendarContainerProps<T> {
   eventCellStyle?: EventCellStyle<T>
   calendarContainerStyle?: ViewStyle
   headerContainerStyle?: ViewStyle
+  headerContentStyle?: ViewStyle
   bodyContainerStyle?: ViewStyle
 
   // Custom renderer
@@ -96,6 +97,7 @@ function _CalendarContainer<T>({
   scrollOffsetMinutes = 0,
   showTime = true,
   headerContainerStyle = {},
+  headerContentStyle = {},
   bodyContainerStyle = {},
   swipeEnabled = true,
   weekStartsOn = 0,
@@ -186,6 +188,7 @@ function _CalendarContainer<T>({
       style: headerContainerStyle,
       locale: locale,
       weekStartsOn: weekStartsOn,
+      headerContentStyle: headerContentStyle,
     }
     return (
       <React.Fragment>
@@ -216,6 +219,7 @@ function _CalendarContainer<T>({
     allDayEvents: allDayEvents,
     onPressDateHeader: onPressDateHeader,
     activeDate,
+    headerContentStyle: headerContentStyle,
   }
 
   return (
