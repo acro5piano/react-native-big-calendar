@@ -18,6 +18,8 @@ export type Typography = Pick<
 export interface ThemeInterface {
   palette: {
     primary: Palette
+    evenCellBg: string
+    oddCellBg: string
     nowIndicator: string
     gray: {
       // 50: string

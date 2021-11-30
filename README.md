@@ -268,6 +268,8 @@ const darkTheme = {
       main: '#6185d0',
       contrastText: '#000',
     },
+    evenCellBg: '#333',
+    oddCellBg: '#555',
     gray: {
       '100': '#333',
       '200': '#666',

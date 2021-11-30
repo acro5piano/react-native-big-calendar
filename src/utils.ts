@@ -245,3 +245,7 @@ export function getEventSpanningInfo(
 
   return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
 }
+
+export function isPair(i: number): boolean {
+  return i % 2 === 0
+}

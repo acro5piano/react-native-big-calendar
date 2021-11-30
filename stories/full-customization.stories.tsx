@@ -80,6 +80,7 @@ storiesOf('Full Customization', module).add('Main', () => {
           <Picker.Item value="default" label="default theme" />
           <Picker.Item value="dark" label="dark" />
           <Picker.Item value="green" label="green" />
+          <Picker.Item value="green_bg" label="green-rows bg" />
         </Picker>
         <Picker
           style={[pickerStyle, tailwind('mx-4')]}

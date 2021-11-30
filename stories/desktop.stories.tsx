@@ -287,6 +287,8 @@ storiesOf('showcase - Desktop', module)
                 main: 'purple',
                 contrastText: '#fff',
               },
+              evenCellBg: '#fff',
+              oddCellBg: '#fff',
             },
           }}
         />
