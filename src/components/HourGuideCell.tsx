@@ -17,8 +17,8 @@ interface HourGuideCellProps {
 export const HourGuideCell = ({ cellHeight, onPress, date, hour, index }: HourGuideCellProps) => {
   const theme = useTheme()
 
-  const evenCellBg = theme.palette.primary.evenCellBg
-  const oddCellBg = theme.palette.primary.oddCellBg
+  const evenCellBg = theme.palette.evenCellBg
+  const oddCellBg = theme.palette.oddCellBg
 
   return (
     <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
