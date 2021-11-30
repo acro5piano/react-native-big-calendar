@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.0
+
+- Add rows background Color #548
+
 ## 2.4.0
 
 - Add option for Hour Row Height #549
