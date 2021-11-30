@@ -245,6 +245,8 @@ export interface Palette {
 export interface ThemeInterface {
   palette: {
     primary: Palette
+    evenCellBg: string
+    oddCellBg: string
     nowIndicator: string
     gray: {
       100: string
