@@ -124,6 +124,29 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
+  .add('Month mode - specify maxVisibleEventCount (bugfix #565)', () => {
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          mode="month"
+          height={SCREEN_HEIGHT}
+          maxVisibleEventCount={2}
+          events={[
+            {
+              start: dayjs().add(1, 'days').toDate(),
+              end: dayjs().add(1, 'days').toDate(),
+              title: `Event 0`,
+            },
+            ...[1, 2, 3].map((i) => ({
+              start: dayjs().add(2, 'days').toDate(),
+              end: dayjs().add(2, 'days').toDate(),
+              title: `Event ${i}`,
+            })),
+          ]}
+        />
+      </View>
+    )
+  })
   .add('event cell style', () => (
     <View style={styles.desktop}>
       <Calendar
