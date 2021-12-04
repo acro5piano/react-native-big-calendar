@@ -17,6 +17,7 @@ export interface CalendarHeaderProps<T> {
   headerContentStyle?: ViewStyle
   dayHeaderStyle?: ViewStyle
   dayHeaderHighlightColor?: string
+  weekDayHeaderHighlightColor?: string
 }
 
 function objHasContent(obj: ViewStyle): boolean {
@@ -37,6 +38,7 @@ function _CalendarHeader<T>({
   headerContentStyle = {},
   dayHeaderStyle = {},
   dayHeaderHighlightColor = '',
+  weekDayHeaderHighlightColor = '',
 }: CalendarHeaderProps<T>) {
   const _onPress = React.useCallback(
     (date: Date) => {
@@ -81,7 +83,11 @@ function _CalendarHeader<T>({
                   theme.typography.xs,
                   u['text-center'],
                   {
-                    color: shouldHighlight ? theme.palette.primary.main : theme.palette.gray['500'],
+                    color: shouldHighlight
+                      ? stringHasContent(weekDayHeaderHighlightColor)
+                        ? weekDayHeaderHighlightColor
+                        : theme.palette.primary.main
+                      : theme.palette.gray['500'],
                   },
                 ]}
               >

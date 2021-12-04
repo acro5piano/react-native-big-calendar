@@ -114,6 +114,7 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
             borderRadius: 12,
           }}
           dayHeaderHighlightColor={'#000'}
+          weekDayHeaderHighlightColor={'#aaa'}
           headerComponent={
             <Text style={{ color: '#aaa', fontSize: 25 }}>CalendarBody's headerComponent</Text>
           }
