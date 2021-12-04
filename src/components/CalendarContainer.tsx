@@ -56,6 +56,8 @@ export interface CalendarContainerProps<T> {
   calendarContainerStyle?: ViewStyle
   headerContainerStyle?: ViewStyle
   headerContentStyle?: ViewStyle
+  dayHeaderStyle?: ViewStyle
+  dayHeaderHighlightColor?: string
   bodyContainerStyle?: ViewStyle
 
   // Custom renderer
@@ -98,6 +100,8 @@ function _CalendarContainer<T>({
   showTime = true,
   headerContainerStyle = {},
   headerContentStyle = {},
+  dayHeaderStyle = {},
+  dayHeaderHighlightColor = '',
   bodyContainerStyle = {},
   swipeEnabled = true,
   weekStartsOn = 0,
@@ -189,6 +193,8 @@ function _CalendarContainer<T>({
       locale: locale,
       weekStartsOn: weekStartsOn,
       headerContentStyle: headerContentStyle,
+      dayHeaderStyle: dayHeaderStyle,
+      dayHeaderHighlightColor: dayHeaderHighlightColor,
     }
     return (
       <React.Fragment>
@@ -220,6 +226,8 @@ function _CalendarContainer<T>({
     onPressDateHeader: onPressDateHeader,
     activeDate,
     headerContentStyle: headerContentStyle,
+    dayHeaderStyle: dayHeaderStyle,
+    dayHeaderHighlightColor: dayHeaderHighlightColor,
   }
 
   return (

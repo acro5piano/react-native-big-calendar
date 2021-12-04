@@ -106,6 +106,14 @@ storiesOf('Full Customization', module).add('Main', () => {
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          dayHeaderStyle={{
+            marginLeft: 10,
+            backgroundColor: '#f1f1f1',
+            paddingVertical: 6,
+            paddingHorizontal: 12,
+            borderRadius: 12,
+          }}
+          dayHeaderHighlightColor={'#000'}
         />
       </View>
     </View>
