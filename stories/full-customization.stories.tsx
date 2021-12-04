@@ -114,6 +114,15 @@ storiesOf('Full Customization', module).add('Main', () => {
             borderRadius: 12,
           }}
           dayHeaderHighlightColor={'#000'}
+          headerComponent={
+            <Text style={{ color: '#aaa', fontSize: 25 }}>CalendarBody's headerComponent</Text>
+          }
+          headerComponentStyle={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
         />
       </View>
     </View>

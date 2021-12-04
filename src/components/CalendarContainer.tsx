@@ -83,6 +83,8 @@ export interface CalendarContainerProps<T> {
   maxVisibleEventCount?: number
   eventMinHeightForMonthView?: number
   activeDate?: Date
+  headerComponent?: React.ReactElement | null
+  headerComponentStyle?: ViewStyle
 }
 
 function _CalendarContainer<T>({
@@ -116,6 +118,8 @@ function _CalendarContainer<T>({
   maxVisibleEventCount = 3,
   eventMinHeightForMonthView = 22,
   activeDate,
+  headerComponent = null,
+  headerComponentStyle = {},
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -248,6 +252,8 @@ function _CalendarContainer<T>({
         onPressEvent={onPressEvent}
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}
+        headerComponent={headerComponent}
+        headerComponentStyle={headerComponentStyle}
       />
     </React.Fragment>
   )
