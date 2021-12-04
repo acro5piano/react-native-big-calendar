@@ -103,6 +103,9 @@ export interface CalendarProps<T> {
   ampm?: boolean
   date?: Date
   eventCellStyle?: EventCellStyle<T>
+  calendarContainerStyle?: ViewStyle
+  headerContainerStyle?: ViewStyle
+  bodyContainerStyle?: ViewStyle
   renderEvent?: (
     event: ICalendarEvent<T>,
     touchableOpacityProps: CalendarTouchableOpacityProps,
@@ -245,6 +248,8 @@ export interface Palette {
 export interface ThemeInterface {
   palette: {
     primary: Palette
+    evenCellBg: string
+    oddCellBg: string
     nowIndicator: string
     gray: {
       100: string
