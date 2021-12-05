@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.0
+
+- Header content style by @titanve in https://github.com/acro5piano/react-native-big-calendar/pull/552
+
 ## 2.5.0
 
 - Add rows background Color #548
