@@ -5,7 +5,7 @@ import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { eventCellCss, u } from '../commonStyles'
 import { ICalendarEvent } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { isToday, typedMemo } from '../utils'
+import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
 
 export interface CalendarHeaderProps<T> {
   dateRange: dayjs.Dayjs[]
@@ -18,14 +18,6 @@ export interface CalendarHeaderProps<T> {
   dayHeaderStyle?: ViewStyle
   dayHeaderHighlightColor?: string
   weekDayHeaderHighlightColor?: string
-}
-
-function objHasContent(obj: ViewStyle): boolean {
-  return !!Object.keys(obj).length
-}
-
-function stringHasContent(string: string): boolean {
-  return !!string.length
 }
 
 function _CalendarHeader<T>({

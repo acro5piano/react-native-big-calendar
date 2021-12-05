@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
+import { TextStyle, ViewStyle } from 'react-native'
 
 import { OVERLAP_PADDING } from './commonStyles'
 import { ICalendarEvent, Mode, WeekNum } from './interfaces'
@@ -248,4 +249,12 @@ export function getEventSpanningInfo(
 
 export function isPair(i: number): boolean {
   return i % 2 === 0
+}
+
+export function objHasContent(obj: ViewStyle | TextStyle): boolean {
+  return !!Object.keys(obj).length
+}
+
+export function stringHasContent(string: string): boolean {
+  return !!string.length
 }
