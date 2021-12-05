@@ -44,6 +44,8 @@ interface CalendarBodyProps<T> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
+  headerComponent?: React.ReactElement | null
+  headerComponentStyle?: ViewStyle
 }
 
 function _CalendarBody<T>({
@@ -62,6 +64,8 @@ function _CalendarBody<T>({
   hideNowIndicator,
   overlapOffset,
   renderEvent,
+  headerComponent = null,
+  headerComponentStyle = {},
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -113,101 +117,104 @@ function _CalendarBody<T>({
   const theme = useTheme()
 
   return (
-    <ScrollView
-      style={[
-        {
-          height: containerHeight - cellHeight * 3,
-        },
-        style,
-      ]}
-      ref={scrollView}
-      scrollEventThrottle={32}
-      {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
-      showsVerticalScrollIndicator={false}
-      nestedScrollEnabled
-      contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
-    >
-      <View
-        style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
-        {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
+    <React.Fragment>
+      {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
+      <ScrollView
+        style={[
+          {
+            height: containerHeight - cellHeight * 3,
+          },
+          style,
+        ]}
+        ref={scrollView}
+        scrollEventThrottle={32}
+        {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled
+        contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
       >
-        <View style={[u['z-20'], u['w-50']]}>
-          {hours.map((hour, index) => (
-            <HourGuideColumn
-              key={hour}
-              cellHeight={cellHeight}
-              hour={hour}
-              ampm={ampm}
-              index={index}
-            />
-          ))}
-        </View>
-        {dateRange.map((date) => (
-          <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
+        <View
+          style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
+          {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
+        >
+          <View style={[u['z-20'], u['w-50']]}>
             {hours.map((hour, index) => (
-              <HourGuideCell
+              <HourGuideColumn
                 key={hour}
                 cellHeight={cellHeight}
-                date={date}
                 hour={hour}
-                onPress={_onPressCell}
+                ampm={ampm}
                 index={index}
               />
             ))}
-
-            {/* Render events of this date */}
-            {/* M  T  (W)  T  F  S  S */}
-            {/*       S-E             */}
-            {events
-              .filter(({ start }) =>
-                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-              )
-              .map(_renderMappedEvent)}
-
-            {/* Render events which starts before this date and ends on this date */}
-            {/* M  T  (W)  T  F  S  S */}
-            {/* S------E              */}
-            {events
-              .filter(
-                ({ start, end }) =>
-                  dayjs(start).isBefore(date.startOf('day')) &&
-                  dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-              )
-              .map((event) => ({
-                ...event,
-                start: dayjs(event.end).startOf('day'),
-              }))
-              .map(_renderMappedEvent)}
-
-            {/* Render events which starts before this date and ends after this date */}
-            {/* M  T  (W)  T  F  S  S */}
-            {/*    S-------E          */}
-            {events
-              .filter(
-                ({ start, end }) =>
-                  dayjs(start).isBefore(date.startOf('day')) &&
-                  dayjs(end).isAfter(date.endOf('day')),
-              )
-              .map((event) => ({
-                ...event,
-                start: dayjs(event.end).startOf('day'),
-                end: dayjs(event.end).endOf('day'),
-              }))
-              .map(_renderMappedEvent)}
-
-            {isToday(date) && !hideNowIndicator && (
-              <View
-                style={[
-                  styles.nowIndicator,
-                  { backgroundColor: theme.palette.nowIndicator },
-                  { top: `${getRelativeTopInDay(now)}%` },
-                ]}
-              />
-            )}
           </View>
-        ))}
-      </View>
-    </ScrollView>
+          {dateRange.map((date) => (
+            <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
+              {hours.map((hour, index) => (
+                <HourGuideCell
+                  key={hour}
+                  cellHeight={cellHeight}
+                  date={date}
+                  hour={hour}
+                  onPress={_onPressCell}
+                  index={index}
+                />
+              ))}
+
+              {/* Render events of this date */}
+              {/* M  T  (W)  T  F  S  S */}
+              {/*       S-E             */}
+              {events
+                .filter(({ start }) =>
+                  dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                )
+                .map(_renderMappedEvent)}
+
+              {/* Render events which starts before this date and ends on this date */}
+              {/* M  T  (W)  T  F  S  S */}
+              {/* S------E              */}
+              {events
+                .filter(
+                  ({ start, end }) =>
+                    dayjs(start).isBefore(date.startOf('day')) &&
+                    dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                )
+                .map((event) => ({
+                  ...event,
+                  start: dayjs(event.end).startOf('day'),
+                }))
+                .map(_renderMappedEvent)}
+
+              {/* Render events which starts before this date and ends after this date */}
+              {/* M  T  (W)  T  F  S  S */}
+              {/*    S-------E          */}
+              {events
+                .filter(
+                  ({ start, end }) =>
+                    dayjs(start).isBefore(date.startOf('day')) &&
+                    dayjs(end).isAfter(date.endOf('day')),
+                )
+                .map((event) => ({
+                  ...event,
+                  start: dayjs(event.end).startOf('day'),
+                  end: dayjs(event.end).endOf('day'),
+                }))
+                .map(_renderMappedEvent)}
+
+              {isToday(date) && !hideNowIndicator && (
+                <View
+                  style={[
+                    styles.nowIndicator,
+                    { backgroundColor: theme.palette.nowIndicator },
+                    { top: `${getRelativeTopInDay(now)}%` },
+                  ]}
+                />
+              )}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </React.Fragment>
   )
 }
 

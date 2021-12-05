@@ -14,6 +14,18 @@ export interface CalendarHeaderProps<T> {
   allDayEvents: ICalendarEvent<T>[]
   onPressDateHeader?: (date: Date) => void
   activeDate?: Date
+  headerContentStyle?: ViewStyle
+  dayHeaderStyle?: ViewStyle
+  dayHeaderHighlightColor?: string
+  weekDayHeaderHighlightColor?: string
+}
+
+function objHasContent(obj: ViewStyle): boolean {
+  return !!Object.keys(obj).length
+}
+
+function stringHasContent(string: string): boolean {
+  return !!string.length
 }
 
 function _CalendarHeader<T>({
@@ -23,6 +35,10 @@ function _CalendarHeader<T>({
   allDayEvents,
   onPressDateHeader,
   activeDate,
+  headerContentStyle = {},
+  dayHeaderStyle = {},
+  dayHeaderHighlightColor = '',
+  weekDayHeaderHighlightColor = '',
 }: CalendarHeaderProps<T>) {
   const _onPress = React.useCallback(
     (date: Date) => {
@@ -56,13 +72,22 @@ function _CalendarHeader<T>({
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
           >
-            <View style={[u['justify-between'], { height: cellHeight }]}>
+            <View
+              style={[
+                { height: cellHeight },
+                objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
+              ]}
+            >
               <Text
                 style={[
                   theme.typography.xs,
                   u['text-center'],
                   {
-                    color: shouldHighlight ? theme.palette.primary.main : theme.palette.gray['500'],
+                    color: shouldHighlight
+                      ? stringHasContent(weekDayHeaderHighlightColor)
+                        ? weekDayHeaderHighlightColor
+                        : theme.palette.primary.main
+                      : theme.palette.gray['500'],
                   },
                 ]}
               >
@@ -70,7 +95,9 @@ function _CalendarHeader<T>({
               </Text>
               <View
                 style={
-                  shouldHighlight
+                  objHasContent(dayHeaderStyle)
+                    ? dayHeaderStyle
+                    : shouldHighlight
                     ? [
                         primaryBg,
                         u['h-36'],
@@ -89,12 +116,17 @@ function _CalendarHeader<T>({
                   style={[
                     {
                       color: shouldHighlight
-                        ? theme.palette.primary.contrastText
+                        ? stringHasContent(dayHeaderHighlightColor)
+                          ? dayHeaderHighlightColor
+                          : theme.palette.primary.contrastText
                         : theme.palette.gray['800'],
                     },
                     theme.typography.xl,
                     u['text-center'],
-                    Platform.OS === 'web' && shouldHighlight && u['mt-6'],
+                    Platform.OS === 'web' &&
+                      shouldHighlight &&
+                      !stringHasContent(dayHeaderHighlightColor) &&
+                      u['mt-6'],
                   ]}
                 >
                   {date.format('D')}
