@@ -28,7 +28,7 @@
   "dependencies": {
     "calendarize": "^1.1.1",
     "dayjs": "^1.10.7",
-    "merge-anything": "^4.0.1"
+    "merge-anything": "^4.0.2"
   },
   "peerDependencies": {
     "react": "^16.8.3||^17.0.0",
