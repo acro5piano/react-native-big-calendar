@@ -2,21 +2,24 @@
 
 ## 2.7.0
 
-### What's Changed
+### New features
 
 - Update package.json for issue 568 by @lorenzogatti in https://github.com/acro5piano/react-native-big-calendar/pull/569
+- Add stying for the Hours by @titanve in https://github.com/acro5piano/react-native-big-calendar/pull/567
+
+### New Contributors
+
+- @lorenzogatti made their first contribution in https://github.com/acro5piano/react-native-big-calendar/pull/569
+
+### Chore
+
+- Bump lint-staged from 11.2.6 to 12.1.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/561
+- Bump eslint-plugin-react-hooks from 4.2.0 to 4.3.0 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/556
 - Bump prettier from 2.4.1 to 2.5.1 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/566
 - Bump eslint-plugin-react from 7.26.1 to 7.27.1 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/562
 - Bump @types/jest from 27.0.2 to 27.0.3 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/558
 - Bump typescript from 4.4.3 to 4.5.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/557
 - Bump merge-anything from 4.0.1 to 4.0.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/554
-- Add stying for the Hours by @titanve in https://github.com/acro5piano/react-native-big-calendar/pull/567
-- Bump lint-staged from 11.2.6 to 12.1.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/561
-- Bump eslint-plugin-react-hooks from 4.2.0 to 4.3.0 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/556
-
-### New Contributors
-
-- @lorenzogatti made their first contribution in https://github.com/acro5piano/react-native-big-calendar/pull/569
 
 ## 2.6.0
 
