@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, ScrollView, StyleSheet, View, ViewStyle } from 'react-native'
+import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -46,6 +46,7 @@ interface CalendarBodyProps<T> {
   renderEvent?: EventRenderer<T>
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
+  hourStyle?: TextStyle
 }
 
 function _CalendarBody<T>({
@@ -66,6 +67,7 @@ function _CalendarBody<T>({
   renderEvent,
   headerComponent = null,
   headerComponentStyle = {},
+  hourStyle = {},
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -145,6 +147,7 @@ function _CalendarBody<T>({
                 hour={hour}
                 ampm={ampm}
                 index={index}
+                hourStyle={hourStyle}
               />
             ))}
           </View>

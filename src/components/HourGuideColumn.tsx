@@ -1,19 +1,26 @@
 import * as React from 'react'
-import { Text, View } from 'react-native'
+import { Text, TextStyle, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
 import { formatHour } from '../utils'
-import { isPair } from '../utils'
+import { isPair, objHasContent } from '../utils'
 
 interface HourGuideColumnProps {
   cellHeight: number
   hour: number
   ampm: boolean
   index: number
+  hourStyle: TextStyle
 }
 
-const _HourGuideColumn = ({ cellHeight, hour, ampm, index }: HourGuideColumnProps) => {
+const _HourGuideColumn = ({
+  cellHeight,
+  hour,
+  ampm,
+  index,
+  hourStyle = {},
+}: HourGuideColumnProps) => {
   const theme = useTheme()
   const textStyle = React.useMemo(
     () => ({ color: theme.palette.gray[500], fontSize: theme.typography.xs.fontSize }),
@@ -24,7 +31,9 @@ const _HourGuideColumn = ({ cellHeight, hour, ampm, index }: HourGuideColumnProp
 
   return (
     <View style={{ height: cellHeight, backgroundColor: isPair(index) ? evenCellBg : oddCellBg }}>
-      <Text style={[textStyle, u['text-center']]}>{formatHour(hour, ampm)}</Text>
+      <Text style={[objHasContent(hourStyle) ? hourStyle : textStyle, u['text-center']]}>
+        {formatHour(hour, ampm)}
+      </Text>
     </View>
   )
 }

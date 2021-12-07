@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { ViewStyle } from 'react-native'
+import { TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
@@ -86,6 +86,7 @@ export interface CalendarContainerProps<T> {
   activeDate?: Date
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
+  hourStyle?: TextStyle
 }
 
 function _CalendarContainer<T>({
@@ -122,6 +123,7 @@ function _CalendarContainer<T>({
   activeDate,
   headerComponent = null,
   headerComponentStyle = {},
+  hourStyle = {},
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -258,6 +260,7 @@ function _CalendarContainer<T>({
         renderEvent={renderEvent}
         headerComponent={headerComponent}
         headerComponentStyle={headerComponentStyle}
+        hourStyle={hourStyle}
       />
     </React.Fragment>
   )
