@@ -18,6 +18,7 @@ export interface CalendarHeaderProps<T> {
   dayHeaderStyle?: ViewStyle
   dayHeaderHighlightColor?: string
   weekDayHeaderHighlightColor?: string
+  showAllDayEventCell?: boolean
 }
 
 function _CalendarHeader<T>({
@@ -31,6 +32,7 @@ function _CalendarHeader<T>({
   dayHeaderStyle = {},
   dayHeaderHighlightColor = '',
   weekDayHeaderHighlightColor = '',
+  showAllDayEventCell = true,
 }: CalendarHeaderProps<T>) {
   const _onPress = React.useCallback(
     (date: Date) => {
@@ -47,8 +49,8 @@ function _CalendarHeader<T>({
   return (
     <View
       style={[
-        u['border-b-2'],
-        borderColor,
+        showAllDayEventCell ? u['border-b-2'] : {},
+        showAllDayEventCell ? borderColor : {},
         theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
@@ -126,11 +128,15 @@ function _CalendarHeader<T>({
               </View>
             </View>
             <View
-              style={[
-                u['border-l'],
-                { borderColor: theme.palette.gray['200'] },
-                { height: cellHeight },
-              ]}
+              style={
+                showAllDayEventCell
+                  ? [
+                      u['border-l'],
+                      { borderColor: theme.palette.gray['200'] },
+                      { height: cellHeight },
+                    ]
+                  : []
+              }
             >
               {allDayEvents.map((event) => {
                 if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {

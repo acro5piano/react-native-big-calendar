@@ -125,6 +125,7 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
             justifyContent: 'center',
           }}
           hourStyle={{ color: '#355070', fontSize: 15 }}
+          showAllDayEventCell={false}
         />
       </View>
     </View>
