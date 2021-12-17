@@ -87,7 +87,7 @@ export interface CalendarContainerProps<T> {
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
-  showAllDayEventCell: boolean
+  showAllDayEventCell?: boolean
 }
 
 function _CalendarContainer<T>({
