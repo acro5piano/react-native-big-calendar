@@ -138,26 +138,28 @@ function _CalendarHeader<T>({
                   : []
               }
             >
-              {allDayEvents.map((event) => {
-                if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
-                  return null
-                }
-                return (
-                  <View
-                    style={[eventCellCss.style, primaryBg, u['mt-2']]}
-                    key={`${event.start}${event.title}`}
-                  >
-                    <Text
-                      style={{
-                        fontSize: theme.typography.sm.fontSize,
-                        color: theme.palette.primary.contrastText,
-                      }}
-                    >
-                      {event.title}
-                    </Text>
-                  </View>
-                )
-              })}
+              {showAllDayEventCell
+                ? allDayEvents.map((event) => {
+                    if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
+                      return null
+                    }
+                    return (
+                      <View
+                        style={[eventCellCss.style, primaryBg, u['mt-2']]}
+                        key={`${event.start}${event.title}`}
+                      >
+                        <Text
+                          style={{
+                            fontSize: theme.typography.sm.fontSize,
+                            color: theme.palette.primary.contrastText,
+                          }}
+                        >
+                          {event.title}
+                        </Text>
+                      </View>
+                    )
+                  })
+                : null}
             </View>
           </TouchableOpacity>
         )
