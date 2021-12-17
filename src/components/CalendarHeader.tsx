@@ -127,40 +127,36 @@ function _CalendarHeader<T>({
                 </Text>
               </View>
             </View>
-            <View
-              style={
-                showAllDayEventCell
-                  ? [
-                      u['border-l'],
-                      { borderColor: theme.palette.gray['200'] },
-                      { height: cellHeight },
-                    ]
-                  : []
-              }
-            >
-              {showAllDayEventCell
-                ? allDayEvents.map((event) => {
-                    if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
-                      return null
-                    }
-                    return (
-                      <View
-                        style={[eventCellCss.style, primaryBg, u['mt-2']]}
-                        key={`${event.start}${event.title}`}
+            {showAllDayEventCell ? (
+              <View
+                style={[
+                  u['border-l'],
+                  { borderColor: theme.palette.gray['200'] },
+                  { height: cellHeight },
+                ]}
+              >
+                {allDayEvents.map((event) => {
+                  if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
+                    return null
+                  }
+                  return (
+                    <View
+                      style={[eventCellCss.style, primaryBg, u['mt-2']]}
+                      key={`${event.start}${event.title}`}
+                    >
+                      <Text
+                        style={{
+                          fontSize: theme.typography.sm.fontSize,
+                          color: theme.palette.primary.contrastText,
+                        }}
                       >
-                        <Text
-                          style={{
-                            fontSize: theme.typography.sm.fontSize,
-                            color: theme.palette.primary.contrastText,
-                          }}
-                        >
-                          {event.title}
-                        </Text>
-                      </View>
-                    )
-                  })
-                : null}
-            </View>
+                        {event.title}
+                      </Text>
+                    </View>
+                  )
+                })}
+              </View>
+            ) : null}
           </TouchableOpacity>
         )
       })}
