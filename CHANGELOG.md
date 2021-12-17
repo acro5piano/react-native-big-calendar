@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.8.0
+
+### New Features
+
+- add an option to hide allDayEvent cell by @titanve in https://github.com/acro5piano/react-native-big-calendar/pull/571
+- Bump eslint-plugin-import from 2.23.4 to 2.25.3 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/559
+- Bump @types/node from 16.11.6 to 16.11.12 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/570
+
 ## 2.7.0
 
 ### New features
