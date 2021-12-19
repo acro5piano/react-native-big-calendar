@@ -89,6 +89,8 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
   showHeaderPan?: boolean
+  topHeaderComponent?: React.ReactElement | null
+  topHeaderComponentStyle?: ViewStyle
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -128,6 +130,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   hourStyle = {},
   showAllDayEventCell = true,
   showHeaderPan = false,
+  topHeaderComponent = null,
+  topHeaderComponentStyle = {},
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -241,6 +245,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       showHeaderPan: showHeaderPan,
       panLeft: onPanLeft,
       panRight: onPanRight,
+      topHeaderComponent: topHeaderComponent,
+      topHeaderComponentStyle: topHeaderComponentStyle,
     }
     return (
       <React.Fragment>
@@ -279,6 +285,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     showHeaderPan: showHeaderPan,
     panLeft: onPanLeft,
     panRight: onPanRight,
+    topHeaderComponent: topHeaderComponent,
+    topHeaderComponentStyle: topHeaderComponentStyle,
   }
 
   return (
