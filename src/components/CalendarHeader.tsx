@@ -62,7 +62,7 @@ function _CalendarHeader<T>({
       ]}
     >
       {showHeaderPan ? (
-        <TouchableOpacity style={[{}]} onPress={() => panLeft('LEFT')}>
+        <TouchableOpacity style={[u['self-center']]} onPress={() => panLeft('LEFT')}>
           <Text>{`<`}</Text>
         </TouchableOpacity>
       ) : null}
@@ -172,7 +172,7 @@ function _CalendarHeader<T>({
         )
       })}
       {showHeaderPan ? (
-        <TouchableOpacity style={[{}]} onPress={() => panRight('RIGHT')}>
+        <TouchableOpacity style={[u['self-center']]} onPress={() => panRight('RIGHT')}>
           <Text>{`>`}</Text>
         </TouchableOpacity>
       ) : null}
