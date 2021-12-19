@@ -126,6 +126,7 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
           }}
           hourStyle={{ color: '#355070', fontSize: 15 }}
           showAllDayEventCell={false}
+          showHeaderPan={true}
         />
       </View>
     </View>

@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { eventCellCss, u } from '../commonStyles'
-import { ICalendarEventBase } from '../interfaces'
+import { ICalendarEventBase, HorizontalDirection } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
 
@@ -20,6 +20,9 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dayHeaderHighlightColor?: string
   weekDayHeaderHighlightColor?: string
   showAllDayEventCell?: boolean
+  showHeaderPan?: boolean
+  panLeft: (d: HorizontalDirection) => void
+  panRight: (d: HorizontalDirection) => void
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -35,6 +38,9 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   dayHeaderHighlightColor = '',
   weekDayHeaderHighlightColor = '',
   showAllDayEventCell = true,
+  showHeaderPan = false,
+  panLeft,
+  panRight,
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -64,6 +70,11 @@ function _CalendarHeader<T extends ICalendarEventBase>({
         style,
       ]}
     >
+      {showHeaderPan ? (
+        <TouchableOpacity style={[{}]} onPress={() => panLeft('LEFT')}>
+          <Text>{`<`}</Text>
+        </TouchableOpacity>
+      ) : null}
       <View style={[u['z-10'], u['w-50'], borderColor]} />
       {dateRange.map((date) => {
         const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
@@ -170,6 +181,11 @@ function _CalendarHeader<T extends ICalendarEventBase>({
           </TouchableOpacity>
         )
       })}
+      {showHeaderPan ? (
+        <TouchableOpacity style={[{}]} onPress={() => panRight('RIGHT')}>
+          <Text>{`>`}</Text>
+        </TouchableOpacity>
+      ) : null}
     </View>
   )
 }
