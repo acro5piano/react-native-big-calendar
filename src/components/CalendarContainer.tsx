@@ -89,6 +89,12 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
   showHeaderPan?: boolean
+  panLeftContainerStyle?: ViewStyle
+  panLeftStyle?: TextStyle
+  panLeftComponent?: React.ReactElement | null
+  panRightContainerStyle?: ViewStyle
+  panRightStyle?: TextStyle
+  panRightComponent?: React.ReactElement | null
   topHeaderComponent?: React.ReactElement | null
   topHeaderComponentStyle?: ViewStyle
 }
@@ -130,6 +136,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   hourStyle = {},
   showAllDayEventCell = true,
   showHeaderPan = false,
+  panLeftContainerStyle = {},
+  panLeftStyle = {},
+  panLeftComponent = null,
+  panRightContainerStyle = {},
+  panRightStyle = {},
+  panRightComponent = null,
   topHeaderComponent = null,
   topHeaderComponentStyle = {},
 }: CalendarContainerProps<T>) {
@@ -245,6 +257,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       showHeaderPan: showHeaderPan,
       panLeft: onPanLeft,
       panRight: onPanRight,
+      panLeftContainerStyle: panLeftContainerStyle,
+      panLeftStyle: panLeftStyle,
+      panLeftComponent: panLeftComponent,
+      panRightContainerStyle: panRightContainerStyle,
+      panRightStyle: panRightStyle,
+      panRightComponent: panRightComponent,
       topHeaderComponent: topHeaderComponent,
       topHeaderComponentStyle: topHeaderComponentStyle,
     }
@@ -285,6 +303,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     showHeaderPan: showHeaderPan,
     panLeft: onPanLeft,
     panRight: onPanRight,
+    panLeftContainerStyle: panLeftContainerStyle,
+    panLeftStyle: panLeftStyle,
+    panLeftComponent: panLeftComponent,
+    panRightContainerStyle: panRightContainerStyle,
+    panRightStyle: panRightStyle,
+    panRightComponent: panRightComponent,
     topHeaderComponent: topHeaderComponent,
     topHeaderComponentStyle: topHeaderComponentStyle,
   }
