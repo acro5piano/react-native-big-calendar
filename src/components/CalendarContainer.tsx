@@ -88,6 +88,7 @@ export interface CalendarContainerProps<T> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
+  showHeaderPan?: boolean
 }
 
 function _CalendarContainer<T>({
@@ -126,6 +127,7 @@ function _CalendarContainer<T>({
   headerComponentStyle = {},
   hourStyle = {},
   showAllDayEventCell = true,
+  showHeaderPan = false,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -191,6 +193,34 @@ function _CalendarContainer<T>({
     [swipeEnabled, targetDate, mode, theme.isRTL],
   )
 
+  const onPanLeft = React.useCallback(
+    (direction: HorizontalDirection) => {
+      if (!swipeEnabled) {
+        return
+      }
+      if (direction === 'LEFT' && !theme.isRTL) {
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
+      } else {
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
+      }
+    },
+    [swipeEnabled, targetDate, mode, theme.isRTL],
+  )
+
+  const onPanRight = React.useCallback(
+    (direction: HorizontalDirection) => {
+      if (!swipeEnabled) {
+        return
+      }
+      if (direction === 'RIGHT' && !theme.isRTL) {
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
+      } else {
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
+      }
+    },
+    [swipeEnabled, targetDate, mode, theme.isRTL],
+  )
+
   const commonProps = {
     cellHeight,
     dateRange,
@@ -207,6 +237,9 @@ function _CalendarContainer<T>({
       dayHeaderHighlightColor: dayHeaderHighlightColor,
       weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
       showAllDayEventCell: showAllDayEventCell,
+      showHeaderPan: showHeaderPan,
+      panLeft: onPanLeft,
+      panRight: onPanRight,
     }
     return (
       <React.Fragment>
@@ -242,6 +275,9 @@ function _CalendarContainer<T>({
     dayHeaderHighlightColor: dayHeaderHighlightColor,
     weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
     showAllDayEventCell: showAllDayEventCell,
+    showHeaderPan: showHeaderPan,
+    panLeft: onPanLeft,
+    panRight: onPanRight,
   }
 
   return (
