@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Platform, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { eventCellCss, u } from '../commonStyles'
 import { HorizontalDirection, ICalendarEvent } from '../interfaces'
@@ -22,6 +22,12 @@ export interface CalendarHeaderProps<T> {
   showHeaderPan?: boolean
   panLeft: (d: HorizontalDirection) => void
   panRight: (d: HorizontalDirection) => void
+  panLeftContainerStyle?: ViewStyle
+  panLeftStyle?: TextStyle
+  panLeftComponent?: React.ReactElement | null
+  panRightContainerStyle?: ViewStyle
+  panRightStyle?: TextStyle
+  panRightComponent?: React.ReactElement | null
 }
 
 function _CalendarHeader<T>({
@@ -39,6 +45,12 @@ function _CalendarHeader<T>({
   showHeaderPan = false,
   panLeft,
   panRight,
+  panLeftContainerStyle = {},
+  panLeftStyle = {},
+  panLeftComponent = null,
+  panRightContainerStyle = {},
+  panRightStyle = {},
+  panRightComponent = null,
 }: CalendarHeaderProps<T>) {
   const _onPress = React.useCallback(
     (date: Date) => {
@@ -62,8 +74,11 @@ function _CalendarHeader<T>({
       ]}
     >
       {showHeaderPan ? (
-        <TouchableOpacity style={[u['self-center']]} onPress={() => panLeft('LEFT')}>
-          <Text>{`<`}</Text>
+        <TouchableOpacity
+          style={[objHasContent(panLeftContainerStyle) ? panLeftContainerStyle : u['self-center']]}
+          onPress={() => panLeft('LEFT')}
+        >
+          <Text style={[panLeftStyle]}>{panLeftComponent != null ? panLeftComponent : `<`}</Text>
         </TouchableOpacity>
       ) : null}
       <View style={[u['z-10'], u['w-50'], borderColor]} />
@@ -172,8 +187,13 @@ function _CalendarHeader<T>({
         )
       })}
       {showHeaderPan ? (
-        <TouchableOpacity style={[u['self-center']]} onPress={() => panRight('RIGHT')}>
-          <Text>{`>`}</Text>
+        <TouchableOpacity
+          style={[
+            objHasContent(panRightContainerStyle) ? panRightContainerStyle : u['self-center'],
+          ]}
+          onPress={() => panRight('RIGHT')}
+        >
+          <Text style={[panRightStyle]}>{panRightComponent != null ? panRightComponent : `>`}</Text>
         </TouchableOpacity>
       ) : null}
     </View>
