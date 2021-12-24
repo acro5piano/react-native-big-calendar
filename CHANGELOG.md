@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.1
+
+### Bugfixes
+
+- fix Multiple day event in Month view onPressEvent is just working on first day and not on remaining days #578
+
 ## 2.9.0
 
 ### Bugfixes
