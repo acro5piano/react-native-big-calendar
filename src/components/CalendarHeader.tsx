@@ -13,6 +13,7 @@ export interface CalendarHeaderProps<T> {
   style: ViewStyle
   allDayEvents: ICalendarEvent<T>[]
   onPressDateHeader?: (date: Date) => void
+  onPressEvent?: (event: ICalendarEvent<T>) => void
   activeDate?: Date
   headerContentStyle?: ViewStyle
   dayHeaderStyle?: ViewStyle
@@ -27,6 +28,7 @@ function _CalendarHeader<T>({
   style,
   allDayEvents,
   onPressDateHeader,
+  onPressEvent,
   activeDate,
   headerContentStyle = {},
   dayHeaderStyle = {},
@@ -34,11 +36,18 @@ function _CalendarHeader<T>({
   weekDayHeaderHighlightColor = '',
   showAllDayEventCell = true,
 }: CalendarHeaderProps<T>) {
-  const _onPress = React.useCallback(
+  const _onPressHeader = React.useCallback(
     (date: Date) => {
       onPressDateHeader && onPressDateHeader(date)
     },
     [onPressDateHeader],
+  )
+
+  const _onPressEvent = React.useCallback(
+    (event: ICalendarEvent<T>) => {
+      onPressEvent && onPressEvent(event)
+    },
+    [onPressEvent],
   )
 
   const theme = useTheme()
@@ -62,7 +71,7 @@ function _CalendarHeader<T>({
         return (
           <TouchableOpacity
             style={[u['flex-1'], u['pt-2']]}
-            onPress={() => _onPress(date.toDate())}
+            onPress={() => _onPressHeader(date.toDate())}
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
           >
@@ -140,9 +149,10 @@ function _CalendarHeader<T>({
                     return null
                   }
                   return (
-                    <View
+                    <TouchableOpacity
                       style={[eventCellCss.style, primaryBg, u['mt-2']]}
                       key={`${event.start}${event.title}`}
+                      onPress={() => _onPressEvent(event)}
                     >
                       <Text
                         style={{
@@ -152,7 +162,7 @@ function _CalendarHeader<T>({
                       >
                         {event.title}
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   )
                 })}
               </View>

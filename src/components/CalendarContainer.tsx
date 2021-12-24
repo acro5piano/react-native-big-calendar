@@ -195,6 +195,7 @@ function _CalendarContainer<T>({
     cellHeight,
     dateRange,
     mode,
+    onPressEvent,
   }
 
   if (mode === 'month') {
