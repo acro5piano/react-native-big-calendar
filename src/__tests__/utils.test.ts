@@ -4,6 +4,7 @@ import isBetween from 'dayjs/plugin/isBetween'
 import Mockdate from 'mockdate'
 import * as R from 'remeda'
 
+import { ICalendarEventBase } from '../interfaces'
 import * as utils from '../utils'
 
 Mockdate.set('2021-09-17T04:00:00.000Z')
@@ -11,7 +12,7 @@ Mockdate.set('2021-09-17T04:00:00.000Z')
 dayjs.extend(isBetween)
 dayjs.extend(duration)
 
-const events: Event[] = [
+const events: ICalendarEventBase[] = [
   {
     title: 'Meeting',
     start: dayjs().set('hour', 10).set('minute', 0),
@@ -52,7 +53,11 @@ const events: Event[] = [
     start: dayjs().add(1, 'week').set('day', 3).set('hour', 8).set('minute', 25),
     end: dayjs().add(2, 'week').set('hour', 11).set('minute', 0),
   },
-]
+].map((e) => ({
+  ...e,
+  start: e.start.toDate(),
+  end: e.end.toDate(),
+}))
 
 function assertDateRange(expected: any[], actual: any[]) {
   const formatToIso = (a: any) => a.toISOString()
