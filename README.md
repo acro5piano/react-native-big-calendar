@@ -190,6 +190,18 @@ interface ICalendarEventBase<T> {
 export type ICalendarEvent<T = any> = ICalendarEventBase<T> & T
 ```
 
+## All day events
+
+All day events should start and end on 0 in hour, minutes, and seconds (T00:00:00). For example:
+
+```typescript
+{
+    title: 'all day event',
+    start: "2021-12-24T00:00:00.000Z",
+    end: "2021-12-25T00:00:00.000Z",
+}
+```
+
 ## Using a custom event render function
 
 You can specify custom event render function which receives the calculated `TouchableOpacity` prop and `event`.
