@@ -4,13 +4,13 @@ import { Text, TouchableOpacity, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEvent } from '../interfaces'
+import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { getEventSpanningInfo, typedMemo } from '../utils'
 
-interface CalendarEventProps<T> {
-  event: ICalendarEvent<T>
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+interface CalendarEventProps<T extends ICalendarEventBase> {
+  event: T
+  onPressEvent?: (event: T) => void
   eventCellStyle?: EventCellStyle<T>
   renderEvent?: EventRenderer<T>
   date: dayjs.Dayjs
@@ -20,7 +20,7 @@ interface CalendarEventProps<T> {
   eventMinHeightForMonthView: number
 }
 
-function _CalendarEventForMonthView<T>({
+function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   event,
   onPressEvent,
   eventCellStyle,

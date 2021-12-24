@@ -9,7 +9,7 @@ import {
   EventRenderer,
   HeaderRenderer,
   HorizontalDirection,
-  ICalendarEvent,
+  ICalendarEventBase,
   Mode,
   MonthHeaderRenderer,
   WeekNum,
@@ -30,11 +30,11 @@ import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
 import { CalendarHeader } from './CalendarHeader'
 import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
 
-export interface CalendarContainerProps<T> {
+export interface CalendarContainerProps<T extends ICalendarEventBase> {
   /**
    * Events to be rendered. This is a required prop.
    */
-  events: ICalendarEvent<T>[]
+  events: T[]
 
   /**
    * The height of calendar component. This is a required prop.
@@ -79,7 +79,7 @@ export interface CalendarContainerProps<T> {
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+  onPressEvent?: (event: T) => void
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
   eventMinHeightForMonthView?: number
@@ -90,7 +90,7 @@ export interface CalendarContainerProps<T> {
   showAllDayEventCell?: boolean
 }
 
-function _CalendarContainer<T>({
+function _CalendarContainer<T extends ICalendarEventBase>({
   events,
   height,
   hourRowHeight,
@@ -195,6 +195,7 @@ function _CalendarContainer<T>({
     cellHeight,
     dateRange,
     mode,
+    onPressEvent,
   }
 
   if (mode === 'month') {
@@ -215,7 +216,7 @@ function _CalendarContainer<T>({
           {...commonProps}
           style={bodyContainerStyle}
           containerHeight={height}
-          events={daytimeEvents}
+          events={[...daytimeEvents, ...allDayEvents]}
           eventCellStyle={eventCellStyle}
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}

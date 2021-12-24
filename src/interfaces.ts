@@ -11,6 +11,11 @@ export interface ICalendarEventBase {
   children?: ReactElement | null
 }
 
+/**
+ * @deprecated Prefer ICalendarEventBase & T instead for simplicity.
+ */
+export type ICalendarEvent<T = {}> = ICalendarEventBase & T
+
 export type CalendarTouchableOpacityProps = {
   delayPressIn: number
   key: string
@@ -19,11 +24,9 @@ export type CalendarTouchableOpacityProps = {
   disabled: boolean
 }
 
-export type ICalendarEvent<T = {}> = ICalendarEventBase & T
-
 export type Mode = '3days' | 'week' | 'day' | 'custom' | 'month'
 
-export type EventCellStyle<T> = ViewStyle | ((event: ICalendarEvent<T>) => ViewStyle)
+export type EventCellStyle<T extends ICalendarEventBase> = ViewStyle | ((event: T) => ViewStyle)
 
 export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
 
@@ -33,20 +36,22 @@ export type DateRangeHandler = ([start, end]: HasDateRange) => void
 
 export type HorizontalDirection = 'RIGHT' | 'LEFT'
 
-export type EventRenderer<T> = (
-  event: ICalendarEvent<T>,
+export type EventRenderer<T extends ICalendarEventBase> = (
+  event: T,
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => JSX.Element
 
-export type HeaderRenderer<T> = React.ComponentType<CalendarHeaderProps<T> & { mode: Mode }>
+export type HeaderRenderer<T extends ICalendarEventBase> = React.ComponentType<
+  CalendarHeaderProps<T> & { mode: Mode }
+>
 export type MonthHeaderRenderer = React.ComponentType<CalendarHeaderForMonthViewProps>
 
 /**
- * @deprecated Prefer interface ICalendarEvent instead.
+ * @deprecated Prefer interface ICalendarEventBase instead.
  */
-export type DayJSConvertedEvent<T = any> = ICalendarEvent<T>
+export type DayJSConvertedEvent<T = any> = ICalendarEventBase & T
 
 /**
- * @deprecated Prefer interface ICalendarEvent instead.
+ * @deprecated Prefer interface ICalendarEventBase instead.
  */
-export type Event<T = any> = ICalendarEvent<T>
+export type Event<T = any> = ICalendarEventBase & T

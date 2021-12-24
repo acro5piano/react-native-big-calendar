@@ -3,16 +3,17 @@ import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { eventCellCss, u } from '../commonStyles'
-import { ICalendarEvent } from '../interfaces'
+import { ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
 
-export interface CalendarHeaderProps<T> {
+export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
   style: ViewStyle
-  allDayEvents: ICalendarEvent<T>[]
+  allDayEvents: T[]
   onPressDateHeader?: (date: Date) => void
+  onPressEvent?: (event: T) => void
   activeDate?: Date
   headerContentStyle?: ViewStyle
   dayHeaderStyle?: ViewStyle
@@ -21,12 +22,13 @@ export interface CalendarHeaderProps<T> {
   showAllDayEventCell?: boolean
 }
 
-function _CalendarHeader<T>({
+function _CalendarHeader<T extends ICalendarEventBase>({
   dateRange,
   cellHeight,
   style,
   allDayEvents,
   onPressDateHeader,
+  onPressEvent,
   activeDate,
   headerContentStyle = {},
   dayHeaderStyle = {},
@@ -34,11 +36,18 @@ function _CalendarHeader<T>({
   weekDayHeaderHighlightColor = '',
   showAllDayEventCell = true,
 }: CalendarHeaderProps<T>) {
-  const _onPress = React.useCallback(
+  const _onPressHeader = React.useCallback(
     (date: Date) => {
       onPressDateHeader && onPressDateHeader(date)
     },
     [onPressDateHeader],
+  )
+
+  const _onPressEvent = React.useCallback(
+    (event: T) => {
+      onPressEvent && onPressEvent(event)
+    },
+    [onPressEvent],
   )
 
   const theme = useTheme()
@@ -62,7 +71,7 @@ function _CalendarHeader<T>({
         return (
           <TouchableOpacity
             style={[u['flex-1'], u['pt-2']]}
-            onPress={() => _onPress(date.toDate())}
+            onPress={() => _onPressHeader(date.toDate())}
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
           >
@@ -140,9 +149,10 @@ function _CalendarHeader<T>({
                     return null
                   }
                   return (
-                    <View
+                    <TouchableOpacity
                       style={[eventCellCss.style, primaryBg, u['mt-2']]}
                       key={`${event.start}${event.title}`}
+                      onPress={() => _onPressEvent(event)}
                     >
                       <Text
                         style={{
@@ -152,7 +162,7 @@ function _CalendarHeader<T>({
                       >
                         {event.title}
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   )
                 })}
               </View>

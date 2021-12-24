@@ -95,8 +95,8 @@ function App() {
 **Summary**
 
 ```typescript
-export interface CalendarProps<T> {
-  events: ICalendarEvent<T>[]
+export interface CalendarProps<T extends ICalendarEventBase> {
+  events: T
   height: number
   overlapOffset?: number
   hourRowHeight?: number
@@ -107,7 +107,7 @@ export interface CalendarProps<T> {
   headerContainerStyle?: ViewStyle
   bodyContainerStyle?: ViewStyle
   renderEvent?: (
-    event: ICalendarEvent<T>,
+    event: T,
     touchableOpacityProps: CalendarTouchableOpacityProps,
   ) => ReactElement | null
   renderHeader?: React.ComponentType<CalendarHeaderProps<T> & { mode: Mode }>
@@ -177,17 +177,27 @@ type EventRenderer<T> = (
 
 For more information, see [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
 
-## ICalendarEvent<T>
+## ICalendarEventBase
 
 ```typescript
-interface ICalendarEventBase<T> {
+interface ICalendarEventBase {
   start: Date
   end: Date
   title: string
   children?: ReactElement | null
 }
+```
 
-export type ICalendarEvent<T = any> = ICalendarEventBase<T> & T
+## All day events
+
+All day events should start and end on 0 in hour, minutes, and seconds (T00:00:00). For example:
+
+```typescript
+{
+    title: 'all day event',
+    start: "2021-12-24T00:00:00.000Z",
+    end: "2021-12-24T00:00:00.000Z", // same date as `start`
+}
 ```
 
 ## Using a custom event render function
@@ -202,8 +212,8 @@ export interface MyCustomEventType {
   color: string
 }
 
-const renderEvent = (
-  event: ICalendarEvent<MyCustomEventType>,
+const renderEvent = <T extends ICalendarEventBase>(
+  event: T,
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => (
   <TouchableOpacity {...touchableOpacityProps}>
@@ -229,7 +239,7 @@ const eventNotes = useMemo(
   [],
 )
 
-export const myEvents: ICalendarEvent[] = [
+export const myEvents: ICalendarEventBase[] = [
   {
     title: 'Custom reminder',
     start: dayjs().set('hour', 16).set('minute', 0).toDate(),

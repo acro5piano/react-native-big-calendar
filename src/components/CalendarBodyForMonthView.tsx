@@ -10,22 +10,22 @@ import {
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
-  ICalendarEvent,
+  ICalendarEventBase,
   WeekNum,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { typedMemo } from '../utils'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 
-interface CalendarBodyForMonthViewProps<T> {
+interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   containerHeight: number
   targetDate: dayjs.Dayjs
-  events: ICalendarEvent<T>[]
+  events: T[]
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
   hideNowIndicator?: boolean
   onPressCell?: (date: Date) => void
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+  onPressEvent?: (event: T) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   maxVisibleEventCount: number
@@ -33,7 +33,7 @@ interface CalendarBodyForMonthViewProps<T> {
   eventMinHeightForMonthView: number
 }
 
-function _CalendarBodyForMonthView<T>({
+function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   containerHeight,
   targetDate,
   style,

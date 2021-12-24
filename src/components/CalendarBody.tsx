@@ -5,7 +5,12 @@ import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 're
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
-import { EventCellStyle, EventRenderer, HorizontalDirection, ICalendarEvent } from '../interfaces'
+import {
+  EventCellStyle,
+  EventRenderer,
+  HorizontalDirection,
+  ICalendarEventBase,
+} from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import {
   getCountOfEventsAtEvent,
@@ -28,11 +33,11 @@ const styles = StyleSheet.create({
   },
 })
 
-interface CalendarBodyProps<T> {
+interface CalendarBodyProps<T extends ICalendarEventBase> {
   cellHeight: number
   containerHeight: number
   dateRange: dayjs.Dayjs[]
-  events: ICalendarEvent<T>[]
+  events: T[]
   scrollOffsetMinutes: number
   ampm: boolean
   showTime: boolean
@@ -41,7 +46,7 @@ interface CalendarBodyProps<T> {
   hideNowIndicator?: boolean
   overlapOffset?: number
   onPressCell?: (date: Date) => void
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+  onPressEvent?: (event: T) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   headerComponent?: React.ReactElement | null
@@ -49,7 +54,7 @@ interface CalendarBodyProps<T> {
   hourStyle?: TextStyle
 }
 
-function _CalendarBody<T>({
+function _CalendarBody<T extends ICalendarEventBase>({
   containerHeight,
   cellHeight,
   dateRange,
@@ -101,7 +106,7 @@ function _CalendarBody<T>({
     [onPressCell],
   )
 
-  const _renderMappedEvent = (event: ICalendarEvent<T>) => (
+  const _renderMappedEvent = (event: T) => (
     <CalendarEvent
       key={`${event.start}${event.title}${event.end}`}
       event={event}
