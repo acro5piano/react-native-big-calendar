@@ -170,6 +170,11 @@ storiesOf('showcase - Desktop', module)
     const monday = dayjs().day(1)
     const _events = [
       {
+        title: 'Holiday',
+        start: monday.set('hour', 0).set('minute', 0).toDate(),
+        end: monday.set('hour', 0).set('minute', 0).toDate(),
+      },
+      {
         title: 'Vacation',
         start: monday.set('hour', 0).set('minute', 0).toDate(),
         end: monday.add(2, 'day').set('hour', 0).set('minute', 0).toDate(),

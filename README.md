@@ -198,7 +198,7 @@ All day events should start and end on 0 in hour, minutes, and seconds (T00:00:0
 {
     title: 'all day event',
     start: "2021-12-24T00:00:00.000Z",
-    end: "2021-12-25T00:00:00.000Z",
+    end: "2021-12-24T00:00:00.000Z", // same date as `start`
 }
 ```
 

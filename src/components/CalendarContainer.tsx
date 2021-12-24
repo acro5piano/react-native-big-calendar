@@ -215,7 +215,7 @@ function _CalendarContainer<T>({
           {...commonProps}
           style={bodyContainerStyle}
           containerHeight={height}
-          events={daytimeEvents}
+          events={[...daytimeEvents, ...allDayEvents]}
           eventCellStyle={eventCellStyle}
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
