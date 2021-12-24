@@ -85,7 +85,7 @@ export const spanningEvents: Array<ICalendarEventBase & { color?: string }> = [
   },
 ]
 
-export interface MyCustomEventType {
+export interface MyCustomEventType extends ICalendarEventBase {
   color?: string
 }
 
