@@ -57,13 +57,16 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   })
 
   return (
-    <View style={{ minHeight: eventMinHeightForMonthView }}>
+    <TouchableOpacity
+      style={{ minHeight: eventMinHeightForMonthView }}
+      onPress={() => onPressEvent?.(event)}
+    >
       {(!isMultipleDays && date.isSame(event.start, 'day')) ||
       (isMultipleDays && isMultipleDaysStart) ? (
         renderEvent ? (
           renderEvent(event, touchableOpacityProps)
         ) : (
-          <TouchableOpacity {...touchableOpacityProps}>
+          <View {...touchableOpacityProps}>
             <Text
               style={[
                 { color: theme.palette.primary.contrastText },
@@ -75,10 +78,10 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
             >
               {event.title}
             </Text>
-          </TouchableOpacity>
+          </View>
         )
       ) : null}
-    </View>
+    </TouchableOpacity>
   )
 }
 
