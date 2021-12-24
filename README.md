@@ -110,6 +110,8 @@ export interface CalendarProps<T> {
     event: ICalendarEvent<T>,
     touchableOpacityProps: CalendarTouchableOpacityProps,
   ) => ReactElement | null
+  renderHeader?: React.ComponentType<CalendarHeaderProps<T> & { mode: Mode }>
+  renderHeaderForMonthView?: React.ComponentType<CalendarHeaderForMonthViewProps>
   locale?: string
   hideNowIndicator?: boolean
   mode?: Mode
