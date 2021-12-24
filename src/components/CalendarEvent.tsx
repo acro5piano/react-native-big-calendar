@@ -3,7 +3,7 @@ import * as React from 'react'
 
 import { OVERLAP_OFFSET, u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEvent } from '../interfaces'
+import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
@@ -17,9 +17,9 @@ const getEventCellPositionStyle = (start: Date, end: Date) => {
   }
 }
 
-interface CalendarEventProps<T> {
-  event: ICalendarEvent<T>
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+interface CalendarEventProps<T extends ICalendarEventBase> {
+  event: T
+  onPressEvent?: (event: T) => void
   eventCellStyle?: EventCellStyle<T>
   showTime: boolean
   eventCount?: number
@@ -29,7 +29,7 @@ interface CalendarEventProps<T> {
   ampm: boolean
 }
 
-function _CalendarEvent<T>({
+function _CalendarEvent<T extends ICalendarEventBase>({
   event,
   onPressEvent,
   eventCellStyle,

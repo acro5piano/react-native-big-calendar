@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
-import { EventRenderer, ICalendarEvent } from '../src/interfaces'
+import { EventRenderer, ICalendarEventBase } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils'
 
 const eventNotes = (
@@ -12,7 +12,7 @@ const eventNotes = (
   </View>
 )
 
-export const events: ICalendarEvent<{ color?: string }>[] = [
+export const events: Array<ICalendarEventBase & { color?: string }> = [
   {
     title: 'Watch Boxing',
     start: dayjs().set('hour', 0).set('minute', 0).set('second', 0).toDate(),
@@ -57,7 +57,7 @@ export const events: ICalendarEvent<{ color?: string }>[] = [
   },
 ]
 
-export const spanningEvents: ICalendarEvent<{ color?: string }>[] = [
+export const spanningEvents: Array<ICalendarEventBase & { color?: string }> = [
   {
     title: 'Watch Boxing',
     start: dayjs().subtract(1, 'week').set('hour', 14).set('minute', 30).toDate(),

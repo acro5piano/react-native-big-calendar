@@ -3,7 +3,7 @@ import React from 'react'
 import { TextStyle, ViewStyle } from 'react-native'
 
 import { OVERLAP_PADDING } from './commonStyles'
-import { ICalendarEvent, Mode, WeekNum } from './interfaces'
+import { ICalendarEventBase, Mode, WeekNum } from './interfaces'
 import { Palette } from './theme/ThemeInterface'
 
 export const typedMemo: <T>(c: T) => T = React.memo
@@ -126,8 +126,8 @@ export function isAllDayEvent(start: Date, end: Date) {
 }
 
 export function getCountOfEventsAtEvent(
-  event: ICalendarEvent<any>,
-  eventList: ICalendarEvent<any>[],
+  event: ICalendarEventBase,
+  eventList: ICalendarEventBase[],
 ) {
   return eventList.filter(
     (e) =>
@@ -136,7 +136,7 @@ export function getCountOfEventsAtEvent(
   ).length
 }
 
-export function getOrderOfEvent(event: ICalendarEvent<any>, eventList: ICalendarEvent<any>[]) {
+export function getOrderOfEvent(event: ICalendarEventBase, eventList: ICalendarEventBase[]) {
   const events = eventList
     .filter(
       (e) =>
@@ -217,7 +217,7 @@ function weekDaysCount(weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
 }
 
 export function getEventSpanningInfo(
-  event: ICalendarEvent<any>,
+  event: ICalendarEventBase,
   date: dayjs.Dayjs,
   dayOfTheWeek: number,
   calendarWidth: number,

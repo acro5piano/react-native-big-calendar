@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Dimensions, Picker, SafeAreaView, StatusBar, View } from 'react-native'
 
-import { Calendar, ICalendarEvent, Mode } from './build'
+import { Calendar, ICalendarEventBase, Mode } from './build'
 
 const events = [
   {
@@ -24,7 +24,7 @@ const events = [
 
 export const App = () => {
   const [mode, setMode] = React.useState<Mode>('week')
-  const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEvent[]>([])
+  const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEventBase[]>([])
 
   const addEvent = React.useCallback(
     (start) => {

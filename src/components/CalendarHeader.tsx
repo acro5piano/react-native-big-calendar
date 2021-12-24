@@ -3,17 +3,17 @@ import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { eventCellCss, u } from '../commonStyles'
-import { ICalendarEvent } from '../interfaces'
+import { ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
 
-export interface CalendarHeaderProps<T> {
+export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
   style: ViewStyle
-  allDayEvents: ICalendarEvent<T>[]
+  allDayEvents: T[]
   onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+  onPressEvent?: (event: T) => void
   activeDate?: Date
   headerContentStyle?: ViewStyle
   dayHeaderStyle?: ViewStyle
@@ -22,7 +22,7 @@ export interface CalendarHeaderProps<T> {
   showAllDayEventCell?: boolean
 }
 
-function _CalendarHeader<T>({
+function _CalendarHeader<T extends ICalendarEventBase>({
   dateRange,
   cellHeight,
   style,
@@ -44,7 +44,7 @@ function _CalendarHeader<T>({
   )
 
   const _onPressEvent = React.useCallback(
-    (event: ICalendarEvent<T>) => {
+    (event: T) => {
       onPressEvent && onPressEvent(event)
     },
     [onPressEvent],

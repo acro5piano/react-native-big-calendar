@@ -5,7 +5,7 @@
     "declaration": true,
     "sourceMap": true,
     "inlineSources": true,
-    "removeComments": true,
+    "removeComments": false,
     "noLib": false,
     "skipLibCheck": true,
     "jsx": "react",

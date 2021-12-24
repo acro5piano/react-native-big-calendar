@@ -2,19 +2,19 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 
-import { CalendarTouchableOpacityProps, ICalendarEvent } from '../interfaces'
+import { CalendarTouchableOpacityProps, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { formatStartEnd } from '../utils'
 
-interface DefaultCalendarEventRendererProps<T> {
+interface DefaultCalendarEventRendererProps<T extends ICalendarEventBase> {
   touchableOpacityProps: CalendarTouchableOpacityProps
-  event: ICalendarEvent<T>
+  event: T
   showTime?: boolean
   textColor: string
   ampm: boolean
 }
 
-export function DefaultCalendarEventRenderer<T>({
+export function DefaultCalendarEventRenderer<T extends ICalendarEventBase>({
   touchableOpacityProps,
   event,
   showTime = true,
