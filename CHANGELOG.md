@@ -1,5 +1,32 @@
 # Changelog
 
+## 2.9.0
+
+### Bugfixes
+
+- show All day events on the month view by @acro5piano in https://github.com/acro5piano/react-native-big-calendar/pull/576
+- set onPressEvent handler to all day events by @acro5piano in https://github.com/acro5piano/react-native-big-calendar/pull/576
+
+### Breaking change
+
+`ICalendarEvent` has been deprecated. To do convert this, please rewrite like this:
+
+Before:
+
+```typescript
+import { ICalendarEvent } from 'react-native-big-calendar'
+
+type MyEvent = ICalendarEvent<{ color: string }>
+```
+
+```typescript
+import { ICalendarEventBase } from 'react-native-big-calendar'
+
+type MyEvent = ICalendarEvent & { color: string }
+```
+
+**Full Changelog**: https://github.com/acro5piano/react-native-big-calendar/compare/v2.8.0...v2.9.0
+
 ## 2.8.0
 
 ### New Features
