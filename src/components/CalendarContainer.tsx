@@ -88,6 +88,15 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
+  showHeaderPan?: boolean
+  panLeftContainerStyle?: ViewStyle
+  panLeftStyle?: TextStyle
+  panLeftComponent?: React.ReactElement | null
+  panRightContainerStyle?: ViewStyle
+  panRightStyle?: TextStyle
+  panRightComponent?: React.ReactElement | null
+  topHeaderComponent?: React.ReactElement | null
+  topHeaderComponentStyle?: ViewStyle
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -126,6 +135,15 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   headerComponentStyle = {},
   hourStyle = {},
   showAllDayEventCell = true,
+  showHeaderPan = false,
+  panLeftContainerStyle = {},
+  panLeftStyle = {},
+  panLeftComponent = null,
+  panRightContainerStyle = {},
+  panRightStyle = {},
+  panRightComponent = null,
+  topHeaderComponent = null,
+  topHeaderComponentStyle = {},
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -191,6 +209,34 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     [swipeEnabled, targetDate, mode, theme.isRTL],
   )
 
+  const onPanLeft = React.useCallback(
+    (direction: HorizontalDirection) => {
+      if (!swipeEnabled) {
+        return
+      }
+      if (direction === 'LEFT' && !theme.isRTL) {
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
+      } else {
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
+      }
+    },
+    [swipeEnabled, targetDate, mode, theme.isRTL],
+  )
+
+  const onPanRight = React.useCallback(
+    (direction: HorizontalDirection) => {
+      if (!swipeEnabled) {
+        return
+      }
+      if (direction === 'RIGHT' && !theme.isRTL) {
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
+      } else {
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
+      }
+    },
+    [swipeEnabled, targetDate, mode, theme.isRTL],
+  )
+
   const commonProps = {
     cellHeight,
     dateRange,
@@ -208,6 +254,17 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       dayHeaderHighlightColor: dayHeaderHighlightColor,
       weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
       showAllDayEventCell: showAllDayEventCell,
+      showHeaderPan: showHeaderPan,
+      panLeft: onPanLeft,
+      panRight: onPanRight,
+      panLeftContainerStyle: panLeftContainerStyle,
+      panLeftStyle: panLeftStyle,
+      panLeftComponent: panLeftComponent,
+      panRightContainerStyle: panRightContainerStyle,
+      panRightStyle: panRightStyle,
+      panRightComponent: panRightComponent,
+      topHeaderComponent: topHeaderComponent,
+      topHeaderComponentStyle: topHeaderComponentStyle,
     }
     return (
       <React.Fragment>
@@ -243,6 +300,17 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     dayHeaderHighlightColor: dayHeaderHighlightColor,
     weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
     showAllDayEventCell: showAllDayEventCell,
+    showHeaderPan: showHeaderPan,
+    panLeft: onPanLeft,
+    panRight: onPanRight,
+    panLeftContainerStyle: panLeftContainerStyle,
+    panLeftStyle: panLeftStyle,
+    panLeftComponent: panLeftComponent,
+    panRightContainerStyle: panRightContainerStyle,
+    panRightStyle: panRightStyle,
+    panRightComponent: panRightComponent,
+    topHeaderComponent: topHeaderComponent,
+    topHeaderComponentStyle: topHeaderComponentStyle,
   }
 
   return (
