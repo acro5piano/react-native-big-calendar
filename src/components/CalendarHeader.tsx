@@ -92,14 +92,10 @@ function _CalendarHeader<T extends ICalendarEventBase>({
       >
         {showHeaderPan ? (
           <TouchableOpacity
-            style={
-              objHasContent(panLeftContainerStyle)
-                ? panLeftContainerStyle
-                : [u['flex-1'], u['pt-2']]
-            }
-            onPress={() => (panLeft != null ? panLeft('LEFT') : _onPressHeader(date.toDate()))}
-            disabled={onPressDateHeader === undefined}
-            key={date.toString()}
+            style={[
+              objHasContent(panLeftContainerStyle) ? panLeftContainerStyle : u['self-center'],
+            ]}
+            onPress={() => panLeft('LEFT')}
           >
             <Text style={[panLeftStyle]}>{panLeftComponent != null ? panLeftComponent : `<`}</Text>
           </TouchableOpacity>
@@ -111,7 +107,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
           return (
             <TouchableOpacity
               style={[u['flex-1'], u['pt-2']]}
-              onPress={() => _onPress(date.toDate())}
+              onPress={() => _onPressHeader(date.toDate())}
               disabled={onPressDateHeader === undefined}
               key={date.toString()}
             >
