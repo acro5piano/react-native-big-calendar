@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Platform, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { eventCellCss, u } from '../commonStyles'
-import { HorizontalDirection, ICalendarEventBase } from '../interfaces'
+import { HorizontalDirection, ICalendarEventBase, Mode } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
 
@@ -31,6 +31,8 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   panRightComponent?: React.ReactElement | null
   topHeaderComponent?: React.ReactElement | null
   topHeaderComponentStyle?: ViewStyle
+  mode?: Mode
+  showWeekDayModes?: Mode[]
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -57,6 +59,8 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   panRightComponent = null,
   topHeaderComponent = null,
   topHeaderComponentStyle = {},
+  mode = 'week',
+  showWeekDayModes = ['3days', 'custom', 'day', 'month', 'week'],
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -121,21 +125,23 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                   objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
                 ]}
               >
-                <Text
-                  style={[
-                    theme.typography.xs,
-                    u['text-center'],
-                    {
-                      color: shouldHighlight
-                        ? stringHasContent(weekDayHeaderHighlightColor)
-                          ? weekDayHeaderHighlightColor
-                          : theme.palette.primary.main
-                        : theme.palette.gray['500'],
-                    },
-                  ]}
-                >
-                  {date.format('ddd')}
-                </Text>
+                {showWeekDayModes.includes(mode) ? (
+                  <Text
+                    style={[
+                      theme.typography.xs,
+                      u['text-center'],
+                      {
+                        color: shouldHighlight
+                          ? stringHasContent(weekDayHeaderHighlightColor)
+                            ? weekDayHeaderHighlightColor
+                            : theme.palette.primary.main
+                          : theme.palette.gray['500'],
+                      },
+                    ]}
+                  >
+                    {date.format('ddd')}
+                  </Text>
+                ) : null}
                 <View
                   style={
                     objHasContent(dayHeaderStyle)

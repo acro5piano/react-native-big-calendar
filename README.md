@@ -139,6 +139,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   panRightComponent?: React.ReactElement | null
   topHeaderComponent?: React.ReactElement | null
   topHeaderComponentStyle?: ViewStyle
+  showWeekDayModes?: Mode[]
 }
 ```
 
@@ -187,6 +188,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `panRightComponent`           | no       | `ReactElement`                                         | Pan right component.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `topHeaderComponent`          | no       | `ReactElement`                                         | Top header component.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `topHeaderComponentStyle`     | no       | `ViewStyle`                                            | Top header component container style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                          |
+| `showWeekDayModes`            | no       | `Mode[]`                                               | Modes array to show the week day on.                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## EventRenderer
 
