@@ -97,6 +97,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   panRightComponent?: React.ReactElement | null
   topHeaderComponent?: React.ReactElement | null
   topHeaderComponentStyle?: ViewStyle
+  showWeekDayModes?: Mode[]
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -144,6 +145,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   panRightComponent = null,
   topHeaderComponent = null,
   topHeaderComponentStyle = {},
+  showWeekDayModes = ['3days', 'custom', 'day', 'month', 'week'],
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -265,6 +267,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       panRightComponent: panRightComponent,
       topHeaderComponent: topHeaderComponent,
       topHeaderComponentStyle: topHeaderComponentStyle,
+      mode: mode,
+      showWeekDayModes: showWeekDayModes,
     }
     return (
       <React.Fragment>
@@ -311,6 +315,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     panRightComponent: panRightComponent,
     topHeaderComponent: topHeaderComponent,
     topHeaderComponentStyle: topHeaderComponentStyle,
+    mode: mode,
+    showWeekDayModes: showWeekDayModes,
   }
 
   return (

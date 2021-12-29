@@ -136,6 +136,7 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
             flexDirection: 'row',
             justifyContent: 'center',
           }}
+          showWeekDayModes={['3days', 'custom', 'day', 'month']}
         />
       </View>
     </View>
