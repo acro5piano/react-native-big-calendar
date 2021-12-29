@@ -97,7 +97,11 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             ]}
             onPress={() => panLeft('LEFT')}
           >
-            <Text style={[panLeftStyle]}>{panLeftComponent != null ? panLeftComponent : `<`}</Text>
+            {panLeftComponent != null ? (
+              panLeftComponent
+            ) : (
+              <Text style={[panLeftStyle]}>{`<`}</Text>
+            )}
           </TouchableOpacity>
         ) : null}
         <View style={[u['z-10'], u['w-50'], borderColor]} />
@@ -213,9 +217,11 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             ]}
             onPress={() => panRight('RIGHT')}
           >
-            <Text style={[panRightStyle]}>
-              {panRightComponent != null ? panRightComponent : `>`}
-            </Text>
+            {panRightComponent != null ? (
+              panRightComponent
+            ) : (
+              <Text style={[panRightStyle]}>{`>`}</Text>
+            )}
           </TouchableOpacity>
         ) : null}
       </View>
