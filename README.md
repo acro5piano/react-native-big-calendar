@@ -140,6 +140,9 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   topHeaderComponent?: React.ReactElement | null
   topHeaderComponentStyle?: ViewStyle
   showWeekDayModes?: Mode[]
+  showWeekDayInnerModes?: Mode[]
+  showShortWeekDayModes?: Mode[]
+  weekDayStyle?: TextStyle
 }
 ```
 
@@ -189,6 +192,9 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `topHeaderComponent`          | no       | `ReactElement`                                         | Top header component.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `topHeaderComponentStyle`     | no       | `ViewStyle`                                            | Top header component container style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                          |
 | `showWeekDayModes`            | no       | `Mode[]`                                               | Modes array to show the week day on.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `showWeekDayInnerModes`       | no       | `Mode[]`                                               | Modes array to show the week day on inside with the week day.                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `showShortWeekDayModes`       | no       | `Mode[]`                                               | Show short (1 letter) week day.                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `weekDayStyle`                | no       | `TextStyle`                                            | Week day style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 ## EventRenderer
 

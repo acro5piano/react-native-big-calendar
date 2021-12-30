@@ -32,6 +32,9 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   topHeaderComponent?: React.ReactElement | null
   topHeaderComponentStyle?: ViewStyle
   showWeekDay?: boolean
+  showWeekDayInner?: boolean
+  showShortWeekDay?: boolean
+  weekDayStyle?: TextStyle
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -59,6 +62,9 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   topHeaderComponent = null,
   topHeaderComponentStyle = {},
   showWeekDay = true,
+  showWeekDayInner = false,
+  showShortWeekDay = false,
+  weekDayStyle = {},
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -125,19 +131,25 @@ function _CalendarHeader<T extends ICalendarEventBase>({
               >
                 {showWeekDay === true ? (
                   <Text
-                    style={[
-                      theme.typography.xs,
-                      u['text-center'],
-                      {
-                        color: shouldHighlight
-                          ? stringHasContent(weekDayHeaderHighlightColor)
-                            ? weekDayHeaderHighlightColor
-                            : theme.palette.primary.main
-                          : theme.palette.gray['500'],
-                      },
-                    ]}
+                    style={
+                      objHasContent(weekDayStyle)
+                        ? weekDayStyle
+                        : [
+                            theme.typography.xs,
+                            u['text-center'],
+                            {
+                              color: shouldHighlight
+                                ? stringHasContent(weekDayHeaderHighlightColor)
+                                  ? weekDayHeaderHighlightColor
+                                  : theme.palette.primary.main
+                                : theme.palette.gray['500'],
+                            },
+                          ]
+                    }
                   >
-                    {date.format('ddd')}
+                    {showShortWeekDay === true
+                      ? date.format('ddd').substring(0, 1)
+                      : date.format('ddd')}
                   </Text>
                 ) : null}
                 <View
@@ -159,6 +171,29 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                       : [u['mb-6']]
                   }
                 >
+                  {showWeekDayInner === true ? (
+                    <Text
+                      style={
+                        objHasContent(weekDayStyle)
+                          ? weekDayStyle
+                          : [
+                              theme.typography.xs,
+                              u['text-center'],
+                              {
+                                color: shouldHighlight
+                                  ? stringHasContent(weekDayHeaderHighlightColor)
+                                    ? weekDayHeaderHighlightColor
+                                    : theme.palette.primary.main
+                                  : theme.palette.gray['500'],
+                              },
+                            ]
+                      }
+                    >
+                      {showShortWeekDay === true
+                        ? date.format('ddd').substring(0, 1)
+                        : date.format('ddd')}
+                    </Text>
+                  ) : null}
                   <Text
                     style={[
                       {

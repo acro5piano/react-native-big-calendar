@@ -98,6 +98,9 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   topHeaderComponent?: React.ReactElement | null
   topHeaderComponentStyle?: ViewStyle
   showWeekDayModes?: Mode[]
+  showWeekDayInnerModes?: Mode[]
+  showShortWeekDayModes?: Mode[]
+  weekDayStyle?: TextStyle
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -146,6 +149,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   topHeaderComponent = null,
   topHeaderComponentStyle = {},
   showWeekDayModes = ['3days', 'custom', 'day', 'month', 'week'],
+  showWeekDayInnerModes = [],
+  showShortWeekDayModes = [],
+  weekDayStyle = {},
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -196,6 +202,16 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   )
 
   const showWeekDay = React.useMemo(() => showWeekDayModes.includes(mode), [mode, showWeekDayModes])
+
+  const showWeekDayInner = React.useMemo(
+    () => showWeekDayInnerModes.includes(mode),
+    [mode, showWeekDayInnerModes],
+  )
+
+  const showShortWeekDay = React.useMemo(
+    () => showShortWeekDayModes.includes(mode),
+    [mode, showShortWeekDayModes],
+  )
 
   const theme = useTheme()
 
@@ -270,6 +286,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       topHeaderComponent: topHeaderComponent,
       topHeaderComponentStyle: topHeaderComponentStyle,
       showWeekDay: showWeekDay,
+      showWeekDayInner: showWeekDayInner,
+      showShortWeekDay: showShortWeekDay,
+      weekDayStyle: weekDayStyle,
     }
     return (
       <React.Fragment>
@@ -317,6 +336,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     topHeaderComponent: topHeaderComponent,
     topHeaderComponentStyle: topHeaderComponentStyle,
     showWeekDay: showWeekDay,
+    showWeekDayInner: showWeekDayInner,
+    showShortWeekDay: showShortWeekDay,
+    weekDayStyle: weekDayStyle,
   }
 
   return (

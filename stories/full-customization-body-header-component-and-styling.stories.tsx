@@ -112,6 +112,8 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
             paddingVertical: 6,
             paddingHorizontal: 12,
             borderRadius: 12,
+            flexDirection: 'row',
+            alignItems: 'center',
           }}
           dayHeaderHighlightColor={'#000'}
           weekDayHeaderHighlightColor={'#aaa'}
@@ -137,6 +139,9 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
             justifyContent: 'center',
           }}
           showWeekDayModes={['3days', 'custom', 'day', 'month']}
+          showWeekDayInnerModes={['week']}
+          showShortWeekDayModes={['week']}
+          weekDayStyle={{ fontSize: 18, color: '#355070' }}
         />
       </View>
     </View>
