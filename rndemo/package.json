@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-picker/picker": "2.2.1",
     "calendarize": "^1.1.1",
     "dayjs": "^1.10.4",
     "merge-anything": "^4.0.1",
