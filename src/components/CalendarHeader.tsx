@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Platform, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { eventCellCss, u } from '../commonStyles'
-import { HorizontalDirection, ICalendarEventBase, Mode } from '../interfaces'
+import { HorizontalDirection, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
 
@@ -31,8 +31,7 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   panRightComponent?: React.ReactElement | null
   topHeaderComponent?: React.ReactElement | null
   topHeaderComponentStyle?: ViewStyle
-  mode?: Mode
-  showWeekDayModes?: Mode[]
+  showWeekDay?: boolean
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -59,8 +58,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   panRightComponent = null,
   topHeaderComponent = null,
   topHeaderComponentStyle = {},
-  mode = 'week',
-  showWeekDayModes = ['3days', 'custom', 'day', 'month', 'week'],
+  showWeekDay = true,
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -125,7 +123,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                   objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
                 ]}
               >
-                {showWeekDayModes.includes(mode) ? (
+                {showWeekDay === true ? (
                   <Text
                     style={[
                       theme.typography.xs,

@@ -195,6 +195,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     [height, hourRowHeight],
   )
 
+  const showWeekDay = React.useMemo(() => showWeekDayModes.includes(mode), [mode, showWeekDayModes])
+
   const theme = useTheme()
 
   const onSwipeHorizontal = React.useCallback(
@@ -267,8 +269,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       panRightComponent: panRightComponent,
       topHeaderComponent: topHeaderComponent,
       topHeaderComponentStyle: topHeaderComponentStyle,
-      mode: mode,
-      showWeekDayModes: showWeekDayModes,
+      showWeekDay: showWeekDay,
     }
     return (
       <React.Fragment>
@@ -315,8 +316,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     panRightComponent: panRightComponent,
     topHeaderComponent: topHeaderComponent,
     topHeaderComponentStyle: topHeaderComponentStyle,
-    mode: mode,
-    showWeekDayModes: showWeekDayModes,
+    showWeekDay: showWeekDay,
   }
 
   return (
