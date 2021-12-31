@@ -210,28 +210,20 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   )
 
   React.useEffect(() => {
-    if (mode != null && showWeekDayModes != null) {
-      setShowWeekDay(showWeekDayModes.includes(mode))
+    if (mode != null) {
+      if (showWeekDayModes != null) setShowWeekDay(showWeekDayModes.includes(mode))
+      if (showWeekDayInnerModes != null) setShowWeekDayInner(showWeekDayInnerModes.includes(mode))
+      if (showShortWeekDayModes != null) setShowShortWeekDay(showShortWeekDayModes.includes(mode))
+      if (showDatesArrayStyleModes != null)
+        setShowDatesArrayStyle(showDatesArrayStyleModes.includes(mode))
     }
-  }, [mode, showWeekDayModes])
-
-  React.useEffect(() => {
-    if (mode != null && showWeekDayInnerModes != null) {
-      setShowWeekDayInner(showWeekDayInnerModes.includes(mode))
-    }
-  }, [mode, showWeekDayInnerModes])
-
-  React.useEffect(() => {
-    if (mode != null && showShortWeekDayModes != null) {
-      setShowShortWeekDay(showShortWeekDayModes.includes(mode))
-    }
-  }, [mode, showShortWeekDayModes])
-
-  React.useEffect(() => {
-    if (mode != null && showDatesArrayStyleModes != null) {
-      setShowDatesArrayStyle(showDatesArrayStyleModes.includes(mode))
-    }
-  }, [mode, showDatesArrayStyleModes])
+  }, [
+    mode,
+    showWeekDayModes,
+    showWeekDayInnerModes,
+    showShortWeekDayModes,
+    showDatesArrayStyleModes,
+  ])
 
   const theme = useTheme()
 
