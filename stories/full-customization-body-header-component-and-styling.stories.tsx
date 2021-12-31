@@ -142,6 +142,8 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
           showWeekDayInnerModes={['week']}
           showShortWeekDayModes={['week']}
           weekDayStyle={{ fontSize: 18, color: '#355070' }}
+          showDatesArrayStyleModes={['week']}
+          datesArrayStyle={{ zIndex: 10, width: '2%', borderColor: '#f1f1f1' }}
         />
       </View>
     </View>

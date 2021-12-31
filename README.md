@@ -143,6 +143,8 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   showWeekDayInnerModes?: Mode[]
   showShortWeekDayModes?: Mode[]
   weekDayStyle?: TextStyle
+  datesArrayStyle?: ViewStyle
+  showDatesArrayStyleModes?: Mode[]
 }
 ```
 
@@ -195,6 +197,8 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `showWeekDayInnerModes`       | no       | `Mode[]`                                               | Modes array to show the week day on inside with the week day.                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `showShortWeekDayModes`       | no       | `Mode[]`                                               | Show short (1 letter) week day.                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `weekDayStyle`                | no       | `TextStyle`                                            | Week day style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `datesArrayStyle`             | no       | `ViewStyle`                                            | Dates array style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `showDatesArrayStyleModes`    | no       | `Mode[]`                                               | Modes array to apply the Dates array Style to.                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## EventRenderer
 

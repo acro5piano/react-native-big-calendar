@@ -35,6 +35,8 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   showWeekDayInner?: boolean
   showShortWeekDay?: boolean
   weekDayStyle?: TextStyle
+  datesArrayStyle?: ViewStyle
+  showDatesArrayStyle?: boolean
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -65,6 +67,8 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   showWeekDayInner = false,
   showShortWeekDay = false,
   weekDayStyle = {},
+  datesArrayStyle = {},
+  showDatesArrayStyle = false,
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -112,7 +116,13 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             )}
           </TouchableOpacity>
         ) : null}
-        <View style={[u['z-10'], u['w-50'], borderColor]} />
+        <View
+          style={
+            showDatesArrayStyle === true && objHasContent(datesArrayStyle)
+              ? datesArrayStyle
+              : [u['z-10'], u['w-50'], borderColor]
+          }
+        />
         {dateRange.map((date) => {
           const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
 

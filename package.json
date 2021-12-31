@@ -1,6 +1,6 @@
 {
   "name": "@titanve/react-native-big-calendar",
-  "version": "2.9.9",
+  "version": "2.9.10",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
