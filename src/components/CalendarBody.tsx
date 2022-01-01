@@ -52,6 +52,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
+  cellsBorderStyle?: ViewStyle
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -73,6 +74,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponent = null,
   headerComponentStyle = {},
   hourStyle = {},
+  cellsBorderStyle = {},
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -166,6 +168,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   hour={hour}
                   onPress={_onPressCell}
                   index={index}
+                  cellsBorderStyle={cellsBorderStyle}
                 />
               ))}
 

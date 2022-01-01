@@ -144,6 +144,7 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
           weekDayStyle={{ fontSize: 18, color: '#355070' }}
           showDatesArrayStyleModes={['week']}
           datesArrayStyle={{ zIndex: 10, width: '2%', borderColor: '#f1f1f1' }}
+          cellsBorderStyle={{ borderLeftWidth: 1, borderColor: 'pink' }}
         />
       </View>
     </View>
