@@ -145,6 +145,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   weekDayStyle?: TextStyle
   datesArrayStyle?: ViewStyle
   showDatesArrayStyleModes?: Mode[]
+  cellsBorderStyle?: ViewStyle
 }
 ```
 
@@ -199,6 +200,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `weekDayStyle`                | no       | `TextStyle`                                            | Week day style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `datesArrayStyle`             | no       | `ViewStyle`                                            | Dates array style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `showDatesArrayStyleModes`    | no       | `Mode[]`                                               | Modes array to apply the Dates array Style to.                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `cellsBorderStyle`            | no       | `ViewStyle`                                            | Calendar body cells style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## EventRenderer
 

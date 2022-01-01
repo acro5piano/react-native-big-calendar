@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import { TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
-import { isPair } from '../utils'
+import { isPair, objHasContent } from '../utils'
 
 interface HourGuideCellProps {
   cellHeight: number
@@ -12,9 +12,17 @@ interface HourGuideCellProps {
   date: dayjs.Dayjs
   hour: number
   index: number
+  cellsBorderStyle?: ViewStyle
 }
 
-export const HourGuideCell = ({ cellHeight, onPress, date, hour, index }: HourGuideCellProps) => {
+export const HourGuideCell = ({
+  cellHeight,
+  onPress,
+  date,
+  hour,
+  index,
+  cellsBorderStyle = {},
+}: HourGuideCellProps) => {
   const theme = useTheme()
 
   const evenCellBg = theme.palette.evenCellBg
@@ -24,9 +32,9 @@ export const HourGuideCell = ({ cellHeight, onPress, date, hour, index }: HourGu
     <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
       <View
         style={[
-          u['border-l'],
-          u['border-b'],
-          { borderColor: theme.palette.gray['200'] },
+          objHasContent(cellsBorderStyle)
+            ? cellsBorderStyle
+            : [u['border-l'], u['border-b'], { borderColor: theme.palette.gray['200'] }],
           { height: cellHeight },
           { backgroundColor: isPair(index) ? evenCellBg : oddCellBg },
         ]}
