@@ -147,6 +147,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   showDatesArrayStyleModes?: Mode[]
   cellsBorderStyle?: ViewStyle
   fullHeaderStyle?: ViewStyle
+  fullBodyStyle?: ViewStyle
 }
 ```
 
@@ -203,6 +204,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `showDatesArrayStyleModes`    | no       | `Mode[]`                                               | Modes array to apply the Dates array Style to.                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `cellsBorderStyle`            | no       | `ViewStyle`                                            | Calendar body cells style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `fullHeaderStyle`             | no       | `ViewStyle`                                            | Full header style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `fullBodyStyle`               | no       | `ViewStyle`                                            | Full body style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ## EventRenderer
 

@@ -53,6 +53,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   cellsBorderStyle?: ViewStyle
+  fullBodyStyle?: ViewStyle
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -75,6 +76,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponentStyle = {},
   hourStyle = {},
   cellsBorderStyle = {},
+  fullBodyStyle = {},
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -126,7 +128,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const theme = useTheme()
 
   return (
-    <React.Fragment>
+    <View style={fullBodyStyle}>
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
       <ScrollView
         style={[
@@ -225,7 +227,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           ))}
         </View>
       </ScrollView>
-    </React.Fragment>
+    </View>
   )
 }
 

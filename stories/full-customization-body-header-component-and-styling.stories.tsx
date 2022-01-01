@@ -155,6 +155,16 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
             shadowRadius: 6.68,
             elevation: 11,
           }}
+          fullBodyStyle={{
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 5,
+            },
+            shadowOpacity: 0.36,
+            shadowRadius: 6.68,
+            elevation: 11,
+          }}
         />
       </View>
     </View>
