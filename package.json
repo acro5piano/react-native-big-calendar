@@ -1,6 +1,6 @@
 {
   "name": "@titanve/react-native-big-calendar",
-  "version": "2.9.12",
+  "version": "2.9.13",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
@@ -21,6 +21,7 @@
     "lint:fix": "yarn lint --fix",
     "watch": "rollup -cw",
     "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "build": "npm-run-all build:clean build:ts",
     "build:clean": "rimraf build/",
     "build:ts": "env NODE_ENV=production rollup -c"
