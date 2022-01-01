@@ -104,6 +104,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   datesArrayStyle?: ViewStyle
   showDatesArrayStyleModes?: Mode[]
   cellsBorderStyle?: ViewStyle
+  fullHeaderStyle?: ViewStyle
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -158,6 +159,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   datesArrayStyle = {},
   showDatesArrayStyleModes = [],
   cellsBorderStyle = {},
+  fullHeaderStyle = {},
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
   const [showWeekDay, setShowWeekDay] = React.useState(true)
@@ -305,6 +307,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       weekDayStyle: weekDayStyle,
       datesArrayStyle: datesArrayStyle,
       showDatesArrayStyle: showDatesArrayStyle,
+      fullHeaderStyle: fullHeaderStyle,
     }
     return (
       <React.Fragment>
@@ -357,6 +360,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     weekDayStyle: weekDayStyle,
     datesArrayStyle: datesArrayStyle,
     showDatesArrayStyle: showDatesArrayStyle,
+    fullHeaderStyle: fullHeaderStyle,
   }
 
   return (

@@ -145,6 +145,16 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
           showDatesArrayStyleModes={['week']}
           datesArrayStyle={{ zIndex: 10, width: '2%', borderColor: '#f1f1f1' }}
           cellsBorderStyle={{ borderLeftWidth: 1, borderColor: 'pink' }}
+          fullHeaderStyle={{
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 5,
+            },
+            shadowOpacity: 0.36,
+            shadowRadius: 6.68,
+            elevation: 11,
+          }}
         />
       </View>
     </View>

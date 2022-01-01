@@ -37,6 +37,7 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   weekDayStyle?: TextStyle
   datesArrayStyle?: ViewStyle
   showDatesArrayStyle?: boolean
+  fullHeaderStyle?: ViewStyle
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -69,6 +70,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   weekDayStyle = {},
   datesArrayStyle = {},
   showDatesArrayStyle = false,
+  fullHeaderStyle = {},
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -90,7 +92,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   const primaryBg = { backgroundColor: theme.palette.primary.main }
 
   return (
-    <React.Fragment>
+    <View style={fullHeaderStyle}>
       {topHeaderComponent != null ? (
         <View style={topHeaderComponentStyle}>{topHeaderComponent}</View>
       ) : null}
@@ -274,7 +276,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
           </TouchableOpacity>
         ) : null}
       </View>
-    </React.Fragment>
+    </View>
   )
 }
 
