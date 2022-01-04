@@ -36,7 +36,7 @@ export const defaultTheme: ThemeInterface = {
       fontSize: 12,
     },
     xl: {
-      fontSize: 22,
+      fontSize: 16,
     },
   },
 }

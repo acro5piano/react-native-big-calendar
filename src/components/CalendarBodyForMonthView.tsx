@@ -109,20 +109,22 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                 ]}
                 key={ii}
               >
-                <Text
-                  style={[
-                    { textAlign: 'center' },
-                    theme.typography.sm,
-                    {
-                      color:
-                        date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
-                          ? theme.palette.primary.main
-                          : theme.palette.gray['800'],
-                    },
-                  ]}
-                >
-                  {date && date.format('D')}
-                </Text>
+                <View style={[ {...(date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')) ? { textAlign: 'center', backgroundColor: theme.palette.primary.main, width: 22, height: 18, borderRadius: 16, marginLeft: 15, justifyContent: 'center', alignItems: 'center' } : { textAlign: 'center', alignSelf: 'center'}}]}>
+                  <Text
+                    style={[
+                      { textAlign: 'center' },
+                      theme.typography.sm,
+                      {
+                        color:
+                          date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
+                            ? '#fff'
+                            : theme.palette.gray['800'],
+                      },
+                    ]}
+                  >
+                    {date && date.format('D')}
+                  </Text>
+                </View>
                 {date &&
                   events
                     .sort((a, b) => {

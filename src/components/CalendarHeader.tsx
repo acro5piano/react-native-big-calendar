@@ -103,16 +103,17 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                     : shouldHighlight
                     ? [
                         primaryBg,
-                        u['h-36'],
-                        u['w-36'],
-                        u['pb-6'],
-                        u['rounded-full'],
+                        // u['h-36'],
+                        // u['w-36'],
+                        // u['pb-6'],
+                        // u['rounded-full'],
                         u['items-center'],
-                        u['justify-center'],
-                        u['self-center'],
-                        u['z-20'],
+                        // u['justify-center'],
+                        // u['self-center'],
+                        // u['z-20'],
+                        {width: 32, marginHorizontal: 10, height: 24, justifyContent: 'center', alignItems: 'center', borderRadius: 6 }
                       ]
-                    : [u['mb-6']]
+                    : {marginBottom: 0}
                 }
               >
                 <Text
@@ -126,6 +127,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                     },
                     theme.typography.xl,
                     u['text-center'],
+                    {flex: 1, marginTop: 1},
                     Platform.OS === 'web' &&
                       shouldHighlight &&
                       !stringHasContent(dayHeaderHighlightColor) &&
