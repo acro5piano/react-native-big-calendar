@@ -54,6 +54,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   cellsBorderStyle?: ViewStyle
   fullBodyStyle?: ViewStyle
+  increaseFirstRowHeight?: number
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -77,6 +78,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hourStyle = {},
   cellsBorderStyle = {},
   fullBodyStyle = {},
+  increaseFirstRowHeight = 1,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -152,7 +154,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
             {hours.map((hour, index) => (
               <HourGuideColumn
                 key={hour}
-                cellHeight={cellHeight}
+                cellHeight={index === 0 ? cellHeight * increaseFirstRowHeight : cellHeight}
                 hour={hour}
                 ampm={ampm}
                 index={index}
@@ -165,7 +167,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
               {hours.map((hour, index) => (
                 <HourGuideCell
                   key={hour}
-                  cellHeight={cellHeight}
+                  cellHeight={index === 0 ? cellHeight * increaseFirstRowHeight : cellHeight}
                   date={date}
                   hour={hour}
                   onPress={_onPressCell}

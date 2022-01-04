@@ -148,6 +148,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   cellsBorderStyle?: ViewStyle
   fullHeaderStyle?: ViewStyle
   fullBodyStyle?: ViewStyle
+  increaseFirstRowHeight?: number
 }
 ```
 
@@ -205,6 +206,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `cellsBorderStyle`            | no       | `ViewStyle`                                            | Calendar body cells style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `fullHeaderStyle`             | no       | `ViewStyle`                                            | Full header style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `fullBodyStyle`               | no       | `ViewStyle`                                            | Full body style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `increaseFirstRowHeight`      | no       | `number`                                               | Number to multiply to increase first row height.                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 ## EventRenderer
 
