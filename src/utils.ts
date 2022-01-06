@@ -82,8 +82,10 @@ export function isToday(date: dayjs.Dayjs) {
   return today.isSame(date, 'day')
 }
 
-export function getRelativeTopInDay(date: dayjs.Dayjs) {
-  return (100 * (date.hour() * 60 + date.minute())) / DAY_MINUTES
+export function getRelativeTopInDay(date: dayjs.Dayjs, newCellHeight: number = 0) {
+  return (
+    (100 * (date.hour() * 60 + date.minute())) / (DAY_MINUTES + (DAY_MINUTES * newCellHeight) / 100)
+  )
 }
 
 export function todayInMinutes() {

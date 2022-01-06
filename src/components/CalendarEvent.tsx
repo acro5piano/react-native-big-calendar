@@ -8,9 +8,15 @@ import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
-const getEventCellPositionStyle = (start: Date, end: Date) => {
+const getEventCellPositionStyle = (start: Date, end: Date, newCellHeight: number) => {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
-  const relativeTop = getRelativeTopInDay(dayjs(start))
+  console.log('getRelativeTopInDay(dayjs(start))', getRelativeTopInDay(dayjs(start)))
+  console.log('newCellHeight', newCellHeight)
+  console.log('start', dayjs(start).hour())
+  const relativeTop =
+    dayjs(start).hour() === 0
+      ? getRelativeTopInDay(dayjs(start)) + newCellHeight
+      : getRelativeTopInDay(dayjs(start), newCellHeight) + newCellHeight
   return {
     height: `${relativeHeight}%`,
     top: `${relativeTop}%`,
@@ -27,6 +33,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   overlapOffset?: number
   renderEvent?: EventRenderer<T>
   ampm: boolean
+  newCellHeight?: number
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
@@ -39,6 +46,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   overlapOffset = OVERLAP_OFFSET,
   renderEvent,
   ampm,
+  newCellHeight = 0,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -52,7 +60,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
     eventCellStyle,
     onPressEvent,
     injectedStyles: [
-      getEventCellPositionStyle(event.start, event.end),
+      getEventCellPositionStyle(event.start, event.end, newCellHeight),
       getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
       u['absolute'],
       u['mt-2'],

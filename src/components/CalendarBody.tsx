@@ -124,6 +124,13 @@ function _CalendarBody<T extends ICalendarEventBase>({
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
       ampm={ampm}
+      newCellHeight={
+        increaseFirstRowHeight !== 1
+          ? ((cellHeight * increaseFirstRowHeight) /
+              (cellHeight * 24 + cellHeight * increaseFirstRowHeight)) *
+            100
+          : 0
+      }
     />
   )
 
@@ -151,10 +158,20 @@ function _CalendarBody<T extends ICalendarEventBase>({
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
         >
           <View style={[u['z-20'], u['w-50']]}>
+            {increaseFirstRowHeight !== 1 ? (
+              <HourGuideColumn
+                key={'guide-col-1'}
+                cellHeight={cellHeight * increaseFirstRowHeight}
+                hour={-1}
+                ampm={ampm}
+                index={-1}
+                hourStyle={hourStyle}
+              />
+            ) : null}
             {hours.map((hour, index) => (
               <HourGuideColumn
                 key={hour}
-                cellHeight={index === 0 ? cellHeight * increaseFirstRowHeight : cellHeight}
+                cellHeight={cellHeight}
                 hour={hour}
                 ampm={ampm}
                 index={index}
@@ -164,10 +181,21 @@ function _CalendarBody<T extends ICalendarEventBase>({
           </View>
           {dateRange.map((date) => (
             <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
+              {increaseFirstRowHeight !== 1 ? (
+                <HourGuideCell
+                  key={'guide-cel-1'}
+                  cellHeight={cellHeight * increaseFirstRowHeight}
+                  date={date}
+                  hour={-1}
+                  onPress={_onPressCell}
+                  index={-1}
+                  cellsBorderStyle={cellsBorderStyle}
+                />
+              ) : null}
               {hours.map((hour, index) => (
                 <HourGuideCell
                   key={hour}
-                  cellHeight={index === 0 ? cellHeight * increaseFirstRowHeight : cellHeight}
+                  cellHeight={cellHeight}
                   date={date}
                   hour={hour}
                   onPress={_onPressCell}
