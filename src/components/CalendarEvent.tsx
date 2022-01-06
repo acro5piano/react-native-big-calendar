@@ -10,9 +10,6 @@ import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
 const getEventCellPositionStyle = (start: Date, end: Date, newCellHeight: number) => {
   const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
-  console.log('getRelativeTopInDay(dayjs(start))', getRelativeTopInDay(dayjs(start)))
-  console.log('newCellHeight', newCellHeight)
-  console.log('start', dayjs(start).hour())
   const relativeTop =
     dayjs(start).hour() === 0
       ? getRelativeTopInDay(dayjs(start)) + newCellHeight

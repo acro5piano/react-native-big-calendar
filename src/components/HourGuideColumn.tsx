@@ -32,7 +32,7 @@ const _HourGuideColumn = ({
   return (
     <View style={{ height: cellHeight, backgroundColor: isPair(index) ? evenCellBg : oddCellBg }}>
       <Text style={[objHasContent(hourStyle) ? hourStyle : textStyle, u['text-center']]}>
-        {formatHour(hour, ampm)}
+        {index === -1 ? '' : formatHour(hour, ampm)}
       </Text>
     </View>
   )

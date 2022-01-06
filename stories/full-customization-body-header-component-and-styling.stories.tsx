@@ -165,7 +165,7 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
             shadowRadius: 6.68,
             elevation: 11,
           }}
-          increaseFirstRowHeight={1.25}
+          increaseFirstRowHeight={0.5}
         />
       </View>
     </View>
