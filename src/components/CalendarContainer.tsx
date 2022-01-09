@@ -4,6 +4,7 @@ import { TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
+  CalendarCellStyle,
   DateRangeHandler,
   EventCellStyle,
   EventRenderer,
@@ -53,6 +54,8 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
 
   // Custom style
   eventCellStyle?: EventCellStyle<T>
+  calendarCellStyle?: CalendarCellStyle
+  calendarCellTextStyle?: CalendarCellStyle
   calendarContainerStyle?: ViewStyle
   headerContainerStyle?: ViewStyle
   headerContentStyle?: ViewStyle
@@ -97,6 +100,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   ampm = false,
   date,
   eventCellStyle,
+  calendarCellStyle,
+  calendarCellTextStyle,
   locale = 'en',
   hideNowIndicator = false,
   mode = 'week',
@@ -218,6 +223,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           containerHeight={height}
           events={[...daytimeEvents, ...allDayEvents]}
           eventCellStyle={eventCellStyle}
+          calendarCellStyle={calendarCellStyle}
+          calendarCellTextStyle={calendarCellTextStyle}
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
           onPressCell={onPressCell}
@@ -254,6 +261,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         containerHeight={height}
         events={daytimeEvents}
         eventCellStyle={eventCellStyle}
+        calendarCellStyle={calendarCellStyle}
         hideNowIndicator={hideNowIndicator}
         overlapOffset={overlapOffset}
         scrollOffsetMinutes={scrollOffsetMinutes}

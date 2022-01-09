@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { TouchableWithoutFeedback, View } from 'react-native'
+import { CalendarCellStyle } from 'src'
 
 import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
@@ -12,13 +13,23 @@ interface HourGuideCellProps {
   date: dayjs.Dayjs
   hour: number
   index: number
+  calendarCellStyle?: CalendarCellStyle
 }
 
-export const HourGuideCell = ({ cellHeight, onPress, date, hour, index }: HourGuideCellProps) => {
+export const HourGuideCell = ({
+  cellHeight,
+  onPress,
+  date,
+  hour,
+  index,
+  calendarCellStyle,
+}: HourGuideCellProps) => {
   const theme = useTheme()
 
-  const evenCellBg = theme.palette.evenCellBg
-  const oddCellBg = theme.palette.oddCellBg
+  const getCalendarCellStyle = React.useMemo(
+    () => (typeof calendarCellStyle === 'function' ? calendarCellStyle : () => calendarCellStyle),
+    [calendarCellStyle],
+  )
 
   return (
     <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
@@ -28,7 +39,7 @@ export const HourGuideCell = ({ cellHeight, onPress, date, hour, index }: HourGu
           u['border-b'],
           { borderColor: theme.palette.gray['200'] },
           { height: cellHeight },
-          { backgroundColor: isPair(index) ? evenCellBg : oddCellBg },
+          { ...getCalendarCellStyle(date, index) },
         ]}
       />
     </TouchableWithoutFeedback>

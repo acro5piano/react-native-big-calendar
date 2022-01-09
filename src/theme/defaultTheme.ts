@@ -7,8 +7,6 @@ export const defaultTheme: ThemeInterface = {
       main: 'rgb(66, 133, 244)',
       contrastText: '#fff',
     },
-    evenCellBg: '#fff',
-    oddCellBg: '#fff',
     nowIndicator: 'red',
     gray: {
       // 50: '#fafafa',

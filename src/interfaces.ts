@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ReactElement } from 'react'
 import { RecursiveArray, ViewStyle } from 'react-native'
 
@@ -27,6 +28,10 @@ export type CalendarTouchableOpacityProps = {
 export type Mode = '3days' | 'week' | 'day' | 'custom' | 'month'
 
 export type EventCellStyle<T extends ICalendarEventBase> = ViewStyle | ((event: T) => ViewStyle)
+
+export type CalendarCellStyle =
+  | ViewStyle
+  | ((date: dayjs.Dayjs, hourRowIndex?: Number) => ViewStyle)
 
 export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
 
