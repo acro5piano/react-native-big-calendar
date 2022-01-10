@@ -166,6 +166,9 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
             elevation: 11,
           }}
           increaseFirstRowHeight={0.5}
+          animatePan={true}
+          fadeInDuration={5000}
+          fadeOutDuration={5000}
         />
       </View>
     </View>

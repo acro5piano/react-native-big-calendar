@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { TextStyle, ViewStyle } from 'react-native'
+import { Animated, TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
@@ -107,6 +107,9 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   fullHeaderStyle?: ViewStyle
   fullBodyStyle?: ViewStyle
   increaseFirstRowHeight?: number
+  animatePan?: boolean
+  fadeInDuration?: number
+  fadeOutDuration?: number
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -164,12 +167,17 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   fullHeaderStyle = {},
   fullBodyStyle = {},
   increaseFirstRowHeight = 1,
+  animatePan = false,
+  fadeInDuration = 0,
+  fadeOutDuration = 0,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
   const [showWeekDay, setShowWeekDay] = React.useState(true)
   const [showWeekDayInner, setShowWeekDayInner] = React.useState(false)
   const [showShortWeekDay, setShowShortWeekDay] = React.useState(false)
   const [showDatesArrayStyle, setShowDatesArrayStyle] = React.useState(false)
+  // fadeAnim will be used as the value for opacity. Initial Value: 0
+  const fadeAnim = React.useRef(new Animated.Value(1)).current
 
   React.useEffect(() => {
     if (date) {
@@ -235,7 +243,24 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   const theme = useTheme()
 
-  const onSwipeHorizontal = React.useCallback(
+  const fadeBoth = () => {
+    // Will change fadeAnim value to 0 in fadeOutDuration mseconds OUT
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: fadeOutDuration,
+      useNativeDriver: false,
+    }).start(({ finished }) => {
+      /* completion callback */
+      // Will change fadeAnim value to 1 in fadeInDuration mseconds IN
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: fadeInDuration,
+        useNativeDriver: false,
+      }).start()
+    })
+  }
+
+  const onSwipeHorizontalCallback = React.useCallback(
     (direction: HorizontalDirection) => {
       if (!swipeEnabled) {
         return
@@ -248,6 +273,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     },
     [swipeEnabled, targetDate, mode, theme.isRTL],
   )
+
+  const onSwipeHorizontal = (direction: HorizontalDirection) => {
+    if (animatePan === true) {
+      fadeBoth()
+    }
+    onSwipeHorizontalCallback(direction)
+  }
 
   const onPanLeft = React.useCallback(
     (direction: HorizontalDirection) => {
@@ -391,6 +423,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         cellsBorderStyle={cellsBorderStyle}
         fullBodyStyle={fullBodyStyle}
         increaseFirstRowHeight={increaseFirstRowHeight}
+        animatePan={animatePan}
+        fadeAnim={fadeAnim}
       />
     </React.Fragment>
   )

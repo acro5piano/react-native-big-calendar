@@ -149,6 +149,9 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   fullHeaderStyle?: ViewStyle
   fullBodyStyle?: ViewStyle
   increaseFirstRowHeight?: number
+  animatePan?: boolean
+  fadeInDuration?: number
+  fadeOutDuration?: number
 }
 ```
 
@@ -207,6 +210,9 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `fullHeaderStyle`             | no       | `ViewStyle`                                            | Full header style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `fullBodyStyle`               | no       | `ViewStyle`                                            | Full body style. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `increaseFirstRowHeight`      | no       | `number`                                               | Number to multiply to increase first row height.                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `animatePan`                  | no       | `boolean`                                              | Animate pan transition (Fade Out/In) for the Calendar Body.                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `fadeInDuration`              | no       | `number`                                               | Animate pan transition (Fade Out/In) duration in ms for the Calendar Body.                                                                                                                                                                                                                                                                                                                                                                                      |
+| `fadeOutDuration`             | no       | `number`                                               | Animate pan transition (Fade Out/In) duration in ms for the Calendar Body.                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## EventRenderer
 
