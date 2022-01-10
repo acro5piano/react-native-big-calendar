@@ -252,6 +252,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }).start(({ finished }) => {
       /* completion callback */
       // Will change fadeAnim value to 1 in fadeInDuration mseconds IN
+      console.log({ finished })
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: fadeInDuration,
