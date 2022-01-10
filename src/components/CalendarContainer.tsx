@@ -261,6 +261,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     })
   }
 
+  const handleAnimatePan = () => {
+    if (animatePan === true) {
+      fadeBoth()
+    }
+  }
+
   const onSwipeHorizontalCallback = React.useCallback(
     (direction: HorizontalDirection) => {
       if (!swipeEnabled) {
@@ -276,13 +282,11 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   )
 
   const onSwipeHorizontal = (direction: HorizontalDirection) => {
-    if (animatePan === true) {
-      fadeBoth()
-    }
+    handleAnimatePan()
     onSwipeHorizontalCallback(direction)
   }
 
-  const onPanLeft = React.useCallback(
+  const onPanLeftCallback = React.useCallback(
     (direction: HorizontalDirection) => {
       if (!swipeEnabled) {
         return
@@ -296,7 +300,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     [swipeEnabled, targetDate, mode, theme.isRTL],
   )
 
-  const onPanRight = React.useCallback(
+  const onPanLeft = (direction: HorizontalDirection) => {
+    handleAnimatePan()
+    onPanLeftCallback(direction)
+  }
+
+  const onPanRightCallback = React.useCallback(
     (direction: HorizontalDirection) => {
       if (!swipeEnabled) {
         return
@@ -309,6 +318,11 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     },
     [swipeEnabled, targetDate, mode, theme.isRTL],
   )
+
+  const onPanRight = (direction: HorizontalDirection) => {
+    handleAnimatePan()
+    onPanRightCallback(direction)
+  }
 
   const commonProps = {
     cellHeight,
