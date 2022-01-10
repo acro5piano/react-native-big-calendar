@@ -1,6 +1,14 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import {
+  Animated,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -55,6 +63,8 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   cellsBorderStyle?: ViewStyle
   fullBodyStyle?: ViewStyle
   increaseFirstRowHeight?: number
+  animatePan?: boolean
+  fadeAnim: Animated.Value
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -79,6 +89,8 @@ function _CalendarBody<T extends ICalendarEventBase>({
   cellsBorderStyle = {},
   fullBodyStyle = {},
   increaseFirstRowHeight = 1,
+  animatePan = false,
+  fadeAnim,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -137,7 +149,17 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const theme = useTheme()
 
   return (
-    <View style={fullBodyStyle}>
+    <Animated.View
+      style={[
+        fullBodyStyle,
+        animatePan === true
+          ? {
+              // Bind opacity to animated value
+              opacity: fadeAnim,
+            }
+          : {},
+      ]}
+    >
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
       <ScrollView
         style={[
@@ -257,7 +279,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           ))}
         </View>
       </ScrollView>
-    </View>
+    </Animated.View>
   )
 }
 
