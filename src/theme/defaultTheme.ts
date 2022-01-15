@@ -9,7 +9,7 @@ export const defaultTheme: ThemeInterface = {
     },
     evenCellBg: '#fff',
     oddCellBg: '#fff',
-    nowIndicator: 'red',
+    nowIndicator: '#FEA621',
     gray: {
       // 50: '#fafafa',
       100: '#f5f5f5',
