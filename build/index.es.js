@@ -693,11 +693,13 @@ function _CalendarBody(_a) {
                     })
                         .map(function (event) { return (__assign(__assign({}, event), { start: dayjs(event.end).startOf('day'), end: dayjs(event.end).endOf('day') })); })
                         .map(_renderMappedEvent),
-                    isToday(date) && !hideNowIndicator && (React.createElement(View, { style: [
-                            styles.nowIndicator,
-                            { backgroundColor: theme.palette.nowIndicator },
-                            { top: "".concat(getRelativeTopInDay(now), "%") },
-                        ] })))); })))));
+                    isToday(date) && !hideNowIndicator && (React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center' } },
+                        React.createElement(View, { style: { width: 2, height: 2, borderRadius: 1, backgroundColor: theme.palette.nowIndicator } }),
+                        React.createElement(View, { style: [
+                                styles.nowIndicator,
+                                { backgroundColor: theme.palette.nowIndicator },
+                                { top: "".concat(getRelativeTopInDay(now), "%") },
+                            ] }))))); })))));
 }
 var CalendarBody = typedMemo(_CalendarBody);
 
