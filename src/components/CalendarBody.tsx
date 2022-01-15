@@ -210,7 +210,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
                 .map(_renderMappedEvent)}
 
               {isToday(date) && !hideNowIndicator && (
-                  // <View style={{width: 2, height: 2, borderRadius: 1, backgroundColor: theme.palette.nowIndicator }} />
                   <View style={[
                     styles.nowIndicator,
                     {flexDirection: 'row', justifyContent: 'center'},
@@ -221,7 +220,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
                       style={[
                         {flex: 1},
                         { backgroundColor: theme.palette.nowIndicator },
-                        // { top: `${getRelativeTopInDay(now)}%` },
                       ]}
                     />
                 </View>
