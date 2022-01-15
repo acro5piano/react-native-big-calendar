@@ -725,12 +725,11 @@ function _CalendarBody(_a) {
                     })
                         .map(function (event) { return (__assign(__assign({}, event), { start: dayjs__default['default'](event.end).startOf('day'), end: dayjs__default['default'](event.end).endOf('day') })); })
                         .map(_renderMappedEvent),
-                    isToday(date) && !hideNowIndicator && (React__namespace.createElement(reactNative.View, { style: { flexDirection: 'row', alignItems: 'center' } },
+                    isToday(date) && !hideNowIndicator && (React__namespace.createElement(reactNative.View, { style: __assign(__assign({}, styles.nowIndicator), { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', top: "".concat(getRelativeTopInDay(now), "%") }) },
                         React__namespace.createElement(reactNative.View, { style: { width: 2, height: 2, borderRadius: 1, backgroundColor: theme.palette.nowIndicator } }),
                         React__namespace.createElement(reactNative.View, { style: [
-                                styles.nowIndicator,
+                                // styles.nowIndicator,
                                 { backgroundColor: theme.palette.nowIndicator },
-                                { top: "".concat(getRelativeTopInDay(now), "%") },
                             ] }))))); })))));
 }
 var CalendarBody = typedMemo(_CalendarBody);

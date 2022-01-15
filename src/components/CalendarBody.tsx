@@ -210,13 +210,12 @@ function _CalendarBody<T extends ICalendarEventBase>({
                 .map(_renderMappedEvent)}
 
               {isToday(date) && !hideNowIndicator && (
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{...styles.nowIndicator, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',  top: `${getRelativeTopInDay(now)}%` }}>
                   <View style={{width: 2, height: 2, borderRadius: 1, backgroundColor: theme.palette.nowIndicator }} />
                 <View
                   style={[
-                    styles.nowIndicator,
+                    // styles.nowIndicator,
                     { backgroundColor: theme.palette.nowIndicator },
-                    { top: `${getRelativeTopInDay(now)}%` },
                   ]}
                 />
                 </View>
