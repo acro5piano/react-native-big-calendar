@@ -725,18 +725,15 @@ function _CalendarBody(_a) {
                     })
                         .map(function (event) { return (__assign(__assign({}, event), { start: dayjs__default['default'](event.end).startOf('day'), end: dayjs__default['default'](event.end).endOf('day') })); })
                         .map(_renderMappedEvent),
-                    isToday(date) && !hideNowIndicator && (
-                    // <View style={{width: 2, height: 2, borderRadius: 1, backgroundColor: theme.palette.nowIndicator }} />
-                    React__namespace.createElement(reactNative.View, { style: [
+                    isToday(date) && !hideNowIndicator && (React__namespace.createElement(reactNative.View, { style: [
                             styles.nowIndicator,
                             { flexDirection: 'row', justifyContent: 'center' },
                             { top: "".concat(getRelativeTopInDay(now), "%") },
                         ] },
-                        React__namespace.createElement(reactNative.View, { style: { width: 2, height: 2, borderRadius: 1, backgroundColor: theme.palette.nowIndicator } }),
+                        React__namespace.createElement(reactNative.View, { style: { width: 4, height: 4, borderRadius: 2, backgroundColor: theme.palette.nowIndicator } }),
                         React__namespace.createElement(reactNative.View, { style: [
                                 { flex: 1 },
                                 { backgroundColor: theme.palette.nowIndicator },
-                                // { top: `${getRelativeTopInDay(now)}%` },
                             ] }))))); })))));
 }
 var CalendarBody = typedMemo(_CalendarBody);

@@ -215,7 +215,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                     {flexDirection: 'row', justifyContent: 'center'},
                     { top: `${getRelativeTopInDay(now)}%` },
                   ]}>
-                    <View style={{width: 2, height: 2, borderRadius: 1,  backgroundColor: theme.palette.nowIndicator}} />
+                    <View style={{width: 4, height: 4, borderRadius: 2,  backgroundColor: theme.palette.nowIndicator}} />
                     <View
                       style={[
                         {flex: 1},
