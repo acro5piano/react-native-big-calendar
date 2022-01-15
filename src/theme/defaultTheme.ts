@@ -4,7 +4,8 @@ export const defaultTheme: ThemeInterface = {
   isRTL: false,
   palette: {
     primary: {
-      main: 'rgb(66, 133, 244)',
+      main: '#FEA621',
+      // main: 'rgb(66, 133, 244)',
       contrastText: '#fff',
     },
     evenCellBg: '#fff',
