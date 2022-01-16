@@ -17,6 +17,7 @@ export interface ThemeInterface {
             300: string;
             500: string;
             800: string;
+            900: string;
         };
     };
     isRTL: boolean;

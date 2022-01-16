@@ -26,7 +26,7 @@ export const HourGuideCell = ({ cellHeight, onPress, date, hour, index }: HourGu
         style={[
           u['border-l'],
           u['border-b'],
-          { borderColor: theme.palette.gray['200'] },
+          { borderColor: theme.palette.gray['300'] },
           { height: cellHeight },
           { backgroundColor: isPair(index) ? evenCellBg : oddCellBg },
         ]}

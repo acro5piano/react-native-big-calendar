@@ -14,7 +14,8 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
     dayHeaderHighlightColor?: string;
     weekDayHeaderHighlightColor?: string;
     showAllDayEventCell?: boolean;
+    mode: string;
 }
-declare function _CalendarHeader<T extends ICalendarEventBase>({ dateRange, cellHeight, style, allDayEvents, onPressDateHeader, onPressEvent, activeDate, headerContentStyle, dayHeaderStyle, dayHeaderHighlightColor, weekDayHeaderHighlightColor, showAllDayEventCell, }: CalendarHeaderProps<T>): JSX.Element;
+declare function _CalendarHeader<T extends ICalendarEventBase>({ dateRange, cellHeight, style, allDayEvents, onPressDateHeader, onPressEvent, activeDate, headerContentStyle, dayHeaderStyle, dayHeaderHighlightColor, weekDayHeaderHighlightColor, showAllDayEventCell, mode, }: CalendarHeaderProps<T>): JSX.Element;
 export declare const CalendarHeader: typeof _CalendarHeader;
 export {};

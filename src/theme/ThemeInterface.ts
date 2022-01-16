@@ -31,7 +31,7 @@ export interface ThemeInterface {
       // 600: string
       // 700: string
       800: string
-      // 900: string
+      900: string
     }
   }
   isRTL: boolean

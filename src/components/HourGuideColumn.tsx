@@ -23,7 +23,7 @@ const _HourGuideColumn = ({
 }: HourGuideColumnProps) => {
   const theme = useTheme()
   const textStyle = React.useMemo(
-    () => ({ color: theme.palette.gray[500], fontSize: theme.typography.xs.fontSize }),
+    () => ({ color: theme.palette.gray[900], fontSize: theme.typography.xs.fontSize }),
     [theme],
   )
   const evenCellBg = theme.palette.evenCellBg

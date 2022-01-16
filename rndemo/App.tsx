@@ -39,7 +39,7 @@ export const App = () => {
     <React.Fragment>
       <StatusBar barStyle="light-content" />
       <SafeAreaView>
-        <View style={{ height: 60, borderBottomWidth: 0.5 }}>
+        {/* <View style={{ height: 60, borderBottomWidth: 0.5 }}>
           <View style={{ width: '50%', marginLeft: 'auto' }}>
             <Picker onValueChange={setMode} mode="dropdown">
               <Picker.Item value="week" label="week" />
@@ -48,7 +48,7 @@ export const App = () => {
               <Picker.Item value="month" label="month" />
             </Picker>
           </View>
-        </View>
+        </View> */}
         <Calendar
           height={Dimensions.get('window').height - 60}
           events={[...events, ...additionalEvents]}

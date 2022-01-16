@@ -640,7 +640,7 @@ var HourGuideCell = function (_a) {
         React__namespace.createElement(reactNative.View, { style: [
                 u['border-l'],
                 u['border-b'],
-                { borderColor: theme.palette.gray['200'] },
+                { borderColor: theme.palette.gray['300'] },
                 { height: cellHeight },
                 { backgroundColor: isPair(index) ? evenCellBg : oddCellBg },
             ] })));
@@ -649,7 +649,7 @@ var HourGuideCell = function (_a) {
 var _HourGuideColumn = function (_a) {
     var cellHeight = _a.cellHeight, hour = _a.hour, ampm = _a.ampm, index = _a.index, _b = _a.hourStyle, hourStyle = _b === void 0 ? {} : _b;
     var theme = useTheme();
-    var textStyle = React__namespace.useMemo(function () { return ({ color: theme.palette.gray[500], fontSize: theme.typography.xs.fontSize }); }, [theme]);
+    var textStyle = React__namespace.useMemo(function () { return ({ color: theme.palette.gray[900], fontSize: theme.typography.xs.fontSize }); }, [theme]);
     var evenCellBg = theme.palette.evenCellBg;
     var oddCellBg = theme.palette.oddCellBg;
     return (React__namespace.createElement(reactNative.View, { style: { height: cellHeight, backgroundColor: isPair(index) ? evenCellBg : oddCellBg } },
@@ -661,7 +661,7 @@ var styles = reactNative.StyleSheet.create({
     nowIndicator: {
         position: 'absolute',
         zIndex: 10000,
-        height: 2,
+        height: 1,
         width: '100%',
     },
 });
@@ -727,12 +727,14 @@ function _CalendarBody(_a) {
                         .map(_renderMappedEvent),
                     isToday(date) && !hideNowIndicator && (React__namespace.createElement(reactNative.View, { style: [
                             styles.nowIndicator,
-                            { flexDirection: 'row', justifyContent: 'center' },
+                            { flexDirection: 'row', alignItems: 'center' },
                             { top: "".concat(getRelativeTopInDay(now), "%") },
+                            { backgroundColor: theme.palette.nowIndicator },
                         ] },
-                        React__namespace.createElement(reactNative.View, { style: { width: 4, height: 4, borderRadius: 2, backgroundColor: theme.palette.nowIndicator } }),
+                        React__namespace.createElement(reactNative.View, { style: { width: 3, height: 3, borderRadius: 1.5, backgroundColor: theme.palette.nowIndicator } }),
                         React__namespace.createElement(reactNative.View, { style: [
-                                { flex: 1 },
+                                styles.nowIndicator,
+                                { top: "".concat(getRelativeTopInDay(now), "%") },
                                 { backgroundColor: theme.palette.nowIndicator },
                             ] }))))); })))));
 }
@@ -849,7 +851,7 @@ function _CalendarBodyForMonthView(_a) {
 var CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView);
 
 function _CalendarHeader(_a) {
-    var dateRange = _a.dateRange, cellHeight = _a.cellHeight, style = _a.style, allDayEvents = _a.allDayEvents, onPressDateHeader = _a.onPressDateHeader, onPressEvent = _a.onPressEvent, activeDate = _a.activeDate, _b = _a.headerContentStyle, headerContentStyle = _b === void 0 ? {} : _b, _c = _a.dayHeaderStyle, dayHeaderStyle = _c === void 0 ? {} : _c, _d = _a.dayHeaderHighlightColor, dayHeaderHighlightColor = _d === void 0 ? '' : _d, _e = _a.weekDayHeaderHighlightColor, weekDayHeaderHighlightColor = _e === void 0 ? '' : _e, _f = _a.showAllDayEventCell, showAllDayEventCell = _f === void 0 ? true : _f;
+    var dateRange = _a.dateRange, cellHeight = _a.cellHeight, style = _a.style, allDayEvents = _a.allDayEvents, onPressDateHeader = _a.onPressDateHeader, onPressEvent = _a.onPressEvent, activeDate = _a.activeDate, _b = _a.headerContentStyle, headerContentStyle = _b === void 0 ? {} : _b, _c = _a.dayHeaderStyle, dayHeaderStyle = _c === void 0 ? {} : _c, _d = _a.dayHeaderHighlightColor, dayHeaderHighlightColor = _d === void 0 ? '' : _d, _e = _a.weekDayHeaderHighlightColor, weekDayHeaderHighlightColor = _e === void 0 ? '' : _e, _f = _a.showAllDayEventCell, showAllDayEventCell = _f === void 0 ? true : _f, _g = _a.mode, mode = _g === void 0 ? '' : _g;
     var _onPressHeader = React__namespace.useCallback(function (date) {
         onPressDateHeader && onPressDateHeader(date);
     }, [onPressDateHeader]);
@@ -870,7 +872,7 @@ function _CalendarHeader(_a) {
             var shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date);
             return (React__namespace.createElement(reactNative.TouchableOpacity, { style: [u['flex-1'], u['pt-2']], onPress: function () { return _onPressHeader(date.toDate()); }, disabled: onPressDateHeader === undefined, key: date.toString() },
                 React__namespace.createElement(reactNative.View, { style: [
-                        { height: cellHeight },
+                        { height: mode === 'day' ? 10 : cellHeight },
                         objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
                     ] },
                     React__namespace.createElement(reactNative.Text, { style: [
@@ -884,7 +886,7 @@ function _CalendarHeader(_a) {
                                     : theme.palette.gray['500'],
                             },
                         ] }, date.format('ddd')),
-                    React__namespace.createElement(reactNative.View, { style: objHasContent(dayHeaderStyle)
+                    mode !== 'day' && React__namespace.createElement(reactNative.View, { style: objHasContent(dayHeaderStyle)
                             ? dayHeaderStyle
                             : shouldHighlight
                                 ? [
@@ -897,7 +899,7 @@ function _CalendarHeader(_a) {
                                     // u['justify-center'],
                                     // u['self-center'],
                                     // u['z-20'],
-                                    { width: 32, marginHorizontal: 10, height: 24, justifyContent: 'center', alignItems: 'center', borderRadius: 6 }
+                                    { width: 32, marginHorizontal: 10, height: 24, justifyContent: 'center', alignItems: 'center', borderRadius: 6, alignSelf: 'center' }
                                 ]
                                 : { marginBottom: 0 } },
                         React__namespace.createElement(reactNative.Text, { style: [
@@ -918,7 +920,7 @@ function _CalendarHeader(_a) {
                             ] }, date.format('D')))),
                 showAllDayEventCell ? (React__namespace.createElement(reactNative.View, { style: [
                         u['border-l'],
-                        { borderColor: theme.palette.gray['200'] },
+                        { borderColor: theme.palette.gray['300'] },
                         { height: cellHeight },
                     ] }, allDayEvents.map(function (event) {
                     if (!dayjs__default['default'](date).isBetween(event.start, event.end, 'day', '[]')) {

@@ -20,6 +20,7 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dayHeaderHighlightColor?: string
   weekDayHeaderHighlightColor?: string
   showAllDayEventCell?: boolean
+  mode: string
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -35,6 +36,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   dayHeaderHighlightColor = '',
   weekDayHeaderHighlightColor = '',
   showAllDayEventCell = true,
+  mode= '',
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -77,7 +79,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
           >
             <View
               style={[
-                { height: cellHeight },
+                { height: mode === 'day' ? 10 : cellHeight },
                 objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
               ]}
             >
@@ -96,7 +98,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
               >
                 {date.format('ddd')}
               </Text>
-              <View
+              { mode !== 'day' && <View
                 style={
                   objHasContent(dayHeaderStyle)
                     ? dayHeaderStyle
@@ -111,7 +113,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                         // u['justify-center'],
                         // u['self-center'],
                         // u['z-20'],
-                        {width: 32, marginHorizontal: 10, height: 24, justifyContent: 'center', alignItems: 'center', borderRadius: 6 }
+                        {width: 32, marginHorizontal: 10, height: 24, justifyContent: 'center', alignItems: 'center', borderRadius: 6, alignSelf: 'center' }
                       ]
                     : {marginBottom: 0}
                 }
@@ -136,13 +138,13 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                 >
                   {date.format('D')}
                 </Text>
-              </View>
+              </View>}
             </View>
             {showAllDayEventCell ? (
               <View
                 style={[
                   u['border-l'],
-                  { borderColor: theme.palette.gray['200'] },
+                  { borderColor: theme.palette.gray['300'] },
                   { height: cellHeight },
                 ]}
               >
