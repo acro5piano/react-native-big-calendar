@@ -867,8 +867,8 @@ function _CalendarHeader(_a) {
             theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
             style,
         ] },
-        mode !== 'day' && React__namespace.createElement(reactNative.View, { style: [u['z-10'], u['w-50'], borderColor] }),
-        mode !== 'day' && dateRange.map(function (date) {
+        React__namespace.createElement(reactNative.View, { style: [u['z-10'], u['w-50'], borderColor] }),
+        dateRange.map(function (date) {
             var shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date);
             return (React__namespace.createElement(reactNative.TouchableOpacity, { style: [u['flex-1'], u['pt-2']], onPress: function () { return _onPressHeader(date.toDate()); }, disabled: onPressDateHeader === undefined, key: date.toString() },
                 React__namespace.createElement(reactNative.View, { style: [

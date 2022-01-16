@@ -66,8 +66,8 @@ function _CalendarHeader<T extends ICalendarEventBase>({
         style,
       ]}
     >
-     {mode !== 'day' && <View style={[u['z-10'], u['w-50'], borderColor]} />}
-      {mode !== 'day' && dateRange.map((date) => {
+     {<View style={[u['z-10'], u['w-50'], borderColor]} />}
+      { dateRange.map((date) => {
         const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
 
         return (

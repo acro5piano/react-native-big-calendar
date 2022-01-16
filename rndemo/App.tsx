@@ -23,7 +23,7 @@ const events = [
 ]
 
 export const App = () => {
-  const [mode, setMode] = React.useState<Mode>('day')
+  const [mode, setMode] = React.useState<Mode>('week')
   const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEventBase[]>([])
 
   const addEvent = React.useCallback(
@@ -54,6 +54,7 @@ export const App = () => {
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
           mode={mode}
+          showAllDayEventCell={false}
         />
       </SafeAreaView>
     </React.Fragment>
