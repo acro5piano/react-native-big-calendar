@@ -94,7 +94,7 @@ if (mode === 'day') {
                       ? stringHasContent(weekDayHeaderHighlightColor)
                         ? weekDayHeaderHighlightColor
                         : theme.palette.primary.main
-                      : theme.palette.gray['500'],
+                      : theme.palette.gray['900'],
                   },
                 ]}
               >

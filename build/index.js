@@ -886,7 +886,7 @@ function _CalendarHeader(_a) {
                                     ? stringHasContent(weekDayHeaderHighlightColor)
                                         ? weekDayHeaderHighlightColor
                                         : theme.palette.primary.main
-                                    : theme.palette.gray['500'],
+                                    : theme.palette.gray['900'],
                             },
                         ] }, date.format('ddd')),
                     mode !== 'day' && React__namespace.createElement(reactNative.View, { style: objHasContent(dayHeaderStyle)
