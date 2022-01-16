@@ -56,7 +56,9 @@ function _CalendarHeader<T extends ICalendarEventBase>({
 
   const borderColor = { borderColor: theme.palette.gray['200'] }
   const primaryBg = { backgroundColor: theme.palette.primary.main }
-
+if (mode === 'day') {
+  return null
+}
   return (
     <View
       style={[

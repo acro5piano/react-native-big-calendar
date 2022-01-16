@@ -861,6 +861,9 @@ function _CalendarHeader(_a) {
     var theme = useTheme();
     var borderColor = { borderColor: theme.palette.gray['200'] };
     var primaryBg = { backgroundColor: theme.palette.primary.main };
+    if (mode === 'day') {
+        return null;
+    }
     return (React__namespace.createElement(reactNative.View, { style: [
             showAllDayEventCell ? u['border-b-2'] : {},
             showAllDayEventCell ? borderColor : {},
