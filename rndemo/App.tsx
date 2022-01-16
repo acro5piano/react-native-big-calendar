@@ -23,7 +23,7 @@ const events = [
 ]
 
 export const App = () => {
-  const [mode, setMode] = React.useState<Mode>('week')
+  const [mode, setMode] = React.useState<Mode>('day')
   const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEventBase[]>([])
 
   const addEvent = React.useCallback(

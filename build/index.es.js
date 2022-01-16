@@ -835,8 +835,8 @@ function _CalendarHeader(_a) {
             theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
             style,
         ] },
-        React.createElement(View, { style: [u['z-10'], u['w-50'], borderColor] }),
-        dateRange.map(function (date) {
+        mode !== 'day' && React.createElement(View, { style: [u['z-10'], u['w-50'], borderColor] }),
+        mode !== 'day' && dateRange.map(function (date) {
             var shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date);
             return (React.createElement(TouchableOpacity, { style: [u['flex-1'], u['pt-2']], onPress: function () { return _onPressHeader(date.toDate()); }, disabled: onPressDateHeader === undefined, key: date.toString() },
                 React.createElement(View, { style: [
