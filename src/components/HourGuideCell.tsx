@@ -5,7 +5,6 @@ import { CalendarCellStyle } from 'src'
 
 import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
-import { isPair } from '../utils'
 
 interface HourGuideCellProps {
   cellHeight: number

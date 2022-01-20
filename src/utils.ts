@@ -247,10 +247,6 @@ export function getEventSpanningInfo(
   return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
 }
 
-export function isPair(i: number): boolean {
-  return i % 2 === 0
-}
-
 export function objHasContent(obj: ViewStyle | TextStyle): boolean {
   return !!Object.keys(obj).length
 }

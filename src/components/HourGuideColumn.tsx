@@ -4,7 +4,7 @@ import { Text, TextStyle, View } from 'react-native'
 import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
 import { formatHour } from '../utils'
-import { isPair, objHasContent } from '../utils'
+import { objHasContent } from '../utils'
 
 interface HourGuideColumnProps {
   cellHeight: number
