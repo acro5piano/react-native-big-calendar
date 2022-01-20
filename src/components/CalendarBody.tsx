@@ -148,13 +148,12 @@ function _CalendarBody<T extends ICalendarEventBase>({
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
         >
           <View style={[u['z-20'], u['w-50']]}>
-            {hours.map((hour, index) => (
+            {hours.map((hour) => (
               <HourGuideColumn
                 key={hour}
                 cellHeight={cellHeight}
                 hour={hour}
                 ampm={ampm}
-                index={index}
                 hourStyle={hourStyle}
               />
             ))}

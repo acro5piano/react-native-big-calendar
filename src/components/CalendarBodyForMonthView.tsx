@@ -8,6 +8,7 @@ import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import {
   CalendarCellStyle,
+  CalendarCellTextStyle,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
@@ -25,7 +26,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
   calendarCellStyle?: CalendarCellStyle
-  calendarCellTextStyle?: CalendarCellStyle
+  calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: T) => void
@@ -125,7 +126,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     minHeight: minCellHeight,
                   },
                   {
-                    ...getCalendarCellStyle(dayjs(date), i),
+                    ...getCalendarCellStyle(date?.toDate(), i),
                   },
                 ]}
                 key={ii}
@@ -141,7 +142,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                           : theme.palette.gray['800'],
                     },
                     {
-                      ...getCalendarCellTextStyle(dayjs(date), i),
+                      ...getCalendarCellTextStyle(date?.toDate(), i),
                     },
                   ]}
                 >

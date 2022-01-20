@@ -159,7 +159,7 @@ storiesOf('showcase - Mobile', module)
         height={MOBILE_HEIGHT}
         events={events}
         mode={'month'}
-        calendarCellStyle={(_, index) => {
+        calendarCellStyle={(_, index = 0) => {
           const isEvenRow = index % 2 === 0
 
           return {
@@ -219,7 +219,7 @@ storiesOf('showcase - Mobile', module)
         height={MOBILE_HEIGHT}
         events={events}
         mode={'week'}
-        calendarCellStyle={(_, index) => {
+        calendarCellStyle={(_, index = 0) => {
           const isEvenRow: boolean = index % 2 === 0
 
           return {

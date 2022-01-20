@@ -38,7 +38,7 @@ export const HourGuideCell = ({
           u['border-b'],
           { borderColor: theme.palette.gray['200'] },
           { height: cellHeight },
-          { ...getCalendarCellStyle(date, index) },
+          { ...getCalendarCellStyle(date.toDate(), index) },
         ]}
       />
     </TouchableWithoutFeedback>
