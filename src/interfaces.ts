@@ -31,7 +31,7 @@ export type EventCellStyle<T extends ICalendarEventBase> = ViewStyle | ((event: 
 
 export type CalendarCellStyle =
   | ViewStyle
-  | ((date: dayjs.Dayjs, hourRowIndex?: Number) => ViewStyle)
+  | ((date: Date, hourRowIndex: number) => ViewStyle)
 
 export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
 
