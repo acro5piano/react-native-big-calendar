@@ -6,7 +6,7 @@
 
 - add support to style calendar cells based on cell date #610
 
-### Breaking change
+### Breaking changes
 
 - Deleted deprecated interfaces. Instead, use `ICalendarEventBase & T`
   - `ICalendarEvent<T>`
