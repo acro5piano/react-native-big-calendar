@@ -6,6 +6,7 @@ import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import {
+  CalendarCellStyle,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
@@ -43,6 +44,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   showTime: boolean
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
+  calendarCellStyle?: CalendarCellStyle
   hideNowIndicator?: boolean
   overlapOffset?: number
   onPressCell?: (date: Date) => void
@@ -63,6 +65,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   events,
   onPressEvent,
   eventCellStyle,
+  calendarCellStyle,
   ampm,
   showTime,
   scrollOffsetMinutes,
@@ -145,13 +148,12 @@ function _CalendarBody<T extends ICalendarEventBase>({
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
         >
           <View style={[u['z-20'], u['w-50']]}>
-            {hours.map((hour, index) => (
+            {hours.map((hour) => (
               <HourGuideColumn
                 key={hour}
                 cellHeight={cellHeight}
                 hour={hour}
                 ampm={ampm}
-                index={index}
                 hourStyle={hourStyle}
               />
             ))}
@@ -166,6 +168,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   hour={hour}
                   onPress={_onPressCell}
                   index={index}
+                  calendarCellStyle={calendarCellStyle}
                 />
               ))}
 

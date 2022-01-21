@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { RecursiveArray, ViewStyle } from 'react-native'
+import { RecursiveArray, TextStyle, ViewStyle } from 'react-native'
 
 import { CalendarHeaderProps } from './components/CalendarHeader'
 import { CalendarHeaderForMonthViewProps } from './components/CalendarHeaderForMonthView'
@@ -27,6 +27,10 @@ export type CalendarTouchableOpacityProps = {
 export type Mode = '3days' | 'week' | 'day' | 'custom' | 'month'
 
 export type EventCellStyle<T extends ICalendarEventBase> = ViewStyle | ((event: T) => ViewStyle)
+
+export type CalendarCellStyle = ViewStyle | ((date?: Date, hourRowIndex?: number) => ViewStyle)
+
+export type CalendarCellTextStyle = TextStyle | ((date?: Date, hourRowIndex?: number) => TextStyle)
 
 export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
 

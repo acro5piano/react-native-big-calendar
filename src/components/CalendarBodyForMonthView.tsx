@@ -7,6 +7,8 @@ import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import {
+  CalendarCellStyle,
+  CalendarCellTextStyle,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
@@ -23,6 +25,8 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   events: T[]
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
+  calendarCellStyle?: CalendarCellStyle
+  calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: T) => void
@@ -41,6 +45,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   events,
   onPressEvent,
   eventCellStyle,
+  calendarCellStyle,
+  calendarCellTextStyle,
   onSwipeHorizontal,
   hideNowIndicator,
   renderEvent,
@@ -59,6 +65,19 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 
   const minCellHeight = containerHeight / 5 - 30
   const theme = useTheme()
+
+  const getCalendarCellStyle = React.useMemo(
+    () => (typeof calendarCellStyle === 'function' ? calendarCellStyle : () => calendarCellStyle),
+    [calendarCellStyle],
+  )
+
+  const getCalendarCellTextStyle = React.useMemo(
+    () =>
+      typeof calendarCellTextStyle === 'function'
+        ? calendarCellTextStyle
+        : () => calendarCellTextStyle,
+    [calendarCellTextStyle],
+  )
 
   return (
     <View
@@ -106,6 +125,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   {
                     minHeight: minCellHeight,
                   },
+                  {
+                    ...getCalendarCellStyle(date?.toDate(), i),
+                  },
                 ]}
                 key={ii}
               >
@@ -118,6 +140,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                         date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
                           ? theme.palette.primary.main
                           : theme.palette.gray['800'],
+                    },
+                    {
+                      ...getCalendarCellTextStyle(date?.toDate(), i),
                     },
                   ]}
                 >
