@@ -1,8 +1,8 @@
-![test](https://github.com/llotheo/react-native-big-calendar/workflows/test/badge.svg)
-![release](https://github.com/llotheo/react-native-big-calendar/workflows/release/badge.svg)
+![test](https://github.com/acro5piano/react-native-big-calendar/workflows/test/badge.svg)
+![release](https://github.com/acro5piano/react-native-big-calendar/workflows/release/badge.svg)
 [![npm version](https://badge.fury.io/js/react-native-big-calendar.svg)](https://badge.fury.io/js/react-native-big-calendar)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/ca0f2cc8-bb4f-4a18-be48-c2b10e2b6046/deploy-status)](https://app.netlify.com/sites/react-native-big-calendar/deploys)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=llotheo/react-native-big-calendar)](https://dependabot.com)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=acro5piano/react-native-big-calendar)](https://dependabot.com)
 
 # react-native-big-calendar
 
@@ -175,7 +175,7 @@ type EventRenderer<T> = (
 ) => ReactElement | null
 ```
 
-For more information, see [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
+For more information, see [Storybook](https://github.com/acro5piano/react-native-big-calendar/blob/master/stories/index.stories.tsx)
 
 ## ICalendarEventBase
 
