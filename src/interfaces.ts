@@ -11,11 +11,6 @@ export interface ICalendarEventBase {
   children?: ReactElement | null
 }
 
-/**
- * @deprecated Prefer ICalendarEventBase & T instead for simplicity.
- */
-export type ICalendarEvent<T = {}> = ICalendarEventBase & T
-
 export type CalendarTouchableOpacityProps = {
   delayPressIn: number
   key: string
@@ -49,13 +44,3 @@ export type HeaderRenderer<T extends ICalendarEventBase> = React.ComponentType<
   CalendarHeaderProps<T> & { mode: Mode }
 >
 export type MonthHeaderRenderer = React.ComponentType<CalendarHeaderForMonthViewProps>
-
-/**
- * @deprecated Prefer interface ICalendarEventBase instead.
- */
-export type DayJSConvertedEvent<T = any> = ICalendarEventBase & T
-
-/**
- * @deprecated Prefer interface ICalendarEventBase instead.
- */
-export type Event<T = any> = ICalendarEventBase & T

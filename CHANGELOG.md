@@ -1,5 +1,40 @@
 # Changelog
 
+## 3.0.0
+
+### New Feataures
+
+- add support to style calendar cells based on cell date #610
+
+### Breaking change
+
+- Deleted deprecated interfaces. Instead, use `ICalendarEventBase & T`
+  - `ICalendarEvent<T>`
+  - `DayJSConvertedEvent`
+  - `Event`
+- `evenCellBg` and `oddCellBg` is deleted in favor of `calendarCellStyle` function. To migrate:
+
+Before
+
+```typescript
+<Calendar theme={{ evenCellBg: '#aaa', oddCellBg: '#bbb' }} />
+```
+
+After
+
+```typescript
+<Calendar
+  calendarCellStyle={(date, index) => ({
+    backgroundColor: index % 2 === 0 ? "#aaa" : "#bbb",
+  })}
+/>
+
+```
+
+### New Contributors
+
+- @TechSaq made their first contribution in https://github.com/acro5piano/react-native-big-calendar/pull/610
+
 ## 2.9.1
 
 ### Bugfixes
