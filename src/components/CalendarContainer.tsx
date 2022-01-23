@@ -1,21 +1,24 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { ViewStyle } from 'react-native'
+import { TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
+  CalendarCellStyle,
+  CalendarCellTextStyle,
   DateRangeHandler,
   EventCellStyle,
   EventRenderer,
   HeaderRenderer,
   HorizontalDirection,
-  ICalendarEvent,
+  ICalendarEventBase,
   Mode,
   MonthHeaderRenderer,
   WeekNum,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import {
+  generateHoursArray,
   getDatesInMonth,
   getDatesInNextCustomDays,
   getDatesInNextOneDay,
@@ -23,6 +26,7 @@ import {
   getDatesInWeek,
   isAllDayEvent,
   modeToNum,
+  parseStartEndHour,
   typedMemo,
 } from '../utils'
 import { CalendarBody } from './CalendarBody'
@@ -30,16 +34,21 @@ import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
 import { CalendarHeader } from './CalendarHeader'
 import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
 
-export interface CalendarContainerProps<T> {
+export interface CalendarContainerProps<T extends ICalendarEventBase> {
   /**
    * Events to be rendered. This is a required prop.
    */
-  events: ICalendarEvent<T>[]
+  events: T[]
 
   /**
    * The height of calendar component. This is a required prop.
    */
   height: number
+
+  /**
+   * The height of each hour row.
+   */
+  hourRowHeight?: number
 
   /**
    * Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.
@@ -48,8 +57,14 @@ export interface CalendarContainerProps<T> {
 
   // Custom style
   eventCellStyle?: EventCellStyle<T>
+  calendarCellStyle?: CalendarCellStyle
+  calendarCellTextStyle?: CalendarCellTextStyle
   calendarContainerStyle?: ViewStyle
   headerContainerStyle?: ViewStyle
+  headerContentStyle?: ViewStyle
+  dayHeaderStyle?: ViewStyle
+  dayHeaderHighlightColor?: string
+  weekDayHeaderHighlightColor?: string
   bodyContainerStyle?: ViewStyle
 
   // Custom renderer
@@ -70,17 +85,29 @@ export interface CalendarContainerProps<T> {
   onChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+  onPressEvent?: (event: T) => void
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
+  eventMinHeightForMonthView?: number
+  activeDate?: Date
+  headerComponent?: React.ReactElement | null
+  headerComponentStyle?: ViewStyle
+  hourStyle?: TextStyle
+  showAllDayEventCell?: boolean
+  minTime?: string
+  maxTime?: string
+  steps?: number
 }
 
-function _CalendarContainer<T>({
+function _CalendarContainer<T extends ICalendarEventBase>({
   events,
   height,
+  hourRowHeight,
   ampm = false,
   date,
   eventCellStyle,
+  calendarCellStyle,
+  calendarCellTextStyle,
   locale = 'en',
   hideNowIndicator = false,
   mode = 'week',
@@ -88,6 +115,10 @@ function _CalendarContainer<T>({
   scrollOffsetMinutes = 0,
   showTime = true,
   headerContainerStyle = {},
+  headerContentStyle = {},
+  dayHeaderStyle = {},
+  dayHeaderHighlightColor = '',
+  weekDayHeaderHighlightColor = '',
   bodyContainerStyle = {},
   swipeEnabled = true,
   weekStartsOn = 0,
@@ -100,6 +131,15 @@ function _CalendarContainer<T>({
   renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
+  eventMinHeightForMonthView = 22,
+  activeDate,
+  headerComponent = null,
+  headerComponentStyle = {},
+  hourStyle = {},
+  showAllDayEventCell = true,
+  minTime = '00:00',
+  maxTime = '23:00',
+  steps = 60,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -144,7 +184,13 @@ function _CalendarContainer<T>({
     }
   }, [dateRange, onChangeDate])
 
-  const cellHeight = React.useMemo(() => Math.max(height - 30, MIN_HEIGHT) / 24, [height])
+  const cellHeight = React.useMemo(
+    () =>
+      hourRowHeight ||
+      Math.max(height - steps / 2, MIN_HEIGHT) /
+        generateHoursArray(parseStartEndHour(minTime), parseStartEndHour(maxTime), steps).length,
+    [height, hourRowHeight, minTime, maxTime, steps],
+  )
 
   const theme = useTheme()
 
@@ -166,6 +212,7 @@ function _CalendarContainer<T>({
     cellHeight,
     dateRange,
     mode,
+    onPressEvent,
   }
 
   if (mode === 'month') {
@@ -173,6 +220,11 @@ function _CalendarContainer<T>({
       style: headerContainerStyle,
       locale: locale,
       weekStartsOn: weekStartsOn,
+      headerContentStyle: headerContentStyle,
+      dayHeaderStyle: dayHeaderStyle,
+      dayHeaderHighlightColor: dayHeaderHighlightColor,
+      weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
+      showAllDayEventCell: showAllDayEventCell,
     }
     return (
       <React.Fragment>
@@ -181,8 +233,10 @@ function _CalendarContainer<T>({
           {...commonProps}
           style={bodyContainerStyle}
           containerHeight={height}
-          events={daytimeEvents}
+          events={[...daytimeEvents, ...allDayEvents]}
           eventCellStyle={eventCellStyle}
+          calendarCellStyle={calendarCellStyle}
+          calendarCellTextStyle={calendarCellTextStyle}
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
           onPressCell={onPressCell}
@@ -191,6 +245,7 @@ function _CalendarContainer<T>({
           renderEvent={renderEvent}
           targetDate={targetDate}
           maxVisibleEventCount={maxVisibleEventCount}
+          eventMinHeightForMonthView={eventMinHeightForMonthView}
         />
       </React.Fragment>
     )
@@ -201,6 +256,12 @@ function _CalendarContainer<T>({
     style: headerContainerStyle,
     allDayEvents: allDayEvents,
     onPressDateHeader: onPressDateHeader,
+    activeDate,
+    headerContentStyle: headerContentStyle,
+    dayHeaderStyle: dayHeaderStyle,
+    dayHeaderHighlightColor: dayHeaderHighlightColor,
+    weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
+    showAllDayEventCell: showAllDayEventCell,
   }
 
   return (
@@ -212,6 +273,7 @@ function _CalendarContainer<T>({
         containerHeight={height}
         events={daytimeEvents}
         eventCellStyle={eventCellStyle}
+        calendarCellStyle={calendarCellStyle}
         hideNowIndicator={hideNowIndicator}
         overlapOffset={overlapOffset}
         scrollOffsetMinutes={scrollOffsetMinutes}
@@ -221,6 +283,12 @@ function _CalendarContainer<T>({
         onPressEvent={onPressEvent}
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}
+        headerComponent={headerComponent}
+        headerComponentStyle={headerComponentStyle}
+        hourStyle={hourStyle}
+        minTime={minTime}
+        maxTime={maxTime}
+        steps={steps}
       />
     </React.Fragment>
   )

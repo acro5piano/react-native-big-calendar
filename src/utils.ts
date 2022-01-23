@@ -1,8 +1,9 @@
 import dayjs from 'dayjs'
 import React from 'react'
+import { TextStyle, ViewStyle } from 'react-native'
 
 import { OVERLAP_PADDING } from './commonStyles'
-import { ICalendarEvent, Mode, WeekNum } from './interfaces'
+import { ICalendarEventBase, Mode, WeekNum } from './interfaces'
 import { Palette } from './theme/ThemeInterface'
 
 export const typedMemo: <T>(c: T) => T = React.memo
@@ -60,20 +61,36 @@ export const hours = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 ]
 
-export function formatHour(hour: number, ampm = false) {
-  if (ampm) {
-    if (hour === 0) {
-      return ''
-    }
-    if (hour === 12) {
-      return `12 PM`
-    }
-    if (hour > 12) {
-      return `${hour - 12} PM`
-    }
-    return `${hour} AM`
+export function parseStartEndHour(time: String) {
+  const timeArray = time.split(':').map((x) => +x)
+  let now = new Date()
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...timeArray)
+}
+
+export function generateHoursArray(startTime: Date, endTime: Date, step: number) {
+  let res = []
+  while (startTime < endTime) {
+    let minutes = startTime.getMinutes() < 10 ? '00' : startTime.getMinutes()
+    res.push(startTime.getHours() + ':' + minutes)
+    startTime.setMinutes(startTime.getMinutes() + step)
   }
-  return `${hour}:00`
+  return res
+}
+
+export function formatHour(time: string, ampm = false) {
+  if (ampm) {
+    let hours = Number(time.split(':')[0])
+    let minutes = Number(time.split(':')[0])
+    let newformat = hours >= 12 ? 'PM' : 'AM'
+    hours = hours % 12
+
+    // To display "0" as "12"
+    let newHours = hours ? hours : 12
+    let newMinutes = minutes < 10 ? '0' + minutes : minutes
+    return `${newHours}:${newMinutes} ${newformat}`
+  }
+
+  return `${time}`
 }
 
 export function isToday(date: dayjs.Dayjs) {
@@ -81,8 +98,23 @@ export function isToday(date: dayjs.Dayjs) {
   return today.isSame(date, 'day')
 }
 
-export function getRelativeTopInDay(date: dayjs.Dayjs) {
-  return (100 * (date.hour() * 60 + date.minute())) / DAY_MINUTES
+export function normalize(
+  val: number,
+  minVal: number,
+  maxVal: number,
+  newMin: number,
+  newMax: number,
+) {
+  return newMin + ((val - minVal) * (newMax - newMin)) / (maxVal - minVal)
+}
+
+export function getRelativeTopInDay(date: dayjs.Dayjs, minTime: string, maxTime: string) {
+  let minRange = Number(minTime.split(':')[0]) * 60 + Number(minTime.split(':')[1])
+  let maxRange = Number(maxTime.split(':')[0]) * 60 + Number(maxTime.split(':')[1])
+
+  let res = normalize(date.hour() * 60 + date.minute(), minRange, maxRange, 0, 100)
+
+  return res
 }
 
 export function todayInMinutes() {
@@ -125,8 +157,8 @@ export function isAllDayEvent(start: Date, end: Date) {
 }
 
 export function getCountOfEventsAtEvent(
-  event: ICalendarEvent<any>,
-  eventList: ICalendarEvent<any>[],
+  event: ICalendarEventBase,
+  eventList: ICalendarEventBase[],
 ) {
   return eventList.filter(
     (e) =>
@@ -135,7 +167,7 @@ export function getCountOfEventsAtEvent(
   ).length
 }
 
-export function getOrderOfEvent(event: ICalendarEvent<any>, eventList: ICalendarEvent<any>[]) {
+export function getOrderOfEvent(event: ICalendarEventBase, eventList: ICalendarEventBase[]) {
   const events = eventList
     .filter(
       (e) =>
@@ -216,7 +248,7 @@ function weekDaysCount(weekStartsOn: WeekNum, weekEndsOn: WeekNum) {
 }
 
 export function getEventSpanningInfo(
-  event: ICalendarEvent<any>,
+  event: ICalendarEventBase,
   date: dayjs.Dayjs,
   dayOfTheWeek: number,
   calendarWidth: number,
@@ -244,4 +276,23 @@ export function getEventSpanningInfo(
   const eventWidth = dayWidth * eventWeekDuration - 6
 
   return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
+}
+
+export function objHasContent(obj: ViewStyle | TextStyle): boolean {
+  return !!Object.keys(obj).length
+}
+
+export function stringHasContent(string: string): boolean {
+  return !!string.length
+}
+
+export function diffInMinutes(start: string, end: string) {
+  let startArr = start.split(':')
+  var endArr = end.split(':')
+  var startDate = new Date(0, 0, 0, Number(startArr[0]), Number(startArr[1]), 0)
+  var endDate = new Date(0, 0, 0, Number(endArr[0]), Number(endArr[1]), 0)
+  var diff = endDate.getTime() - startDate.getTime()
+
+  var minutes = Math.floor(diff / 1000 / 60)
+  return minutes
 }

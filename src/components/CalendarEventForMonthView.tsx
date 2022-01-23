@@ -4,22 +4,23 @@ import { Text, TouchableOpacity, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEvent } from '../interfaces'
+import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { getEventSpanningInfo, typedMemo } from '../utils'
 
-interface CalendarEventProps<T> {
-  event: ICalendarEvent<T>
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+interface CalendarEventProps<T extends ICalendarEventBase> {
+  event: T
+  onPressEvent?: (event: T) => void
   eventCellStyle?: EventCellStyle<T>
   renderEvent?: EventRenderer<T>
   date: dayjs.Dayjs
   dayOfTheWeek: number
   calendarWidth: number
   isRTL: boolean
+  eventMinHeightForMonthView: number
 }
 
-function _CalendarEventForMonthView<T>({
+function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   event,
   onPressEvent,
   eventCellStyle,
@@ -28,6 +29,7 @@ function _CalendarEventForMonthView<T>({
   dayOfTheWeek,
   calendarWidth,
   isRTL,
+  eventMinHeightForMonthView,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -54,29 +56,32 @@ function _CalendarEventForMonthView<T>({
     ],
   })
 
-  if (renderEvent) {
-    return renderEvent(event, touchableOpacityProps)
-  }
-
   return (
-    <View style={{ minHeight: 22 }}>
-      {((!isMultipleDays && date.isSame(event.start, 'day')) ||
-        (isMultipleDays && isMultipleDaysStart)) && (
-        <TouchableOpacity {...touchableOpacityProps}>
-          <Text
-            style={[
-              { color: theme.palette.primary.contrastText },
-              theme.typography.xs,
-              u['truncate'],
-              isRTL && { textAlign: 'right' },
-            ]}
-            numberOfLines={1}
-          >
-            {event.title}
-          </Text>
-        </TouchableOpacity>
-      )}
-    </View>
+    <TouchableOpacity
+      style={{ minHeight: eventMinHeightForMonthView }}
+      onPress={() => onPressEvent?.(event)}
+    >
+      {(!isMultipleDays && date.isSame(event.start, 'day')) ||
+      (isMultipleDays && isMultipleDaysStart) ? (
+        renderEvent ? (
+          renderEvent(event, touchableOpacityProps)
+        ) : (
+          <View {...touchableOpacityProps}>
+            <Text
+              style={[
+                { color: theme.palette.primary.contrastText },
+                theme.typography.xs,
+                u['truncate'],
+                isRTL && { textAlign: 'right' },
+              ]}
+              numberOfLines={1}
+            >
+              {event.title}
+            </Text>
+          </View>
+        )
+      ) : null}
+    </TouchableOpacity>
   )
 }
 

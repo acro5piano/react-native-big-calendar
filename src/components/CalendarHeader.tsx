@@ -3,30 +3,51 @@ import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { eventCellCss, u } from '../commonStyles'
-import { ICalendarEvent } from '../interfaces'
+import { ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { isToday, typedMemo } from '../utils'
+import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
 
-export interface CalendarHeaderProps<T> {
+export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
   style: ViewStyle
-  allDayEvents: ICalendarEvent<T>[]
+  allDayEvents: T[]
   onPressDateHeader?: (date: Date) => void
+  onPressEvent?: (event: T) => void
+  activeDate?: Date
+  headerContentStyle?: ViewStyle
+  dayHeaderStyle?: ViewStyle
+  dayHeaderHighlightColor?: string
+  weekDayHeaderHighlightColor?: string
+  showAllDayEventCell?: boolean
 }
 
-function _CalendarHeader<T>({
+function _CalendarHeader<T extends ICalendarEventBase>({
   dateRange,
   cellHeight,
   style,
   allDayEvents,
   onPressDateHeader,
+  onPressEvent,
+  activeDate,
+  headerContentStyle = {},
+  dayHeaderStyle = {},
+  dayHeaderHighlightColor = '',
+  weekDayHeaderHighlightColor = '',
+  showAllDayEventCell = true,
 }: CalendarHeaderProps<T>) {
-  const _onPress = React.useCallback(
+  const _onPressHeader = React.useCallback(
     (date: Date) => {
       onPressDateHeader && onPressDateHeader(date)
     },
     [onPressDateHeader],
+  )
+
+  const _onPressEvent = React.useCallback(
+    (event: T) => {
+      onPressEvent && onPressEvent(event)
+    },
+    [onPressEvent],
   )
 
   const theme = useTheme()
@@ -37,35 +58,49 @@ function _CalendarHeader<T>({
   return (
     <View
       style={[
-        u['border-b-2'],
-        borderColor,
+        showAllDayEventCell ? u['border-b-2'] : {},
+        showAllDayEventCell ? borderColor : {},
         theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
     >
       <View style={[u['z-10'], u['w-50'], borderColor]} />
       {dateRange.map((date) => {
-        const _isToday = isToday(date)
+        const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
+
         return (
           <TouchableOpacity
             style={[u['flex-1'], u['pt-2']]}
-            onPress={() => _onPress(date.toDate())}
+            onPress={() => _onPressHeader(date.toDate())}
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
           >
-            <View style={[u['justify-between'], { height: cellHeight }]}>
+            <View
+              style={[
+                { height: cellHeight },
+                objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
+              ]}
+            >
               <Text
                 style={[
                   theme.typography.xs,
                   u['text-center'],
-                  { color: _isToday ? theme.palette.primary.main : theme.palette.gray['500'] },
+                  {
+                    color: shouldHighlight
+                      ? stringHasContent(weekDayHeaderHighlightColor)
+                        ? weekDayHeaderHighlightColor
+                        : theme.palette.primary.main
+                      : theme.palette.gray['500'],
+                  },
                 ]}
               >
                 {date.format('ddd')}
               </Text>
               <View
                 style={
-                  _isToday
+                  objHasContent(dayHeaderStyle)
+                    ? dayHeaderStyle
+                    : shouldHighlight
                     ? [
                         primaryBg,
                         u['h-36'],
@@ -83,47 +118,55 @@ function _CalendarHeader<T>({
                 <Text
                   style={[
                     {
-                      color: _isToday
-                        ? theme.palette.primary.contrastText
+                      color: shouldHighlight
+                        ? stringHasContent(dayHeaderHighlightColor)
+                          ? dayHeaderHighlightColor
+                          : theme.palette.primary.contrastText
                         : theme.palette.gray['800'],
                     },
                     theme.typography.xl,
                     u['text-center'],
-                    Platform.OS === 'web' && _isToday && u['mt-6'],
+                    Platform.OS === 'web' &&
+                      shouldHighlight &&
+                      !stringHasContent(dayHeaderHighlightColor) &&
+                      u['mt-6'],
                   ]}
                 >
                   {date.format('D')}
                 </Text>
               </View>
             </View>
-            <View
-              style={[
-                u['border-l'],
-                { borderColor: theme.palette.gray['200'] },
-                { height: cellHeight },
-              ]}
-            >
-              {allDayEvents.map((event) => {
-                if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
-                  return null
-                }
-                return (
-                  <View
-                    style={[eventCellCss.style, primaryBg, u['mt-2']]}
-                    key={`${event.start}${event.title}`}
-                  >
-                    <Text
-                      style={{
-                        fontSize: theme.typography.sm.fontSize,
-                        color: theme.palette.primary.contrastText,
-                      }}
+            {showAllDayEventCell ? (
+              <View
+                style={[
+                  u['border-l'],
+                  { borderColor: theme.palette.gray['200'] },
+                  { height: cellHeight },
+                ]}
+              >
+                {allDayEvents.map((event) => {
+                  if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
+                    return null
+                  }
+                  return (
+                    <TouchableOpacity
+                      style={[eventCellCss.style, primaryBg, u['mt-2']]}
+                      key={`${event.start}${event.title}`}
+                      onPress={() => _onPressEvent(event)}
                     >
-                      {event.title}
-                    </Text>
-                  </View>
-                )
-              })}
-            </View>
+                      <Text
+                        style={{
+                          fontSize: theme.typography.sm.fontSize,
+                          color: theme.palette.primary.contrastText,
+                        }}
+                      >
+                        {event.title}
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                })}
+              </View>
+            ) : null}
           </TouchableOpacity>
         )
       })}

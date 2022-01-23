@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { RecursiveArray, ViewStyle } from 'react-native'
+import { RecursiveArray, TextStyle, ViewStyle } from 'react-native'
 
 import { CalendarHeaderProps } from './components/CalendarHeader'
 import { CalendarHeaderForMonthViewProps } from './components/CalendarHeaderForMonthView'
@@ -19,11 +19,13 @@ export type CalendarTouchableOpacityProps = {
   disabled: boolean
 }
 
-export type ICalendarEvent<T = {}> = ICalendarEventBase & T
-
 export type Mode = '3days' | 'week' | 'day' | 'custom' | 'month'
 
-export type EventCellStyle<T> = ViewStyle | ((event: ICalendarEvent<T>) => ViewStyle)
+export type EventCellStyle<T extends ICalendarEventBase> = ViewStyle | ((event: T) => ViewStyle)
+
+export type CalendarCellStyle = ViewStyle | ((date?: Date, hourRowIndex?: number) => ViewStyle)
+
+export type CalendarCellTextStyle = TextStyle | ((date?: Date, hourRowIndex?: number) => TextStyle)
 
 export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
 
@@ -33,20 +35,12 @@ export type DateRangeHandler = ([start, end]: HasDateRange) => void
 
 export type HorizontalDirection = 'RIGHT' | 'LEFT'
 
-export type EventRenderer<T> = (
-  event: ICalendarEvent<T>,
+export type EventRenderer<T extends ICalendarEventBase> = (
+  event: T,
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => JSX.Element
 
-export type HeaderRenderer<T> = React.ComponentType<CalendarHeaderProps<T> & { mode: Mode }>
+export type HeaderRenderer<T extends ICalendarEventBase> = React.ComponentType<
+  CalendarHeaderProps<T> & { mode: Mode }
+>
 export type MonthHeaderRenderer = React.ComponentType<CalendarHeaderForMonthViewProps>
-
-/**
- * @deprecated Prefer interface ICalendarEvent instead.
- */
-export type DayJSConvertedEvent<T = any> = ICalendarEvent<T>
-
-/**
- * @deprecated Prefer interface ICalendarEvent instead.
- */
-export type Event<T = any> = ICalendarEvent<T>

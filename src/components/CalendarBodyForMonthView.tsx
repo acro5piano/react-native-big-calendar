@@ -7,32 +7,37 @@ import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import {
+  CalendarCellStyle,
+  CalendarCellTextStyle,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
-  ICalendarEvent,
+  ICalendarEventBase,
   WeekNum,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { typedMemo } from '../utils'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 
-interface CalendarBodyForMonthViewProps<T> {
+interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   containerHeight: number
   targetDate: dayjs.Dayjs
-  events: ICalendarEvent<T>[]
+  events: T[]
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
+  calendarCellStyle?: CalendarCellStyle
+  calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
   onPressCell?: (date: Date) => void
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+  onPressEvent?: (event: T) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   maxVisibleEventCount: number
   weekStartsOn: WeekNum
+  eventMinHeightForMonthView: number
 }
 
-function _CalendarBodyForMonthView<T>({
+function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   containerHeight,
   targetDate,
   style,
@@ -40,11 +45,14 @@ function _CalendarBodyForMonthView<T>({
   events,
   onPressEvent,
   eventCellStyle,
+  calendarCellStyle,
+  calendarCellTextStyle,
   onSwipeHorizontal,
   hideNowIndicator,
   renderEvent,
   maxVisibleEventCount,
   weekStartsOn,
+  eventMinHeightForMonthView,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -57,6 +65,19 @@ function _CalendarBodyForMonthView<T>({
 
   const minCellHeight = containerHeight / 5 - 30
   const theme = useTheme()
+
+  const getCalendarCellStyle = React.useMemo(
+    () => (typeof calendarCellStyle === 'function' ? calendarCellStyle : () => calendarCellStyle),
+    [calendarCellStyle],
+  )
+
+  const getCalendarCellTextStyle = React.useMemo(
+    () =>
+      typeof calendarCellTextStyle === 'function'
+        ? calendarCellTextStyle
+        : () => calendarCellTextStyle,
+    [calendarCellTextStyle],
+  )
 
   return (
     <View
@@ -104,6 +125,9 @@ function _CalendarBodyForMonthView<T>({
                   {
                     minHeight: minCellHeight,
                   },
+                  {
+                    ...getCalendarCellStyle(date?.toDate(), i),
+                  },
                 ]}
                 key={ii}
               >
@@ -116,6 +140,9 @@ function _CalendarBodyForMonthView<T>({
                         date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
                           ? theme.palette.primary.main
                           : theme.palette.gray['800'],
+                    },
+                    {
+                      ...getCalendarCellTextStyle(date?.toDate(), i),
                     },
                   ]}
                 >
@@ -160,6 +187,7 @@ function _CalendarBodyForMonthView<T>({
                             dayOfTheWeek={ii}
                             calendarWidth={calendarWidth}
                             isRTL={theme.isRTL}
+                            eventMinHeightForMonthView={eventMinHeightForMonthView}
                           />
                         ),
                       ],

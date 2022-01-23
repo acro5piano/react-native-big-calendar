@@ -3,23 +3,19 @@ import * as React from 'react'
 
 import { OVERLAP_OFFSET, u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEvent } from '../interfaces'
+import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
+import {
+  diffInMinutes,
+  getRelativeTopInDay,
+  getStyleForOverlappingEvent,
+  typedMemo,
+} from '../utils'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
-const getEventCellPositionStyle = (start: Date, end: Date) => {
-  const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
-  const relativeTop = getRelativeTopInDay(dayjs(start))
-  return {
-    height: `${relativeHeight}%`,
-    top: `${relativeTop}%`,
-  }
-}
-
-interface CalendarEventProps<T> {
-  event: ICalendarEvent<T>
-  onPressEvent?: (event: ICalendarEvent<T>) => void
+interface CalendarEventProps<T extends ICalendarEventBase> {
+  event: T
+  onPressEvent?: (event: T) => void
   eventCellStyle?: EventCellStyle<T>
   showTime: boolean
   eventCount?: number
@@ -27,9 +23,11 @@ interface CalendarEventProps<T> {
   overlapOffset?: number
   renderEvent?: EventRenderer<T>
   ampm: boolean
+  minTime: string
+  maxTime: string
 }
 
-function _CalendarEvent<T>({
+function _CalendarEvent<T extends ICalendarEventBase>({
   event,
   onPressEvent,
   eventCellStyle,
@@ -39,6 +37,8 @@ function _CalendarEvent<T>({
   overlapOffset = OVERLAP_OFFSET,
   renderEvent,
   ampm,
+  minTime = '00:00',
+  maxTime = '23:00',
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -46,6 +46,17 @@ function _CalendarEvent<T>({
     () => [theme.palette.primary, ...theme.eventCellOverlappings],
     [theme],
   )
+
+  const getEventCellPositionStyle = (start: Date, end: Date) => {
+    const relativeHeight =
+      100 * (1 / diffInMinutes(minTime, maxTime)) * dayjs(end).diff(start, 'minute')
+    const relativeTop = getRelativeTopInDay(dayjs(start), minTime, maxTime)
+
+    return {
+      height: `${relativeHeight}%`,
+      top: `${relativeTop}%`,
+    }
+  }
 
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
