@@ -170,20 +170,17 @@ function _CalendarBody<T extends ICalendarEventBase>({
           </View>
           {dateRange.map((date) => (
             <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
-              {hours.map((hour, index) => {
-                console.log(hour, index)
-                return (
-                  <HourGuideCell
-                    key={hour}
-                    cellHeight={cellHeight}
-                    date={date}
-                    hour={hour}
-                    onPress={_onPressCell}
-                    index={index}
-                    calendarCellStyle={calendarCellStyle}
-                  />
-                )
-              })}
+              {hours.map((hour, index) => (
+                <HourGuideCell
+                  key={hour}
+                  cellHeight={cellHeight}
+                  date={date}
+                  hour={hour}
+                  onPress={_onPressCell}
+                  index={index}
+                  calendarCellStyle={calendarCellStyle}
+                />
+              ))}
 
               {/* Render events of this date */}
               {/* M  T  (W)  T  F  S  S */}
