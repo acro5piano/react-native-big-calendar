@@ -8,7 +8,7 @@ import { useTheme } from '../theme/ThemeContext'
 import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
 
 export interface CalendarHeaderProps<T extends ICalendarEventBase> {
-  dateRange: dayjs.Dayjs[]
+  dateRange: dayjs.Dayjs[][]
   cellHeight: number
   style: ViewStyle
   allDayEvents: T[]
@@ -125,7 +125,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
               : [u['z-10'], u['w-50'], borderColor]
           }
         />
-        {dateRange.map((date) => {
+        {dateRange[1].map((date) => {
           const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
 
           return (

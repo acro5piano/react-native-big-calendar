@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { Animated, TextStyle, ViewStyle } from 'react-native'
+import { Animated, LayoutRectangle, TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
@@ -10,6 +10,7 @@ import {
   HeaderRenderer,
   HorizontalDirection,
   ICalendarEventBase,
+  LayoutRectangleExtended,
   Mode,
   MonthHeaderRenderer,
   WeekNum,
@@ -178,6 +179,16 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const [showDatesArrayStyle, setShowDatesArrayStyle] = React.useState(false)
   // fadeAnim will be used as the value for opacity. Initial Value: 0
   const fadeAnim = React.useRef(new Animated.Value(1)).current
+  const prevFadeAnim = React.useRef(new Animated.Value(0)).current
+  const presentFadeAnim = React.useRef(new Animated.Value(1)).current
+  const nextFadeAnim = React.useRef(new Animated.Value(0)).current
+  const prevLeftValue = React.useRef(new Animated.Value(0)).current
+  const presentLeftValue = React.useRef(new Animated.Value(0)).current
+  const nextLeftValue = React.useRef(new Animated.Value(0)).current
+  const leftValue = React.useRef<LayoutRectangleExtended>()
+  const currentPrevLeftVal = React.useRef<number>()
+  const currentPresentLeftVal = React.useRef<number>()
+  const currentNextLeftVal = React.useRef<number>()
 
   React.useEffect(() => {
     if (date) {
@@ -198,15 +209,41 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const dateRange = React.useMemo(() => {
     switch (mode) {
       case 'month':
-        return getDatesInMonth(targetDate, locale)
+        const monthPrevRange = getDatesInMonth(targetDate.subtract(1, 'month'), locale)
+        const monthRange = getDatesInMonth(targetDate, locale)
+        const monthNextRange = getDatesInMonth(targetDate.add(1, 'month'), locale)
+        return [monthPrevRange, monthRange, monthNextRange]
       case 'week':
-        return getDatesInWeek(targetDate, weekStartsOn, locale)
+        const weekPrevRange = getDatesInWeek(targetDate.subtract(7, 'day'), weekStartsOn, locale)
+        const weekRange = getDatesInWeek(targetDate, weekStartsOn, locale)
+        const weekNextRange = getDatesInWeek(targetDate.add(7, 'day'), weekStartsOn, locale)
+        return [weekPrevRange, weekRange, weekNextRange]
       case '3days':
-        return getDatesInNextThreeDays(targetDate, locale)
+        const threeDaysPrevRange = getDatesInNextThreeDays(targetDate.subtract(3, 'day'), locale)
+        const threeDaysRange = getDatesInNextThreeDays(targetDate, locale)
+        const threeDaysNextRange = getDatesInNextThreeDays(targetDate.add(3, 'day'), locale)
+        return [threeDaysPrevRange, threeDaysRange, threeDaysNextRange]
       case 'day':
-        return getDatesInNextOneDay(targetDate, locale)
+        const oneDayPrevRange = getDatesInNextOneDay(targetDate.subtract(1, 'day'), locale)
+        const oneDayRange = getDatesInNextOneDay(targetDate, locale)
+        const oneDayNextRange = getDatesInNextOneDay(targetDate.add(1, 'day'), locale)
+        return [oneDayPrevRange, oneDayRange, oneDayNextRange]
       case 'custom':
-        return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
+        const days = Math.abs(weekStartsOn - weekEndsOn)
+        const customPrevRange = getDatesInNextCustomDays(
+          targetDate.subtract(days, 'day'),
+          weekStartsOn,
+          weekEndsOn,
+          locale,
+        )
+        const customRange = getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
+        const customNextRange = getDatesInNextCustomDays(
+          targetDate.add(days, 'day'),
+          weekStartsOn,
+          weekEndsOn,
+          locale,
+        )
+        return [customPrevRange, customRange, customNextRange]
       default:
         throw new Error(
           `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
@@ -216,7 +253,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   React.useEffect(() => {
     if (onChangeDate) {
-      onChangeDate([dateRange[0].toDate(), dateRange.slice(-1)[0].toDate()])
+      onChangeDate([dateRange[1][0].toDate(), dateRange[1].slice(-1)[0].toDate()])
     }
   }, [dateRange, onChangeDate])
 
@@ -261,9 +298,167 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     })
   }
 
+  const handleLeftValue = (layout: LayoutRectangleExtended) => {
+    console.log('layout', layout)
+    leftValue.current = layout
+  }
+
+  React.useEffect(() => {
+    const idprev = prevLeftValue.addListener((value) => {
+      currentPrevLeftVal.current = value.value
+    })
+    const idpres = presentLeftValue.addListener((value) => {
+      currentPresentLeftVal.current = value.value
+    })
+    const idnext = nextLeftValue.addListener((value) => {
+      currentNextLeftVal.current = value.value
+    })
+    return () => {
+      prevLeftValue.removeListener(idprev)
+      presentLeftValue.removeListener(idpres)
+      nextLeftValue.removeListener(idnext)
+    }
+  }, [prevLeftValue, presentLeftValue, nextLeftValue])
+
+  const movePrevBody = (direction: HorizontalDirection) => {
+    const width = leftValue.current?.width || 0
+
+    Animated.timing(nextLeftValue, {
+      toValue: width / 3,
+      duration: fadeInDuration,
+      useNativeDriver: true,
+    }).start()
+    Animated.timing(nextFadeAnim, {
+      toValue: 0,
+      duration: fadeInDuration,
+      useNativeDriver: false,
+    }).start()
+
+    Animated.timing(presentLeftValue, {
+      toValue: width / 3,
+      duration: fadeInDuration,
+      useNativeDriver: true,
+    }).start()
+    Animated.timing(presentFadeAnim, {
+      toValue: 0,
+      duration: fadeInDuration,
+      useNativeDriver: false,
+    }).start()
+
+    Animated.timing(prevFadeAnim, {
+      toValue: 1,
+      duration: fadeInDuration / 10,
+      useNativeDriver: false,
+    }).start()
+    Animated.timing(prevLeftValue, {
+      toValue: width / 3,
+      duration: fadeInDuration,
+      useNativeDriver: true,
+    }).start(() => {
+      const prevcurrent = currentPrevLeftVal.current || 0
+      const presentcurrent = currentPresentLeftVal.current || 0
+      const nextcurrent = currentNextLeftVal.current || 0
+      Animated.timing(nextLeftValue, {
+        toValue: prevcurrent - width / 3,
+        duration: 0.01,
+        useNativeDriver: true,
+      }).start()
+      Animated.timing(presentLeftValue, {
+        toValue: presentcurrent - width / 3,
+        duration: 0.01,
+        useNativeDriver: true,
+      }).start()
+      Animated.timing(prevLeftValue, {
+        toValue: nextcurrent - width / 3,
+        duration: 0.01,
+        useNativeDriver: true,
+      }).start()
+
+      onPanLeftCallback(direction)
+      Animated.timing(presentFadeAnim, {
+        toValue: 1,
+        duration: 0.01,
+        useNativeDriver: false,
+      }).start()
+      Animated.timing(prevFadeAnim, {
+        toValue: 0,
+        duration: 0.01,
+        useNativeDriver: false,
+      }).start()
+    })
+  }
+
+  const moveNextBody = (direction: HorizontalDirection) => {
+    const width = leftValue.current?.width || 0
+
+    Animated.timing(prevLeftValue, {
+      toValue: -width / 3,
+      duration: fadeInDuration,
+      useNativeDriver: true,
+    }).start()
+    Animated.timing(prevFadeAnim, {
+      toValue: 0,
+      duration: fadeInDuration,
+      useNativeDriver: false,
+    }).start()
+
+    Animated.timing(presentLeftValue, {
+      toValue: -width / 3,
+      duration: fadeInDuration,
+      useNativeDriver: true,
+    }).start()
+    Animated.timing(presentFadeAnim, {
+      toValue: 0,
+      duration: fadeInDuration,
+      useNativeDriver: false,
+    }).start()
+
+    Animated.timing(nextFadeAnim, {
+      toValue: 1,
+      duration: fadeInDuration / 10,
+      useNativeDriver: false,
+    }).start()
+    Animated.timing(nextLeftValue, {
+      toValue: -width / 3,
+      duration: fadeInDuration,
+      useNativeDriver: true,
+    }).start(() => {
+      const prevcurrent = currentPrevLeftVal.current || 0
+      const presentcurrent = currentPresentLeftVal.current || 0
+      const nextcurrent = currentNextLeftVal.current || 0
+      Animated.timing(prevLeftValue, {
+        toValue: prevcurrent + width / 3,
+        duration: 0.01,
+        useNativeDriver: true,
+      }).start()
+      Animated.timing(presentLeftValue, {
+        toValue: presentcurrent + width / 3,
+        duration: 0.01,
+        useNativeDriver: true,
+      }).start()
+      Animated.timing(nextLeftValue, {
+        toValue: nextcurrent + width / 3,
+        duration: 0.01,
+        useNativeDriver: true,
+      }).start()
+
+      onPanRightCallback(direction)
+      Animated.timing(presentFadeAnim, {
+        toValue: 1,
+        duration: 0.01,
+        useNativeDriver: false,
+      }).start()
+      Animated.timing(nextFadeAnim, {
+        toValue: 0,
+        duration: 0.01,
+        useNativeDriver: false,
+      }).start()
+    })
+  }
+
   const handleAnimatePan = () => {
     if (animatePan === true) {
-      fadeBoth()
+      // fadeBoth()
     }
   }
 
@@ -301,8 +496,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   )
 
   const onPanLeft = (direction: HorizontalDirection) => {
-    handleAnimatePan()
-    onPanLeftCallback(direction)
+    if (animatePan === true) {
+      handleAnimatePan()
+      movePrevBody(direction)
+    } else {
+      onPanLeftCallback(direction)
+    }
   }
 
   const onPanRightCallback = React.useCallback(
@@ -320,8 +519,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   )
 
   const onPanRight = (direction: HorizontalDirection) => {
-    handleAnimatePan()
-    onPanRightCallback(direction)
+    if (animatePan === true) {
+      handleAnimatePan()
+      moveNextBody(direction)
+    } else {
+      onPanRightCallback(direction)
+    }
   }
 
   const commonProps = {
@@ -440,6 +643,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         increaseFirstRowHeight={increaseFirstRowHeight}
         animatePan={animatePan}
         fadeAnim={fadeAnim}
+        prevFadeAnim={prevFadeAnim}
+        presentFadeAnim={presentFadeAnim}
+        nextFadeAnim={nextFadeAnim}
+        prevLeftValue={prevLeftValue}
+        presentLeftValue={presentLeftValue}
+        nextLeftValue={nextLeftValue}
+        handleLeftValue={handleLeftValue}
       />
     </React.Fragment>
   )

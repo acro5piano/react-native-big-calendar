@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { RecursiveArray, ViewStyle } from 'react-native'
+import { LayoutRectangle, RecursiveArray, ViewStyle } from 'react-native'
 
 import { CalendarHeaderProps } from './components/CalendarHeader'
 import { CalendarHeaderForMonthViewProps } from './components/CalendarHeaderForMonthView'
@@ -55,3 +55,8 @@ export type DayJSConvertedEvent<T = any> = ICalendarEventBase & T
  * @deprecated Prefer interface ICalendarEventBase instead.
  */
 export type Event<T = any> = ICalendarEventBase & T
+
+export interface LayoutRectangleExtended extends LayoutRectangle {
+  left?: number
+  top?: number
+}
