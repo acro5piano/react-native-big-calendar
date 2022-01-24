@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { Animated, LayoutRectangle, TextStyle, ViewStyle } from 'react-native'
+import { Animated, TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
