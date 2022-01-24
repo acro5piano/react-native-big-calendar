@@ -280,24 +280,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   const theme = useTheme()
 
-  const fadeBoth = () => {
-    // Will change fadeAnim value to 0 in fadeOutDuration mseconds OUT
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: fadeOutDuration,
-      useNativeDriver: false,
-    }).start(({ finished }) => {
-      /* completion callback */
-      // Will change fadeAnim value to 1 in fadeInDuration mseconds IN
-      console.log({ finished })
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: fadeInDuration,
-        useNativeDriver: false,
-      }).start()
-    })
-  }
-
   const handleLeftValue = (layout: LayoutRectangleExtended) => {
     console.log('layout', layout)
     leftValue.current = layout
@@ -456,12 +438,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     })
   }
 
-  const handleAnimatePan = () => {
-    if (animatePan === true) {
-      // fadeBoth()
-    }
-  }
-
   const onSwipeHorizontalCallback = React.useCallback(
     (direction: HorizontalDirection) => {
       if (!swipeEnabled) {
@@ -477,8 +453,15 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   )
 
   const onSwipeHorizontal = (direction: HorizontalDirection) => {
-    handleAnimatePan()
-    onSwipeHorizontalCallback(direction)
+    if (animatePan === true) {
+      if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
+        movePrevBody(direction)
+      } else {
+        moveNextBody(direction)
+      }
+    } else {
+      onSwipeHorizontalCallback(direction)
+    }
   }
 
   const onPanLeftCallback = React.useCallback(
@@ -497,7 +480,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   const onPanLeft = (direction: HorizontalDirection) => {
     if (animatePan === true) {
-      handleAnimatePan()
       movePrevBody(direction)
     } else {
       onPanLeftCallback(direction)
@@ -520,7 +502,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   const onPanRight = (direction: HorizontalDirection) => {
     if (animatePan === true) {
-      handleAnimatePan()
       moveNextBody(direction)
     } else {
       onPanRightCallback(direction)
