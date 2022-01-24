@@ -306,7 +306,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     Animated.timing(nextLeftValue, {
       toValue: width / 3,
       duration: fadeInDuration,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start()
     Animated.timing(nextFadeAnim, {
       toValue: 0,
@@ -317,7 +317,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     Animated.timing(presentLeftValue, {
       toValue: width / 3,
       duration: fadeInDuration,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start()
     Animated.timing(presentFadeAnim, {
       toValue: 0,
@@ -333,7 +333,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     Animated.timing(prevLeftValue, {
       toValue: width / 3,
       duration: fadeInDuration,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start(() => {
       const prevcurrent = currentPrevLeftVal.current || 0
       const presentcurrent = currentPresentLeftVal.current || 0
@@ -341,17 +341,17 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       Animated.timing(nextLeftValue, {
         toValue: prevcurrent - width / 3,
         duration: 0.01,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start()
       Animated.timing(presentLeftValue, {
         toValue: presentcurrent - width / 3,
         duration: 0.01,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start()
       Animated.timing(prevLeftValue, {
         toValue: nextcurrent - width / 3,
         duration: 0.01,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start()
 
       onPanLeftCallback(direction)
@@ -374,7 +374,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     Animated.timing(prevLeftValue, {
       toValue: -width / 3,
       duration: fadeInDuration,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start()
     Animated.timing(prevFadeAnim, {
       toValue: 0,
@@ -385,7 +385,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     Animated.timing(presentLeftValue, {
       toValue: -width / 3,
       duration: fadeInDuration,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start()
     Animated.timing(presentFadeAnim, {
       toValue: 0,
@@ -401,7 +401,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     Animated.timing(nextLeftValue, {
       toValue: -width / 3,
       duration: fadeInDuration,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start(() => {
       const prevcurrent = currentPrevLeftVal.current || 0
       const presentcurrent = currentPresentLeftVal.current || 0
@@ -409,17 +409,17 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       Animated.timing(prevLeftValue, {
         toValue: prevcurrent + width / 3,
         duration: 0.01,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start()
       Animated.timing(presentLeftValue, {
         toValue: presentcurrent + width / 3,
         duration: 0.01,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start()
       Animated.timing(nextLeftValue, {
         toValue: nextcurrent + width / 3,
         duration: 0.01,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start()
 
       onPanRightCallback(direction)
