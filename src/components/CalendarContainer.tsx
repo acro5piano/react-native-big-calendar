@@ -354,7 +354,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         useNativeDriver: false,
       }).start()
 
-      onPanLeftCallback(direction)
       Animated.timing(presentFadeAnim, {
         toValue: 1,
         duration: 0.01,
@@ -364,7 +363,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         toValue: 0,
         duration: 0.01,
         useNativeDriver: false,
-      }).start()
+      }).start(() => onPanLeftCallback(direction))
     })
   }
 
@@ -422,7 +421,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         useNativeDriver: false,
       }).start()
 
-      onPanRightCallback(direction)
       Animated.timing(presentFadeAnim, {
         toValue: 1,
         duration: 0.01,
@@ -432,7 +430,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         toValue: 0,
         duration: 0.01,
         useNativeDriver: false,
-      }).start()
+      }).start(() => onPanRightCallback(direction))
     })
   }
 
