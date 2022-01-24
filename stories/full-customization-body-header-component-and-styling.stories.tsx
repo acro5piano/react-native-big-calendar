@@ -168,7 +168,6 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
           increaseFirstRowHeight={0.5}
           animatePan={true}
           fadeInDuration={200}
-          fadeOutDuration={5000}
         />
       </View>
     </View>

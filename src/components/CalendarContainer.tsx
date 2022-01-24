@@ -110,7 +110,6 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   increaseFirstRowHeight?: number
   animatePan?: boolean
   fadeInDuration?: number
-  fadeOutDuration?: number
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -170,7 +169,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   increaseFirstRowHeight = 1,
   animatePan = false,
   fadeInDuration = 0,
-  fadeOutDuration = 0,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
   const [showWeekDay, setShowWeekDay] = React.useState(true)
