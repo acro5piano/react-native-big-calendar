@@ -35,4 +35,22 @@ export const themes: Record<string, PartialTheme> = {
       },
     ],
   },
+  green_bg: {
+    palette: {
+      primary: {
+        main: '#4caf50',
+        contrastText: '#fff',
+      },
+    },
+    eventCellOverlappings: [
+      {
+        main: '#17651a',
+        contrastText: '#fff',
+      },
+      {
+        main: '#08540b',
+        contrastText: '#fff',
+      },
+    ],
+  },
 } as const

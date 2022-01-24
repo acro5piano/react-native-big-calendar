@@ -1,5 +1,130 @@
 # Changelog
 
+## 3.0.0
+
+### New Feataures
+
+- add support to style calendar cells based on cell date #610
+
+### Breaking changes
+
+- Deleted deprecated interfaces. Instead, use `ICalendarEventBase & T`
+  - `ICalendarEvent<T>`
+  - `DayJSConvertedEvent`
+  - `Event`
+- `evenCellBg` and `oddCellBg` is deleted in favor of `calendarCellStyle` function. To migrate:
+
+Before
+
+```typescript
+<Calendar theme={{ evenCellBg: '#aaa', oddCellBg: '#bbb' }} />
+```
+
+After
+
+```typescript
+<Calendar
+  calendarCellStyle={(date, index) => ({
+    backgroundColor: index % 2 === 0 ? "#aaa" : "#bbb",
+  })}
+/>
+
+```
+
+### New Contributors
+
+- @TechSaq made their first contribution in https://github.com/acro5piano/react-native-big-calendar/pull/610
+
+## 2.9.1
+
+### Bugfixes
+
+- fix Multiple day event in Month view onPressEvent is just working on first day and not on remaining days #578
+
+## 2.9.0
+
+### Bugfixes
+
+- show All day events on the month view by @acro5piano in https://github.com/acro5piano/react-native-big-calendar/pull/576
+- set onPressEvent handler to all day events by @acro5piano in https://github.com/acro5piano/react-native-big-calendar/pull/576
+
+### Breaking change
+
+`ICalendarEvent` has been deprecated. To do convert this, please rewrite like this:
+
+Before:
+
+```typescript
+import { ICalendarEvent } from 'react-native-big-calendar'
+
+type MyEvent = ICalendarEvent<{ color: string }>
+```
+
+```typescript
+import { ICalendarEventBase } from 'react-native-big-calendar'
+
+type MyEvent = ICalendarEvent & { color: string }
+```
+
+**Full Changelog**: https://github.com/acro5piano/react-native-big-calendar/compare/v2.8.0...v2.9.0
+
+## 2.8.0
+
+### New Features
+
+- add an option to hide allDayEvent cell by @titanve in https://github.com/acro5piano/react-native-big-calendar/pull/571
+- Bump eslint-plugin-import from 2.23.4 to 2.25.3 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/559
+- Bump @types/node from 16.11.6 to 16.11.12 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/570
+
+## 2.7.0
+
+### New features
+
+- Update package.json for issue 568 by @lorenzogatti in https://github.com/acro5piano/react-native-big-calendar/pull/569
+- Add stying for the Hours by @titanve in https://github.com/acro5piano/react-native-big-calendar/pull/567
+
+### New Contributors
+
+- @lorenzogatti made their first contribution in https://github.com/acro5piano/react-native-big-calendar/pull/569
+
+### Chore
+
+- Bump lint-staged from 11.2.6 to 12.1.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/561
+- Bump eslint-plugin-react-hooks from 4.2.0 to 4.3.0 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/556
+- Bump prettier from 2.4.1 to 2.5.1 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/566
+- Bump eslint-plugin-react from 7.26.1 to 7.27.1 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/562
+- Bump @types/jest from 27.0.2 to 27.0.3 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/558
+- Bump typescript from 4.4.3 to 4.5.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/557
+- Bump merge-anything from 4.0.1 to 4.0.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/554
+
+## 2.6.0
+
+- Header content style by @titanve in https://github.com/acro5piano/react-native-big-calendar/pull/552
+
+## 2.5.0
+
+- Add rows background Color #548
+
+New contributor: @titanve
+
+## 2.4.0
+
+- Add option for Hour Row Height #549
+
+## 2.3.0
+
+- add active date props to header #544
+
+## 2.2.0
+
+### New features
+
+- Make month event min height customizable and fix for custom events #534
+
+### Chore
+
+- Update deps
+
 ## 2.1.0
 
 ### New features

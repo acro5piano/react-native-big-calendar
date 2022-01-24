@@ -1,4 +1,5 @@
 import { storiesOf } from '@storybook/react'
+import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, View } from 'react-native'
 
@@ -104,6 +105,127 @@ storiesOf('showcase - Mobile', module)
         mode={'custom'}
         weekStartsOn={1}
         weekEndsOn={5}
+      />
+    </View>
+  ))
+  .add('Month - Calendar Cell Style', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={events}
+        mode={'month'}
+        calendarCellStyle={(date) => {
+          let cellStyles = {
+            backgroundColor: 'white',
+            color: 'white',
+          }
+
+          const now = dayjs()
+
+          const isBefore = dayjs(date).startOf('day').isBefore(now.startOf('day'))
+          const isToday = dayjs(date).startOf('day').isSame(now.startOf('day'))
+          const isAfter = dayjs(date).startOf('day').isAfter(now.startOf('day'))
+
+          if (isBefore) {
+            cellStyles = {
+              ...cellStyles,
+              backgroundColor: 'red',
+            }
+          } else if (isToday) {
+            cellStyles = {
+              ...cellStyles,
+              backgroundColor: 'blue',
+            }
+          } else if (isAfter) {
+            cellStyles = {
+              ...cellStyles,
+              backgroundColor: 'green',
+            }
+          } else {
+            cellStyles = {
+              ...cellStyles,
+            }
+          }
+
+          return cellStyles
+        }}
+        calendarCellTextStyle={{ color: 'white' }}
+      />
+    </View>
+  ))
+  .add('Month - Event Cell - Even and Odd Row BgColor', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={events}
+        mode={'month'}
+        calendarCellStyle={(_, index = 0) => {
+          const isEvenRow = index % 2 === 0
+
+          return {
+            backgroundColor: isEvenRow ? 'red' : 'green',
+          }
+        }}
+      />
+    </View>
+  ))
+  .add('Week - Calendar Cell Style', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={events}
+        mode={'week'}
+        calendarCellStyle={(date) => {
+          let cellStyles = {
+            backgroundColor: 'white',
+            color: 'black',
+          }
+
+          const now = dayjs()
+
+          const isBefore = dayjs(date).startOf('day').isBefore(now.startOf('day'))
+          const isToday = dayjs(date).startOf('day').isSame(now.startOf('day'))
+          const isAfter = dayjs(date).startOf('day').isAfter(now.startOf('day'))
+
+          if (isBefore) {
+            cellStyles = {
+              ...cellStyles,
+              backgroundColor: 'red',
+            }
+          } else if (isToday) {
+            cellStyles = {
+              ...cellStyles,
+              backgroundColor: 'blue',
+            }
+          } else if (isAfter) {
+            cellStyles = {
+              ...cellStyles,
+              backgroundColor: 'green',
+            }
+          } else {
+            cellStyles = {
+              ...cellStyles,
+            }
+          }
+
+          return cellStyles
+        }}
+      />
+    </View>
+  ))
+  .add('Week - Calendar Cell - Even and Odd Row BgColor', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={events}
+        mode={'week'}
+        calendarCellStyle={(_, index = 0) => {
+          const isEvenRow: boolean = index % 2 === 0
+
+          return {
+            backgroundColor: isEvenRow ? 'red' : 'green',
+          }
+        }}
       />
     </View>
   ))

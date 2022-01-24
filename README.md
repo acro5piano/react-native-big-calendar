@@ -1,8 +1,8 @@
-![test](https://github.com/llotheo/react-native-big-calendar/workflows/test/badge.svg)
-![release](https://github.com/llotheo/react-native-big-calendar/workflows/release/badge.svg)
+![test](https://github.com/acro5piano/react-native-big-calendar/workflows/test/badge.svg)
+![release](https://github.com/acro5piano/react-native-big-calendar/workflows/release/badge.svg)
 [![npm version](https://badge.fury.io/js/react-native-big-calendar.svg)](https://badge.fury.io/js/react-native-big-calendar)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/ca0f2cc8-bb4f-4a18-be48-c2b10e2b6046/deploy-status)](https://app.netlify.com/sites/react-native-big-calendar/deploys)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=llotheo/react-native-big-calendar)](https://dependabot.com)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=acro5piano/react-native-big-calendar)](https://dependabot.com)
 
 # react-native-big-calendar
 
@@ -28,13 +28,13 @@ It's a hard task to debug three platforms. I usually develop with the Web versio
 # Install
 
 ```
-npm install --save react-native-big-calendar@2.0.0-rc
+npm install --save react-native-big-calendar
 ```
 
 Or if you use Yarn:
 
 ```
-yarn add react-native-big-calendar@2.0.0-rc
+yarn add react-native-big-calendar
 ```
 
 ### Other dependencies
@@ -95,17 +95,23 @@ function App() {
 **Summary**
 
 ```typescript
-export interface CalendarProps<T> {
-  events: ICalendarEvent<T>[]
+export interface CalendarProps<T extends ICalendarEventBase> {
+  events: T
   height: number
   overlapOffset?: number
+  hourRowHeight?: number
   ampm?: boolean
   date?: Date
   eventCellStyle?: EventCellStyle<T>
+  calendarContainerStyle?: ViewStyle
+  headerContainerStyle?: ViewStyle
+  bodyContainerStyle?: ViewStyle
   renderEvent?: (
-    event: ICalendarEvent<T>,
+    event: T,
     touchableOpacityProps: CalendarTouchableOpacityProps,
   ) => ReactElement | null
+  renderHeader?: React.ComponentType<CalendarHeaderProps<T> & { mode: Mode }>
+  renderHeaderForMonthView?: React.ComponentType<CalendarHeaderForMonthViewProps>
   locale?: string
   hideNowIndicator?: boolean
   mode?: Mode
@@ -118,34 +124,47 @@ export interface CalendarProps<T> {
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
+  eventMinHeightForMonthView?: number
+  activeDate?: Date
 }
 ```
 
 `<Calendar />` Props are:
 
-| name                  | required | type                                                   | description                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| --------------------- | -------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `events`              | yes      | `ICalendarEvent<T>[]`                                  | The events which will be rendered on the calendar. You can extend the type `ICalendarEvent` by providing a value to generic type T (see `./stories/events.tsx` for an example). with optional children to display custom components inside the event, and optional event renderer function to take complete control over the rendered event (advanced feature). Events that occur during the same time range will be layered, offset, and given a unique color. |
-| `height`              | yes      | `number`                                               | Calendar height.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `hideNowIndicator`    | no       | `boolean`                                              | Hides the indicator for the current time. By default the now indicator is shown.                                                                                                                                                                                                                                                                                                                                                                                |
-| `onPressEvent`        | no       | `(event: ICalendarEvent<T>) => void`                   | Event handler which will be fired when the user clicks an event.                                                                                                                                                                                                                                                                                                                                                                                                |
-| `onChangeDate`        | no       | `([start: Date, end: Date]) => void`                   | Event handler which will be fired when the current date range changed.                                                                                                                                                                                                                                                                                                                                                                                          |
-| `onPressCell`         | no       | `(date: Date) => void`                                 | Event handler which will be fired when the current date cell is clicked. The minute set to 0.                                                                                                                                                                                                                                                                                                                                                                   |
-| `onPressDateHeader`   | no       | `(date: Date) => void`                                 | Event handler which will be fired when the user clicks a date from the header.                                                                                                                                                                                                                                                                                                                                                                                  |
-| `mode`                | no       | 'month' \| 'week' \| `'3days' \| 'day' \| 'custom'`    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `eventCellStyle`      | no       | `ViewStyle \| (event: ICalendarEvent<T>) => ViewStyle` | The style of Event cell. Accepts either style object (static) or function (dynamic).                                                                                                                                                                                                                                                                                                                                                                            |
-| `scrollOffsetMinutes` | no       | `number`                                               | Scroll to specific minutes in a day. e.g.) set `480` to scroll to 8am when the calendar rendered.                                                                                                                                                                                                                                                                                                                                                               |
-| `date`                | no       | `Date`                                                 | Initial date. Defualts to `Date`                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `swipeEnabled`        | no       | `boolean`                                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `showTime`            | no       | `boolean`                                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `ampm`                | no       | `boolean`                                              | Use 12 hours time format instead of 24 hours.                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `weekStartsOn`        | no       | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6`                      | Which day the week starts on. Sunday is `0`.                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `weekEndsOn`          | no       | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6`                      | Which day the week ends on. Sunday is `0`.                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `locale`              | no       | `string`                                               | Custom locale. See I18n section                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `overlapOffset`       | no       | `number`                                               | Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.                                                                                                                                                                                                                                                                                                                                                |
-| `isRTL`               | no       | `boolean`                                              | Switches the direction of the layout for use with RTL languages. Defaults to false.                                                                                                                                                                                                                                                                                                                                                                             |
-| `renderEvent`         | no       | `EventRenderer`                                        | Custom event renderer. See below type definition.                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `renderHeader`        | no       | `HeaderRenderer`                                       | Custom header renderer.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| name                          | required | type                                                   | description                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----------------------------- | -------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `events`                      | yes      | `ICalendarEvent<T>[]`                                  | The events which will be rendered on the calendar. You can extend the type `ICalendarEvent` by providing a value to generic type T (see `./stories/events.tsx` for an example). with optional children to display custom components inside the event, and optional event renderer function to take complete control over the rendered event (advanced feature). Events that occur during the same time range will be layered, offset, and given a unique color. |
+| `height`                      | yes      | `number`                                               | Calendar height.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `hideNowIndicator`            | no       | `boolean`                                              | Hides the indicator for the current time. By default the now indicator is shown.                                                                                                                                                                                                                                                                                                                                                                                |
+| `hourRowHeight`               | no       | `number`                                               | Hour row height                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `onPressEvent`                | no       | `(event: ICalendarEvent<T>) => void`                   | Event handler which will be fired when the user clicks an event.                                                                                                                                                                                                                                                                                                                                                                                                |
+| `onChangeDate`                | no       | `([start: Date, end: Date]) => void`                   | Event handler which will be fired when the current date range changed.                                                                                                                                                                                                                                                                                                                                                                                          |
+| `onPressCell`                 | no       | `(date: Date) => void`                                 | Event handler which will be fired when the current date cell is clicked. The minute set to 0.                                                                                                                                                                                                                                                                                                                                                                   |
+| `onPressDateHeader`           | no       | `(date: Date) => void`                                 | Event handler which will be fired when the user clicks a date from the header.                                                                                                                                                                                                                                                                                                                                                                                  |
+| `mode`                        | no       | 'month' \| 'week' \| `'3days' \| 'day' \| 'custom'`    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `eventCellStyle`              | no       | `ViewStyle \| (event: ICalendarEvent<T>) => ViewStyle` | The style of Event cell. Accepts either style object (static) or function (dynamic).                                                                                                                                                                                                                                                                                                                                                                            |
+| `headerContentStyle`          | no       | `ViewStyle`                                            | The style of the Header's content. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                             |
+| `dayHeaderStyle`              | no       | `ViewStyle`                                            | The style of the Header's day numbers. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                         |
+| `dayHeaderHighlightColor`     | no       | `string`                                               | The style of the Header's highlighted day number. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                              |
+| `weekDayHeaderHighlightColor` | no       | `string`                                               | The style of the Header's highlighted week day. Accepts a style object (static).                                                                                                                                                                                                                                                                                                                                                                                |
+| `scrollOffsetMinutes`         | no       | `number`                                               | Scroll to specific minutes in a day. e.g.) set `480` to scroll to 8am when the calendar rendered.                                                                                                                                                                                                                                                                                                                                                               |
+| `date`                        | no       | `Date`                                                 | Initial date of calendar. Defualts to `new Date` (current time).                                                                                                                                                                                                                                                                                                                                                                                                |
+| `swipeEnabled`                | no       | `boolean`                                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `showTime`                    | no       | `boolean`                                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `ampm`                        | no       | `boolean`                                              | Use 12 hours time format instead of 24 hours.                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `weekStartsOn`                | no       | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6`                      | Which day the week starts on. Sunday is `0`.                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `weekEndsOn`                  | no       | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6`                      | Which day the week ends on. Sunday is `0`.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `locale`                      | no       | `string`                                               | Custom locale. See I18n section                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `overlapOffset`               | no       | `number`                                               | Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.                                                                                                                                                                                                                                                                                                                                                |
+| `isRTL`                       | no       | `boolean`                                              | Switches the direction of the layout for use with RTL languages. Defaults to false.                                                                                                                                                                                                                                                                                                                                                                             |
+| `renderEvent`                 | no       | `EventRenderer`                                        | Custom event renderer. See below type definition.                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `renderHeader`                | no       | `HeaderRenderer`                                       | Custom header renderer.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `eventMinHeightForMonthView`  | no       | `number`                                               | Minimun height for events in month view. Should match the min-height of your custom events. Defaults to 22.                                                                                                                                                                                                                                                                                                                                                     |
+| `activeDate`                  | no       | `Date`                                                 | Date highlighted in header. Defualts to today (current time).                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `headerComponent`             | no       | `ReactElement`                                         | Calendar body header component.                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `headerComponentStyle`        | no       | `ViewStyle`                                            | Calendar body header component wrapper styling. Accepts a style object (static)                                                                                                                                                                                                                                                                                                                                                                                 |
+| `hourStyle`                   | no       | `TextStyle`                                            | Calendar body hours styling. Accepts a style object (static)                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `showAllDayEventCell`         | no       | `boolean`                                              | Boolean for showing/hiding the all day event cell                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ## EventRenderer
 
@@ -156,19 +175,29 @@ type EventRenderer<T> = (
 ) => ReactElement | null
 ```
 
-For more information, see [Storybook](https://github.com/llotheo/react-native-big-calendar/blob/master/stories/index.stories.tsx)
+For more information, see [Storybook](https://github.com/acro5piano/react-native-big-calendar/blob/master/stories/index.stories.tsx)
 
-## ICalendarEvent<T>
+## ICalendarEventBase
 
 ```typescript
-interface ICalendarEventBase<T> {
+interface ICalendarEventBase {
   start: Date
   end: Date
   title: string
   children?: ReactElement | null
 }
+```
 
-export type ICalendarEvent<T = any> = ICalendarEventBase<T> & T
+## All day events
+
+All day events should start and end on 0 in hour, minutes, and seconds (T00:00:00). For example:
+
+```typescript
+{
+    title: 'all day event',
+    start: "2021-12-24T00:00:00.000Z",
+    end: "2021-12-24T00:00:00.000Z", // same date as `start`
+}
 ```
 
 ## Using a custom event render function
@@ -183,8 +212,8 @@ export interface MyCustomEventType {
   color: string
 }
 
-const renderEvent = (
-  event: ICalendarEvent<MyCustomEventType>,
+const renderEvent = <T extends ICalendarEventBase>(
+  event: T,
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => (
   <TouchableOpacity {...touchableOpacityProps}>
@@ -210,7 +239,7 @@ const eventNotes = useMemo(
   [],
 )
 
-export const myEvents: ICalendarEvent[] = [
+export const myEvents: ICalendarEventBase[] = [
   {
     title: 'Custom reminder',
     start: dayjs().set('hour', 16).set('minute', 0).toDate(),

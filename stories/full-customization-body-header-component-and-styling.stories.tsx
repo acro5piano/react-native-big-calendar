@@ -14,7 +14,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 
 const today = new Date()
 
-storiesOf('Full Customization', module).add('Main', () => {
+storiesOf('Full Customization Body Header Component and Styling', module).add('Main', () => {
   const { events: calendarEvents, addEvent } = useEvents(events)
 
   const [mode, setMode] = React.useState<Mode>('week')
@@ -101,6 +101,31 @@ storiesOf('Full Customization', module).add('Main', () => {
           onPressCell={addEvent}
           mode={mode}
           theme={themes[theme]}
+          headerContentStyle={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          dayHeaderStyle={{
+            marginLeft: 10,
+            backgroundColor: '#f1f1f1',
+            paddingVertical: 6,
+            paddingHorizontal: 12,
+            borderRadius: 12,
+          }}
+          dayHeaderHighlightColor={'#000'}
+          weekDayHeaderHighlightColor={'#aaa'}
+          headerComponent={
+            <Text style={{ color: '#aaa', fontSize: 25 }}>CalendarBody's headerComponent</Text>
+          }
+          headerComponentStyle={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+          hourStyle={{ color: '#355070', fontSize: 15 }}
+          showAllDayEventCell={false}
         />
       </View>
     </View>
