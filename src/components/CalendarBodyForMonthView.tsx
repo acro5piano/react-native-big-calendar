@@ -144,14 +144,14 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       ),
                     )
                     .reduce(
-                      (elements, event, index, events) => [
+                      (elements, event, index) => [
                         ...elements,
                         index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
                           <Text
                             key={index}
-                            style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}
+                            style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold', alignSelf: 'center', textAlign: 'center' }}
                           >
-                            {events.length - maxVisibleEventCount} More
+                            ...
                           </Text>
                         ) : (
                           <CalendarEventForMonthView

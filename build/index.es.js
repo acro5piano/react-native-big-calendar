@@ -810,10 +810,8 @@ function _CalendarBodyForMonthView(_a) {
                 var start = _a.start, end = _a.end;
                 return date.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)');
             })
-                .reduce(function (elements, event, index, events) { return __spreadArray(__spreadArray([], elements, true), [
-                index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (React.createElement(Text, { key: index, style: { fontSize: 11, marginTop: 2, fontWeight: 'bold' } },
-                    events.length - maxVisibleEventCount,
-                    " More")) : (React.createElement(CalendarEventForMonthView, { key: index, event: event, eventCellStyle: eventCellStyle, onPressEvent: onPressEvent, renderEvent: renderEvent, date: date, dayOfTheWeek: ii, calendarWidth: calendarWidth, isRTL: theme.isRTL, eventMinHeightForMonthView: eventMinHeightForMonthView })),
+                .reduce(function (elements, event, index) { return __spreadArray(__spreadArray([], elements, true), [
+                index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (React.createElement(Text, { key: index, style: { fontSize: 11, marginTop: 2, fontWeight: 'bold', alignSelf: 'center', textAlign: 'center' } }, "...")) : (React.createElement(CalendarEventForMonthView, { key: index, event: event, eventCellStyle: eventCellStyle, onPressEvent: onPressEvent, renderEvent: renderEvent, date: date, dayOfTheWeek: ii, calendarWidth: calendarWidth, isRTL: theme.isRTL, eventMinHeightForMonthView: eventMinHeightForMonthView })),
             ]); }, []))); }))); })));
 }
 var CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView);
