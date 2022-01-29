@@ -205,41 +205,15 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const dateRange = React.useMemo(() => {
     switch (mode) {
       case 'month':
-        const monthPrevRange = getDatesInMonth(targetDate.subtract(1, 'month'), locale)
-        const monthRange = getDatesInMonth(targetDate, locale)
-        const monthNextRange = getDatesInMonth(targetDate.add(1, 'month'), locale)
-        return [monthPrevRange, monthRange, monthNextRange]
+        return getDatesInMonth(targetDate, locale)
       case 'week':
-        const weekPrevRange = getDatesInWeek(targetDate.subtract(7, 'day'), weekStartsOn, locale)
-        const weekRange = getDatesInWeek(targetDate, weekStartsOn, locale)
-        const weekNextRange = getDatesInWeek(targetDate.add(7, 'day'), weekStartsOn, locale)
-        return [weekPrevRange, weekRange, weekNextRange]
+        return getDatesInWeek(targetDate, weekStartsOn, locale)
       case '3days':
-        const threeDaysPrevRange = getDatesInNextThreeDays(targetDate.subtract(3, 'day'), locale)
-        const threeDaysRange = getDatesInNextThreeDays(targetDate, locale)
-        const threeDaysNextRange = getDatesInNextThreeDays(targetDate.add(3, 'day'), locale)
-        return [threeDaysPrevRange, threeDaysRange, threeDaysNextRange]
+        return getDatesInNextThreeDays(targetDate, locale)
       case 'day':
-        const oneDayPrevRange = getDatesInNextOneDay(targetDate.subtract(1, 'day'), locale)
-        const oneDayRange = getDatesInNextOneDay(targetDate, locale)
-        const oneDayNextRange = getDatesInNextOneDay(targetDate.add(1, 'day'), locale)
-        return [oneDayPrevRange, oneDayRange, oneDayNextRange]
+        return getDatesInNextOneDay(targetDate, locale)
       case 'custom':
-        const days = Math.abs(weekStartsOn - weekEndsOn)
-        const customPrevRange = getDatesInNextCustomDays(
-          targetDate.subtract(days, 'day'),
-          weekStartsOn,
-          weekEndsOn,
-          locale,
-        )
-        const customRange = getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
-        const customNextRange = getDatesInNextCustomDays(
-          targetDate.add(days, 'day'),
-          weekStartsOn,
-          weekEndsOn,
-          locale,
-        )
-        return [customPrevRange, customRange, customNextRange]
+        return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
       default:
         throw new Error(
           `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
@@ -249,7 +223,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   React.useEffect(() => {
     if (onChangeDate) {
-      onChangeDate([dateRange[1][0].toDate(), dateRange[1].slice(-1)[0].toDate()])
+      onChangeDate([dateRange[0].toDate(), dateRange.slice(-1)[0].toDate()])
     }
   }, [dateRange, onChangeDate])
 
@@ -394,9 +368,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const onSwipeHorizontal = (direction: HorizontalDirection) => {
     if (animatePan === true) {
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-        movePrevBody(direction)
-      } else {
         moveNextBody(direction)
+      } else {
+        movePrevBody(direction)
       }
     } else {
       onSwipeHorizontalCallback(direction)

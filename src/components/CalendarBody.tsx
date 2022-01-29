@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 interface CalendarBodyProps<T extends ICalendarEventBase> {
   cellHeight: number
   containerHeight: number
-  dateRange: dayjs.Dayjs[][]
+  dateRange: dayjs.Dayjs[]
   events: T[]
   scrollOffsetMinutes: number
   ampm: boolean
@@ -228,7 +228,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
               leftValue.current = layout
             }}
           >
-            {dateRange[1].map((date) => (
+            {dateRange.map((date) => (
               <Animated.View
                 style={[
                   u['flex-1'],
