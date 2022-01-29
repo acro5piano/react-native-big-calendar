@@ -315,14 +315,15 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       duration: fadeInDuration,
       useNativeDriver: false,
     }).start(() => {
-      // Step 2: recalculate calendar and move quickly to the left to starting point
-      onPanLeftCallback(direction)
+      // Step 2: move quickly to the left to starting point
       Animated.timing(presentLeftValue, {
         // toValue: presentcurrent - width / 3,
         toValue: presentcurrent - width,
-        duration: 0.1,
+        duration: 0.01,
         useNativeDriver: false,
       }).start(() => {
+        // Step 3: recalculate calendar and show
+        onPanLeftCallback(direction)
         Animated.timing(presentLeftValue, {
           // toValue: width / 3,
           toValue: presentcurrent,
@@ -354,14 +355,15 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       duration: fadeInDuration,
       useNativeDriver: false,
     }).start(() => {
-      // Step 2: recalculate calendar and move quickly to the left to starting point
-      onPanLeftCallback(direction)
+      // Step 2: move quickly to the left to starting point
       Animated.timing(presentLeftValue, {
         // toValue: presentcurrent - width / 3,
         toValue: presentcurrent + width,
-        duration: 0.1,
+        duration: 0.01,
         useNativeDriver: false,
       }).start(() => {
+        // Step 3: recalculate calendar and show
+        onPanLeftCallback(direction)
         Animated.timing(presentLeftValue, {
           // toValue: width / 3,
           toValue: -presentcurrent,
