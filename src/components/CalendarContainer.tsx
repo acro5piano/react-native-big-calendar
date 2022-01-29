@@ -396,9 +396,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const onSwipeHorizontal = (direction: HorizontalDirection) => {
     if (animatePan === true) {
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-        moveNextBody(direction)
-      } else {
         movePrevBody(direction)
+      } else {
+        moveNextBody(direction)
       }
     } else {
       onSwipeHorizontalCallback(direction)
