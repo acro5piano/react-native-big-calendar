@@ -177,9 +177,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const [showDatesArrayStyle, setShowDatesArrayStyle] = React.useState(false)
   // fadeAnim will be used as the value for opacity. Initial Value: 0
   const fadeAnim = React.useRef(new Animated.Value(1)).current
-  const prevFadeAnim = React.useRef(new Animated.Value(0)).current
   const presentFadeAnim = React.useRef(new Animated.Value(1)).current
-  const nextFadeAnim = React.useRef(new Animated.Value(0)).current
   const prevLeftValue = React.useRef(new Animated.Value(0)).current
   const presentLeftValue = React.useRef(new Animated.Value(0)).current
   const nextLeftValue = React.useRef(new Animated.Value(0)).current
@@ -363,7 +361,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         useNativeDriver: false,
       }).start(() => {
         // Step 3: recalculate calendar and show
-        onPanLeftCallback(direction)
+        onPanRightCallback(direction)
         Animated.timing(presentLeftValue, {
           // toValue: width / 3,
           toValue: -presentcurrent,
@@ -565,12 +563,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         increaseFirstRowHeight={increaseFirstRowHeight}
         animatePan={animatePan}
         fadeAnim={fadeAnim}
-        prevFadeAnim={prevFadeAnim}
         presentFadeAnim={presentFadeAnim}
-        nextFadeAnim={nextFadeAnim}
-        prevLeftValue={prevLeftValue}
         presentLeftValue={presentLeftValue}
-        nextLeftValue={nextLeftValue}
         handleLeftValue={handleLeftValue}
       />
     </React.Fragment>

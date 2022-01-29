@@ -67,12 +67,8 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   increaseFirstRowHeight?: number
   animatePan?: boolean
   fadeAnim: Animated.Value
-  prevFadeAnim: Animated.Value
   presentFadeAnim: Animated.Value
-  nextFadeAnim: Animated.Value
-  prevLeftValue: Animated.Value
   presentLeftValue: Animated.Value
-  nextLeftValue: Animated.Value
   handleLeftValue: (layout: LayoutRectangleExtended) => void
 }
 
@@ -100,37 +96,23 @@ function _CalendarBody<T extends ICalendarEventBase>({
   increaseFirstRowHeight = 1,
   animatePan = false,
   fadeAnim,
-  prevFadeAnim,
   presentFadeAnim,
-  nextFadeAnim,
-  prevLeftValue,
   presentLeftValue,
-  nextLeftValue,
   handleLeftValue,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
   const leftValue = React.useRef<LayoutRectangleExtended | LayoutRectangle>()
-  const currentPrevLeftVal = React.useRef<number>(0)
   const currentPresentLeftVal = React.useRef<number>(0)
-  const currentNextLeftVal = React.useRef<number>(0)
 
   React.useEffect(() => {
-    const idprev = prevLeftValue.addListener((value) => {
-      currentPrevLeftVal.current = value.value
-    })
     const idpres = presentLeftValue.addListener((value) => {
       currentPresentLeftVal.current = value.value
     })
-    const idnext = nextLeftValue.addListener((value) => {
-      currentNextLeftVal.current = value.value
-    })
     return () => {
-      prevLeftValue.removeListener(idprev)
       presentLeftValue.removeListener(idpres)
-      nextLeftValue.removeListener(idnext)
     }
-  }, [prevLeftValue, presentLeftValue, nextLeftValue])
+  }, [presentLeftValue])
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -184,8 +166,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
   )
 
   const theme = useTheme()
-
-  console.log('currentPrevLeftVal.current', currentPrevLeftVal.current)
 
   return (
     <Animated.View
@@ -248,95 +228,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
               leftValue.current = layout
             }}
           >
-            {dateRange[0].map((date) => (
-              <Animated.View
-                style={[
-                  u['flex-1'],
-                  u['overflow-hidden'],
-                  animatePan === true
-                    ? {
-                        transform: [{ translateX: prevLeftValue }],
-                        opacity: prevFadeAnim,
-                        position: 'absolute',
-                      }
-                    : {},
-                ]}
-                key={date.toString()}
-              >
-                {increaseFirstRowHeight !== 1 ? (
-                  <HourGuideCell
-                    key={'guide-cel-1'}
-                    cellHeight={cellHeight * increaseFirstRowHeight}
-                    date={date}
-                    hour={-1}
-                    onPress={_onPressCell}
-                    index={-1}
-                    cellsBorderStyle={cellsBorderStyle}
-                  />
-                ) : null}
-                {hours.map((hour, index) => (
-                  <HourGuideCell
-                    key={hour}
-                    cellHeight={cellHeight}
-                    date={date}
-                    hour={hour}
-                    onPress={_onPressCell}
-                    index={index}
-                    cellsBorderStyle={cellsBorderStyle}
-                  />
-                ))}
-
-                {/* Render events of this date */}
-                {/* M  T  (W)  T  F  S  S */}
-                {/*       S-E             */}
-                {events
-                  .filter(({ start }) =>
-                    dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                  )
-                  .map(_renderMappedEvent)}
-
-                {/* Render events which starts before this date and ends on this date */}
-                {/* M  T  (W)  T  F  S  S */}
-                {/* S------E              */}
-                {events
-                  .filter(
-                    ({ start, end }) =>
-                      dayjs(start).isBefore(date.startOf('day')) &&
-                      dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                  )
-                  .map((event) => ({
-                    ...event,
-                    start: dayjs(event.end).startOf('day'),
-                  }))
-                  .map(_renderMappedEvent)}
-
-                {/* Render events which starts before this date and ends after this date */}
-                {/* M  T  (W)  T  F  S  S */}
-                {/*    S-------E          */}
-                {events
-                  .filter(
-                    ({ start, end }) =>
-                      dayjs(start).isBefore(date.startOf('day')) &&
-                      dayjs(end).isAfter(date.endOf('day')),
-                  )
-                  .map((event) => ({
-                    ...event,
-                    start: dayjs(event.end).startOf('day'),
-                    end: dayjs(event.end).endOf('day'),
-                  }))
-                  .map(_renderMappedEvent)}
-
-                {isToday(date) && !hideNowIndicator && (
-                  <View
-                    style={[
-                      styles.nowIndicator,
-                      { backgroundColor: theme.palette.nowIndicator },
-                      { top: `${getRelativeTopInDay(now)}%` },
-                    ]}
-                  />
-                )}
-              </Animated.View>
-            ))}
             {dateRange[1].map((date) => (
               <Animated.View
                 style={[
@@ -346,95 +237,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
                     ? {
                         transform: [{ translateX: presentLeftValue }],
                         opacity: presentFadeAnim,
-                      }
-                    : {},
-                ]}
-                key={date.toString()}
-              >
-                {increaseFirstRowHeight !== 1 ? (
-                  <HourGuideCell
-                    key={'guide-cel-1'}
-                    cellHeight={cellHeight * increaseFirstRowHeight}
-                    date={date}
-                    hour={-1}
-                    onPress={_onPressCell}
-                    index={-1}
-                    cellsBorderStyle={cellsBorderStyle}
-                  />
-                ) : null}
-                {hours.map((hour, index) => (
-                  <HourGuideCell
-                    key={hour}
-                    cellHeight={cellHeight}
-                    date={date}
-                    hour={hour}
-                    onPress={_onPressCell}
-                    index={index}
-                    cellsBorderStyle={cellsBorderStyle}
-                  />
-                ))}
-
-                {/* Render events of this date */}
-                {/* M  T  (W)  T  F  S  S */}
-                {/*       S-E             */}
-                {events
-                  .filter(({ start }) =>
-                    dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                  )
-                  .map(_renderMappedEvent)}
-
-                {/* Render events which starts before this date and ends on this date */}
-                {/* M  T  (W)  T  F  S  S */}
-                {/* S------E              */}
-                {events
-                  .filter(
-                    ({ start, end }) =>
-                      dayjs(start).isBefore(date.startOf('day')) &&
-                      dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                  )
-                  .map((event) => ({
-                    ...event,
-                    start: dayjs(event.end).startOf('day'),
-                  }))
-                  .map(_renderMappedEvent)}
-
-                {/* Render events which starts before this date and ends after this date */}
-                {/* M  T  (W)  T  F  S  S */}
-                {/*    S-------E          */}
-                {events
-                  .filter(
-                    ({ start, end }) =>
-                      dayjs(start).isBefore(date.startOf('day')) &&
-                      dayjs(end).isAfter(date.endOf('day')),
-                  )
-                  .map((event) => ({
-                    ...event,
-                    start: dayjs(event.end).startOf('day'),
-                    end: dayjs(event.end).endOf('day'),
-                  }))
-                  .map(_renderMappedEvent)}
-
-                {isToday(date) && !hideNowIndicator && (
-                  <View
-                    style={[
-                      styles.nowIndicator,
-                      { backgroundColor: theme.palette.nowIndicator },
-                      { top: `${getRelativeTopInDay(now)}%` },
-                    ]}
-                  />
-                )}
-              </Animated.View>
-            ))}
-            {dateRange[2].map((date) => (
-              <Animated.View
-                style={[
-                  u['flex-1'],
-                  u['overflow-hidden'],
-                  animatePan === true
-                    ? {
-                        transform: [{ translateX: nextLeftValue }],
-                        opacity: nextFadeAnim,
-                        position: 'absolute',
                       }
                     : {},
                 ]}
