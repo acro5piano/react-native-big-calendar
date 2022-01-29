@@ -111,6 +111,26 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
   const leftValue = React.useRef<LayoutRectangleExtended | LayoutRectangle>()
+  const currentPrevLeftVal = React.useRef<number>(0)
+  const currentPresentLeftVal = React.useRef<number>(0)
+  const currentNextLeftVal = React.useRef<number>(0)
+
+  React.useEffect(() => {
+    const idprev = prevLeftValue.addListener((value) => {
+      currentPrevLeftVal.current = value.value
+    })
+    const idpres = presentLeftValue.addListener((value) => {
+      currentPresentLeftVal.current = value.value
+    })
+    const idnext = nextLeftValue.addListener((value) => {
+      currentNextLeftVal.current = value.value
+    })
+    return () => {
+      prevLeftValue.removeListener(idprev)
+      presentLeftValue.removeListener(idpres)
+      nextLeftValue.removeListener(idnext)
+    }
+  }, [prevLeftValue, presentLeftValue, nextLeftValue])
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -164,6 +184,8 @@ function _CalendarBody<T extends ICalendarEventBase>({
   )
 
   const theme = useTheme()
+
+  console.log('currentPrevLeftVal.current', currentPrevLeftVal.current)
 
   return (
     <Animated.View

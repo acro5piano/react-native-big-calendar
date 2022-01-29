@@ -279,7 +279,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const theme = useTheme()
 
   const handleLeftValue = (layout: LayoutRectangleExtended) => {
-    console.log('layout', layout)
     leftValue.current = layout
   }
 
@@ -302,20 +301,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   const movePrevBody = (direction: HorizontalDirection) => {
     const width = leftValue.current?.width || 0
+    const presentcurrent = currentPresentLeftVal.current || 0
 
-    Animated.timing(nextLeftValue, {
-      toValue: width / 3,
-      duration: fadeInDuration,
-      useNativeDriver: false,
-    }).start()
-    Animated.timing(nextFadeAnim, {
-      toValue: 0,
-      duration: fadeInDuration,
-      useNativeDriver: false,
-    }).start()
-
+    // Step 1: move to the left and hide
     Animated.timing(presentLeftValue, {
-      toValue: width / 3,
+      // toValue: width / 3,
+      toValue: width,
       duration: fadeInDuration,
       useNativeDriver: false,
     }).start()
@@ -323,66 +314,38 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       toValue: 0,
       duration: fadeInDuration,
       useNativeDriver: false,
-    }).start()
-
-    Animated.timing(prevFadeAnim, {
-      toValue: 1,
-      duration: fadeInDuration / 10,
-      useNativeDriver: false,
-    }).start()
-    Animated.timing(prevLeftValue, {
-      toValue: width / 3,
-      duration: fadeInDuration,
-      useNativeDriver: false,
     }).start(() => {
-      const prevcurrent = currentPrevLeftVal.current || 0
-      const presentcurrent = currentPresentLeftVal.current || 0
-      const nextcurrent = currentNextLeftVal.current || 0
-      Animated.timing(nextLeftValue, {
-        toValue: prevcurrent - width / 3,
-        duration: 0.01,
-        useNativeDriver: false,
-      }).start()
+      // Step 2: recalculate calendar and move quickly to the left to starting point
+      onPanLeftCallback(direction)
       Animated.timing(presentLeftValue, {
-        toValue: presentcurrent - width / 3,
-        duration: 0.01,
+        // toValue: presentcurrent - width / 3,
+        toValue: presentcurrent - width,
+        duration: 0.1,
         useNativeDriver: false,
-      }).start()
-      Animated.timing(prevLeftValue, {
-        toValue: nextcurrent - width / 3,
-        duration: 0.01,
-        useNativeDriver: false,
-      }).start()
-
-      Animated.timing(presentFadeAnim, {
-        toValue: 1,
-        duration: 0.01,
-        useNativeDriver: false,
-      }).start()
-      Animated.timing(prevFadeAnim, {
-        toValue: 0,
-        duration: 0.01,
-        useNativeDriver: false,
-      }).start(() => onPanLeftCallback(direction))
+      }).start(() => {
+        Animated.timing(presentLeftValue, {
+          // toValue: width / 3,
+          toValue: presentcurrent,
+          duration: fadeInDuration,
+          useNativeDriver: false,
+        }).start()
+        Animated.timing(presentFadeAnim, {
+          toValue: 1,
+          duration: fadeInDuration,
+          useNativeDriver: false,
+        }).start()
+      })
     })
   }
 
   const moveNextBody = (direction: HorizontalDirection) => {
     const width = leftValue.current?.width || 0
+    const presentcurrent = currentPresentLeftVal.current || 0
 
-    Animated.timing(prevLeftValue, {
-      toValue: -width / 3,
-      duration: fadeInDuration,
-      useNativeDriver: false,
-    }).start()
-    Animated.timing(prevFadeAnim, {
-      toValue: 0,
-      duration: fadeInDuration,
-      useNativeDriver: false,
-    }).start()
-
+    // Step 1: move to the left and hide
     Animated.timing(presentLeftValue, {
-      toValue: -width / 3,
+      // toValue: width / 3,
+      toValue: -width,
       duration: fadeInDuration,
       useNativeDriver: false,
     }).start()
@@ -390,47 +353,27 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       toValue: 0,
       duration: fadeInDuration,
       useNativeDriver: false,
-    }).start()
-
-    Animated.timing(nextFadeAnim, {
-      toValue: 1,
-      duration: fadeInDuration / 10,
-      useNativeDriver: false,
-    }).start()
-    Animated.timing(nextLeftValue, {
-      toValue: -width / 3,
-      duration: fadeInDuration,
-      useNativeDriver: false,
     }).start(() => {
-      const prevcurrent = currentPrevLeftVal.current || 0
-      const presentcurrent = currentPresentLeftVal.current || 0
-      const nextcurrent = currentNextLeftVal.current || 0
-      Animated.timing(prevLeftValue, {
-        toValue: prevcurrent + width / 3,
-        duration: 0.01,
-        useNativeDriver: false,
-      }).start()
+      // Step 2: recalculate calendar and move quickly to the left to starting point
+      onPanLeftCallback(direction)
       Animated.timing(presentLeftValue, {
-        toValue: presentcurrent + width / 3,
-        duration: 0.01,
+        // toValue: presentcurrent - width / 3,
+        toValue: presentcurrent + width,
+        duration: 0.1,
         useNativeDriver: false,
-      }).start()
-      Animated.timing(nextLeftValue, {
-        toValue: nextcurrent + width / 3,
-        duration: 0.01,
-        useNativeDriver: false,
-      }).start()
-
-      Animated.timing(presentFadeAnim, {
-        toValue: 1,
-        duration: 0.01,
-        useNativeDriver: false,
-      }).start()
-      Animated.timing(nextFadeAnim, {
-        toValue: 0,
-        duration: 0.01,
-        useNativeDriver: false,
-      }).start(() => onPanRightCallback(direction))
+      }).start(() => {
+        Animated.timing(presentLeftValue, {
+          // toValue: width / 3,
+          toValue: -presentcurrent,
+          duration: fadeInDuration,
+          useNativeDriver: false,
+        }).start()
+        Animated.timing(presentFadeAnim, {
+          toValue: 1,
+          duration: fadeInDuration,
+          useNativeDriver: false,
+        }).start()
+      })
     })
   }
 
@@ -451,9 +394,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const onSwipeHorizontal = (direction: HorizontalDirection) => {
     if (animatePan === true) {
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-        movePrevBody(direction)
-      } else {
         moveNextBody(direction)
+      } else {
+        movePrevBody(direction)
       }
     } else {
       onSwipeHorizontalCallback(direction)
