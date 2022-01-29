@@ -175,8 +175,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const [showWeekDayInner, setShowWeekDayInner] = React.useState(false)
   const [showShortWeekDay, setShowShortWeekDay] = React.useState(false)
   const [showDatesArrayStyle, setShowDatesArrayStyle] = React.useState(false)
-  // fadeAnim will be used as the value for opacity. Initial Value: 0
-  const fadeAnim = React.useRef(new Animated.Value(1)).current
   const presentFadeAnim = React.useRef(new Animated.Value(1)).current
   const prevLeftValue = React.useRef(new Animated.Value(0)).current
   const presentLeftValue = React.useRef(new Animated.Value(0)).current
@@ -536,7 +534,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         fullBodyStyle={fullBodyStyle}
         increaseFirstRowHeight={increaseFirstRowHeight}
         animatePan={animatePan}
-        fadeAnim={fadeAnim}
         presentFadeAnim={presentFadeAnim}
         presentLeftValue={presentLeftValue}
         handleLeftValue={handleLeftValue}

@@ -66,7 +66,6 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   fullBodyStyle?: ViewStyle
   increaseFirstRowHeight?: number
   animatePan?: boolean
-  fadeAnim: Animated.Value
   presentFadeAnim: Animated.Value
   presentLeftValue: Animated.Value
   handleLeftValue: (layout: LayoutRectangleExtended) => void
@@ -95,7 +94,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
   fullBodyStyle = {},
   increaseFirstRowHeight = 1,
   animatePan = false,
-  fadeAnim,
   presentFadeAnim,
   presentLeftValue,
   handleLeftValue,
@@ -168,17 +166,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const theme = useTheme()
 
   return (
-    <Animated.View
-      style={[
-        fullBodyStyle,
-        animatePan === true
-          ? {
-              // Bind opacity to animated value
-              opacity: fadeAnim,
-            }
-          : {},
-      ]}
-    >
+    <View style={[fullBodyStyle]}>
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
       <ScrollView
         style={[
@@ -221,7 +209,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
             ))}
           </View>
           <View
-            style={[u['flex-1'], u['flex-row'], { position: 'relative' }]}
+            style={[u['flex-1'], u['flex-row']]}
             onLayout={(event) => {
               const layout: LayoutRectangleExtended = { ...event.nativeEvent.layout }
               handleLeftValue(layout)
@@ -319,7 +307,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           </View>
         </View>
       </ScrollView>
-    </Animated.View>
+    </View>
   )
 }
 
