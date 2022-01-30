@@ -67,6 +67,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   presentFadeAnim: Animated.Value
   presentLeftValue: Animated.Value
   handleLeftValue: (layout: LayoutRectangleExtended) => void
+  contentItemsContainerStyle?: ViewStyle
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -94,6 +95,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   presentFadeAnim,
   presentLeftValue,
   handleLeftValue,
+  contentItemsContainerStyle = {},
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -167,6 +169,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
+        contentContainerStyle={contentItemsContainerStyle}
       >
         <View
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
