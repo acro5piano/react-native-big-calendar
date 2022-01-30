@@ -32,6 +32,9 @@ storiesOf('showcase - Desktop', module)
         onPressEvent={(event) => alert(event.title)}
         onPressCell={() => void 0}
         mode="day"
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
       />
     </View>
   ))
@@ -43,6 +46,9 @@ storiesOf('showcase - Desktop', module)
         onPressEvent={(event) => alert(event.title)}
         onPressCell={() => void 0}
         mode="3days"
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
       />
     </View>
   ))
@@ -55,6 +61,61 @@ storiesOf('showcase - Desktop', module)
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
+      </View>
+    )
+  })
+  .add('Week mode with drag disabled', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          disableDrag
+          swipeEnabled
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
+      </View>
+    )
+  })
+  .add('Week mode with medium drag precision', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          dragPrecision="medium"
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
+      </View>
+    )
+  })
+  .add('Week mode with high drag precision', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          dragPrecision="high"
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
         />
       </View>
     )
@@ -133,6 +194,9 @@ storiesOf('showcase - Desktop', module)
           const backgroundColor = event.title.match(/Meeting/) ? 'red' : 'blue'
           return { backgroundColor }
         }}
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
       />
     </View>
   ))
@@ -152,18 +216,35 @@ storiesOf('showcase - Desktop', module)
           events={events}
           date={date.toDate()}
           swipeEnabled={false}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
         />
       </View>
     )
   })
   .add('scroll to some time', () => (
     <View style={styles.desktop}>
-      <Calendar height={SCREEN_HEIGHT} events={events} scrollOffsetMinutes={300} />
+      <Calendar
+        height={SCREEN_HEIGHT}
+        events={events}
+        scrollOffsetMinutes={300}
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
+      />
     </View>
   ))
   .add('week start on Monday', () => (
     <View style={styles.desktop}>
-      <Calendar height={SCREEN_HEIGHT} events={events} weekStartsOn={1} />
+      <Calendar
+        height={SCREEN_HEIGHT}
+        events={events}
+        weekStartsOn={1}
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
+      />
     </View>
   ))
   .add('all day event', () => {
@@ -188,7 +269,14 @@ storiesOf('showcase - Desktop', module)
 
     return (
       <View style={styles.desktop}>
-        <Calendar height={SCREEN_HEIGHT} events={_events} weekStartsOn={1} />
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={_events}
+          weekStartsOn={1}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
       </View>
     )
   })
@@ -200,6 +288,9 @@ storiesOf('showcase - Desktop', module)
           events={events}
           onPressDateHeader={(date) => alert(date)}
           mode="3days"
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
         />
       </View>
     )
@@ -207,25 +298,53 @@ storiesOf('showcase - Desktop', module)
   .add('locale', () => {
     return (
       <View style={styles.desktop}>
-        <Calendar locale="ja" height={SCREEN_HEIGHT} events={events} />
+        <Calendar
+          locale="ja"
+          height={SCREEN_HEIGHT}
+          events={events}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
       </View>
     )
   })
   .add('AM/PM format', () => {
     return (
       <View style={styles.desktop}>
-        <Calendar ampm height={SCREEN_HEIGHT} events={events} />
+        <Calendar
+          ampm
+          height={SCREEN_HEIGHT}
+          events={events}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
       </View>
     )
   })
   .add('Hidden Now indicator', () => (
     <View style={styles.desktop}>
-      <Calendar height={SCREEN_HEIGHT} events={events} hideNowIndicator />
+      <Calendar
+        height={SCREEN_HEIGHT}
+        events={events}
+        hideNowIndicator
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
+      />
     </View>
   ))
   .add('More overlap padding', () => (
     <View style={styles.desktop}>
-      <Calendar height={SCREEN_HEIGHT} events={events} overlapOffset={70} />
+      <Calendar
+        height={SCREEN_HEIGHT}
+        events={events}
+        overlapOffset={70}
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
+      />
     </View>
   ))
   .add('RTL', () => {
@@ -234,14 +353,29 @@ storiesOf('showcase - Desktop', module)
     }, [])
     return (
       <View style={styles.desktop}>
-        <Calendar locale="he" height={SCREEN_HEIGHT} events={events} isRTL />
+        <Calendar
+          locale="he"
+          height={SCREEN_HEIGHT}
+          events={events}
+          isRTL
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
       </View>
     )
   })
   .add('Custom Event Component renderer', () => {
     return (
       <View style={styles.desktop}>
-        <Calendar height={SCREEN_HEIGHT} renderEvent={customEventRenderer} events={events} />
+        <Calendar
+          height={SCREEN_HEIGHT}
+          renderEvent={customEventRenderer}
+          events={events}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
       </View>
     )
   })
@@ -253,6 +387,9 @@ storiesOf('showcase - Desktop', module)
         mode={'custom'}
         weekStartsOn={1}
         weekEndsOn={5}
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
       />
     </View>
   ))
@@ -274,6 +411,9 @@ storiesOf('showcase - Desktop', module)
         ]}
         eventCellStyle={(event) => (/longer/.test(event.title) ? { backgroundColor: 'green' } : {})}
         mode={'week'}
+        dragEndCallback={(data) =>
+          alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+        }
       />
     </View>
   ))
@@ -294,6 +434,9 @@ storiesOf('showcase - Desktop', module)
               },
             },
           }}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
         />
       </View>
     )
@@ -308,6 +451,9 @@ storiesOf('showcase - Desktop', module)
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
           theme={themes.dark}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
         />
       </View>
     )
@@ -322,6 +468,9 @@ storiesOf('showcase - Desktop', module)
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
           renderHeader={() => null}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
         />
       </View>
     )
@@ -337,6 +486,9 @@ storiesOf('showcase - Desktop', module)
           onPressCell={state.addEvent}
           renderHeaderForMonthView={() => null}
           mode="month"
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
         />
       </View>
     )

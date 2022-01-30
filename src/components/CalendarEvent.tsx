@@ -3,9 +3,15 @@ import * as React from 'react'
 
 import { OVERLAP_OFFSET, u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
+import {
+  CalendarEventGestureCallback,
+  EventCellStyle,
+  EventRenderer,
+  ICalendarEventBase,
+} from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
+import { Draggable } from './CalendarDraggable'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {
@@ -27,6 +33,11 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   overlapOffset?: number
   renderEvent?: EventRenderer<T>
   ampm: boolean
+  moveCallback: CalendarEventGestureCallback
+  isMovingCallback: (isMoving: boolean) => void
+  dragEndCallback: CalendarEventGestureCallback
+  disableDrag?: boolean
+  dragPrecision: 'low' | 'medium' | 'high'
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
@@ -39,6 +50,11 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   overlapOffset = OVERLAP_OFFSET,
   renderEvent,
   ampm,
+  moveCallback,
+  isMovingCallback,
+  dragEndCallback,
+  disableDrag,
+  dragPrecision,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -66,7 +82,26 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   }, [eventCount, palettes])
 
   if (renderEvent) {
-    return renderEvent(event, touchableOpacityProps)
+    return (
+      <Draggable
+        customEventStyles={[
+          getEventCellPositionStyle(event.start, event.end),
+          getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes, true),
+          u['absolute'],
+        ]}
+        disableDrag={disableDrag}
+        moveCallback={moveCallback}
+        isMovingCallback={isMovingCallback}
+        dragEndCallback={dragEndCallback}
+        event={event}
+        dragPrecision={dragPrecision}
+      >
+        {renderEvent(event, {
+          onPress: touchableOpacityProps.onPress,
+          style: { width: '100%', height: '100%' },
+        })}
+      </Draggable>
+    )
   }
 
   return (
@@ -76,6 +111,11 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       ampm={ampm}
       touchableOpacityProps={touchableOpacityProps}
       textColor={textColor}
+      moveCallback={moveCallback}
+      isMovingCallback={isMovingCallback}
+      disableDrag={disableDrag}
+      dragEndCallback={dragEndCallback}
+      dragPrecision={dragPrecision}
     />
   )
 }

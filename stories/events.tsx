@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 
 import { EventRenderer, ICalendarEventBase } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils'
@@ -95,9 +95,9 @@ export const customEventRenderer: EventRenderer<MyCustomEventType> = (
 ) => {
   return (
     <TouchableOpacity
-      {...touchableOpacityProps}
+      // {...touchableOpacityProps}
       style={[
-        ...(touchableOpacityProps.style as RecursiveArray<ViewStyle>),
+        touchableOpacityProps.style,
         {
           backgroundColor: 'white',
           borderWidth: 1,

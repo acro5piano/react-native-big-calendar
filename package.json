@@ -1,11 +1,11 @@
 {
-  "name": "react-native-big-calendar",
-  "version": "3.0.0",
+  "name": "react-native-draggable-calendar",
+  "version": "4.0.0",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
-  "repository": "git@github.com:llotheo/react-native-big-calendar",
+  "repository": "git@github.com:gabrielmouallem/react-native-big-calendar.git",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {

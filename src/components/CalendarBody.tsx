@@ -7,6 +7,7 @@ import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import {
   CalendarCellStyle,
+  CalendarEventGestureCallback,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
@@ -18,7 +19,6 @@ import {
   getOrderOfEvent,
   getRelativeTopInDay,
   hours,
-  isToday,
   typedMemo,
 } from '../utils'
 import { CalendarEvent } from './CalendarEvent'
@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 })
+
+export const widthContext = React.createContext(400)
 
 interface CalendarBodyProps<T extends ICalendarEventBase> {
   cellHeight: number
@@ -54,6 +56,9 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
+  dragEndCallback: CalendarEventGestureCallback
+  disableDrag?: boolean
+  dragPrecision: 'low' | 'medium' | 'high'
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -62,7 +67,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   dateRange,
   style,
   onPressCell,
-  events,
+  events: _events,
   onPressEvent,
   eventCellStyle,
   calendarCellStyle,
@@ -76,9 +81,18 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponent = null,
   headerComponentStyle = {},
   hourStyle = {},
+  dragEndCallback,
+  disableDrag,
+  dragPrecision,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
+  const layoutProps = React.useRef({ x: 0, y: 0, width: 500, height: 1000 })
+  const [calculatedWidth, setCalculatedWidth] = React.useState(400)
+  const [isMoving, setIsMoving] = React.useState<boolean>(false)
+  const [movingEvent, setMovingEvent] = React.useState<any>()
+
+  const events = movingEvent && isMoving ? [..._events, movingEvent] : _events
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -109,10 +123,15 @@ function _CalendarBody<T extends ICalendarEventBase>({
     [onPressCell],
   )
 
-  const _renderMappedEvent = (event: T) => (
+  const setViewOffset = (x: number, y: number, width: number, height: number) => {
+    layoutProps.current = { x, y, width, height }
+  }
+
+  const _renderMappedEvent = (event: any) => (
     <CalendarEvent
-      key={`${event.start}${event.title}${event.end}`}
+      key={`${event?.moving}${event.start}${event.title}${event.end}`}
       event={event}
+      disableDrag={disableDrag}
       onPressEvent={onPressEvent}
       eventCellStyle={eventCellStyle}
       showTime={showTime}
@@ -121,15 +140,37 @@ function _CalendarBody<T extends ICalendarEventBase>({
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
       ampm={ampm}
+      moveCallback={(data: any) => {
+        if (data.day !== 0 || data.hour !== 0) {
+          const hoursValueOf = data.hour * 3.6e6
+          var start = new Date(data.event.start.toISOString())
+          start.setDate(start.getDate() + data.day)
+          start = new Date(start.valueOf() + hoursValueOf)
+          var end = new Date(data.event.end.toISOString())
+          end.setDate(end.getDate() + data.day)
+          end = new Date(end.valueOf() + hoursValueOf)
+          setMovingEvent({ ...data.event, start, end, moving: true })
+        } else {
+          setMovingEvent(null)
+        }
+      }}
+      isMovingCallback={(isMoving: boolean) => setIsMoving(isMoving)}
+      dragEndCallback={dragEndCallback}
+      dragPrecision={dragPrecision}
     />
   )
 
   const theme = useTheme()
 
   return (
-    <React.Fragment>
+    <widthContext.Provider value={calculatedWidth}>
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
       <ScrollView
+        onLayout={(event) => {
+          var { x, y, width, height } = event.nativeEvent.layout
+          setViewOffset(x, y, width, height)
+          setCalculatedWidth(width)
+        }}
         style={[
           {
             height: containerHeight - cellHeight * 3,
@@ -138,14 +179,15 @@ function _CalendarBody<T extends ICalendarEventBase>({
         ]}
         ref={scrollView}
         scrollEventThrottle={32}
-        {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
+        {...(Platform.OS !== 'web' ? (disableDrag ? panResponder.panHandlers : {}) : {})}
         showsVerticalScrollIndicator={false}
-        nestedScrollEnabled
+        nestedScrollEnabled={!isMoving}
+        scrollEnabled={!isMoving}
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
       >
         <View
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
-          {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
+          {...(Platform.OS === 'web' ? (disableDrag ? panResponder.panHandlers : {}) : {})}
         >
           <View style={[u['z-20'], u['w-50']]}>
             {hours.map((hour) => (
@@ -158,6 +200,15 @@ function _CalendarBody<T extends ICalendarEventBase>({
               />
             ))}
           </View>
+          {!hideNowIndicator && (
+            <View
+              style={[
+                styles.nowIndicator,
+                { backgroundColor: theme.palette.nowIndicator },
+                { top: `${getRelativeTopInDay(now)}%` },
+              ]}
+            />
+          )}
           {dateRange.map((date) => (
             <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
               {hours.map((hour, index) => (
@@ -211,21 +262,11 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   end: dayjs(event.end).endOf('day'),
                 }))
                 .map(_renderMappedEvent)}
-
-              {isToday(date) && !hideNowIndicator && (
-                <View
-                  style={[
-                    styles.nowIndicator,
-                    { backgroundColor: theme.palette.nowIndicator },
-                    { top: `${getRelativeTopInDay(now)}%` },
-                  ]}
-                />
-              )}
             </View>
           ))}
         </View>
       </ScrollView>
-    </React.Fragment>
+    </widthContext.Provider>
   )
 }
 

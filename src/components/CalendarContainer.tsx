@@ -6,6 +6,7 @@ import { MIN_HEIGHT } from '../commonStyles'
 import {
   CalendarCellStyle,
   CalendarCellTextStyle,
+  CalendarEventGestureCallback,
   DateRangeHandler,
   EventCellStyle,
   EventRenderer,
@@ -92,6 +93,9 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
+  dragEndCallback?: CalendarEventGestureCallback
+  disableDrag?: boolean
+  dragPrecision?: 'low' | 'medium' | 'high'
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -132,6 +136,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   headerComponentStyle = {},
   hourStyle = {},
   showAllDayEventCell = true,
+  disableDrag = false,
+  dragEndCallback = () => {},
+  dragPrecision = 'low',
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -275,6 +282,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         headerComponent={headerComponent}
         headerComponentStyle={headerComponentStyle}
         hourStyle={hourStyle}
+        disableDrag={disableDrag}
+        dragEndCallback={dragEndCallback}
+        dragPrecision={dragPrecision}
       />
     </React.Fragment>
   )

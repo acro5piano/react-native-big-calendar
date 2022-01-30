@@ -9,6 +9,7 @@ export interface ICalendarEventBase {
   end: Date
   title: string
   children?: ReactElement | null
+  moving?: boolean
 }
 
 export type CalendarTouchableOpacityProps = {
@@ -17,6 +18,12 @@ export type CalendarTouchableOpacityProps = {
   style: RecursiveArray<ViewStyle | undefined> | ViewStyle
   onPress: () => void
   disabled: boolean
+}
+
+export interface CalendarChangedInformation<T extends ICalendarEventBase> {
+  day: number
+  hour: number
+  event: T
 }
 
 export type Mode = '3days' | 'week' | 'day' | 'custom' | 'month'
@@ -35,10 +42,11 @@ export type DateRangeHandler = ([start, end]: HasDateRange) => void
 
 export type HorizontalDirection = 'RIGHT' | 'LEFT'
 
-export type EventRenderer<T extends ICalendarEventBase> = (
-  event: T,
-  touchableOpacityProps: CalendarTouchableOpacityProps,
-) => JSX.Element
+export type EventRenderer<T extends ICalendarEventBase> = (event: T, anyProps: any) => JSX.Element
+
+export type CalendarEventGestureCallback = (
+  data: CalendarChangedInformation<ICalendarEventBase>,
+) => void
 
 export type HeaderRenderer<T extends ICalendarEventBase> = React.ComponentType<
   CalendarHeaderProps<T> & { mode: Mode }
