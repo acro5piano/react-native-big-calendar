@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import {
   Animated,
-  LayoutRectangle,
   Platform,
   ScrollView,
   StyleSheet,
@@ -100,17 +99,13 @@ function _CalendarBody<T extends ICalendarEventBase>({
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
-  const leftValue = React.useRef<LayoutRectangleExtended | LayoutRectangle>()
-  const currentPresentLeftVal = React.useRef<number>(0)
+  const [currentEvents, setCurrentEvents] = React.useState<T[]>([])
 
   React.useEffect(() => {
-    const idpres = presentLeftValue.addListener((value) => {
-      currentPresentLeftVal.current = value.value
-    })
-    return () => {
-      presentLeftValue.removeListener(idpres)
+    if (dateRange != null && events != null) {
+      setCurrentEvents(events)
     }
-  }, [presentLeftValue])
+  }, [dateRange, events])
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -148,8 +143,8 @@ function _CalendarBody<T extends ICalendarEventBase>({
       onPressEvent={onPressEvent}
       eventCellStyle={eventCellStyle}
       showTime={showTime}
-      eventCount={getCountOfEventsAtEvent(event, events)}
-      eventOrder={getOrderOfEvent(event, events)}
+      eventCount={getCountOfEventsAtEvent(event, currentEvents)}
+      eventOrder={getOrderOfEvent(event, currentEvents)}
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
       ampm={ampm}
@@ -213,7 +208,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
             onLayout={(event) => {
               const layout: LayoutRectangleExtended = { ...event.nativeEvent.layout }
               handleLeftValue(layout)
-              leftValue.current = layout
             }}
           >
             {dateRange.map((date) => (
@@ -256,7 +250,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                 {/* Render events of this date */}
                 {/* M  T  (W)  T  F  S  S */}
                 {/*       S-E             */}
-                {events
+                {currentEvents
                   .filter(({ start }) =>
                     dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
                   )
@@ -265,7 +259,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                 {/* Render events which starts before this date and ends on this date */}
                 {/* M  T  (W)  T  F  S  S */}
                 {/* S------E              */}
-                {events
+                {currentEvents
                   .filter(
                     ({ start, end }) =>
                       dayjs(start).isBefore(date.startOf('day')) &&
@@ -280,7 +274,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                 {/* Render events which starts before this date and ends after this date */}
                 {/* M  T  (W)  T  F  S  S */}
                 {/*    S-------E          */}
-                {events
+                {currentEvents
                   .filter(
                     ({ start, end }) =>
                       dayjs(start).isBefore(date.startOf('day')) &&
