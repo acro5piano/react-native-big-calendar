@@ -4,7 +4,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/ca0f2cc8-bb4f-4a18-be48-c2b10e2b6046/deploy-status)](https://app.netlify.com/sites/react-native-big-calendar/deploys)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=acro5piano/react-native-big-calendar)](https://dependabot.com)
 
-# react-native-draggable-calendar
+# react-native-dnd-big-calendar
 
 Cross-platform gcal/outlook like calendar component for React Native. Forked from [react-native-big-calendar](https://github.com/acro5piano/react-native-big-calendar)
 
@@ -135,11 +135,11 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 
 **New props:**
 
-| name            | required | type                         | description                                                                   |
-|-----------------|----------|------------------------------|-------------------------------------------------------------------------------|
+| name              | required | type                           | description                                                                   |
+| ----------------- | -------- | ------------------------------ | ----------------------------------------------------------------------------- |
 | `dragEndCallback` | no       | `CalendarEventGestureCallback` | Gives you a callback with the data after dragging an event over the calendar. |
 | `disableDrag`     | no       | `boolean`                      | Disable drag gestures.                                                        |
-| `dragPrecision`   | no       | `'low' \| 'medium' \| 'high'`  | To determine how precise the drag gesture will be. Defaults to `'low'`.         |
+| `dragPrecision`   | no       | `'low' \| 'medium' \| 'high'`  | To determine how precise the drag gesture will be. Defaults to `'low'`.       |
 
 **Old props:**
 
