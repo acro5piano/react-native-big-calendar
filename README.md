@@ -4,9 +4,11 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/ca0f2cc8-bb4f-4a18-be48-c2b10e2b6046/deploy-status)](https://app.netlify.com/sites/react-native-big-calendar/deploys)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=acro5piano/react-native-big-calendar)](https://dependabot.com)
 
-# react-native-big-calendar
+# react-native-draggable-calendar
 
-Cross-platform gcal/outlook like calendar component for React Native.
+Cross-platform gcal/outlook like calendar component for React Native. Forked from [react-native-big-calendar](https://github.com/acro5piano/react-native-big-calendar)
+
+![Draggable Demo](https://i.imgur.com/hto98KX.gif)
 
 ### ⚠️ Help me to debug this component ⚠️
 
