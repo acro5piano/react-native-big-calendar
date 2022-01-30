@@ -133,6 +133,15 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 
 `<Calendar />` Props are:
 
+**New props:**
+
+| name            | required | type                         | description                                                                   |
+|-----------------|----------|------------------------------|-------------------------------------------------------------------------------|
+| dragEndCallback |          | CalendarEventGestureCallback | Gives you a callback with the data after dragging an event over the calendar. |
+| disableDrag     |          | boolean                      | Disable drag gestures.                                                        |
+| dragPrecision   |          | 'low' \| 'medium' \| 'high'  | To determine how precise the drag gesture will be. Defaults to 'low'.         |
+
+
 | name                          | required | type                                                   | description                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ----------------------------- | -------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `events`                      | yes      | `ICalendarEvent<T>[]`                                  | The events which will be rendered on the calendar. You can extend the type `ICalendarEvent` by providing a value to generic type T (see `./stories/events.tsx` for an example). with optional children to display custom components inside the event, and optional event renderer function to take complete control over the rendered event (advanced feature). Events that occur during the same time range will be layered, offset, and given a unique color. |
