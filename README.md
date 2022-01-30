@@ -137,9 +137,9 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 
 | name            | required | type                         | description                                                                   |
 |-----------------|----------|------------------------------|-------------------------------------------------------------------------------|
-| dragEndCallback |          | CalendarEventGestureCallback | Gives you a callback with the data after dragging an event over the calendar. |
-| disableDrag     |          | boolean                      | Disable drag gestures.                                                        |
-| dragPrecision   |          | 'low' \| 'medium' \| 'high'  | To determine how precise the drag gesture will be. Defaults to 'low'.         |
+| dragEndCallback | no       | CalendarEventGestureCallback | Gives you a callback with the data after dragging an event over the calendar. |
+| disableDrag     | no       | boolean                      | Disable drag gestures.                                                        |
+| dragPrecision   | no       | 'low' \| 'medium' \| 'high'  | To determine how precise the drag gesture will be. Defaults to 'low'.         |
 
 
 | name                          | required | type                                                   | description                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
