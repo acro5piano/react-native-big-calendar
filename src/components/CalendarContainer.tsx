@@ -176,13 +176,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const [showShortWeekDay, setShowShortWeekDay] = React.useState(false)
   const [showDatesArrayStyle, setShowDatesArrayStyle] = React.useState(false)
   const presentFadeAnim = React.useRef(new Animated.Value(1)).current
-  const prevLeftValue = React.useRef(new Animated.Value(0)).current
   const presentLeftValue = React.useRef(new Animated.Value(0)).current
-  const nextLeftValue = React.useRef(new Animated.Value(0)).current
   const leftValue = React.useRef<LayoutRectangleExtended>()
-  const currentPrevLeftVal = React.useRef<number>()
   const currentPresentLeftVal = React.useRef<number>()
-  const currentNextLeftVal = React.useRef<number>()
 
   React.useEffect(() => {
     if (date) {
@@ -253,21 +249,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   }
 
   React.useEffect(() => {
-    const idprev = prevLeftValue.addListener((value) => {
-      currentPrevLeftVal.current = value.value
-    })
     const idpres = presentLeftValue.addListener((value) => {
       currentPresentLeftVal.current = value.value
     })
-    const idnext = nextLeftValue.addListener((value) => {
-      currentNextLeftVal.current = value.value
-    })
     return () => {
-      prevLeftValue.removeListener(idprev)
       presentLeftValue.removeListener(idpres)
-      nextLeftValue.removeListener(idnext)
     }
-  }, [prevLeftValue, presentLeftValue, nextLeftValue])
+  }, [presentLeftValue])
 
   const movePrevBody = (direction: HorizontalDirection) => {
     const width = leftValue.current?.width || 0
@@ -275,7 +263,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
     // Step 1: move to the left and hide
     Animated.timing(presentLeftValue, {
-      // toValue: width / 3,
       toValue: width,
       duration: fadeInDuration,
       useNativeDriver: false,
@@ -287,15 +274,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }).start(() => {
       // Step 2: move quickly to the left to starting point
       Animated.timing(presentLeftValue, {
-        // toValue: presentcurrent - width / 3,
         toValue: presentcurrent - width,
         duration: 0.01,
         useNativeDriver: false,
       }).start(() => {
         // Step 3: recalculate calendar and show
-        onPanLeftCallback(direction)
+        onSwipeHorizontalCallback(direction)
         Animated.timing(presentLeftValue, {
-          // toValue: width / 3,
           toValue: presentcurrent,
           duration: fadeInDuration,
           useNativeDriver: false,
@@ -315,7 +300,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
     // Step 1: move to the left and hide
     Animated.timing(presentLeftValue, {
-      // toValue: width / 3,
       toValue: -width,
       duration: fadeInDuration,
       useNativeDriver: false,
@@ -327,15 +311,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }).start(() => {
       // Step 2: move quickly to the left to starting point
       Animated.timing(presentLeftValue, {
-        // toValue: presentcurrent - width / 3,
         toValue: presentcurrent + width,
         duration: 0.01,
         useNativeDriver: false,
       }).start(() => {
         // Step 3: recalculate calendar and show
-        onPanRightCallback(direction)
+        onSwipeHorizontalCallback(direction)
         Animated.timing(presentLeftValue, {
-          // toValue: width / 3,
           toValue: -presentcurrent,
           duration: fadeInDuration,
           useNativeDriver: false,

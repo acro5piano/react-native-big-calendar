@@ -109,7 +109,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             style={[
               objHasContent(panLeftContainerStyle) ? panLeftContainerStyle : u['self-center'],
             ]}
-            onPress={() => panLeft('LEFT')}
+            onPress={() => panLeft('RIGHT')}
           >
             {panLeftComponent != null ? (
               panLeftComponent
@@ -266,7 +266,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             style={[
               objHasContent(panRightContainerStyle) ? panRightContainerStyle : u['self-center'],
             ]}
-            onPress={() => panRight('RIGHT')}
+            onPress={() => panRight('LEFT')}
           >
             {panRightComponent != null ? (
               panRightComponent
