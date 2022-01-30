@@ -86,7 +86,6 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   eventMinHeightForMonthView?: number
   activeDate?: Date
   headerComponent?: React.ReactElement | null
-  headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
   showHeaderPan?: boolean
@@ -97,7 +96,6 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   panRightStyle?: TextStyle
   panRightComponent?: React.ReactElement | null
   topHeaderComponent?: React.ReactElement | null
-  topHeaderComponentStyle?: ViewStyle
   showWeekDayModes?: Mode[]
   showWeekDayInnerModes?: Mode[]
   showShortWeekDayModes?: Mode[]
@@ -145,7 +143,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   eventMinHeightForMonthView = 22,
   activeDate,
   headerComponent = null,
-  headerComponentStyle = {},
   hourStyle = {},
   showAllDayEventCell = true,
   showHeaderPan = false,
@@ -156,7 +153,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   panRightStyle = {},
   panRightComponent = null,
   topHeaderComponent = null,
-  topHeaderComponentStyle = {},
   showWeekDayModes = ['3days', 'custom', 'day', 'month', 'week'],
   showWeekDayInnerModes = [],
   showShortWeekDayModes = [],
@@ -357,47 +353,19 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }
   }
 
-  const onPanLeftCallback = React.useCallback(
-    (direction: HorizontalDirection) => {
-      if (!swipeEnabled) {
-        return
-      }
-      if (direction === 'LEFT' && !theme.isRTL) {
-        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
-      } else {
-        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
-      }
-    },
-    [swipeEnabled, targetDate, mode, theme.isRTL],
-  )
-
   const onPanLeft = (direction: HorizontalDirection) => {
     if (animatePan === true) {
       movePrevBody(direction)
     } else {
-      onPanLeftCallback(direction)
+      onSwipeHorizontalCallback(direction)
     }
   }
-
-  const onPanRightCallback = React.useCallback(
-    (direction: HorizontalDirection) => {
-      if (!swipeEnabled) {
-        return
-      }
-      if (direction === 'RIGHT' && !theme.isRTL) {
-        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
-      } else {
-        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
-      }
-    },
-    [swipeEnabled, targetDate, mode, theme.isRTL],
-  )
 
   const onPanRight = (direction: HorizontalDirection) => {
     if (animatePan === true) {
       moveNextBody(direction)
     } else {
-      onPanRightCallback(direction)
+      onSwipeHorizontalCallback(direction)
     }
   }
 
@@ -428,7 +396,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       panRightStyle: panRightStyle,
       panRightComponent: panRightComponent,
       topHeaderComponent: topHeaderComponent,
-      topHeaderComponentStyle: topHeaderComponentStyle,
       showWeekDay: showWeekDay,
       showWeekDayInner: showWeekDayInner,
       showShortWeekDay: showShortWeekDay,
@@ -481,7 +448,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     panRightStyle: panRightStyle,
     panRightComponent: panRightComponent,
     topHeaderComponent: topHeaderComponent,
-    topHeaderComponentStyle: topHeaderComponentStyle,
     showWeekDay: showWeekDay,
     showWeekDayInner: showWeekDayInner,
     showShortWeekDay: showShortWeekDay,
@@ -510,7 +476,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}
         headerComponent={headerComponent}
-        headerComponentStyle={headerComponentStyle}
         hourStyle={hourStyle}
         cellsBorderStyle={cellsBorderStyle}
         fullBodyStyle={fullBodyStyle}

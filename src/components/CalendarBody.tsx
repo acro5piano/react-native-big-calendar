@@ -59,7 +59,6 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   headerComponent?: React.ReactElement | null
-  headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   cellsBorderStyle?: ViewStyle
   fullBodyStyle?: ViewStyle
@@ -87,7 +86,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
   overlapOffset,
   renderEvent,
   headerComponent = null,
-  headerComponentStyle = {},
   hourStyle = {},
   cellsBorderStyle = {},
   fullBodyStyle = {},
@@ -155,7 +153,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
 
   return (
     <View style={[fullBodyStyle]}>
-      {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
+      {headerComponent != null ? headerComponent : null}
       <ScrollView
         style={[
           {

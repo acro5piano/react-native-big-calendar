@@ -118,26 +118,32 @@ storiesOf('Full Customization Body Header Component and Styling', module).add('M
           dayHeaderHighlightColor={'#000'}
           weekDayHeaderHighlightColor={'#aaa'}
           headerComponent={
-            <Text style={{ color: '#aaa', fontSize: 25 }}>CalendarBody's headerComponent</Text>
+            <View
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}
+            >
+              <Text style={{ color: '#aaa', fontSize: 25 }}>CalendarBody's headerComponent</Text>
+            </View>
           }
-          headerComponentStyle={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}
           hourStyle={{ color: '#355070', fontSize: 15 }}
           showAllDayEventCell={false}
           showHeaderPan={true}
           topHeaderComponent={
-            <Text style={{ color: '#aaa', fontSize: 25 }}>TopHeader Component</Text>
+            <View
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}
+            >
+              <Text style={{ color: '#aaa', fontSize: 25 }}>TopHeader Component</Text>
+            </View>
           }
-          topHeaderComponentStyle={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}
           showWeekDayModes={['3days', 'custom', 'day', 'month']}
           showWeekDayInnerModes={['week']}
           showShortWeekDayModes={['week']}

@@ -30,7 +30,6 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   panRightStyle?: TextStyle
   panRightComponent?: React.ReactElement | null
   topHeaderComponent?: React.ReactElement | null
-  topHeaderComponentStyle?: ViewStyle
   showWeekDay?: boolean
   showWeekDayInner?: boolean
   showShortWeekDay?: boolean
@@ -63,7 +62,6 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   panRightStyle = {},
   panRightComponent = null,
   topHeaderComponent = null,
-  topHeaderComponentStyle = {},
   showWeekDay = true,
   showWeekDayInner = false,
   showShortWeekDay = false,
@@ -93,9 +91,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
 
   return (
     <View style={fullHeaderStyle}>
-      {topHeaderComponent != null ? (
-        <View style={topHeaderComponentStyle}>{topHeaderComponent}</View>
-      ) : null}
+      {topHeaderComponent != null ? topHeaderComponent : null}
       <View
         style={[
           showAllDayEventCell ? u['border-b-2'] : {},
