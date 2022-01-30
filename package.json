@@ -1,5 +1,5 @@
 {
-  "name": "react-native-draggable-calendar",
+  "name": "@gabrielmouallem/react-native-big-calendar",
   "version": "4.0.0",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
