@@ -41,7 +41,7 @@ function _CalendarDraggable<T extends ICalendarEventBase>({
   const getChangedInformation = (
     gestureState: PanResponderGestureState,
   ): CalendarChangedInformation<ICalendarEventBase> => {
-    const xUnit = cellWidth / 2.5
+    const xUnit = cellWidth / 3
     const xDif = gestureState.moveX - gestureState.x0
     const xUnits = Math.floor(xDif / xUnit + 0.5)
 
