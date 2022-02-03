@@ -12,6 +12,7 @@ import {
   EventRenderer,
   HeaderRenderer,
   HorizontalDirection,
+  HourNum,
   ICalendarEventBase,
   Mode,
   MonthHeaderRenderer,
@@ -96,6 +97,8 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   dragEndCallback?: CalendarEventGestureCallback
   disableDrag?: boolean
   dragPrecision?: 'low' | 'medium' | 'high'
+  minHour?: HourNum
+  maxHour?: HourNum
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -139,6 +142,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   disableDrag = false,
   dragEndCallback = () => {},
   dragPrecision = 'low',
+  minHour = 0,
+  maxHour = 23.5,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -285,6 +290,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         disableDrag={disableDrag}
         dragEndCallback={dragEndCallback}
         dragPrecision={dragPrecision}
+        minHour={minHour}
+        maxHour={maxHour}
       />
     </React.Fragment>
   )

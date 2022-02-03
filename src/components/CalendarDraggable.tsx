@@ -6,7 +6,7 @@ import {
   CalendarEventGestureCallback,
   ICalendarEventBase,
 } from '../interfaces'
-import { typedMemo } from '../utils'
+import { calculatePrecision, typedMemo } from '../utils'
 import { widthContext } from './CalendarBody'
 
 interface CalendarDraggableProps<T extends ICalendarEventBase> {
@@ -19,6 +19,7 @@ interface CalendarDraggableProps<T extends ICalendarEventBase> {
   children: JSX.Element
   disableDrag?: boolean
   dragPrecision: 'low' | 'medium' | 'high'
+  cellHeight: number
 }
 
 function _CalendarDraggable<T extends ICalendarEventBase>({
@@ -30,9 +31,11 @@ function _CalendarDraggable<T extends ICalendarEventBase>({
   touchableOpacityProps,
   dragPrecision,
   children,
+  cellHeight,
 }: CalendarDraggableProps<T>) {
   const cellWidth = React.useContext(widthContext)
-  const cellHeight = 1000 / 24
+
+  const { precision, squareUnits } = calculatePrecision(dragPrecision)
 
   const [opacity, setOpacity] = useState<number>(1)
 
@@ -47,10 +50,7 @@ function _CalendarDraggable<T extends ICalendarEventBase>({
 
     const yUnit = cellHeight
     const yDif = gestureState.moveY - gestureState.y0
-    var yUnits = Math.floor((4 * yDif) / yUnit + 0.5)
-    yUnits = yUnits / 4
-    if (dragPrecision === 'low') yUnits = ~~yUnits / 2
-    else if (dragPrecision === 'high') yUnits = yUnits / 2
+    var yUnits = Math.round((yDif / (yUnit * precision)) * 2) / squareUnits
     return { day: xUnits, hour: yUnits, event }
   }
 

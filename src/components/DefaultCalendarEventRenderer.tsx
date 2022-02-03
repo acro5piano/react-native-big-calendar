@@ -21,6 +21,7 @@ interface DefaultCalendarEventRendererProps<T extends ICalendarEventBase> {
   dragEndCallback: CalendarEventGestureCallback
   disableDrag: any
   dragPrecision: 'low' | 'medium' | 'high'
+  cellHeight: number
 }
 
 export function DefaultCalendarEventRenderer<T extends ICalendarEventBase>({
@@ -33,6 +34,7 @@ export function DefaultCalendarEventRenderer<T extends ICalendarEventBase>({
   dragEndCallback,
   disableDrag,
   dragPrecision,
+  cellHeight,
 }: DefaultCalendarEventRendererProps<T>) {
   const theme = useTheme()
   const eventTitleStyle = { fontSize: theme.typography.sm.fontSize, color: textColor }
@@ -46,6 +48,7 @@ export function DefaultCalendarEventRenderer<T extends ICalendarEventBase>({
       dragEndCallback={dragEndCallback}
       event={event}
       dragPrecision={dragPrecision}
+      cellHeight={cellHeight}
     >
       <TouchableOpacity
         onPress={touchableOpacityProps.onPress}

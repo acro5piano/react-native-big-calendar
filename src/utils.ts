@@ -259,3 +259,28 @@ export function objHasContent(obj: ViewStyle | TextStyle): boolean {
 export function stringHasContent(string: string): boolean {
   return !!string.length
 }
+
+export function calculatePrecision(precision: 'low' | 'medium' | 'high') {
+  switch (precision) {
+    case 'low':
+      return {
+        precision: 2,
+        squareUnits: 2,
+      }
+    case 'medium':
+      return {
+        precision: 1,
+        squareUnits: 4,
+      }
+    case 'high':
+      return {
+        precision: 0.5,
+        squareUnits: 8,
+      }
+    default:
+      return {
+        precision: 2,
+        squareUnits: 2,
+      }
+  }
+}

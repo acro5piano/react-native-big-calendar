@@ -10,7 +10,13 @@ import {
   ICalendarEventBase,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
+import {
+  DAY_MINUTES,
+  hours as _hours,
+  getRelativeTopInDay,
+  getStyleForOverlappingEvent,
+  typedMemo,
+} from '../utils'
 import { Draggable } from './CalendarDraggable'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
@@ -38,6 +44,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   dragEndCallback: CalendarEventGestureCallback
   disableDrag?: boolean
   dragPrecision: 'low' | 'medium' | 'high'
+  cellHeight: number
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
@@ -55,6 +62,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   dragEndCallback,
   disableDrag,
   dragPrecision,
+  cellHeight,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -95,6 +103,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
         dragEndCallback={dragEndCallback}
         event={event}
         dragPrecision={dragPrecision}
+        cellHeight={cellHeight}
       >
         {renderEvent(event, {
           onPress: touchableOpacityProps.onPress,
@@ -116,6 +125,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       disableDrag={disableDrag}
       dragEndCallback={dragEndCallback}
       dragPrecision={dragPrecision}
+      cellHeight={cellHeight}
     />
   )
 }

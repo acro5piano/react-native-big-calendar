@@ -1,6 +1,15 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -11,6 +20,7 @@ import {
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
+  HourNum,
   ICalendarEventBase,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
@@ -58,7 +68,11 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   dragEndCallback: CalendarEventGestureCallback
   disableDrag?: boolean
+  /** The default value is 'low'. **/
   dragPrecision: 'low' | 'medium' | 'high'
+  minHour?: HourNum
+  /** The maxHour prop will only be applied if maxHour - minHour is greater or equal to 6 otherwise the default value will be 24 that is qual to midnight (00:00) */
+  maxHour?: HourNum
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -73,7 +87,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   calendarCellStyle,
   ampm,
   showTime,
-  scrollOffsetMinutes,
+  scrollOffsetMinutes: _scrollOffsetMinutes,
   onSwipeHorizontal,
   hideNowIndicator,
   overlapOffset,
@@ -84,6 +98,8 @@ function _CalendarBody<T extends ICalendarEventBase>({
   dragEndCallback,
   disableDrag,
   dragPrecision,
+  minHour = 0,
+  maxHour: _maxHour = 23.5,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -92,7 +108,15 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const [isMoving, setIsMoving] = React.useState<boolean>(false)
   const [movingEvent, setMovingEvent] = React.useState<any>()
 
-  const events = movingEvent && isMoving ? [..._events, movingEvent] : _events
+  const maxHour: number = _maxHour - minHour >= 6 ? _maxHour : 24
+
+  var events = movingEvent && isMoving ? [..._events, movingEvent] : _events
+  events = events.filter(
+    ({ start, end }: { start: Date; end: Date }) =>
+      start.getHours() >= minHour && end.getHours() <= maxHour,
+  )
+
+  const scrollOffsetMinutes = minHour ? minHour * 2 * 60 : _scrollOffsetMinutes
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -131,6 +155,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
     <CalendarEvent
       key={`${event?.moving}${event.start}${event.title}${event.end}`}
       event={event}
+      cellHeight={cellHeight}
       disableDrag={disableDrag}
       onPressEvent={onPressEvent}
       eventCellStyle={eventCellStyle}
@@ -160,6 +185,25 @@ function _CalendarBody<T extends ICalendarEventBase>({
     />
   )
 
+  const onScroll = React.useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const maxScrollOffset = cellHeight * (maxHour - minHour + 1) * 2
+      const minScrollOffset = cellHeight * minHour * 2
+      if (e.nativeEvent.contentOffset.y > maxScrollOffset) {
+        scrollView?.current?.scrollTo({
+          y: maxScrollOffset,
+          animated: false,
+        })
+      } else if (e.nativeEvent.contentOffset.y < minScrollOffset) {
+        scrollView?.current?.scrollTo({
+          y: minScrollOffset,
+          animated: false,
+        })
+      }
+    },
+    [cellHeight, minHour, maxHour],
+  )
+
   const theme = useTheme()
 
   return (
@@ -178,11 +222,15 @@ function _CalendarBody<T extends ICalendarEventBase>({
           style,
         ]}
         ref={scrollView}
-        scrollEventThrottle={32}
+        scrollEventThrottle={10}
         {...(Platform.OS !== 'web' ? (disableDrag ? panResponder.panHandlers : {}) : {})}
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={!isMoving}
         scrollEnabled={!isMoving}
+        alwaysBounceVertical={false}
+        bounces={false}
+        decelerationRate={'fast'}
+        onScroll={onScroll}
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
       >
         <View

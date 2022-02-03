@@ -68,6 +68,24 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
+  .add('Week mode with minHour and maxHour props', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          minHour={6}
+          maxHour={19}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          dragEndCallback={(data) =>
+            alert('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
+          }
+        />
+      </View>
+    )
+  })
   .add('Week mode with drag disabled', () => {
     const state = useEvents(events)
     return (
