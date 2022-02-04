@@ -8941,7 +8941,7 @@ meow@^7.0.1:
     type-fest "^0.13.1"
     yargs-parser "^18.1.3"
 
-merge-anything@^4.0.2:
+merge-anything@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/merge-anything/-/merge-anything-4.0.2.tgz#cb61fdd4e0604e254ff571f90869fa1af2d39e7f"
   integrity sha512-YxLHKgX8jN5xfKIxcwVNzQ2HpS0r9eUSqifgGhVARoZEW31Jwu95OQzX7qlFPBPQdCmNBhCYaqJzOcwAKi2Elg==
@@ -11435,10 +11435,10 @@ rollup-plugin-typescript2@^0.30.0:
     resolve "1.20.0"
     tslib "2.1.0"
 
-rollup@^2.56.3:
-  version "2.56.3"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.56.3.tgz#b63edadd9851b0d618a6d0e6af8201955a77aeff"
-  integrity sha512-Au92NuznFklgQCUcV96iXlxUbHuB1vQMaH76DHl5M11TotjOHwqk9CwcrT78+Tnv4FN9uTBxq6p4EJoYkpyekg==
+rollup@^2.67.0:
+  version "2.67.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.67.0.tgz#496de7e641dbe39f681c5a82419cb5013917d406"
+  integrity sha512-W83AaERwvDiHwHEF/dfAfS3z1Be5wf7n+pO3ZAO5IQadCT2lBTr7WQ2MwZZe+nodbD+n3HtC4OCOAdsOPPcKZQ==
   optionalDependencies:
     fsevents "~2.3.2"
 
