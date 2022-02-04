@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.1
+
+### Bugfixes
+
+- fix merge-anything version #631
+
+### New Feataures
+
 ## 3.0.0
 
 ### New Feataures
