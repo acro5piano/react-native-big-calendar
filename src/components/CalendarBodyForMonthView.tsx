@@ -18,6 +18,7 @@ import {
 import { useTheme } from '../theme/ThemeContext'
 import { typedMemo } from '../utils'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
+import { getWeeksWithAdjacentMonths } from '..'
 
 interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   containerHeight: number
@@ -28,6 +29,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   calendarCellStyle?: CalendarCellStyle
   calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
+  showAdjacentMonths: boolean
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
@@ -51,6 +53,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   calendarCellTextStyle,
   onSwipeHorizontal,
   hideNowIndicator,
+  showAdjacentMonths,
   renderEvent,
   maxVisibleEventCount,
   weekStartsOn,
@@ -63,7 +66,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
     onSwipeHorizontal,
   })
 
-  const weeks = calendarize(targetDate.toDate(), weekStartsOn)
+  const weeks = showAdjacentMonths
+    ? getWeeksWithAdjacentMonths(targetDate, weekStartsOn)
+    : calendarize(targetDate.toDate(), weekStartsOn)
 
   const minCellHeight = containerHeight / 5 - 30
   const theme = useTheme()
@@ -112,7 +117,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
           ]}
         >
           {week
-            .map((d) => (d > 0 ? targetDate.date(d) : null))
+            .map((d) =>
+              showAdjacentMonths ? targetDate.date(d) : d > 0 ? targetDate.date(d) : null,
+            )
             .map((date, ii) => (
               <TouchableOpacity
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
@@ -149,6 +156,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                         color:
                           date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
                             ? theme.palette.primary.main
+                            : date?.month() !== targetDate.month()
+                            ? theme.palette.gray['500']
                             : theme.palette.gray['800'],
                       },
                       {
@@ -199,6 +208,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                             calendarWidth={calendarWidth}
                             isRTL={theme.isRTL}
                             eventMinHeightForMonthView={eventMinHeightForMonthView}
+                            showAdjacentMonths={showAdjacentMonths}
                           />
                         ),
                       ],

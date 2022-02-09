@@ -74,6 +74,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   date?: Date
   locale?: string
   hideNowIndicator?: boolean
+  showAdjacentMonths?: boolean
   mode?: Mode
   scrollOffsetMinutes?: number
   showTime?: boolean
@@ -105,6 +106,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   calendarCellTextStyle,
   locale = 'en',
   hideNowIndicator = false,
+  showAdjacentMonths = false,
   mode = 'week',
   overlapOffset,
   scrollOffsetMinutes = 0,
@@ -228,6 +230,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           calendarCellTextStyle={calendarCellTextStyle}
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
+          showAdjacentMonths={showAdjacentMonths}
           onPressCell={onPressCell}
           onPressDateHeader={onPressDateHeader}
           onPressEvent={onPressEvent}
