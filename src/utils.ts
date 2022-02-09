@@ -264,10 +264,10 @@ export function stringHasContent(string: string): boolean {
 
 export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn: WeekNum) {
   let weeks = calendarize(targetDate.toDate(), weekStartsOn)
-
   const firstDayIndex = weeks[0].findIndex((d) => d === 1)
   const lastDay = targetDate.endOf('month').date()
   const lastDayIndex = weeks[weeks.length - 1].findIndex((d) => d === lastDay)
+
   weeks = weeks.map((week, iw) => {
     return week.map((d, id) => {
       if (d !== 0) {
