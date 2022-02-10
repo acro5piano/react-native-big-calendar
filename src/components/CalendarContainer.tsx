@@ -26,7 +26,6 @@ import {
   getDatesInWeek,
   isAllDayEvent,
   modeToNum,
-  parseStartEndHour,
   typedMemo,
 } from '../utils'
 import { CalendarBody } from './CalendarBody'
@@ -94,9 +93,9 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
-  minTime?: string
-  maxTime?: string
-  steps?: number
+  minTimeMinutes?: number
+  maxTimeMinutes?: number
+  stepMinutes?: number
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -137,9 +136,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   headerComponentStyle = {},
   hourStyle = {},
   showAllDayEventCell = true,
-  minTime = '00:00',
-  maxTime = '23:00',
-  steps = 60,
+  minTimeMinutes = 0,
+  maxTimeMinutes = 1440,
+  stepMinutes = 60,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -187,9 +186,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const cellHeight = React.useMemo(
     () =>
       hourRowHeight ||
-      Math.max(height - steps / 2, MIN_HEIGHT) /
-        generateHoursArray(parseStartEndHour(minTime), parseStartEndHour(maxTime), steps).length,
-    [height, hourRowHeight, minTime, maxTime, steps],
+      Math.max(height - stepMinutes / 2, MIN_HEIGHT) /
+        generateHoursArray(minTimeMinutes, maxTimeMinutes, stepMinutes).length,
+    [height, hourRowHeight, minTimeMinutes, maxTimeMinutes, stepMinutes],
   )
 
   const theme = useTheme()
@@ -286,9 +285,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         headerComponent={headerComponent}
         headerComponentStyle={headerComponentStyle}
         hourStyle={hourStyle}
-        minTime={minTime}
-        maxTime={maxTime}
-        steps={steps}
+        minTimeMinutes={minTimeMinutes}
+        maxTimeMinutes={maxTimeMinutes}
+        stepMinutes={stepMinutes}
       />
     </React.Fragment>
   )

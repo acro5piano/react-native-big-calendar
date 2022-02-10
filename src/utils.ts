@@ -67,30 +67,39 @@ export function parseStartEndHour(time: String) {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...timeArray)
 }
 
-export function generateHoursArray(startTime: Date, endTime: Date, step: number) {
-  let res = []
-  while (startTime < endTime) {
-    let minutes = startTime.getMinutes() < 10 ? '00' : startTime.getMinutes()
-    res.push(startTime.getHours() + ':' + minutes)
-    startTime.setMinutes(startTime.getMinutes() + step)
+export function padZeros(value: number, length: number) {
+  return `0000${value}`.slice(-length)
+}
+export function getTimeContext(minutes: number) {
+  const minute = minutes % 60
+  const hour24 = Math.floor(minutes / 60)
+  const hour12 = hour24 % 12 || 12
+  const ampm = hour24 < 12 ? 'am' : 'pm'
+
+  return {
+    minute,
+    hour24,
+    hour12,
+    ampm,
+    hour24Label: `${padZeros(hour24, 2)}:${padZeros(minute, 2)}`,
+    hour12Label: `${hour12}:${padZeros(minute, 2)}${ampm}`,
   }
-  return res
 }
 
-export function formatHour(time: string, ampm = false) {
-  if (ampm) {
-    let hours = Number(time.split(':')[0])
-    let minutes = Number(time.split(':')[0])
-    let newformat = hours >= 12 ? 'PM' : 'AM'
-    hours = hours % 12
-
-    // To display "0" as "12"
-    let newHours = hours ? hours : 12
-    let newMinutes = minutes < 10 ? '0' + minutes : minutes
-    return `${newHours}:${newMinutes} ${newformat}`
+export function generateHoursArray(
+  minTimeMinutes: number,
+  maxTimeMinutesMinutes: number,
+  stepMinutes: number,
+) {
+  let res = []
+  while (minTimeMinutes < maxTimeMinutesMinutes) {
+    let time = getTimeContext(minTimeMinutes)
+    res.push(time)
+    console.log(time)
+    minTimeMinutes = minTimeMinutes + stepMinutes
   }
 
-  return `${time}`
+  return res
 }
 
 export function isToday(date: dayjs.Dayjs) {
@@ -108,11 +117,12 @@ export function normalize(
   return newMin + ((val - minVal) * (newMax - newMin)) / (maxVal - minVal)
 }
 
-export function getRelativeTopInDay(date: dayjs.Dayjs, minTime: string, maxTime: string) {
-  let minRange = Number(minTime.split(':')[0]) * 60 + Number(minTime.split(':')[1])
-  let maxRange = Number(maxTime.split(':')[0]) * 60 + Number(maxTime.split(':')[1])
-
-  let res = normalize(date.hour() * 60 + date.minute(), minRange, maxRange, 0, 100)
+export function getRelativeTopInDay(
+  date: dayjs.Dayjs,
+  minTimeMinutes: number,
+  maxTimeMinutes: number,
+) {
+  let res = normalize(date.hour() * 60 + date.minute(), minTimeMinutes, maxTimeMinutes, 0, 100)
 
   return res
 }
@@ -284,15 +294,4 @@ export function objHasContent(obj: ViewStyle | TextStyle): boolean {
 
 export function stringHasContent(string: string): boolean {
   return !!string.length
-}
-
-export function diffInMinutes(start: string, end: string) {
-  let startArr = start.split(':')
-  var endArr = end.split(':')
-  var startDate = new Date(0, 0, 0, Number(startArr[0]), Number(startArr[1]), 0)
-  var endDate = new Date(0, 0, 0, Number(endArr[0]), Number(endArr[1]), 0)
-  var diff = endDate.getTime() - startDate.getTime()
-
-  var minutes = Math.floor(diff / 1000 / 60)
-  return minutes
 }

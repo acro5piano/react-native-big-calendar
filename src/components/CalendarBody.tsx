@@ -19,7 +19,6 @@ import {
   getOrderOfEvent,
   getRelativeTopInDay,
   isToday,
-  parseStartEndHour,
   typedMemo,
 } from '../utils'
 import { CalendarEvent } from './CalendarEvent'
@@ -55,9 +54,9 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
-  minTime?: string
-  maxTime?: string
-  steps?: number
+  minTimeMinutes?: number
+  maxTimeMinutes?: number
+  stepMinutes?: number
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -80,9 +79,9 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponent = null,
   headerComponentStyle = {},
   hourStyle = {},
-  minTime = '00:00',
-  maxTime = '23:00',
-  steps = 60,
+  minTimeMinutes = 0,
+  maxTimeMinutes = 1440,
+  stepMinutes = 60,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -95,7 +94,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         () => {
           if (scrollView && scrollView.current) {
             scrollView.current.scrollTo({
-              y: (cellHeight * scrollOffsetMinutes) / steps,
+              y: (cellHeight * scrollOffsetMinutes) / stepMinutes,
               animated: false,
             })
           }
@@ -103,7 +102,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         Platform.OS === 'web' ? 0 : 10,
       )
     }
-  }, [scrollView, scrollOffsetMinutes, cellHeight, steps])
+  }, [scrollView, scrollOffsetMinutes, cellHeight, stepMinutes])
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -128,13 +127,13 @@ function _CalendarBody<T extends ICalendarEventBase>({
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
       ampm={ampm}
-      minTime={minTime}
-      maxTime={maxTime}
+      minTimeMinutes={minTimeMinutes}
+      maxTimeMinutes={maxTimeMinutes}
     />
   )
 
   const theme = useTheme()
-  const hours = generateHoursArray(parseStartEndHour(minTime), parseStartEndHour(maxTime), steps)
+  const hours = generateHoursArray(minTimeMinutes, maxTimeMinutes, stepMinutes)
 
   return (
     <React.Fragment>
@@ -158,11 +157,11 @@ function _CalendarBody<T extends ICalendarEventBase>({
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
         >
           <View style={[u['z-20'], u['w-50']]}>
-            {hours.map((hour) => (
+            {hours.map((hour, index) => (
               <HourGuideColumn
-                key={hour}
+                key={index + ''}
                 cellHeight={cellHeight}
-                hour={hour}
+                hour={ampm ? hour.hour12Label : hour.hour24Label}
                 ampm={ampm}
                 hourStyle={hourStyle}
               />
@@ -172,10 +171,10 @@ function _CalendarBody<T extends ICalendarEventBase>({
             <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
               {hours.map((hour, index) => (
                 <HourGuideCell
-                  key={hour}
+                  key={index + ''}
                   cellHeight={cellHeight}
                   date={date}
-                  hour={hour}
+                  hour={ampm ? hour.hour12Label : hour.hour24Label}
                   onPress={_onPressCell}
                   index={index}
                   calendarCellStyle={calendarCellStyle}
@@ -227,7 +226,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   style={[
                     styles.nowIndicator,
                     { backgroundColor: theme.palette.nowIndicator },
-                    { top: `${getRelativeTopInDay(now, minTime, maxTime)}%` },
+                    { top: `${getRelativeTopInDay(now, minTimeMinutes, maxTimeMinutes)}%` },
                   ]}
                 />
               )}

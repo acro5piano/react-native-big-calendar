@@ -125,7 +125,10 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   eventMinHeightForMonthView?: number
-  activeDate?: Date
+  activeDate?: Date,
+  minTimeMinutes:number,
+  maxTimeMinutes:number,
+  stepMinutes:number
 }
 ```
 

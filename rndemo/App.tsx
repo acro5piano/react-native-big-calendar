@@ -54,9 +54,9 @@ export const App = () => {
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
           mode={mode}
-          minTime="07:00"
-          maxTime="17:00"
-          steps={30}
+          minTimeMinutes={0}
+          maxTimeMinutes={1440}
+          stepMinutes={30}
         />
       </SafeAreaView>
     </React.Fragment>

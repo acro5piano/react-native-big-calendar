@@ -5,12 +5,7 @@ import { OVERLAP_OFFSET, u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
 import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import {
-  diffInMinutes,
-  getRelativeTopInDay,
-  getStyleForOverlappingEvent,
-  typedMemo,
-} from '../utils'
+import { getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
 interface CalendarEventProps<T extends ICalendarEventBase> {
@@ -23,8 +18,8 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   overlapOffset?: number
   renderEvent?: EventRenderer<T>
   ampm: boolean
-  minTime: string
-  maxTime: string
+  minTimeMinutes: number
+  maxTimeMinutes: number
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
@@ -37,8 +32,8 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   overlapOffset = OVERLAP_OFFSET,
   renderEvent,
   ampm,
-  minTime = '00:00',
-  maxTime = '23:00',
+  minTimeMinutes = 0,
+  maxTimeMinutes = 1440,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -49,8 +44,8 @@ function _CalendarEvent<T extends ICalendarEventBase>({
 
   const getEventCellPositionStyle = (start: Date, end: Date) => {
     const relativeHeight =
-      100 * (1 / diffInMinutes(minTime, maxTime)) * dayjs(end).diff(start, 'minute')
-    const relativeTop = getRelativeTopInDay(dayjs(start), minTime, maxTime)
+      100 * (1 / (maxTimeMinutes - minTimeMinutes)) * dayjs(end).diff(start, 'minute')
+    const relativeTop = getRelativeTopInDay(dayjs(start), minTimeMinutes, maxTimeMinutes)
 
     return {
       height: `${relativeHeight}%`,

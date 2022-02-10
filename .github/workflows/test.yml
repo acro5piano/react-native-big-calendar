@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    steps:
+    stepMinutes:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
