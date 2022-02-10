@@ -32,6 +32,7 @@ export const App = () => {
       const end = dayjs(start).add(59, 'minute').toDate()
       setAdditionalEvents([...additionalEvents, { start, end, title }])
     },
+    
     [additionalEvents, setAdditionalEvents],
   )
 
