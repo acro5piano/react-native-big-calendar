@@ -18,6 +18,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   calendarWidth: number
   isRTL: boolean
   eventMinHeightForMonthView: number
+  showAdjacentMonths: boolean
 }
 
 function _CalendarEventForMonthView<T extends ICalendarEventBase>({
@@ -30,12 +31,13 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   calendarWidth,
   isRTL,
   eventMinHeightForMonthView,
+  showAdjacentMonths,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
   const { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration } = React.useMemo(
-    () => getEventSpanningInfo(event, date, dayOfTheWeek, calendarWidth),
-    [date, dayOfTheWeek, event, calendarWidth],
+    () => getEventSpanningInfo(event, date, dayOfTheWeek, calendarWidth, showAdjacentMonths),
+    [date, dayOfTheWeek, event, calendarWidth, showAdjacentMonths],
   )
 
   const touchableOpacityProps = useCalendarTouchableOpacityProps({

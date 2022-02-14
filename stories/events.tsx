@@ -83,6 +83,11 @@ export const spanningEvents: Array<ICalendarEventBase & { color?: string }> = [
     start: dayjs().add(1, 'day').set('hour', 7).set('minute', 45).toDate(),
     end: dayjs().add(4, 'day').set('hour', 13).set('minute', 30).toDate(),
   },
+  {
+    title: 'Vacation',
+    start: dayjs().subtract(1, 'month').set('hour', 7).set('minute', 45).toDate(),
+    end: dayjs().add(1, 'month').set('hour', 13).set('minute', 30).toDate(),
+  },
 ]
 
 export interface MyCustomEventType extends ICalendarEventBase {

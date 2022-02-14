@@ -124,6 +124,21 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
+  .add('Month mode - Spanning Events (show adjacent months dates)', () => {
+    const state = useEvents(spanningEvents)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          mode="month"
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          showAdjacentMonths
+        />
+      </View>
+    )
+  })
   .add('event cell style', () => (
     <View style={styles.desktop}>
       <Calendar
