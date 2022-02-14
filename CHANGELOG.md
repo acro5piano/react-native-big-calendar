@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.0
+
+### New Feataures
+
+- add onPressDateHeader for month view by @CptMaumau in https://github.com/acro5piano/react-native-big-calendar/pull/638
+- Show adjacent months dates on month view by @CptMaumau in https://github.com/acro5piano/react-native-big-calendar/pull/639
+
 ## 3.0.1
 
 ### Bugfixes
