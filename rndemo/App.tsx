@@ -15,7 +15,6 @@ const events = [
     start: dayjs().set('hour', 14).set('minute', 30).toDate(),
     end: dayjs().set('hour', 15).set('minute', 30).toDate(),
   },
- 
 ]
 
 export const App = () => {
