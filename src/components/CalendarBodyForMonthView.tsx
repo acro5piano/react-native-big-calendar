@@ -29,6 +29,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
   onPressCell?: (date: Date) => void
+  onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
@@ -42,6 +43,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   targetDate,
   style,
   onPressCell,
+  onPressDateHeader,
   events,
   onPressEvent,
   eventCellStyle,
@@ -131,23 +133,32 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                 ]}
                 key={ii}
               >
-                <Text
-                  style={[
-                    { textAlign: 'center' },
-                    theme.typography.sm,
-                    {
-                      color:
-                        date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
-                          ? theme.palette.primary.main
-                          : theme.palette.gray['800'],
-                    },
-                    {
-                      ...getCalendarCellTextStyle(date?.toDate(), i),
-                    },
-                  ]}
+                <TouchableOpacity
+                  onPress={() =>
+                    date &&
+                    (onPressDateHeader
+                      ? onPressDateHeader(date.toDate())
+                      : onPressCell && onPressCell(date.toDate()))
+                  }
                 >
-                  {date && date.format('D')}
-                </Text>
+                  <Text
+                    style={[
+                      { textAlign: 'center' },
+                      theme.typography.sm,
+                      {
+                        color:
+                          date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
+                            ? theme.palette.primary.main
+                            : theme.palette.gray['800'],
+                      },
+                      {
+                        ...getCalendarCellTextStyle(date?.toDate(), i),
+                      },
+                    ]}
+                  >
+                    {date && date.format('D')}
+                  </Text>
+                </TouchableOpacity>
                 {date &&
                   events
                     .sort((a, b) => {

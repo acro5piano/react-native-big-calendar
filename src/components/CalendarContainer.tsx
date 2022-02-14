@@ -229,6 +229,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
           onPressCell={onPressCell}
+          onPressDateHeader={onPressDateHeader}
           onPressEvent={onPressEvent}
           onSwipeHorizontal={onSwipeHorizontal}
           renderEvent={renderEvent}
