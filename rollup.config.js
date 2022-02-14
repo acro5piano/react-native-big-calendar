@@ -1,6 +1,8 @@
-import typescript2 from 'rollup-plugin-typescript2'
 import jsx from 'acorn-jsx'
+/* eslint-disable import/no-default-export */
+import typescript2 from 'rollup-plugin-typescript2'
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   input: './src/index.ts',
   acornInjectPlugins: [jsx()],

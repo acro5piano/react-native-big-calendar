@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, View, StyleSheet } from 'react-native'
+import { Button, StyleSheet, View } from 'react-native'
 
 export const CONTROL_HEIGHT = 100
 
