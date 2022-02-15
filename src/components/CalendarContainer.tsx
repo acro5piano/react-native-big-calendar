@@ -193,7 +193,11 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
         setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
       } else {
-        setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
+        if (mode === 'month') {
+          setTargetDate(targetDate.add(targetDate.date() * -1, 'day'))
+        } else {
+          setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
+        }
       }
     },
     [swipeEnabled, targetDate, mode, theme.isRTL],
