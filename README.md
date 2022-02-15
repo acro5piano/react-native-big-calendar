@@ -126,6 +126,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   onPressEvent?: (event: ICalendarEvent<T>) => void
   eventMinHeightForMonthView?: number
   activeDate?: Date
+  showAdjacentMonths?: boolean
 }
 ```
 
@@ -165,6 +166,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `headerComponentStyle`        | no       | `ViewStyle`                                            | Calendar body header component wrapper styling. Accepts a style object (static)                                                                                                                                                                                                                                                                                                                                                                                 |
 | `hourStyle`                   | no       | `TextStyle`                                            | Calendar body hours styling. Accepts a style object (static)                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `showAllDayEventCell`         | no       | `boolean`                                              | Boolean for showing/hiding the all day event cell                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `showAdjacentMonths`          | no       | `boolean`                                              | Boolean for showing/hiding adjacent months in month view                                                                                                                                                                                                                                                                                                                                                                                                        |
 
 ## EventRenderer
 
