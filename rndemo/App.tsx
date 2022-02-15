@@ -52,7 +52,7 @@ export const App = () => {
           mode={mode}
           minTimeMinutes={0}
           maxTimeMinutes={1440}
-          stepMinutes={30}
+          stepMinutes={60}
         />
       </SafeAreaView>
     </React.Fragment>

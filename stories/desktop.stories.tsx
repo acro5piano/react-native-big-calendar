@@ -24,6 +24,20 @@ function alert(input: any) {
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 storiesOf('showcase - Desktop', module)
+  .add('max min step in minutes', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        height={SCREEN_HEIGHT}
+        events={events}
+        onPressEvent={(event) => alert(event.title)}
+        onPressCell={() => void 0}
+        mode="day"
+        minTimeMinutes={0}
+        maxTimeMinutes={1440}
+        stepMinutes={60}
+      />
+    </View>
+  ))
   .add('day mode', () => (
     <View style={styles.desktop}>
       <Calendar

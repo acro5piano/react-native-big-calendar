@@ -88,14 +88,14 @@ export function getTimeContext(minutes: number) {
 
 export function generateHoursArray(
   minTimeMinutes: number,
-  maxTimeMinutesMinutes: number,
+  maxTimeMinutes: number,
   stepMinutes: number,
 ) {
   let res = []
-  while (minTimeMinutes < maxTimeMinutesMinutes) {
+  while (minTimeMinutes < maxTimeMinutes) {
     let time = getTimeContext(minTimeMinutes)
     res.push(time)
-    console.log(time)
+
     minTimeMinutes = minTimeMinutes + stepMinutes
   }
 
