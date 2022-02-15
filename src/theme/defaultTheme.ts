@@ -20,6 +20,7 @@ export const defaultTheme: ThemeInterface = {
       800: '#424242',
       // 900: '#212121',
     },
+    moreLabel: '#000000',
   },
   eventCellOverlappings: [
     { main: '#E26245', contrastText: '#fff' }, // orange
@@ -36,10 +37,9 @@ export const defaultTheme: ThemeInterface = {
     xl: {
       fontSize: 22,
     },
-  },
-  moreLabel: {
-    fontSize: 11,
-    marginTop: 2,
-    fontWeight: 'bold',
+    moreLabel: {
+      fontSize: 11,
+      fontWeight: 'bold',
+    },
   },
 }

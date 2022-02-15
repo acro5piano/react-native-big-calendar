@@ -31,6 +31,7 @@ export interface ThemeInterface {
       800: string
       // 900: string
     }
+    moreLabel: string
   }
   isRTL: boolean
   typography: {
@@ -40,9 +41,9 @@ export interface ThemeInterface {
     // md: Typography
     // lg: Typography
     xl: Typography
+    moreLabel: Typography
   }
   eventCellOverlappings: readonly Palette[]
-  moreLabel: Partial<TextStyle>
 }
 
 export type PartialTheme = DeepPartial<ThemeInterface>
