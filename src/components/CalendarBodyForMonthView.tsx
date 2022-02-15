@@ -38,6 +38,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   maxVisibleEventCount: number
   weekStartsOn: WeekNum
   eventMinHeightForMonthView: number
+  moreLabel: string
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -58,6 +59,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   maxVisibleEventCount,
   weekStartsOn,
   eventMinHeightForMonthView,
+  moreLabel,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -194,7 +196,10 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                             key={index}
                             style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}
                           >
-                            {events.length - maxVisibleEventCount} More
+                            {moreLabel.replace(
+                              '{moreCount}',
+                              `${events.length - maxVisibleEventCount}`,
+                            )}
                           </Text>
                         ) : (
                           <CalendarEventForMonthView
