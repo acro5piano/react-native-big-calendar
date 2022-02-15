@@ -192,10 +192,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       (elements, event, index, events) => [
                         ...elements,
                         index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
-                          <Text
-                            key={index}
-                            style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}
-                          >
+                          <Text key={index} style={theme.moreLabel}>
                             {moreLabel.replace(
                               '{moreCount}',
                               `${events.length - maxVisibleEventCount}`,
