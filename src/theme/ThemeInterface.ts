@@ -42,7 +42,7 @@ export interface ThemeInterface {
     xl: Typography
   }
   eventCellOverlappings: readonly Palette[]
-  moreLabel: DeepPartial<TextStyle>
+  moreLabel: Partial<TextStyle>
 }
 
 export type PartialTheme = DeepPartial<ThemeInterface>
