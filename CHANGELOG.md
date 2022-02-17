@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.1
+
+## Bugfixes
+
+- Fix month view swipe back by @CptMaumau in https://github.com/acro5piano/react-native-big-calendar/pull/640
+
 ## 3.1.0
 
 ### New Feataures

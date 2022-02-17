@@ -107,7 +107,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   calendarCellTextStyle,
   locale = 'en',
   hideNowIndicator = false,
-  showAdjacentMonths = false,
   mode = 'week',
   overlapOffset,
   scrollOffsetMinutes = 0,
@@ -136,6 +135,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   hourStyle = {},
   showAllDayEventCell = true,
   moreLabel = '{moreCount} More',
+  showAdjacentMonths = true,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
