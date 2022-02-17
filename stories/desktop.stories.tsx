@@ -124,7 +124,7 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
-  .add('Month mode - Spanning Events (show adjacent months dates)', () => {
+  .add('Month mode - Spanning Events (hide adjacent months dates)', () => {
     const state = useEvents(spanningEvents)
     return (
       <View style={styles.desktop}>
@@ -134,7 +134,7 @@ storiesOf('showcase - Desktop', module)
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
-          showAdjacentMonths
+          showAdjacentMonths={false}
         />
       </View>
     )
