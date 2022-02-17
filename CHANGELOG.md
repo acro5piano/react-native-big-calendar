@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.2.0
+
+### New Feataures
+
+- Add showAdjacentMonths to README by @CptMaumau in https://github.com/acro5piano/react-native-big-calendar/pull/642
+- More label by @CptMaumau in https://github.com/acro5piano/react-native-big-calendar/pull/643
+- Update deps
+
 ## 3.1.1
 
 ## Bugfixes
