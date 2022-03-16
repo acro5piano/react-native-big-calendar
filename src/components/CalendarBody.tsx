@@ -99,6 +99,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
+  const increasedNowIndicator = increaseFirstRowHeight !== 1 ? increaseFirstRowHeight : 0
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -286,7 +287,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                     style={[
                       styles.nowIndicator,
                       { backgroundColor: theme.palette.nowIndicator },
-                      { top: `${getRelativeTopInDay(now)}%` },
+                      { top: `${getRelativeTopInDay(now) + increasedNowIndicator}%` },
                     ]}
                   />
                 )}
