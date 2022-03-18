@@ -99,7 +99,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
-  const increasedNowIndicator = increaseFirstRowHeight !== 1 ? increaseFirstRowHeight : 0
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -130,6 +129,18 @@ function _CalendarBody<T extends ICalendarEventBase>({
     [onPressCell],
   )
 
+  const newCellHeight =
+    increaseFirstRowHeight !== 1
+      ? ((cellHeight * increaseFirstRowHeight) /
+          (cellHeight * 24 + cellHeight * increaseFirstRowHeight)) *
+        100
+      : 0
+
+  const nowIndicatorRelativeTopInDay =
+    dayjs(now).hour() === 0
+      ? getRelativeTopInDay(now) + newCellHeight
+      : getRelativeTopInDay(now, newCellHeight) + newCellHeight
+
   const _renderMappedEvent = (event: T) => (
     <CalendarEvent
       key={`${event.start}${event.title}${event.end}`}
@@ -142,13 +153,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
       ampm={ampm}
-      newCellHeight={
-        increaseFirstRowHeight !== 1
-          ? ((cellHeight * increaseFirstRowHeight) /
-              (cellHeight * 24 + cellHeight * increaseFirstRowHeight)) *
-            100
-          : 0
-      }
+      newCellHeight={newCellHeight}
     />
   )
 
@@ -287,7 +292,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                     style={[
                       styles.nowIndicator,
                       { backgroundColor: theme.palette.nowIndicator },
-                      { top: `${getRelativeTopInDay(now) + increasedNowIndicator}%` },
+                      { top: `${nowIndicatorRelativeTopInDay}%` },
                     ]}
                   />
                 )}
