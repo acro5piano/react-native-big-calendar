@@ -137,9 +137,11 @@ function _CalendarBody<T extends ICalendarEventBase>({
       : 0
 
   const nowIndicatorRelativeTopInDay =
-    dayjs(now).hour() === 0
-      ? getRelativeTopInDay(now) + newCellHeight
-      : getRelativeTopInDay(now, newCellHeight) + newCellHeight
+    increaseFirstRowHeight !== 1
+      ? dayjs(now).hour() === 0
+        ? getRelativeTopInDay(now) + newCellHeight
+        : getRelativeTopInDay(now, newCellHeight) + newCellHeight
+      : getRelativeTopInDay(now)
 
   const _renderMappedEvent = (event: T) => (
     <CalendarEvent
