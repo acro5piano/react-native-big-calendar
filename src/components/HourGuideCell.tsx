@@ -17,7 +17,7 @@ interface HourGuideCellProps {
 
 export const HourGuideCell = ({ cellHeight, onPress, date, hour, todayHighlight, slotDuration =15 }: HourGuideCellProps) => {
   const theme = useTheme()
-  const lineArray = Array(60 / slotDuration).fill(0);
+  const lineArray = Array(4).fill(0);
   return (
     <TouchableWithoutFeedback>
       <View

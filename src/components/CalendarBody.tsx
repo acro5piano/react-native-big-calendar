@@ -129,7 +129,7 @@ function _CalendarBody<T>({
     return () => {
       clearTimeout(timeout);
     };
-  }, [scrollView, scrollOffsetMinutes, cellHeight]);
+  }, [scrollView, scrollOffsetMinutes]);
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
