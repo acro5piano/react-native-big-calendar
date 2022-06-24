@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.2.1
+
+### Bugfixes
+
+## What's Changed
+
+- Remove peer dependencies
+- Update deps
+
 ## 3.2.0
 
 ### New Feataures
