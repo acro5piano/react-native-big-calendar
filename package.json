@@ -1,11 +1,11 @@
 {
   "name": "react-native-big-calendar",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
-  "repository": "git@github.com:llotheo/react-native-big-calendar",
+  "repository": "git@github.com:acro5piano/react-native-big-calendar",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -31,8 +31,8 @@
     "merge-anything": "4.0.2"
   },
   "peerDependencies": {
-    "react": "^16.8.3||^17.0.0",
-    "react-native": "^0.59.0||^0.60.0||^0.61.0||^0.62.0||^0.63.0||^0.64.0||^0.65.0||^0.66.0"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
