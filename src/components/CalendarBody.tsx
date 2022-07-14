@@ -81,10 +81,11 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const { now } = useNow(!hideNowIndicator)
 
   React.useEffect(() => {
+    let timeout: NodeJS.Timeout
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
       // We add delay here to work correct on React Native
       // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
-      setTimeout(
+      timeout = setTimeout(
         () => {
           if (scrollView && scrollView.current) {
             scrollView.current.scrollTo({
@@ -95,6 +96,11 @@ function _CalendarBody<T extends ICalendarEventBase>({
         },
         Platform.OS === 'web' ? 0 : 10,
       )
+    }
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
     }
   }, [scrollView, scrollOffsetMinutes, cellHeight])
 
@@ -109,19 +115,24 @@ function _CalendarBody<T extends ICalendarEventBase>({
     [onPressCell],
   )
 
-  const _renderMappedEvent = (event: T) => (
-    <CalendarEvent
-      key={`${event.start}${event.title}${event.end}`}
-      event={event}
-      onPressEvent={onPressEvent}
-      eventCellStyle={eventCellStyle}
-      showTime={showTime}
-      eventCount={getCountOfEventsAtEvent(event, events)}
-      eventOrder={getOrderOfEvent(event, events)}
-      overlapOffset={overlapOffset}
-      renderEvent={renderEvent}
-      ampm={ampm}
-    />
+  const _renderMappedEvent = React.useCallback(
+    (event: T, index: number) => {
+      return (
+        <CalendarEvent
+          key={`${index}${event.start}${event.title}${event.end}`}
+          event={event}
+          onPressEvent={onPressEvent}
+          eventCellStyle={eventCellStyle}
+          showTime={showTime}
+          eventCount={getCountOfEventsAtEvent(event, events)}
+          eventOrder={getOrderOfEvent(event, events)}
+          overlapOffset={overlapOffset}
+          renderEvent={renderEvent}
+          ampm={ampm}
+        />
+      )
+    },
+    [ampm, eventCellStyle, events, onPressEvent, overlapOffset, renderEvent, showTime],
   )
 
   const theme = useTheme()

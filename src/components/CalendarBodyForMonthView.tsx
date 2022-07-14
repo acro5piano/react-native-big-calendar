@@ -172,14 +172,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                 </TouchableOpacity>
                 {date &&
                   events
-                    .sort((a, b) => {
-                      if (dayjs(a.start).isSame(b.start, 'day')) {
-                        const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
-                        const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
-                        return bDuration - aDuration
-                      }
-                      return a.start.getTime() - b.start.getTime()
-                    })
                     .filter(({ start, end }) =>
                       date.isBetween(
                         dayjs(start).startOf('day'),

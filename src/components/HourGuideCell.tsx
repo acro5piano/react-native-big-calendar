@@ -15,7 +15,7 @@ interface HourGuideCellProps {
   calendarCellStyle?: CalendarCellStyle
 }
 
-export const HourGuideCell = ({
+const _HourGuideCell = ({
   cellHeight,
   onPress,
   date,
@@ -44,3 +44,5 @@ export const HourGuideCell = ({
     </TouchableWithoutFeedback>
   )
 }
+
+export const HourGuideCell = React.memo(_HourGuideCell)
