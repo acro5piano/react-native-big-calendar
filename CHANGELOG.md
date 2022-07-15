@@ -1,10 +1,19 @@
 # Changelog
 
+## 3.2.2
+
+### What's Changed
+
+- Update deps by @acro5piano
+- Improve performance - Fixing issue #563 by @fabrianibrahim in https://github.com/acro5piano/react-native-big-calendar/pull/714
+
+### New Contributors
+
+- @fabrianibrahim made their first contribution in https://github.com/acro5piano/react-native-big-calendar/pull/714
+
 ## 3.2.1
 
-### Bugfixes
-
-## What's Changed
+### What's Changed
 
 - Remove peer dependencies
 - Update deps
@@ -19,7 +28,7 @@
 
 ## 3.1.1
 
-## Bugfixes
+### Bugfixes
 
 - Fix month view swipe back by @CptMaumau in https://github.com/acro5piano/react-native-big-calendar/pull/640
 
@@ -63,10 +72,9 @@ After
 ```typescript
 <Calendar
   calendarCellStyle={(date, index) => ({
-    backgroundColor: index % 2 === 0 ? "#aaa" : "#bbb",
+    backgroundColor: index % 2 === 0 ? '#aaa' : '#bbb',
   })}
 />
-
 ```
 
 ### New Contributors
@@ -127,13 +135,7 @@ type MyEvent = ICalendarEvent & { color: string }
 
 ### Chore
 
-- Bump lint-staged from 11.2.6 to 12.1.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/561
-- Bump eslint-plugin-react-hooks from 4.2.0 to 4.3.0 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/556
-- Bump prettier from 2.4.1 to 2.5.1 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/566
-- Bump eslint-plugin-react from 7.26.1 to 7.27.1 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/562
-- Bump @types/jest from 27.0.2 to 27.0.3 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/558
-- Bump typescript from 4.4.3 to 4.5.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/557
-- Bump merge-anything from 4.0.1 to 4.0.2 by @dependabot in https://github.com/acro5piano/react-native-big-calendar/pull/554
+- Update deps by @acro5piano
 
 ## 2.6.0
 
@@ -266,7 +268,7 @@ Before:
   events={[
     {
       // ...
-      eventRenderer?: () => <TouchableOpacity /* ... */ />
+      eventRenderer: () => <TouchableOpacity /* ... */ />,
     },
   ]}
 />
@@ -364,12 +366,6 @@ Details: https://github.com/acro5piano/react-native-big-calendar/pull/408
 ## 0.3.2
 
 - Fix to overlapped header 74db874 by @oportojca
-
-## 0.3.1
-
-- Fix #85 by @acro5piano
-- Fix adding `key` by @acro5piano
-- Remove `lib` for React Native env by @acro5piano
 
 ## 0.3.1
 
