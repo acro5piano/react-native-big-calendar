@@ -39,6 +39,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   weekStartsOn: WeekNum
   eventMinHeightForMonthView: number
   moreLabel: string
+  sortedMonthView: boolean
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -60,6 +61,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   weekStartsOn,
   eventMinHeightForMonthView,
   moreLabel,
+  sortedMonthView,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -86,6 +88,28 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
         ? calendarCellTextStyle
         : () => calendarCellTextStyle,
     [calendarCellTextStyle],
+  )
+
+  const sortedEvents = React.useCallback(
+    (day: dayjs.Dayjs) => {
+      return sortedMonthView
+        ? events
+            .filter(({ start, end }) =>
+              day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
+            )
+            .sort((a, b) => {
+              if (dayjs(a.start).isSame(b.start, 'day')) {
+                const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
+                const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
+                return bDuration - aDuration
+              }
+              return a.start.getTime() - b.start.getTime()
+            })
+        : events.filter(({ start, end }) =>
+            day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
+          )
+    },
+    [events, sortedMonthView],
   )
 
   return (
@@ -171,49 +195,40 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   </Text>
                 </TouchableOpacity>
                 {date &&
-                  events
-                    .filter(({ start, end }) =>
-                      date.isBetween(
-                        dayjs(start).startOf('day'),
-                        dayjs(end).endOf('day'),
-                        null,
-                        '[)',
+                  sortedEvents(date).reduce(
+                    (elements, event, index, events) => [
+                      ...elements,
+                      index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
+                        <Text
+                          key={index}
+                          style={[
+                            theme.typography.moreLabel,
+                            { marginTop: 2, color: theme.palette.moreLabel },
+                          ]}
+                        >
+                          {moreLabel.replace(
+                            '{moreCount}',
+                            `${events.length - maxVisibleEventCount}`,
+                          )}
+                        </Text>
+                      ) : (
+                        <CalendarEventForMonthView
+                          key={index}
+                          event={event}
+                          eventCellStyle={eventCellStyle}
+                          onPressEvent={onPressEvent}
+                          renderEvent={renderEvent}
+                          date={date}
+                          dayOfTheWeek={ii}
+                          calendarWidth={calendarWidth}
+                          isRTL={theme.isRTL}
+                          eventMinHeightForMonthView={eventMinHeightForMonthView}
+                          showAdjacentMonths={showAdjacentMonths}
+                        />
                       ),
-                    )
-                    .reduce(
-                      (elements, event, index, events) => [
-                        ...elements,
-                        index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
-                          <Text
-                            key={index}
-                            style={[
-                              theme.typography.moreLabel,
-                              { marginTop: 2, color: theme.palette.moreLabel },
-                            ]}
-                          >
-                            {moreLabel.replace(
-                              '{moreCount}',
-                              `${events.length - maxVisibleEventCount}`,
-                            )}
-                          </Text>
-                        ) : (
-                          <CalendarEventForMonthView
-                            key={index}
-                            event={event}
-                            eventCellStyle={eventCellStyle}
-                            onPressEvent={onPressEvent}
-                            renderEvent={renderEvent}
-                            date={date}
-                            dayOfTheWeek={ii}
-                            calendarWidth={calendarWidth}
-                            isRTL={theme.isRTL}
-                            eventMinHeightForMonthView={eventMinHeightForMonthView}
-                            showAdjacentMonths={showAdjacentMonths}
-                          />
-                        ),
-                      ],
-                      [] as (null | JSX.Element)[],
-                    )}
+                    ],
+                    [] as (null | JSX.Element)[],
+                  )}
               </TouchableOpacity>
             ))}
         </View>

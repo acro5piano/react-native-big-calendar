@@ -93,6 +93,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
+  sortedMonthView?: boolean
   moreLabel?: string
 }
 
@@ -136,6 +137,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   showAllDayEventCell = true,
   moreLabel = '{moreCount} More',
   showAdjacentMonths = true,
+  sortedMonthView = true,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -245,6 +247,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           targetDate={targetDate}
           maxVisibleEventCount={maxVisibleEventCount}
           eventMinHeightForMonthView={eventMinHeightForMonthView}
+          sortedMonthView={sortedMonthView}
           moreLabel={moreLabel}
         />
       </React.Fragment>

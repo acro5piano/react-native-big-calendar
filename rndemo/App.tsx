@@ -78,7 +78,7 @@ const events = [
   {
     title: 'Study',
     start: dayjs().add(9, 'day').set('hour', 7).set('minute', 45).toDate(),
-    end: dayjs().add(9, 'day').set('hour', 20).set('minute', 30).toDate(),
+    end: dayjs().add(12, 'day').set('hour', 20).set('minute', 30).toDate(),
   },
   {
     title: 'Go to airport',
@@ -423,6 +423,7 @@ export const App = () => {
           height={Dimensions.get('window').height - 60}
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
+          sortedMonthView={false}
           mode={mode}
         />
       </SafeAreaView>
