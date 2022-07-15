@@ -144,14 +144,14 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                   { height: cellHeight },
                 ]}
               >
-                {allDayEvents.map((event) => {
+                {allDayEvents.map((event, index) => {
                   if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
                     return null
                   }
                   return (
                     <TouchableOpacity
                       style={[eventCellCss.style, primaryBg, u['mt-2']]}
-                      key={`${event.start}${event.title}`}
+                      key={index}
                       onPress={() => _onPressEvent(event)}
                     >
                       <Text

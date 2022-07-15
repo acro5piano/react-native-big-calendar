@@ -62,3 +62,4 @@ typings/
 build
 .jest
 .storybook-build
+/.idea
