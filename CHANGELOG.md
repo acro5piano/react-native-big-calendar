@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.2.3
+
+### Bugfix
+
+- Fix readme format by @fabrianibrahim in https://github.com/acro5piano/react-native-big-calendar/pull/716
+- Fix event duration on mode month by @Pakile in https://github.com/acro5piano/react-native-big-calendar/pull/720
+
+### Other changes
+
+- Change website platform from Netlify to Vercel
+
+### New Contributors
+
+- @Pakile made their first contribution in https://github.com/acro5piano/react-native-big-calendar/pull/720
+
 ## 3.2.2
 
 ### What's Changed
