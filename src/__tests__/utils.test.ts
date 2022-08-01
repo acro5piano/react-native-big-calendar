@@ -223,6 +223,6 @@ describe('spanning events', () => {
 
     expect(isMultipleDays).toBe(true)
     expect(isMultipleDaysStart).toBe(true)
-    expect(eventWeekDuration).toBe(7)
+    expect(eventWeekDuration).toBe(6)
   })
 })
