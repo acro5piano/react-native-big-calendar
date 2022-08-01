@@ -238,7 +238,7 @@ export function getEventSpanningInfo(
   const eventWeekDuration =
     !showAdjacentMonths && monthDaysLeft < 7 && monthDaysLeft < eventDuration
       ? monthDaysLeft + 1
-      : eventDuration > weekDaysLeft
+      : eventDaysLeft > weekDaysLeft
       ? weekDaysLeft
       : eventDaysLeft < eventDuration
       ? eventDaysLeft
