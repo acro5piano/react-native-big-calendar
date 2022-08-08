@@ -1,13 +1,16 @@
 {
   "name": "react-native-big-calendar",
-  "version": "3.2.3",
-  "main": "build/index.js",
-  "jsnext:main": "build/index.es.js",
-  "module": "build/index.es.js",
-  "types": "build/index.d.ts",
-  "repository": "git@github.com:acro5piano/react-native-big-calendar",
+  "version": "3.2.4",
+  "main": "src/index.ts",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phpfox-mobile/react-native-big-calendar"
+  },
+  "files": [
+    "src/"
+  ],
   "scripts": {
     "prepare": "simple-git-hooks || true",
     "storybook": "start-storybook -p 7007",
@@ -26,8 +29,10 @@
     "build:ts": "env NODE_ENV=production rollup -c"
   },
   "dependencies": {
+    "calendar-base": "^1.2.0",
     "calendarize": "^1.1.1",
     "dayjs": "^1.10.7",
+    "dayjs-plugin-utc": "^0.1.2",
     "merge-anything": "4.0.2"
   },
   "peerDependencies": {

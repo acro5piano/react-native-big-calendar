@@ -228,10 +228,11 @@ export function getEventSpanningInfo(
 
   // adding + 1 because durations start at 0
   const eventDuration =
-    Math.floor(dayjs.duration(dayjs(event.end).diff(dayjs(event.start))).asDays()) + 1
-  const eventDaysLeft = Math.floor(dayjs.duration(dayjs(event.end).diff(date)).asDays()) + 1
+    Math.floor(dayjs.duration(dayjs(event.end).utc().diff(dayjs(event.start).utc())).asDays()) + 1
+  const eventDaysLeft =
+    Math.floor(dayjs.duration(dayjs(event.end).utc().diff(date.utc())).asDays()) + 1
   const weekDaysLeft = 7 - dayOfTheWeek
-  const monthDaysLeft = date.endOf('month').date() - date.date()
+  const monthDaysLeft = date.utc().endOf('month').date() - date.utc().date()
   // console.log(dayOfTheWeek === 0 && !showAdjacentMonths && monthDaysLeft < 7)
   const isMultipleDays = eventDuration > 1
   // This is to determine how many days from the event to show during a week
@@ -245,9 +246,9 @@ export function getEventSpanningInfo(
       : eventDuration
   const isMultipleDaysStart =
     isMultipleDays &&
-    (date.isSame(event.start, 'day') ||
-      (dayOfTheWeek === 0 && date.isAfter(event.start)) ||
-      (!showAdjacentMonths && date.get('date') === 1))
+    (date.utc().isSame(event.start, 'day') ||
+      (dayOfTheWeek === 0 && date.utc().isAfter(event.start)) ||
+      (!showAdjacentMonths && date.utc().get('date') === 1))
   // - 6 to take in account the padding
   const eventWidth = dayWidth * eventWeekDuration - 6
 
@@ -263,9 +264,9 @@ export function stringHasContent(string: string): boolean {
 }
 
 export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn: WeekNum) {
-  let weeks = calendarize(targetDate.toDate(), weekStartsOn)
+  let weeks = calendarize(targetDate.utc().toDate(), weekStartsOn)
   const firstDayIndex = weeks[0].findIndex((d) => d === 1)
-  const lastDay = targetDate.endOf('month').date()
+  const lastDay = targetDate.utc().endOf('month').date()
   const lastDayIndex = weeks[weeks.length - 1].findIndex((d) => d === lastDay)
 
   weeks = weeks.map((week, iw) => {

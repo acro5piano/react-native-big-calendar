@@ -4325,6 +4325,11 @@ cache-base@^1.0.1:
     union-value "^1.0.0"
     unset-value "^1.0.0"
 
+calendar-base@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/calendar-base/-/calendar-base-1.2.0.tgz#736c35cd27e0096da0d6ba97a24b88c3e6e403bc"
+  integrity sha512-uHI3Rtpj0Ijj/aP6cQywJzGWWAh3O+YZCP9kLBXh5thE3Z57yQUGuogB2cn6P47UU8pRQbFNpyJDIcu/2VUjjQ==
+
 calendarize@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/calendarize/-/calendarize-1.1.1.tgz#0fa8b8de6b5e6ff9f9fbb89cc3a8c01aace291c2"
@@ -5185,6 +5190,11 @@ data-urls@^1.1.0:
     abab "^2.0.0"
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
+
+dayjs-plugin-utc@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/dayjs-plugin-utc/-/dayjs-plugin-utc-0.1.2.tgz#48e552407024143922d6499a40f6c765f8c93d03"
+  integrity sha512-ExERH5o3oo6jFOdkvMP3gytTCQ9Ksi5PtylclJWghr7k7m3o2U5QrwtdiJkOxLOH4ghr0EKhpqGefzGz1VvVJg==
 
 dayjs@^1.10.7, dayjs@^1.8.15:
   version "1.10.7"

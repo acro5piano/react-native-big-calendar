@@ -1,0 +1,1095 @@
+From 57186afa9d20d48330cf0b0767c818f35bbb2435 Mon Sep 17 00:00:00 2001
+From: Vantam1601 <39816672+Vantam1601@users.noreply.github.com>
+Date: Wed, 3 Aug 2022 14:21:42 +0700
+Subject: [PATCH] feat: update post status
+
+---
+ .../xcshareddata/xcschemes/Mobile.xcscheme          |  2 +-
+ .../metafox-core/src/SiteAddressScreen.tsx          |  4 ++++
+ .../src/FormHeader/FormHeader.tsx                   | 11 +++++------
+ packages/framework/metafox-form/src/FormBuilder.tsx |  7 ++++++-
+ .../metafox-navigation/src/AuthNavigator.tsx        |  3 ++-
+ packages/metafox/auth/src/components/LoginForm.tsx  | 12 ++++++++++--
+ .../auth/src/screens/ForgotPasswordScreen.tsx       | 13 +++++++++++--
+ 7 files changed, 39 insertions(+), 13 deletions(-)
+
+diff --git a/ios/Mobile.xcodeproj/xcshareddata/xcschemes/Mobile.xcscheme b/ios/Mobile.xcodeproj/xcshareddata/xcschemes/Mobile.xcscheme
+index 19c57808..a26aa06e 100644
+--- a/ios/Mobile.xcodeproj/xcshareddata/xcschemes/Mobile.xcscheme
++++ b/ios/Mobile.xcodeproj/xcshareddata/xcschemes/Mobile.xcscheme
+@@ -41,7 +41,7 @@
+       </Testables>
+    </TestAction>
+    <LaunchAction
+-      buildConfiguration = "Release"
++      buildConfiguration = "Debug"
+       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+       launchStyle = "0"
+diff --git a/packages/framework/metafox-core/src/SiteAddressScreen.tsx b/packages/framework/metafox-core/src/SiteAddressScreen.tsx
+index 3ba03038..bfd8fa83 100644
+--- a/packages/framework/metafox-core/src/SiteAddressScreen.tsx
++++ b/packages/framework/metafox-core/src/SiteAddressScreen.tsx
+@@ -115,6 +115,10 @@ class SiteAddressScreen extends React.PureComponent<Props, State> {
+   }
+ 
+   async componentDidMount(): Promise<void> {
++    this.props.navigation.setOptions({
++      headerShown: false
++    });
++    //
+     this.keyboardShowListener = Keyboard.addListener(
+       IS_IOS ? 'keyboardWillShow' : 'keyboardDidShow',
+       this.onKeyboardShow
+diff --git a/packages/framework/metafox-form-elements/src/FormHeader/FormHeader.tsx b/packages/framework/metafox-form-elements/src/FormHeader/FormHeader.tsx
+index 6ec93c2f..f32b3c33 100644
+--- a/packages/framework/metafox-form-elements/src/FormHeader/FormHeader.tsx
++++ b/packages/framework/metafox-form-elements/src/FormHeader/FormHeader.tsx
+@@ -26,17 +26,16 @@ export default function FormHeader({ config }: Props) {
+   const schema = useFormSchema();
+   const navigation = useNavigation();
+   const formik = useFormikContext();
+-  console.log('formik', formik);
+-  const onPress = React.useCallback(
+-    () => formik.submitForm().catch(err => console.error(err)),
+-    [formik]
+-  );
++
++  const onPress = React.useCallback(() => {
++    formik.submitForm().catch(err => console.error(err));
++  }, [formik]);
+ 
+   const { title } = schema;
+ 
+   React.useEffect(() => {
+     navigation.setOptions({
+-      headerTitle: title,
++      headerTitle: title ?? 'title',
+       headerRight: () => <SubmitButton onPress={onPress} />
+     });
+   }, [title, navigation, onPress]);
+diff --git a/packages/framework/metafox-form/src/FormBuilder.tsx b/packages/framework/metafox-form/src/FormBuilder.tsx
+index e97a3a7a..79e5eecc 100644
+--- a/packages/framework/metafox-form/src/FormBuilder.tsx
++++ b/packages/framework/metafox-form/src/FormBuilder.tsx
+@@ -107,9 +107,12 @@ export default function FormBuilder<T = Record<string, unknown>>({
+    */
+   const formSchema: FormSchemaShape = React.useMemo(() => {
+     if (formSchemaRaw) {
++      console.log('formSchemaRaw', formSchemaRaw);
+       const formSchema = transformSchema(formSchemaRaw, values.current, dialog);
+ 
+-      if (noHeader) formSchema.noHeader = true;
++      if (noHeader) {
++        formSchema.noHeader = true;
++      }
+ 
+       if (noBreadcrumb) formSchema.noBreadcrumb = true;
+ 
+@@ -225,6 +228,8 @@ export default function FormBuilder<T = Record<string, unknown>>({
+     formSchema.onReset = onReset;
+   }
+ 
++  console.log('formSchema', formSchema);
++
+   return (
+     <FormSchemaProvider value={formSchema}>
+       <Formik
+diff --git a/packages/framework/metafox-navigation/src/AuthNavigator.tsx b/packages/framework/metafox-navigation/src/AuthNavigator.tsx
+index 0f4617d5..57502c4d 100644
+--- a/packages/framework/metafox-navigation/src/AuthNavigator.tsx
++++ b/packages/framework/metafox-navigation/src/AuthNavigator.tsx
+@@ -12,7 +12,8 @@ export const AuthNavigator = () => {
+     <AuthStack.Navigator
+       initialRouteName={initialRouteName}
+       mode="modal"
+-      headerMode="none"
++      headerShown={false}
++      // headerMode="none"
+     >
+       {createAppScreens(AuthStack.Screen, ['auth'])}
+     </AuthStack.Navigator>
+diff --git a/packages/metafox/auth/src/components/LoginForm.tsx b/packages/metafox/auth/src/components/LoginForm.tsx
+index 52e4f3f9..e2e1b9d6 100644
+--- a/packages/metafox/auth/src/components/LoginForm.tsx
++++ b/packages/metafox/auth/src/components/LoginForm.tsx
+@@ -17,7 +17,7 @@ import { SimpleHtmlStyle } from '@metafox/ui/Html/SimpleHtml';
+ import { TouchableFeedback } from '@metafox/ui/TouchableFeedback';
+ import TranslateHtml from '@metafox/ui/TranslateHtml';
+ import TranslateText from '@metafox/ui/TranslateText';
+-import React from 'react';
++import React, { useEffect } from 'react';
+ import {
+   Image,
+   ImageBackground,
+@@ -32,6 +32,7 @@ import { logoStyles } from './LoginForm.styles';
+ // import formSchema from './login.json';
+ import useResourceForm from '@metafox/framework/hooks/useResourceForm';
+ import { getInitialLoginData } from '@metafox/framework/services/auth';
++import { useNavigation } from '@react-navigation/native';
+ 
+ const RegisterButton = () => {
+   const registerAccessibleProps = createAccessibleProps(
+@@ -58,6 +59,7 @@ function LoginForm(props: NavScreenProps) {
+   const [isReady, setIsReady] = React.useState<boolean>(false);
+   const [showSignUp, setShowSignUp] = React.useState<boolean>(false);
+   const formSchema = useResourceForm('user', 'user', 'login');
++  const { setOptions } = useNavigation();
+ 
+   const fetchData = async () => {
+     const initialValues = await getInitialLoginData();
+@@ -65,6 +67,12 @@ function LoginForm(props: NavScreenProps) {
+     setIsReady(true);
+   };
+ 
++  useEffect(() => {
++    setOptions({
++      headerShown: false
++    });
++  }, [setOptions]);
++
+   React.useEffect(() => {
+     fetchData().catch();
+   }, []);
+@@ -113,7 +121,7 @@ function LoginForm(props: NavScreenProps) {
+           </View>
+         </ImageBackground>
+         <View style={styles.containerForm}>
+-          {!!formSchema && <FormBuilder formSchema={formSchema} />}
++          {!!formSchema && <FormBuilder noHeader formSchema={formSchema} />}
+         </View>
+       </KeyboardAwareScrollView>
+       {showSignUp ? <RegisterButton /> : null}
+diff --git a/packages/metafox/auth/src/screens/ForgotPasswordScreen.tsx b/packages/metafox/auth/src/screens/ForgotPasswordScreen.tsx
+index 8ce25f21..201cfdda 100644
+--- a/packages/metafox/auth/src/screens/ForgotPasswordScreen.tsx
++++ b/packages/metafox/auth/src/screens/ForgotPasswordScreen.tsx
+@@ -2,9 +2,10 @@
+  * @type: route
+  * name: forgot_password
+  * path: forgot_password
+- * mode: modal
++ * mode: modalWithHeader
+  * group: auth
+  */
++
+ import { FormBuilder } from '@metafox/form';
+ import useResourceForm from '@metafox/framework/hooks/useResourceForm';
+ import {
+@@ -13,10 +14,11 @@ import {
+   paddingVertical
+ } from '@metafox/themes';
+ import { StylingHelper } from '@metafox/themes/mixins';
+-import React from 'react';
++import React, { useEffect } from 'react';
+ import { StyleSheet, View } from 'react-native';
+ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+ import { FormName } from '../actions/forgotPassword';
++import { useNavigation } from '@react-navigation/native';
+ 
+ const ForgotFormOptions = {
+   formName: FormName,
+@@ -28,8 +30,15 @@ const ForgotFormOptions = {
+ };
+ 
+ const ChangePasswordScreen = props => {
++  const { setOptions } = useNavigation();
+   const formSchema = useResourceForm('user', 'user', 'forgot_password');
+ 
++  useEffect(() => {
++    setOptions({
++      headerShown: true
++    });
++  }, [setOptions]);
++
+   // const onSuccess = ({ ...response }) => {
+   //   if (response.succeedAction) {
+   //     dispatch({ type: response.succeedAction, payload: response });
+-- 
+2.31.0
+
+From 8a0060c886ab8721782bdf24b5e7a4198c9344d3 Mon Sep 17 00:00:00 2001
+From: Vantam1601 <39816672+Vantam1601@users.noreply.github.com>
+Date: Wed, 3 Aug 2022 17:57:04 +0700
+Subject: [PATCH] feat: update post status
+
+---
+ app/src/bundle/sagas.tsx                      |   2 +
+ .../metafox-core/src/helpers/MediaPicker.tsx  |   3 +-
+ .../framework/metafox-core/src/module.d.ts    |   5 -
+ .../src/MediaPicker/MediaPickerView.ios.tsx   |   4 +-
+ .../src/PickerField/MultiplePhotoItemView.tsx |  10 +-
+ .../src/PickerField/SinglePhotoItemView.tsx   |   8 +-
+ .../core/src/sagas/fetchDetailSaga.tsx        |  66 +++
+ .../feed/src/components/PostStatusView.tsx    |  42 +-
+ packages/metafox/feed/src/sagas/composer.tsx  | 406 ++++++++++--------
+ 9 files changed, 325 insertions(+), 221 deletions(-)
+ create mode 100644 packages/metafox/core/src/sagas/fetchDetailSaga.tsx
+
+diff --git a/app/src/bundle/sagas.tsx b/app/src/bundle/sagas.tsx
+index a640c388..29d81f3a 100644
+--- a/app/src/bundle/sagas.tsx
++++ b/app/src/bundle/sagas.tsx
+@@ -18,6 +18,7 @@ import saga_saveditemsMarkAsOpenedSaga from '@metafox/saved/sagas/markAsOpened';
+ import save_saveItemSaga from '@metafox/saved/sagas/saveItem';
+ import openDeveloperMenuSaga from '@metafox/core/sagas/openDeveloperMenu';
+ import core_featureItemSaga from '@metafox/core/sagas/featureItem';
++import core_fetchDetailSagaSaga from '@metafox/core/sagas/fetchDetailSaga';
+ import reportItemSaga from '@metafox/core/sagas/report';
+ import core_sponsorItemSaga from '@metafox/core/sagas/sponsorItem';
+ import core_sponsorItemInFeedSaga from '@metafox/core/sagas/sponsorItemInFeed';
+@@ -68,6 +69,7 @@ const sagas = [
+   save_saveItemSaga,
+   openDeveloperMenuSaga,
+   core_featureItemSaga,
++  core_fetchDetailSagaSaga,
+   reportItemSaga,
+   core_sponsorItemSaga,
+   core_sponsorItemInFeedSaga,
+diff --git a/packages/framework/metafox-core/src/helpers/MediaPicker.tsx b/packages/framework/metafox-core/src/helpers/MediaPicker.tsx
+index 2bd63ec4..08e30456 100644
+--- a/packages/framework/metafox-core/src/helpers/MediaPicker.tsx
++++ b/packages/framework/metafox-core/src/helpers/MediaPicker.tsx
+@@ -424,6 +424,7 @@ class MediaPicker {
+   ) {
+     //
+     const { bottomSheetBackend } = this.manager;
++
+     const options: OptionItem[] = [
+       { label: Intl.t('take_photo'), value: 'take_photo', readable: true },
+       {
+@@ -467,7 +468,7 @@ class MediaPicker {
+     }
+   }
+ 
+-  static async autoDetectLink(url) {
++  async autoDetectLink(url) {
+     const result = await httpClient
+       .post(PREVIEW_LINK_API_PREFIX, { link: url })
+       .then(response => response.data);
+diff --git a/packages/framework/metafox-core/src/module.d.ts b/packages/framework/metafox-core/src/module.d.ts
+index 54158885..3ea04ed4 100644
+--- a/packages/framework/metafox-core/src/module.d.ts
++++ b/packages/framework/metafox-core/src/module.d.ts
+@@ -109,11 +109,6 @@ declare module '@metafox/framework/Manager' {
+         pickerOption: PickerVideoOptionShape,
+         nativeEventTarget?: NativeEventTargetShape
+       ) => Promise<void>;
+-      selectPhotos: (
+-        pickerOptions: PickerOptionShape,
+-        actionSheetOption?: ActionSheetProps,
+-        nativeEventTarget?: NativeEventTargetShape
+-      ) => Promise<void>;
+       choosePhotos(
+         pickerOption: PickerVideoOptionShape
+       ): Promise<FileItemShape | boolean>;
+diff --git a/packages/framework/metafox-ui/src/MediaPicker/MediaPickerView.ios.tsx b/packages/framework/metafox-ui/src/MediaPicker/MediaPickerView.ios.tsx
+index abd997ea..282a8536 100644
+--- a/packages/framework/metafox-ui/src/MediaPicker/MediaPickerView.ios.tsx
++++ b/packages/framework/metafox-ui/src/MediaPicker/MediaPickerView.ios.tsx
+@@ -1,3 +1,4 @@
++import { useGlobal } from '@metafox/framework';
+ import { IS_TABLET } from '@metafox/framework/constants';
+ import { ErrorHandler } from '@metafox/framework/helpers/ErrorHandler';
+ import { Intl } from '@metafox/framework/helpers/intl';
+@@ -8,7 +9,8 @@ import { deviceWindowWidth, TextVariable } from '@metafox/themes';
+ import { FlatListStyle } from '@metafox/themes/CommonStyle';
+ import CameraRoll, {
+   GetPhotosParams,
+-  Include
++  Include,
++  PhotoIdentifiersPage
+ } from '@react-native-community/cameraroll';
+ import { concat, isEqual, uniqBy } from 'lodash';
+ import React, { useEffect, useRef, useState } from 'react';
+diff --git a/packages/framework/metafox-ui/src/PickerField/MultiplePhotoItemView.tsx b/packages/framework/metafox-ui/src/PickerField/MultiplePhotoItemView.tsx
+index f7fc01b3..ef7e62c5 100644
+--- a/packages/framework/metafox-ui/src/PickerField/MultiplePhotoItemView.tsx
++++ b/packages/framework/metafox-ui/src/PickerField/MultiplePhotoItemView.tsx
+@@ -80,14 +80,14 @@ export const MultiplePhotoItemView = (props: Props) => {
+ 
+   const onDeleteItem = () => {
+     if (props.onDeleteItem) {
+-      props.onDeleteItem(props.fileItem, state.result);
++      props.onDeleteItem?.(props.fileItem, state.result);
+     }
+   };
+ 
+   const onFileUploadedSuccess = React.useCallback(
+     result => {
+       if (props.onFileUploadedSuccess) {
+-        props.onFileUploadedSuccess(props.fileItem, result);
++        props.onFileUploadedSuccess?.(props.fileItem, result);
+       }
+ 
+       setState(
+@@ -115,7 +115,7 @@ export const MultiplePhotoItemView = (props: Props) => {
+       // });
+ 
+       if (props.onFileUploadedFailure) {
+-        props.onFileUploadedFailure(props.fileItem, error);
++        props.onFileUploadedFailure?.(props.fileItem, error);
+       }
+     },
+     [props]
+@@ -126,7 +126,7 @@ export const MultiplePhotoItemView = (props: Props) => {
+     const { itemId = '' } = props.fileItem;
+ 
+     if (onSelectDefault && itemId) {
+-      onSelectDefault(itemId);
++      onSelectDefault?.(itemId);
+     }
+   };
+ 
+@@ -144,7 +144,7 @@ export const MultiplePhotoItemView = (props: Props) => {
+ 
+     if (direct_upload && isFirstUpload.current) {
+       isFirstUpload.current = false;
+-      onUploadItemStart(fileItem);
++      onUploadItemStart?.(fileItem);
+       setState(
+         produce(draft => {
+           draft.uploading = true;
+diff --git a/packages/framework/metafox-ui/src/PickerField/SinglePhotoItemView.tsx b/packages/framework/metafox-ui/src/PickerField/SinglePhotoItemView.tsx
+index 5a4d91af..41226384 100644
+--- a/packages/framework/metafox-ui/src/PickerField/SinglePhotoItemView.tsx
++++ b/packages/framework/metafox-ui/src/PickerField/SinglePhotoItemView.tsx
+@@ -98,14 +98,14 @@ export const SinglePhotoItemView = (props: Props) => {
+ 
+   const onItemPress = () => {
+     if (props.onSingleItemPress) {
+-      props.onSingleItemPress(props.fileItem);
++      props.onSingleItemPress?.(props.fileItem);
+     }
+   };
+ 
+   const onFileUploadedSuccess = React.useCallback(
+     result => {
+       if (props.onFileUploadedSuccess) {
+-        props.onFileUploadedSuccess(props.fileItem, result);
++        props.onFileUploadedSuccess?.(props.fileItem, result);
+       }
+ 
+       setState(
+@@ -142,12 +142,12 @@ export const SinglePhotoItemView = (props: Props) => {
+   const { apiClient } = useGlobal();
+ 
+   React.useEffect(() => {
+-    const { fileItem, direct_upload, onUploadItemStart } = props;
++    const { fileItem, direct_upload, onUploadItemStart = () => {} } = props;
+     const { params, file } = fileItem;
+ 
+     if (direct_upload && isFirstUpload.current) {
+       isFirstUpload.current = false;
+-      onUploadItemStart(fileItem);
++      onUploadItemStart?.(fileItem);
+       setState(
+         produce(draft => {
+           draft.uploading = true;
+diff --git a/packages/metafox/core/src/sagas/fetchDetailSaga.tsx b/packages/metafox/core/src/sagas/fetchDetailSaga.tsx
+new file mode 100644
+index 00000000..b102ff5d
+--- /dev/null
++++ b/packages/metafox/core/src/sagas/fetchDetailSaga.tsx
+@@ -0,0 +1,66 @@
++/**
++ * @type: saga
++ * name: core.fetchDetailSaga
++ */
++import {
++  ABORT_CONTROL_START,
++  FetchActionShape,
++  FETCH_DETAIL,
++  getGlobalContext
++} from '@metafox/framework';
++import fulfillEntity from '@metafox/framework/sagas/fulfillEntity';
++import axios from 'axios';
++import { isFunction, omit } from 'lodash';
++import { put, takeEvery } from 'redux-saga/effects';
++
++export type FetchDetailConfig = {
++  apiUrl: string;
++  apiParams?: any;
++  pageParams?: any;
++  exceptEntities?: string[];
++};
++
++export function* fetchDetailSaga({
++  payload: { apiUrl, apiParams, pageParams, exceptEntities = [] },
++  meta
++}: FetchActionShape): Generator<unknown, string[], any> {
++  const { apiClient, normalization, compactData } = yield* getGlobalContext();
++
++  if (!apiUrl) return;
++
++  try {
++    const params = compactData(apiParams, pageParams);
++
++    const source = axios.CancelToken.source();
++
++    if (meta?.abortId) {
++      yield put({
++        type: ABORT_CONTROL_START,
++        payload: { abortId: meta.abortId, source }
++      });
++    }
++
++    const response = yield apiClient.request({
++      url: apiUrl,
++      params,
++      cancelToken: source.token
++    });
++
++    const data = JSON.stringify(response?.data?.data);
++    const result = normalization.normalize(JSON.parse(data));
++
++    yield* fulfillEntity(omit(result.data, exceptEntities));
++
++    isFunction(meta?.onSuccess) && meta.onSuccess();
++
++    return result.ids;
++  } catch (err) {
++    if (meta?.onFailure) {
++      meta.onFailure(err);
++    }
++  }
++}
++
++const sagaEffect = takeEvery(FETCH_DETAIL, fetchDetailSaga);
++
++export default sagaEffect;
+diff --git a/packages/metafox/feed/src/components/PostStatusView.tsx b/packages/metafox/feed/src/components/PostStatusView.tsx
+index 53fe53fd..eb6287e2 100644
+--- a/packages/metafox/feed/src/components/PostStatusView.tsx
++++ b/packages/metafox/feed/src/components/PostStatusView.tsx
+@@ -219,7 +219,7 @@ const PostStatusView = (props: Props) => {
+     }
+   ];
+ 
+-  const setupNavigationOptions = React.useCallback(() => {
++  const setupNavigationOptions = () => {
+     setParams({
+       headerRightButtons: [
+         {
+@@ -228,7 +228,7 @@ const PostStatusView = (props: Props) => {
+         }
+       ]
+     });
+-  }, [setParams, submitStatus]);
++  };
+ 
+   const shouldCancel = async () => {
+     const { is_shared } = props;
+@@ -267,6 +267,19 @@ const PostStatusView = (props: Props) => {
+     //
+   }, [onHandleAutoDetectLink, props.navigation, setupNavigationOptions]);
+ 
++  useEffect(() => {
++    const { attachment } = props;
++
++    if (
++      attachment &&
++      attachment.mediaType &&
++      attachment.items &&
++      attachment.items.length
++    ) {
++      onPickerSuccess(attachment);
++    }
++  }, [onPickerSuccess, props]);
++
+   // componentDidMount() {
+   //   const { attachment } = this.props;
+ 
+@@ -433,7 +446,7 @@ const PostStatusView = (props: Props) => {
+       .catch(ErrorHandler.handleError);
+   };
+ 
+-  const onPickerSuccess = result => {
++  const onPickerSuccess = React.useCallback(result => {
+     const { mediaType, items } = result;
+ 
+     switch (mediaType) {
+@@ -468,7 +481,6 @@ const PostStatusView = (props: Props) => {
+             draft.file_items = [...state.file_items, ...items];
+           })
+         );
+-
+         break;
+       case MediaType.video:
+         setState(
+@@ -479,7 +491,7 @@ const PostStatusView = (props: Props) => {
+         );
+         break;
+     }
+-  };
++  }, []);
+ 
+   const onPickerFailure = error => {
+     ErrorHandler.handleError(error);
+@@ -869,9 +881,8 @@ const PostStatusView = (props: Props) => {
+    * @returns {*}
+    */
+ 
+-  const submitStatus = React.useCallback(() => {
++  const submitStatus = () => {
+     requestAnimationFrame(Keyboard.dismiss);
+-
+     const { pstatusbg_item } = props;
+     const postData = {
+       privacy: state.privacy,
+@@ -909,20 +920,7 @@ const PostStatusView = (props: Props) => {
+         draft.submitting = true;
+       })
+     );
+-  }, [
+-    onSubmitStatusSuccess,
+-    props,
+-    state.attach_link,
+-    state.attach_video,
+-    state.file_items,
+-    state.item_id,
+-    state.item_type,
+-    state.location,
+-    state.post_type,
+-    state.privacy,
+-    state.users,
+-    state.video_file
+-  ]);
++  };
+ 
+   const onPrivacyChange = value => {
+     setState(
+@@ -1405,6 +1403,8 @@ const PostStatusView = (props: Props) => {
+   const headerTestID = concatenateIDs('header', testID);
+   const footerTestID = concatenateIDs('footer', testID);
+ 
++  console.log('state', state);
++
+   return (
+     <View style={{ backgroundColor: BgColor.first, flex: 1 }}>
+       <HeaderView
+diff --git a/packages/metafox/feed/src/sagas/composer.tsx b/packages/metafox/feed/src/sagas/composer.tsx
+index d6401631..b2e47694 100644
+--- a/packages/metafox/feed/src/sagas/composer.tsx
++++ b/packages/metafox/feed/src/sagas/composer.tsx
+@@ -1,59 +1,46 @@
++import { fetchDetailSaga } from '@metafox/core/sagas/fetchDetailSaga';
++import { getGlobalContext } from '@metafox/framework';
++import { AlertController } from '@metafox/framework/components/AlertController';
+ import {
+-  all,
+-  call,
+-  put,
+-  race,
+-  select,
+-  take,
+-  takeEvery,
+-  takeLatest
+-} from 'redux-saga/effects';
+-import { Navigator } from '@metafox/navigation/navigator';
+-import {
+-  getCurrentUserIdSelector,
+-  NetworkSelector,
+-  SiteSelector
+-} from '@metafox/framework/selectors';
+-import { httpClient } from '@metafox/framework/services/httpClient';
+-import { MediaPicker } from '@metafox/framework/helpers/MediaPicker';
+-import { LocationPicker } from '@metafox/framework/helpers/LocationPicker';
++  FETCH_DETAIL,
++  PAGINATION_UNSHIFT,
++  PostType,
++  PREVIEW_LINK_API_PREFIX
++} from '@metafox/framework/constants';
+ import { ErrorHandler } from '@metafox/framework/helpers/ErrorHandler';
++import { Intl } from '@metafox/framework/helpers/intl';
++import { MediaPicker } from '@metafox/framework/helpers/MediaPicker';
++import { isGrantedPhoto } from '@metafox/framework/helpers/Permissions';
++import { getApiUrl } from '@metafox/framework/helpers/services';
++import { MediaType } from '@metafox/framework/helpers/types';
+ import {
+-  getItemTitle,
+   invariant,
+   invariantSetting,
+   sanitizeCameraRollResult
+ } from '@metafox/framework/helpers/utils';
+-import { callHttpClientMethod } from '@metafox/framework/sagas/callHttpClient';
+-import {
+-  HttpMethod,
+-  PostType,
+-  PREVIEW_LINK_API_PREFIX,
+-  StorageKey
+-} from '@metafox/framework/constants';
+-import { UIController } from '@metafox/framework/components/UIController';
+-import { loadDetail } from '@metafox/framework/sagas/loadDetail';
+-import { prependsToPaginationList } from '@metafox/framework/sagas/pagination';
+-import { Intl } from '@metafox/framework/helpers/intl';
+-import { StatusThemeSelector } from '@metafox/pstatusbg/selectors';
+-import { StatusThemeAction } from '@metafox/pstatusbg/actions';
+-import {
+-  COLLECTION_RESOURCE_NAME,
+-  MODULE_STATE_NAME
+-} from '@metafox/pstatusbg/constants';
+-import { getApiUrl } from '@metafox/framework/helpers/services';
+-import { AlertController } from '@metafox/framework/components/AlertController';
+ import { Validator } from '@metafox/framework/helpers/Validator';
+-import { MediaType } from '@metafox/framework/helpers/types';
+-import { isValidArr } from '@metafox/plivevideo/helpers';
++import {
++  getCurrentUserIdSelector,
++  NetworkSelector,
++  SiteSelector
++} from '@metafox/framework/selectors';
++import { httpClient } from '@metafox/framework/services/httpClient';
++import { Navigator } from '@metafox/navigation/navigator';
++import { get } from 'lodash';
+ import mime from 'mime';
+-import { isGrantedPhoto } from '@metafox/framework/helpers/Permissions';
+-import { StorageService } from '@metafox/framework/services/storage';
+ import { offlineActionTypes } from 'react-native-offline';
+-import { SettingManager } from '@metafox/framework/services/settings';
+-import { getPendingStatuses } from '../selectors';
++import {
++  all,
++  call,
++  put,
++  race,
++  select,
++  take,
++  takeEvery,
++  takeLatest
++} from 'redux-saga/effects';
+ import { FeedActions } from '../actions';
+-import { getGlobalContext, getItemActionConfig } from '@metafox/framework';
++import { getPendingStatuses } from '../selectors';
+ 
+ export function* actionShareFromExternalWatcher(action) {
+   try {
+@@ -197,21 +184,12 @@ export function* actionShareFromExternalWatcher(action) {
+ 
+ export function* actionComposeStatusWatcher(action) {
+   try {
+-    const { overlayBackend, navigationBackend } = yield* getGlobalContext();
+-
+-    yield call(navigationBackend.navigate, 'feed/postStatus', {
+-      post_type: action.payload.value || 'post.status',
+-      // post_type,
+-      // item_type,
+-      // item_id,
+-      // attachment: result,
+-      // post_as,
+-      // privacy_options,
+-      // default_privacy,
+-      // is_shared,
+-      // max_files,
+-      ignoreLock: true
+-    });
++    const {
++      overlayBackend,
++      navigationBackend,
++      mediaPickerBackend,
++      bottomSheetBackend
++    } = yield* getGlobalContext();
+ 
+     // const isConnected = yield select(NetworkSelector.isNetworkConnected);
+     // const userId = yield select(getCurrentUserIdSelector);
+@@ -253,12 +231,13 @@ export function* actionComposeStatusWatcher(action) {
+     //   'could not streaming default privacy'
+     // );
+ 
+-    // let post_type = action.payload.value || 'post.status';
++    let post_type = action.payload.value || 'post.status';
++
+     // const item_type = action?.payload?.item?.resource_name || 'user';
+     // const item_id = action?.payload?.item?.id || userId;
+     // const post_as_admin = action?.payload?.item?.can_post_as_admin || false;
+     // const is_shared = false;
+-    // let result;
++    let result;
+     // let max_files = feedForm?.data?.fields?.photo_files?.max_files || null;
+ 
+     // if (max_files === null) {
+@@ -273,56 +252,66 @@ export function* actionComposeStatusWatcher(action) {
+     //   action?.payload?.resource_name
+     // );
+ 
+-    // switch (post_type) {
+-    //   case PostType.PHOTO:
+-    //     post_type = 'photo';
+-    //     result = yield call(
+-    //       MediaPicker.selectPhotos,
+-    //       {
+-    //         multiple: true,
+-    //         maxFiles: max_files,
+-    //         useFrontCamera: true,
+-    //         fileParams: { max_upload_filesize }
+-    //       },
+-    //       {},
+-    //       action.payload.nativeEventTarget
+-    //     );
+-    //     break;
+-    //   case PostType.VIDEO:
+-    //     post_type = 'video';
+-    //     result = yield call(
+-    //       MediaPicker.selectVideos,
+-    //       {
+-    //         validateUrl: videoValidateUrl,
+-    //         multiple: false,
+-    //         allow_upload,
+-    //         allow_url: true,
+-    //         useFrontCamera: false
+-    //       },
+-    //       action.payload.nativeEventTarget
+-    //     );
+-    //     break;
+-    //   case PostType.CHECKIN:
+-    //     post_type = 'location';
+-    //     result = yield call(LocationPicker.selectLocation);
+-    //     break;
+-    //   case PostType.SHARE:
+-    //     post_type = action.payload.result.mediaType;
+-    //     result = action.payload.result;
+-    //     // is_shared = true
+-    //     break;
+-    //   case PostType.STATUS:
+-    //   default:
+-    //     post_type = 'status';
+-    // }
++    switch (post_type) {
++      case PostType.PHOTO:
++        post_type = 'photo';
++        result = yield mediaPickerBackend.selectPhotos({
++          multiple: true,
++          maxFiles: 1,
++          useFrontCamera: true,
++          fileParams: { max_upload_filesize: 5120 }
++        });
++        break;
++      case PostType.VIDEO:
++        // post_type = 'video';
++        // result = yield call(
++        //   MediaPicker.selectVideos,
++        //   {
++        //     validateUrl: videoValidateUrl,
++        //     multiple: false,
++        //     allow_upload,
++        //     allow_url: true,
++        //     useFrontCamera: false
++        //   },
++        //   action.payload.nativeEventTarget
++        // );
++        break;
++      case PostType.CHECKIN:
++        // post_type = 'location';
++        // result = yield call(LocationPicker.selectLocation);
++        break;
++      case PostType.SHARE:
++        // post_type = action.payload.result.mediaType;
++        // result = action.payload.result;
++        // is_shared = true
++        break;
++      case PostType.STATUS:
++      default:
++        post_type = 'status';
++    }
++
++    if (
++      action.payload.value !== 'status' &&
++      (!result || !result.items || !result.items.length)
++    ) {
++      return null;
++    }
++
++    yield call(navigationBackend.navigate, 'feed/postStatus', {
++      post_type: action.payload.value || 'post.status',
++      // post_type,
++      // item_type,
++      // item_id,
++      attachment: result,
++      // post_as,
++      // privacy_options,
++      // default_privacy,
++      // is_shared,
++      // max_files,
++      ignoreLock: true
++    });
+ 
+     // // user cancelled
+-    // if (
+-    //   post_type !== 'status' &&
+-    //   (!result || !result.items || !result.items.length)
+-    // ) {
+-    //   return null;
+-    // }
+ 
+     // let post_as = null;
+ 
+@@ -486,42 +475,58 @@ export function* actionSubmitStatusWatcher(action) {
+     }
+ 
+     if (post_type === 'photo' && file_items.length) {
+-      const { task: { uploadSuccessItems, uploadErrorItems } = {}, cancel } =
+-        yield race({
+-          task: call(
+-            upload_files,
+-            'mobile/file',
+-            file_items,
+-            { name: 'file', item_type: 'photo' },
+-            x => null
+-          ),
+-          cancel: take(FeedActions.CANCEL_UPLOAD_STATUS)
+-        });
+-
+-      if (cancel) {
+-        yield put(FeedActions.failedPendingStatus(values.tracker));
+-        const { toastBackend } = yield* getGlobalContext();
+-
+-        toastBackend.show({
+-          message: Intl.t('upload_photo_failed_due_to_cancelled')
+-        });
+-
+-        return;
+-      }
+-
+-      const photo_files = uploadSuccessItems.map(x => x.temp_file_id);
+-      const errorFiles = uploadErrorItems.filter(x => !!x.error);
+-
+-      if (errorFiles && errorFiles.length) {
+-        const errorMessage = errorFiles?.[0]?.error;
+-        invariant({ condition: !errorMessage, message: errorMessage });
+-      }
+-
+-      if (photo_files.length) {
+-        values.post_type = 'photo';
+-        values.photo_files = { new: photo_files };
+-        values.photo_description = values.user_status;
+-      }
++      // const uploadSuccessItems = yield call(
++      //   uploadFile,
++      //   apiClient,
++      //   file_items.map(
++      //     item =>
++      //       ({
++      //         ...item,
++      //         type: 'photo',
++      //         status: 'new',
++      //         upload_url: '/file'
++      //       }[0])
++      //   )
++      // );
++      // console.log('data', uploadSuccessItems);
++      //
++      // const { task: { uploadSuccessItems, uploadErrorItems } = {}, cancel } =
++      //   yield race({
++      //     task: call(
++      //       upload_files,
++      //       'mobile/file',
++      //       file_items,
++      //       { name: 'file', item_type: 'photo' },
++      //       x => null,
++      //       apiClient
++      //     ),
++      //     cancel: take(FeedActions.CANCEL_UPLOAD_STATUS)
++      //   });
++      // if (cancel) {
++      //   yield put(FeedActions.failedPendingStatus(values.tracker));
++      //   const { toastBackend } = yield* getGlobalContext();
++      //   toastBackend.show({
++      //     message: Intl.t('upload_photo_failed_due_to_cancelled')
++      //   });
++      //   return;
++      // }
++      // const photo_files = uploadSuccessItems.map(item => {
++      //   return {
++      //     id: item.temp_file,
++      //     type: 'video',
++      //     status: 'new'
++      //   };
++      // });
++      // const errorFiles = uploadErrorItems.filter(x => !!x.error);
++      // if (errorFiles && errorFiles.length) {
++      //   const errorMessage = errorFiles?.[0]?.error;
++      //   invariant({ condition: !errorMessage, message: errorMessage });
++      // }
++      // if (photo_files.length) {
++      //   values.post_type = 'photo';
++      //   values.photo_files = photo_files;
++      //   values.photo_description = values.user_status;
++      // }
+     } else if (post_type === 'video' && video_file) {
+       const { task: { uploadSuccessItems, uploadErrorItems } = {}, cancel } =
+         yield race({
+@@ -589,7 +594,7 @@ export function* actionSubmitStatusWatcher(action) {
+       delete values.parent_item_type;
+     }
+ 
+-    const { data: response } = yield apiClient.request({
++    const response = yield apiClient.request({
+       method: 'post',
+       url: '/feed',
+       data: values
+@@ -597,7 +602,13 @@ export function* actionSubmitStatusWatcher(action) {
+ 
+     let module_name = 'feed';
+ 
+-    invariantSetting(response, 'could not load data mobile/feed');
++    const ok = 'success' === get(response, 'data.status');
++    const message = get(response, 'data.message');
++    const feedId = get(response, 'data.data.id');
++    const feedIds = get(response, 'data.data.ids');
++    const newData = get(response, 'data.data');
++
++    invariantSetting(ok, 'could not load data mobile/feed');
+ 
+     if (values.parent_user_id) {
+       feedQuery.user_id = values.parent_user_id;
+@@ -610,42 +621,41 @@ export function* actionSubmitStatusWatcher(action) {
+       feedQuery.user_id = viewerId;
+     }
+ 
+-    const feedId = response?.data?.id;
+-
+-    if (feedId) {
+-      // add feed by item id.
+-
+-      const entries = [
+-        { module_name, resource_name: 'feed', query: feedQuery, ids: [feedId] }
+-      ];
+-
+-      const config = yield* getItemActionConfig(response?.data, 'viewItem');
+-
+-      // yield call(
+-      //   loadDetail,
+-      //   module_name,
+-      //   'feed',
+-      //   feedId,
+-      //   null,
+-      //   { ...feedQuery, force_view: true } // force query detail for prepending to UI
+-      // );
+-
+-      // if (
+-      //   !feedQuery.item_type ||
+-      //   ['pages', 'user'].includes(feedQuery.item_type)
+-      // ) {
+-      //   // add to home
+-      //   // feed
+-      //   entries.push({
+-      //     module_name,
+-      //     resource_name: 'feed',
+-      //     query: {},
+-      //     ids: [feedId]
+-      //   });
+-      // }
+-
+-      // yield call(prependsToPaginationList, entries);
+-    }
++    const id = feedId || feedIds[0];
++    // support for both v4, v5
++    feedId && (yield* updateFeedItem(id, newData.user, true));
++    feedIds &&
++      (yield* feedIds.map((id: number) =>
++        call(updateFeedItem, id, newData.user, true)
++      ));
++
++    // add feed by item id.
++    // const entries = [
++    //   { module_name, resource_name: 'feed', query: feedQuery, ids: [feedId] }
++    // ];
++    // const config = yield* getItemActionConfig(response?.data, 'viewItem');
++    // yield call(
++    //   loadDetail,
++    //   module_name,
++    //   'feed',
++    //   feedId,
++    //   null,
++    //   { ...feedQuery, force_view: true } // force query detail for prepending to UI
++    // );
++    // if (
++    //   !feedQuery.item_type ||
++    //   ['pages', 'user'].includes(feedQuery.item_type)
++    // ) {
++    //   // add to home
++    //   // feed
++    //   entries.push({
++    //     module_name,
++    //     resource_name: 'feed',
++    //     query: {},
++    //     ids: [feedId]
++    //   });
++    // }
++    // yield call(prependsToPaginationList, entries);
+ 
+     if (response.message) {
+       alert(123);
+@@ -674,6 +684,34 @@ export function* actionSubmitStatusWatcher(action) {
+   }
+ }
+ 
++export function* updateFeedItem(
++  id: number,
++  item: Record<string, any>,
++  newFeed: boolean,
++  exceptEntities?: string[]
++) {
++  const apiUrl = item ? `feed/${id}?user_id=${item?.id}` : `feed/${id}`;
++
++  const pagingId = !item ? '/feed' : [`/feed?user_id=${item?.id}`, '/feed'];
++
++  const data = yield* fetchDetailSaga({
++    payload: {
++      apiUrl,
++      exceptEntities
++    },
++    type: FETCH_DETAIL
++  });
++
++  newFeed &&
++    (yield put({
++      type: PAGINATION_UNSHIFT,
++      payload: {
++        data,
++        pagingId
++      }
++    }));
++}
++
+ function* actionSubmitPendingStatusWatcher({ payload: isConnected }) {
+   if (isConnected) {
+     const pendingStatuses = yield select(getPendingStatuses);
+-- 
+2.31.0
+
+From d6d743667dd80b8b558f0843212f0ae574f4e148 Mon Sep 17 00:00:00 2001
+From: Vantam1601 <39816672+Vantam1601@users.noreply.github.com>
+Date: Wed, 3 Aug 2022 17:58:30 +0700
+Subject: [PATCH] feat: update post status
+
+---
+ packages/metafox/feed/src/sagas/composer.tsx | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/packages/metafox/feed/src/sagas/composer.tsx b/packages/metafox/feed/src/sagas/composer.tsx
+index b2e47694..9f68d8a7 100644
+--- a/packages/metafox/feed/src/sagas/composer.tsx
++++ b/packages/metafox/feed/src/sagas/composer.tsx
+@@ -290,12 +290,12 @@ export function* actionComposeStatusWatcher(action) {
+         post_type = 'status';
+     }
+ 
+-    if (
+-      action.payload.value !== 'status' &&
+-      (!result || !result.items || !result.items.length)
+-    ) {
+-      return null;
+-    }
++    // if (
++    //   action.payload.value !== 'status' &&
++    //   (!result || !result.items || !result.items.length)
++    // ) {
++    //   return null;
++    // }
+ 
+     yield call(navigationBackend.navigate, 'feed/postStatus', {
+       post_type: action.payload.value || 'post.status',
+-- 
+2.31.0
+
