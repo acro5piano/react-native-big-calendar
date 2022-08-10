@@ -226,14 +226,29 @@ export function getEventSpanningInfo(
 ) {
   const dayWidth = calendarWidth / 7
 
-  // adding + 1 because durations start at 0
+  const _start = getCalendarDayObject(event.start, true)
+  const _end = getCalendarDayObject(event.end, true)
+  const _date = getCalendarDayObject(date, true)
+
   const eventDuration =
-    Math.floor(dayjs.duration(dayjs(event.end).utc().diff(dayjs(event.start).utc())).asDays()) + 1
+    Math.floor(
+      dayjs.duration(dayjs(_end.toString, 'DD-MM-YYYY').diff(dayjs(_start.toString))).asDays(),
+    ) + 1
+  //
   const eventDaysLeft =
-    Math.floor(dayjs.duration(dayjs(event.end).utc().diff(date.utc())).asDays()) + 1
+    Math.floor(
+      dayjs.duration(dayjs(_end.toString, 'DD-MM-YYYY').diff(dayjs(_date.toString))).asDays(),
+    ) + 1
+  //
+  // console.log(
+  //   'eventDuration',
+  //   date.utcOffset(),
+  //   event.start.format('DD-MM-YYYY'),
+  //   event.end.format('DD-MM-YYYY'),
+  //   eventDuration,
+  // )
   const weekDaysLeft = 7 - dayOfTheWeek
-  const monthDaysLeft = date.utc().endOf('month').date() - date.utc().date()
-  // console.log(dayOfTheWeek === 0 && !showAdjacentMonths && monthDaysLeft < 7)
+  const monthDaysLeft = date.endOf('month').date() - date.date()
   const isMultipleDays = eventDuration > 1
   // This is to determine how many days from the event to show during a week
   const eventWeekDuration =
@@ -246,9 +261,9 @@ export function getEventSpanningInfo(
       : eventDuration
   const isMultipleDaysStart =
     isMultipleDays &&
-    (date.utc().isSame(event.start, 'day') ||
-      (dayOfTheWeek === 0 && date.utc().isAfter(event.start)) ||
-      (!showAdjacentMonths && date.utc().get('date') === 1))
+    (_start.day === _date.day ||
+      (dayOfTheWeek === 0 && date.isAfter(event.start)) ||
+      (!showAdjacentMonths && date.get('date') === 1))
   // - 6 to take in account the padding
   const eventWidth = dayWidth * eventWeekDuration - 6
 
@@ -264,9 +279,9 @@ export function stringHasContent(string: string): boolean {
 }
 
 export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn: WeekNum) {
-  let weeks = calendarize(targetDate.utc().toDate(), weekStartsOn)
+  let weeks = calendarize(targetDate.toDate(), weekStartsOn)
   const firstDayIndex = weeks[0].findIndex((d) => d === 1)
-  const lastDay = targetDate.utc().endOf('month').date()
+  const lastDay = targetDate.endOf('month').date()
   const lastDayIndex = weeks[weeks.length - 1].findIndex((d) => d === lastDay)
 
   weeks = weeks.map((week, iw) => {
@@ -282,4 +297,59 @@ export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn
   })
 
   return weeks
+}
+
+export interface ObjectDataBase<T = number> {
+  year: T
+  month: T
+  day: T
+  toString: string
+}
+export const getCalendarDayObject = (
+  date: dayjs.Dayjs,
+  isFormat?: boolean,
+): ObjectDataBase<number | string> => {
+  const dateArray = date.format('YYYY-MM-DD').split('-')
+  // !isFormat && console.log('dateArray', date.toString(), date, dateArray)
+  return {
+    year: isFormat ? Number(dateArray[0]) : dateArray[0],
+    month: isFormat ? Number(dateArray[1]) : dateArray[1],
+    day: isFormat ? Number(dateArray[2]) : dateArray[2],
+    toString: date.format('YYYY-MM-DD'),
+  }
+}
+
+export const getTimeObject = (date: dayjs.Dayjs, isFormat?: boolean) => {
+  const dateArray = date.format('DD-HH-mm').split('-')
+  // !isFormat && console.log('dateArray', date.toString(), date, dateArray)
+  return {
+    day: isFormat ? Number(dateArray[0]) : dateArray[0],
+    hours: isFormat ? Number(dateArray[1]) : dateArray[1],
+    minute: isFormat ? Number(dateArray[2]) : dateArray[2],
+  }
+}
+
+export const checkBetweenDay = (date: dayjs.Dayjs, start: dayjs.Dayjs, end: dayjs.Dayjs) => {
+  const _start = getCalendarDayObject(start, true)
+  const _end = getCalendarDayObject(end, true)
+  const _date = getCalendarDayObject(date, true)
+  // console.log(date, _start, _end, _date)
+
+  if (
+    _start.year > _date.year ||
+    (_start.month > _date.month && _start.year == _date.year) ||
+    (_start.month == _date.month && _start.year == _date.year && _start.day > _date.day)
+  ) {
+    return false
+  }
+
+  if (
+    _date.year > _end.year ||
+    (_date.month > _end.month && _date.year == _end.year) ||
+    (_date.month == _end.month && _date.year == _end.year && _date.day > _end.day)
+  ) {
+    return false
+  }
+
+  return true
 }

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ReactElement } from 'react'
 import { RecursiveArray, TextStyle, ViewStyle } from 'react-native'
 
@@ -5,8 +6,8 @@ import { CalendarHeaderProps } from './components/CalendarHeader'
 import { CalendarHeaderForMonthViewProps } from './components/CalendarHeaderForMonthView'
 
 export interface ICalendarEventBase {
-  start: Date
-  end: Date
+  start: dayjs.Dayjs
+  end: dayjs.Dayjs
   title: string
   children?: ReactElement | null
 }

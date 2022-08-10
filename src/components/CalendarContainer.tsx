@@ -128,7 +128,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   renderHeader: HeaderComponent = CalendarHeader,
   renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
   weekEndsOn = 6,
-  maxVisibleEventCount = 3,
+  maxVisibleEventCount,
   eventMinHeightForMonthView = 22,
   activeDate,
   headerComponent = null,
