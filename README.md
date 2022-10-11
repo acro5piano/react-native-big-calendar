@@ -169,8 +169,8 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `hourStyle`                   | no       | `TextStyle`                                            | Calendar body hours styling. Accepts a style object (static)                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `showAllDayEventCell`         | no       | `boolean`                                              | Boolean for showing/hiding the all day event cell                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `moreLabel`                   | no       | `string`                                               | String to replace More label in month view. Default: '{moreCount} More'. {moreCount} is replaced by number of extra events                                                                                                                                                                                                                                                                                                                                      |
-| `showAdjacentMonths`          | no       | `boolean`                                              | Boolean for showing/hiding adjacent months in month view. Defaults to true                                                                                                                                                                                                          |
-| `sortedMonthView`             | no       | `boolean`                                              | Boolean for sorting events in month view. Defaults to true                                                                                                                                                                                                                                                                                                                                                                                      |
+| `showAdjacentMonths`          | no       | `boolean`                                              | Boolean for showing/hiding adjacent months in month view. Defaults to true                                                                                                                                                                                                                                                                                                                                                                                      |
+| `sortedMonthView`             | no       | `boolean`                                              | Boolean for sorting events in month view. Defaults to true                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## EventRenderer
 
@@ -330,6 +330,20 @@ import 'dayjs/locale/ja'
 You can find your dayjs locale here:
 
 https://github.com/iamkun/dayjs/tree/dev/src/locale
+
+# Running demo on a real device and develop
+
+After checking this repo, please run:
+
+```sh
+yarn install
+cd rndemo
+yarn install
+yarn start
+
+# On another shell,
+yarn start-rndemo-android
+```
 
 # Screenshots
 
