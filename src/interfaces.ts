@@ -9,7 +9,7 @@ export interface ICalendarEventBase {
   end: Date
   title: string
   children?: ReactElement | null
-  hideHours: boolean
+  hideHours?: boolean
 }
 
 export type CalendarTouchableOpacityProps = {
