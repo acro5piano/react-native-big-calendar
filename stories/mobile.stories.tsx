@@ -43,7 +43,7 @@ storiesOf('showcase - Mobile', module)
   ))
   .add('week mode', () => (
     <View style={styles.mobile}>
-      <Calendar height={MOBILE_HEIGHT} events={events} />
+      <Calendar hideHours height={MOBILE_HEIGHT} events={events} />
     </View>
   ))
   .add('Month mode', () => {
