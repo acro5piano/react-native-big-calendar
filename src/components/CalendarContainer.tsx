@@ -34,6 +34,10 @@ import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
 
 export interface CalendarContainerProps<T extends ICalendarEventBase> {
   /**
+   * To remove Hours Column from week View.
+   */
+  hideHours?: Boolean
+  /**
    * Events to be rendered. This is a required prop.
    */
   events: T[]
@@ -138,6 +142,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   moreLabel = '{moreCount} More',
   showAdjacentMonths = true,
   sortedMonthView = true,
+  hideHours = false,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -212,6 +217,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     dateRange,
     mode,
     onPressEvent,
+    hideHours,
   }
 
   if (mode === 'month') {

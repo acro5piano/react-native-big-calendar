@@ -20,6 +20,7 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dayHeaderHighlightColor?: string
   weekDayHeaderHighlightColor?: string
   showAllDayEventCell?: boolean
+  hideHours?: Boolean
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -35,6 +36,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   dayHeaderHighlightColor = '',
   weekDayHeaderHighlightColor = '',
   showAllDayEventCell = true,
+  hideHours = false,
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -64,7 +66,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
         style,
       ]}
     >
-      <View style={[u['z-10'], u['w-50'], borderColor]} />
+      {!hideHours && <View style={[u['z-10'], u['w-50'], borderColor]} />}
       {dateRange.map((date) => {
         const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
 

@@ -54,6 +54,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
+  hideHours?: Boolean
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -76,6 +77,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponent = null,
   headerComponentStyle = {},
   hourStyle = {},
+  hideHours = false,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -158,17 +160,20 @@ function _CalendarBody<T extends ICalendarEventBase>({
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
         >
-          <View style={[u['z-20'], u['w-50']]}>
-            {hours.map((hour) => (
-              <HourGuideColumn
-                key={hour}
-                cellHeight={cellHeight}
-                hour={hour}
-                ampm={ampm}
-                hourStyle={hourStyle}
-              />
-            ))}
-          </View>
+          {!hideHours && (
+            <View style={[u['z-20'], u['w-50']]}>
+              {hours.map((hour) => (
+                <HourGuideColumn
+                  key={hour}
+                  cellHeight={cellHeight}
+                  hour={hour}
+                  ampm={ampm}
+                  hourStyle={hourStyle}
+                />
+              ))}
+            </View>
+          )}
+
           {dateRange.map((date) => (
             <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
               {hours.map((hour, index) => (
