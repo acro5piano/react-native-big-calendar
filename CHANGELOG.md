@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.3.0
+
+### What's Changed
+
+- Feature/hide hours column week view by @mubashiralisiddiqui in https://github.com/acro5piano/react-native-big-calendar/pull/754
+- Update deps by @acro5piano
+
+### New Contributors
+
+- @mubashiralisiddiqui made their first contribution in https://github.com/acro5piano/react-native-big-calendar/pull/754
+
+**Full Changelog**: https://github.com/acro5piano/react-native-big-calendar/compare/v3.2.3...v3.3.0
+
 ## 3.2.3
 
 ### Bugfix
