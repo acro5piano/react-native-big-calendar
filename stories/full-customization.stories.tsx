@@ -95,9 +95,6 @@ storiesOf('Full Customization', module).add('Main', () => {
       </View>
       <View style={{ marginTop: 16 }}>
         <Calendar
-          onChangeDate={([date]) => {
-            setDate(dayjs(date).toDate())
-          }}
           date={date}
           height={SCREEN_HEIGHT - 80}
           events={calendarEvents}
