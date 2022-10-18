@@ -190,6 +190,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       }
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
         const targetedDate = targetDate.add(modeToNum(mode, targetDate), 'day')
+        /* eslint-disable */
         setTargetDate(targetedDate)
         onChangeDate([targetedDate.toDate(), dateRange.slice(-1)[0].toDate()])
       } else {
