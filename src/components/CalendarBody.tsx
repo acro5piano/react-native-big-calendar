@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { Platform, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -58,7 +58,6 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
-  containerHeight,
   cellHeight,
   dateRange,
   style,
@@ -69,7 +68,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
   calendarCellStyle,
   ampm,
   showTime,
-  scrollOffsetMinutes,
   onSwipeHorizontal,
   hideNowIndicator,
   overlapOffset,
@@ -79,32 +77,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hourStyle = {},
   hideHours = false,
 }: CalendarBodyProps<T>) {
-  const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
-
-  React.useEffect(() => {
-    let timeout: NodeJS.Timeout
-    if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
-      // We add delay here to work correct on React Native
-      // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
-      timeout = setTimeout(
-        () => {
-          if (scrollView && scrollView.current) {
-            scrollView.current.scrollTo({
-              y: (cellHeight * scrollOffsetMinutes) / 60,
-              animated: false,
-            })
-          }
-        },
-        Platform.OS === 'web' ? 0 : 10,
-      )
-    }
-    return () => {
-      if (timeout) {
-        clearTimeout(timeout)
-      }
-    }
-  }, [scrollView, scrollOffsetMinutes, cellHeight])
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -142,20 +115,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   return (
     <React.Fragment>
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
-      <ScrollView
-        style={[
-          {
-            height: containerHeight - cellHeight * 3,
-          },
-          style,
-        ]}
-        ref={scrollView}
-        scrollEventThrottle={32}
-        {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
-        showsVerticalScrollIndicator={false}
-        nestedScrollEnabled
-        contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
-      >
+      <View style={style}>
         <View
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
@@ -240,7 +200,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
             </View>
           ))}
         </View>
-      </ScrollView>
+      </View>
     </React.Fragment>
   )
 }
