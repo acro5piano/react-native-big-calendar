@@ -917,6 +917,9 @@ function _CalendarBody(_a) {
     _e = _a.hideHours,
     hideHours = _e === void 0 ? false : _e
   var now = useNow(!hideNowIndicator).now
+  var _f = React__namespace.useState(0),
+    height = _f[0],
+    setHeight = _f[1]
   var panResponder = usePanResponder({
     onSwipeHorizontal: onSwipeHorizontal,
   })
@@ -956,7 +959,12 @@ function _CalendarBody(_a) {
       : null,
     React__namespace.createElement(
       reactNative.View,
-      { style: style },
+      {
+        style: [style, { height: height }],
+        onLayout: function (event) {
+          setHeight(event.nativeEvent.layout.height)
+        },
+      },
       React__namespace.createElement(
         reactNative.View,
         __assign(
