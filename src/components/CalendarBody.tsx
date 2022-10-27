@@ -55,6 +55,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   hideHours?: Boolean
+  horizontal?: Boolean
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -78,6 +79,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponentStyle = {},
   hourStyle = {},
   hideHours = false,
+  horizontal = true
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -155,6 +157,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
+        horizontal={horizontal}
       >
         <View
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
