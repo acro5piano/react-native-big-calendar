@@ -78,7 +78,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hideHours = false,
 }: CalendarBodyProps<T>) {
   const { now } = useNow(!hideNowIndicator)
-  const [height, setHeight] = React.useState(0)
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -116,12 +115,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   return (
     <React.Fragment>
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
-      <View
-        style={[style, { height: height }]}
-        onLayout={(event) => {
-          setHeight(event.nativeEvent.layout.height)
-        }}
-      >
+      <View style={[style, { height: '100%' }]}>
         <View
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
