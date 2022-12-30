@@ -92,7 +92,9 @@ export function todayInMinutes() {
   return today.diff(dayjs().startOf('day'), 'minute')
 }
 
-export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date): number {
+export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date, direction?: String): number {
+  const isLeft = direction === 'LEFT'
+
   if (mode === 'month') {
     if (!current) {
       throw new Error('You must specify current date if mode is month')
@@ -104,12 +106,12 @@ export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date): number {
   }
   switch (mode) {
     case 'day':
-      return 1
+      return isLeft ? 1 : -1
     case '3days':
-      return 3
+      return isLeft ? 3 : -3
     case 'week':
     case 'custom':
-      return 7
+      return isLeft ? 7 : -7
     default:
       throw new Error('undefined mode')
   }

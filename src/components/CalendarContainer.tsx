@@ -194,12 +194,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         return
       }
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-        const targetedDate = targetDate.add(modeToNum(mode, targetDate), 'day')
+        const targetedDate = targetDate.add(modeToNum(mode, targetDate, direction), 'day')
         /* eslint-disable */
         setTargetDate(targetedDate)
         onChangeDate([targetedDate.toDate(), dateRange.slice(-1)[0].toDate()])
       } else {
-        const targetedDate = targetDate.add(targetDate.date() * -1, 'day')
+        const targetedDate = targetDate.add(modeToNum(mode, targetDate, direction), 'day')
         if (mode === 'month') {
           setTargetDate(targetedDate)
         } else {
