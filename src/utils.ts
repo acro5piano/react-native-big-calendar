@@ -4,12 +4,7 @@ import React from 'react'
 import { TextStyle, ViewStyle } from 'react-native'
 
 import { OVERLAP_PADDING } from './commonStyles'
-import {
-  ICalendarEventBase,
-  Mode,
-  WeekNum,
-  HorizontalDirection,
-} from './interfaces'
+import { HorizontalDirection, ICalendarEventBase, Mode, WeekNum } from './interfaces'
 import { Palette } from './theme/ThemeInterface'
 
 export const typedMemo: <T>(c: T) => T = React.memo
@@ -97,7 +92,11 @@ export function todayInMinutes() {
   return today.diff(dayjs().startOf('day'), 'minute')
 }
 
-export function modeToNum(mode: Mode, direction: HorizontalDirection, current?: dayjs.Dayjs | Date): number {
+export function modeToNum(
+  mode: Mode,
+  current?: dayjs.Dayjs | Date,
+  direction?: HorizontalDirection,
+): number {
   const isRtl = direction === 'LEFT'
 
   if (mode === 'month') {

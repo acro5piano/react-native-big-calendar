@@ -159,25 +159,25 @@ describe('modeToNum', () => {
   test('3days', () => {
     const mode = '3days'
     const num = utils.modeToNum(mode)
-    expect(num).toEqual(3)
+    expect(num).toEqual(-3)
   })
 
   test('week', () => {
     const mode = 'week'
     const num = utils.modeToNum(mode)
-    expect(num).toEqual(7)
+    expect(num).toEqual(-7)
   })
 
   test('day', () => {
     const mode = 'day'
     const num = utils.modeToNum(mode)
-    expect(num).toEqual(1)
+    expect(num).toEqual(-1)
   })
 
   test('custom', () => {
     const mode = 'custom'
     const num = utils.modeToNum(mode)
-    expect(num).toEqual(7)
+    expect(num).toEqual(-7)
   })
 })
 
