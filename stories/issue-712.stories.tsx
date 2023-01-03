@@ -34,13 +34,13 @@ const Schedule = () => {
     console.log(event)
   }, [])
 
-  const renderEvent = <T extends ICalendarEventBase>(
-    event: T,
-    touchableOpacityProps: CalendarTouchableOpacityProps,
-  ) => (
-    <TouchableOpacity {...touchableOpacityProps}>
-      <Text>{`${event.title}`}</Text>
-    </TouchableOpacity>
+  const renderEvent = useCallback(
+    (event: ICalendarEventBase, touchableOpacityProps: CalendarTouchableOpacityProps) => (
+      <TouchableOpacity {...touchableOpacityProps}>
+        <Text>{`${event.title}`}</Text>
+      </TouchableOpacity>
+    ),
+    [],
   )
 
   return (
