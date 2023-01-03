@@ -162,24 +162,27 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     [events],
   )
 
-  const getDateRange = React.useCallback(() => {
-    switch (mode) {
-      case 'month':
-        return getDatesInMonth(targetDate, locale)
-      case 'week':
-        return getDatesInWeek(targetDate, weekStartsOn, locale)
-      case '3days':
-        return getDatesInNextThreeDays(targetDate, locale)
-      case 'day':
-        return getDatesInNextOneDay(targetDate, locale)
-      case 'custom':
-        return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
-      default:
-        throw new Error(
-          `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
-        )
-    }
-  }, [mode, targetDate, locale, weekEndsOn, weekStartsOn])
+  const getDateRange = React.useCallback(
+    (date: dayjs.Dayjs) => {
+      switch (mode) {
+        case 'month':
+          return getDatesInMonth(date, locale)
+        case 'week':
+          return getDatesInWeek(date, weekStartsOn, locale)
+        case '3days':
+          return getDatesInNextThreeDays(date, locale)
+        case 'day':
+          return getDatesInNextOneDay(date, locale)
+        case 'custom':
+          return getDatesInNextCustomDays(date, weekStartsOn, weekEndsOn, locale)
+        default:
+          throw new Error(
+            `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
+          )
+      }
+    },
+    [mode, locale, weekEndsOn, weekStartsOn],
+  )
 
   const cellHeight = React.useMemo(
     () => hourRowHeight || Math.max(height - 30, MIN_HEIGHT) / 24,
@@ -193,17 +196,19 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       if (!swipeEnabled) {
         return
       }
+      let nextTargetDate: dayjs.Dayjs
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
+        nextTargetDate = targetDate.add(modeToNum(mode, targetDate), 'day')
       } else {
         if (mode === 'month') {
-          setTargetDate(targetDate.add(targetDate.date() * -1, 'day'))
+          nextTargetDate = targetDate.add(targetDate.date() * -1, 'day')
         } else {
-          setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
+          nextTargetDate = targetDate.add(modeToNum(mode, targetDate) * -1, 'day')
         }
       }
+      setTargetDate(nextTargetDate)
       if (onChangeDate) {
-        const nextDateRange = getDateRange()
+        const nextDateRange = getDateRange(nextTargetDate)
         onChangeDate([nextDateRange[0].toDate(), nextDateRange.slice(-1)[0].toDate()])
       }
     },
@@ -212,7 +217,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   const commonProps = {
     cellHeight,
-    dateRange: getDateRange(),
+    dateRange: getDateRange(targetDate),
     mode,
     onPressEvent,
     hideHours,
