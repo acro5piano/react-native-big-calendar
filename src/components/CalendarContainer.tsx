@@ -124,7 +124,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   bodyContainerStyle = {},
   swipeEnabled = true,
   weekStartsOn = 0,
-  onChangeDate = () => {},
+  onChangeDate,
   onPressCell,
   onPressDateHeader,
   onPressEvent,
@@ -162,24 +162,27 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     [events],
   )
 
-  const dateRange = React.useMemo(() => {
-    switch (mode) {
-      case 'month':
-        return getDatesInMonth(targetDate, locale)
-      case 'week':
-        return getDatesInWeek(targetDate, weekStartsOn, locale)
-      case '3days':
-        return getDatesInNextThreeDays(targetDate, locale)
-      case 'day':
-        return getDatesInNextOneDay(targetDate, locale)
-      case 'custom':
-        return getDatesInNextCustomDays(targetDate, weekStartsOn, weekEndsOn, locale)
-      default:
-        throw new Error(
-          `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
-        )
-    }
-  }, [mode, targetDate, locale, weekEndsOn, weekStartsOn])
+  const getDateRange = React.useCallback(
+    (date: dayjs.Dayjs) => {
+      switch (mode) {
+        case 'month':
+          return getDatesInMonth(date, locale)
+        case 'week':
+          return getDatesInWeek(date, weekStartsOn, locale)
+        case '3days':
+          return getDatesInNextThreeDays(date, locale)
+        case 'day':
+          return getDatesInNextOneDay(date, locale)
+        case 'custom':
+          return getDatesInNextCustomDays(date, weekStartsOn, weekEndsOn, locale)
+        default:
+          throw new Error(
+            `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
+          )
+      }
+    },
+    [mode, locale, weekEndsOn, weekStartsOn],
+  )
 
   const cellHeight = React.useMemo(
     () => hourRowHeight || Math.max(height - 30, MIN_HEIGHT) / 24,
@@ -193,27 +196,28 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       if (!swipeEnabled) {
         return
       }
+      let nextTargetDate: dayjs.Dayjs
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-        const targetedDate = targetDate.add(modeToNum(mode, targetDate), 'day')
-        /* eslint-disable */
-        setTargetDate(targetedDate)
-        onChangeDate([targetedDate.toDate(), dateRange.slice(-1)[0].toDate()])
+        nextTargetDate = targetDate.add(modeToNum(mode, targetDate), 'day')
       } else {
-        const targetedDate = targetDate.add(targetDate.date() * -1, 'day')
         if (mode === 'month') {
-          setTargetDate(targetedDate)
+          nextTargetDate = targetDate.add(targetDate.date() * -1, 'day')
         } else {
-          setTargetDate(targetedDate)
+          nextTargetDate = targetDate.add(modeToNum(mode, targetDate) * -1, 'day')
         }
-        onChangeDate([targetedDate.toDate(), dateRange.slice(-1)[0].toDate()])
+      }
+      setTargetDate(nextTargetDate)
+      if (onChangeDate) {
+        const nextDateRange = getDateRange(nextTargetDate)
+        onChangeDate([nextDateRange[0].toDate(), nextDateRange.slice(-1)[0].toDate()])
       }
     },
-    [swipeEnabled, targetDate, mode, theme.isRTL],
+    [swipeEnabled, targetDate, mode, theme.isRTL, getDateRange, onChangeDate],
   )
 
   const commonProps = {
     cellHeight,
-    dateRange,
+    dateRange: getDateRange(targetDate),
     mode,
     onPressEvent,
     hideHours,

@@ -1,9 +1,9 @@
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
-import { Alert, View } from 'react-native'
+import { Alert, Text, TouchableOpacity, View } from 'react-native'
 
-import { Calendar } from '../src'
+import { Calendar, EventRenderer } from '../src'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events } from './events'
 import { useEvents } from './hooks'
@@ -76,9 +76,20 @@ storiesOf('showcase - Mobile', module)
       alert(`${start} - ${end}`)
     }, [])
 
+    const renderEvent: EventRenderer = (event, touchableOpacityProps) => (
+      <TouchableOpacity {...touchableOpacityProps}>
+        <Text>{`${event.title}`}</Text>
+      </TouchableOpacity>
+    )
+
     return (
       <View style={styles.mobile}>
-        <Calendar height={MOBILE_HEIGHT} events={events} onChangeDate={onChangeDate} />
+        <Calendar
+          height={MOBILE_HEIGHT}
+          events={events}
+          onChangeDate={onChangeDate}
+          renderEvent={renderEvent}
+        />
       </View>
     )
   })
