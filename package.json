@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "calendarize": "^1.1.1",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.7",
     "merge-anything": "5.0.4"
   },
   "peerDependencies": {
@@ -66,11 +66,11 @@
     "rn-tailwind": "^1.0.16",
     "rollup": "^2.79.1",
     "rollup-plugin-typescript2": "^0.34.1",
-    "simple-git-hooks": "^2.8.0",
+    "simple-git-hooks": "^2.8.1",
     "tailwind-rn": "^3.0.1",
     "ts-jest": "^25.5.1",
     "ts-loader": "^9.2.6",
-    "tslib": "^2.3.1",
+    "tslib": "^2.4.1",
     "typescript": "^4.8.4",
     "webpack-merge": "^5.8.0"
   },
