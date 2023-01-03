@@ -9,8 +9,8 @@ import { styles } from './styles'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
-storiesOf('reproduction-issue-712', module).add('month mode', () => (
-  <View style={styles.mobile}>
+storiesOf('reproduction-issue-712', module).add('basic', () => (
+  <View style={styles.desktop}>
     <Schedule />
   </View>
 ))
@@ -49,7 +49,7 @@ const Schedule = () => {
         events={events}
         height={SCREEN_HEIGHT}
         ampm={true}
-        mode={'day'}
+        mode={'week'}
         date={selectedDate}
         renderHeader={() => null}
         scrollOffsetMinutes={new Date().getHours() * 60}
