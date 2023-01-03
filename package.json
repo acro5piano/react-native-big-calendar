@@ -45,7 +45,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "acorn-jsx": "^5.3.2",
-    "babel-loader": "^8.2.5",
+    "babel-loader": "^9.1.0",
     "eslint": "^7.30.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.30.1",
