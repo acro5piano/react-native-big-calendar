@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Text, TouchableOpacity, View } from 'react-native'
 
-import { Calendar } from '../src'
+import { Calendar, EventRenderer } from '../src'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events } from './events'
 import { useEvents } from './hooks'
@@ -72,19 +72,15 @@ storiesOf('showcase - Mobile', module)
     </View>
   ))
   .add('on date changed', () => {
-    // const onChangeDate = React.useCallback(([start, end]) => {
-    //   alert(`${start} - ${end}`)
-    // }, [])
+    const onChangeDate = React.useCallback(([start, end]) => {
+      alert(`${start} - ${end}`)
+    }, [])
 
-    const renderEvent = (event, touchableOpacityProps) => (
+    const renderEvent: EventRenderer = (event, touchableOpacityProps) => (
       <TouchableOpacity {...touchableOpacityProps}>
         <Text>{`${event.title}`}</Text>
       </TouchableOpacity>
     )
-
-    const onChangeDate = ([start, end]) => {
-      alert(`${start} - ${end}`)
-    }
 
     return (
       <View style={styles.mobile}>

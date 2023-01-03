@@ -162,7 +162,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     [events],
   )
 
-  const dateRange = React.useMemo(() => {
+  const getDateRange = React.useCallback(() => {
     switch (mode) {
       case 'month':
         return getDatesInMonth(targetDate, locale)
@@ -180,12 +180,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         )
     }
   }, [mode, targetDate, locale, weekEndsOn, weekStartsOn])
-
-  React.useEffect(() => {
-    if (onChangeDate) {
-      onChangeDate([dateRange[0].toDate(), dateRange.slice(-1)[0].toDate()])
-    }
-  }, [dateRange, onChangeDate])
 
   const cellHeight = React.useMemo(
     () => hourRowHeight || Math.max(height - 30, MIN_HEIGHT) / 24,
@@ -208,13 +202,17 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
         }
       }
+      if (onChangeDate) {
+        const nextDateRange = getDateRange()
+        onChangeDate([nextDateRange[0].toDate(), nextDateRange.slice(-1)[0].toDate()])
+      }
     },
-    [swipeEnabled, targetDate, mode, theme.isRTL],
+    [swipeEnabled, targetDate, mode, theme.isRTL, getDateRange, onChangeDate],
   )
 
   const commonProps = {
     cellHeight,
-    dateRange,
+    dateRange: getDateRange(),
     mode,
     onPressEvent,
     hideHours,

@@ -36,7 +36,7 @@ export type DateRangeHandler = ([start, end]: HasDateRange) => void
 
 export type HorizontalDirection = 'RIGHT' | 'LEFT'
 
-export type EventRenderer<T extends ICalendarEventBase> = (
+export type EventRenderer<T extends ICalendarEventBase = ICalendarEventBase> = (
   event: T,
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => JSX.Element

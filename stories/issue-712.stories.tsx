@@ -44,20 +44,18 @@ const Schedule = () => {
   )
 
   return (
-    <View style={styles.desktop}>
-      <Calendar
-        events={events}
-        height={SCREEN_HEIGHT}
-        ampm={true}
-        mode={'week'}
-        date={selectedDate}
-        renderHeader={() => null}
-        scrollOffsetMinutes={new Date().getHours() * 60}
-        swipeEnabled={true}
-        renderEvent={renderEvent}
-        onChangeDate={onChangeDate}
-        onPressEvent={onPressEvent}
-      />
-    </View>
+    <Calendar
+      events={events}
+      height={SCREEN_HEIGHT}
+      ampm={true}
+      mode={'week'}
+      date={selectedDate}
+      renderHeader={() => null}
+      scrollOffsetMinutes={new Date().getHours() * 60}
+      swipeEnabled={true}
+      renderEvent={renderEvent}
+      onChangeDate={onChangeDate}
+      onPressEvent={onPressEvent}
+    />
   )
 }
