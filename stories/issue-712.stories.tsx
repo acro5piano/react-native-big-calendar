@@ -48,9 +48,8 @@ const Schedule = () => {
       events={events}
       height={SCREEN_HEIGHT}
       ampm={true}
-      mode={'week'}
+      mode={'month'}
       date={selectedDate}
-      renderHeader={() => null}
       scrollOffsetMinutes={new Date().getHours() * 60}
       swipeEnabled={true}
       renderEvent={renderEvent}
