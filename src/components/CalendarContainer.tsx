@@ -124,7 +124,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   bodyContainerStyle = {},
   swipeEnabled = true,
   weekStartsOn = 0,
-  onChangeDate = () => {},
+  onChangeDate,
   onPressCell,
   onPressDateHeader,
   onPressEvent,
@@ -181,6 +181,12 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }
   }, [mode, targetDate, locale, weekEndsOn, weekStartsOn])
 
+  React.useEffect(() => {
+    if (onChangeDate) {
+      onChangeDate([dateRange[0].toDate(), dateRange.slice(-1)[0].toDate()])
+    }
+  }, [dateRange, onChangeDate])
+
   const cellHeight = React.useMemo(
     () => hourRowHeight || Math.max(height - 30, MIN_HEIGHT) / 24,
     [height, hourRowHeight],
@@ -194,18 +200,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         return
       }
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-        const targetedDate = targetDate.add(modeToNum(mode, targetDate), 'day')
-        /* eslint-disable */
-        setTargetDate(targetedDate)
-        onChangeDate([targetedDate.toDate(), dateRange.slice(-1)[0].toDate()])
+        setTargetDate(targetDate.add(modeToNum(mode, targetDate), 'day'))
       } else {
-        const targetedDate = targetDate.add(targetDate.date() * -1, 'day')
         if (mode === 'month') {
-          setTargetDate(targetedDate)
+          setTargetDate(targetDate.add(targetDate.date() * -1, 'day'))
         } else {
-          setTargetDate(targetedDate)
+          setTargetDate(targetDate.add(modeToNum(mode, targetDate) * -1, 'day'))
         }
-        onChangeDate([targetedDate.toDate(), dateRange.slice(-1)[0].toDate()])
       }
     },
     [swipeEnabled, targetDate, mode, theme.isRTL],
