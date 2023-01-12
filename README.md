@@ -12,7 +12,7 @@ Cross-platform gcal/outlook like calendar component for React Native.
 
 It's a hard task to debug this library on three platforms. I usually develop with the Web version first, then confirm its functionality with real devices. My PC is Linux and my phone is Android, so on Android it is easy to test, but to debug on iOS, I have to bring my Macbook Pro from my garage and connect my wife's iPhone and test it. Every time I launch my Macbook Pro, it requires the Xcode update or even full system update. It takes so long time to start debug. As React Native works on iOS better than Android, I ~~always~~ sometimes skip testing it, so there should be a bug on iOS. If you help me debug it, I would much appreciate!
 
-[Components Demo](https://react-native-big-calendar.netlify.com/?path=/story/desktop--3days-mode)
+[Components Demo](https://react-native-big-calendar.vercel.app)
 
 <img src="./assets/screenshot-mobile.png" height="500">
 
@@ -362,7 +362,6 @@ yarn start-rndemo-android
 <a href="https://www.telaqua.com?utm_source=react-native-big-calendar">
   <img src="https://user-images.githubusercontent.com/10719495/195131400-cd334757-caad-4ed8-ba73-786affa2a6b0.png" height="80" />
 </a>
-
 
 </p>
 
