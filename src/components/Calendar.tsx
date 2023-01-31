@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
-import { merge } from 'merge-anything'
+import type { merge as TMerge } from 'merge-anything'
 import React from 'react'
 
 import { ICalendarEventBase } from '../interfaces'
@@ -10,6 +10,11 @@ import { ThemeInterface } from '../theme/ThemeInterface'
 import { DeepPartial } from '../utility-types'
 import { typedMemo } from '../utils'
 import { CalendarContainer, CalendarContainerProps } from './CalendarContainer'
+
+// Since Metro Bundler does not load .cjs and .es.js files, we should require it like this.
+// It is still possible to use .cjs by changing Metro config, but it forces library users to take an additional step.
+// So this workaround is better.
+const merge = require('merge-anything/dist/index.es').merge as typeof TMerge
 
 export interface CalendarProps<T extends ICalendarEventBase> extends CalendarContainerProps<T> {
   theme?: DeepPartial<ThemeInterface>
