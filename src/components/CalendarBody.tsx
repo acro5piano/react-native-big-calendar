@@ -19,6 +19,7 @@ import {
   getRelativeTopInDay,
   hours,
   isToday,
+  mutableFilter,
   typedMemo,
 } from '../utils'
 import { CalendarEvent } from './CalendarEvent'
@@ -149,6 +150,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   )
 
   const theme = useTheme()
+  const availableEvents = [...events]
 
   return (
     <React.Fragment>
@@ -202,42 +204,9 @@ function _CalendarBody<T extends ICalendarEventBase>({
               {/* Render events of this date */}
               {/* M  T  (W)  T  F  S  S */}
               {/*       S-E             */}
-              {events
-                .filter(({ start }) =>
-                  dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                )
-                .map(_renderMappedEvent)}
-
-              {/* Render events which starts before this date and ends on this date */}
-              {/* M  T  (W)  T  F  S  S */}
-              {/* S------E              */}
-              {events
-                .filter(
-                  ({ start, end }) =>
-                    dayjs(start).isBefore(date.startOf('day')) &&
-                    dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                )
-                .map((event) => ({
-                  ...event,
-                  start: dayjs(event.end).startOf('day'),
-                }))
-                .map(_renderMappedEvent)}
-
-              {/* Render events which starts before this date and ends after this date */}
-              {/* M  T  (W)  T  F  S  S */}
-              {/*    S-------E          */}
-              {events
-                .filter(
-                  ({ start, end }) =>
-                    dayjs(start).isBefore(date.startOf('day')) &&
-                    dayjs(end).isAfter(date.endOf('day')),
-                )
-                .map((event) => ({
-                  ...event,
-                  start: dayjs(event.end).startOf('day'),
-                  end: dayjs(event.end).endOf('day'),
-                }))
-                .map(_renderMappedEvent)}
+              {mutableFilter(availableEvents, ({ start }) =>
+                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+              ).map(_renderMappedEvent)}
 
               {isToday(date) && !hideNowIndicator && (
                 <View

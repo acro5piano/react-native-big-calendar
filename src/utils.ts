@@ -282,3 +282,44 @@ export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn
 
   return weeks
 }
+
+export function mutableFilter(
+  array: ICalendarEventBase[],
+  predicate: {
+    ({ start }: { start: any }): boolean
+    (arg0: ICalendarEventBase, arg1: number, arg2: ICalendarEventBase[]): any
+  },
+) {
+  let result: any[] = []
+  if (!(array && array.length)) {
+    return result
+  }
+  let index = -1,
+    indexes = []
+  const length = array.length
+
+  while (++index < length) {
+    var value = array[index]
+    if (predicate(value, index, array)) {
+      result.push(value)
+      indexes.push(index)
+    }
+  }
+  removeFilteredIndex(array, indexes)
+  return result
+}
+
+function removeFilteredIndex(array: ICalendarEventBase[], indexes: string | any[]) {
+  let length = array ? indexes.length : 0
+  const lastIndex = length - 1
+
+  while (length--) {
+    let index = indexes[length]
+    let previous
+    if (length == lastIndex || index !== previous) {
+      previous = index
+      array.splice(index, 1)
+    }
+  }
+  return array
+}
