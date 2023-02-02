@@ -55,6 +55,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   hideHours?: Boolean
+  isEventOrderingEnabled?: boolean
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -78,6 +79,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponentStyle = {},
   hourStyle = {},
   hideHours = false,
+  isEventOrderingEnabled = true,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -126,15 +128,24 @@ function _CalendarBody<T extends ICalendarEventBase>({
           onPressEvent={onPressEvent}
           eventCellStyle={eventCellStyle}
           showTime={showTime}
-          eventCount={getCountOfEventsAtEvent(event, events)}
-          eventOrder={getOrderOfEvent(event, events)}
+          eventCount={isEventOrderingEnabled ? getCountOfEventsAtEvent(event, events) : undefined}
+          eventOrder={isEventOrderingEnabled ? getOrderOfEvent(event, events) : undefined}
           overlapOffset={overlapOffset}
           renderEvent={renderEvent}
           ampm={ampm}
         />
       )
     },
-    [ampm, eventCellStyle, events, onPressEvent, overlapOffset, renderEvent, showTime],
+    [
+      ampm,
+      eventCellStyle,
+      events,
+      isEventOrderingEnabled,
+      onPressEvent,
+      overlapOffset,
+      renderEvent,
+      showTime,
+    ],
   )
 
   const theme = useTheme()

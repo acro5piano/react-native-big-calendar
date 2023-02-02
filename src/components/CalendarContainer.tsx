@@ -99,6 +99,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   showAllDayEventCell?: boolean
   sortedMonthView?: boolean
   moreLabel?: string
+  isEventOrderingEnabled?: boolean
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -143,6 +144,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   showAdjacentMonths = true,
   sortedMonthView = true,
   hideHours = false,
+  isEventOrderingEnabled,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -298,6 +300,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         headerComponent={headerComponent}
         headerComponentStyle={headerComponentStyle}
         hourStyle={hourStyle}
+        isEventOrderingEnabled={isEventOrderingEnabled}
       />
     </React.Fragment>
   )
