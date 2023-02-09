@@ -182,7 +182,7 @@ type EventRenderer<T> = (
 ) => ReactElement | null
 ```
 
-For more information, see [Storybook](https://github.com/acro5piano/react-native-big-calendar/blob/master/stories/index.stories.tsx)
+For more information, see [Storybook](https://github.com/acro5piano/react-native-big-calendar/blob/main/stories/desktop.stories.tsx)
 
 ## ICalendarEventBase
 
