@@ -22,7 +22,10 @@ export type CalendarTouchableOpacityProps = {
 
 export type Mode = '3days' | 'week' | 'day' | 'custom' | 'month'
 
-export type EventCellStyle<T extends ICalendarEventBase> = ViewStyle | ((event: T) => ViewStyle)
+export type EventCellStyle<T extends ICalendarEventBase> =
+  | ViewStyle
+  | ViewStyle[]
+  | ((event: T) => ViewStyle | ViewStyle[])
 
 export type CalendarCellStyle = ViewStyle | ((date?: Date, hourRowIndex?: number) => ViewStyle)
 

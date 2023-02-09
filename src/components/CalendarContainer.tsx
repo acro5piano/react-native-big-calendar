@@ -57,7 +57,9 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
    */
   overlapOffset?: number
 
-  // Custom style
+  /**
+   * Custom style. It accepts styles or an array of styles, or a function that returns styles or an array of styles.
+   */
   eventCellStyle?: EventCellStyle<T>
   calendarCellStyle?: CalendarCellStyle
   calendarCellTextStyle?: CalendarCellTextStyle
