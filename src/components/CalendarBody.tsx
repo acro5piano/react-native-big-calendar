@@ -75,8 +75,10 @@ const _HourGuideColumn = ({
   hour,
   ampm,
 }: WithCellHeight & { hour: number; ampm: boolean }) => (
-  <View style={{ height: cellHeight }}>
-    <Text style={guideTextStyle}>{formatHour(hour, ampm)}</Text>
+  <View testID="View Body 1" style={{ height: cellHeight }}>
+    <Text testID="Text Body 1" style={guideTextStyle}>
+      {formatHour(hour, ampm)}
+    </Text>
   </View>
 )
 
@@ -90,8 +92,11 @@ interface HourCellProps extends WithCellHeight {
 
 const HourCell = ({ cellHeight, onPress, date, hour }: HourCellProps) => {
   return (
-    <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
-      <View style={[dateCellStyle, { height: cellHeight }]} />
+    <TouchableWithoutFeedback
+      testID="Touchable Body 1"
+      onPress={() => onPress(date.hour(hour).minute(0))}
+    >
+      <View testID="View Body 1" style={[dateCellStyle, { height: cellHeight }]} />
     </TouchableWithoutFeedback>
   )
 }
