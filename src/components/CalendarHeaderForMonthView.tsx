@@ -26,6 +26,7 @@ function _CalendarHeaderForMonthView({
 
   return (
     <View
+      testID="View Header M 1"
       style={[
         u['border-b'],
         u['border-gray-100'],
@@ -36,11 +37,15 @@ function _CalendarHeaderForMonthView({
     >
       {dates.map((date) => (
         <View
+          testID="View Header M 2"
           style={{ flex: 1, paddingTop: 2, height: CALENDAR_HEADER_MONTH_VIEW_HEIGHT }}
           key={date.toISOString()}
         >
-          <View style={{ height: 30 }}>
-            <Text style={[guideTextStyle, todayWeekNum === date.day() && u['text-primary']]}>
+          <View testID="View Header M 3" style={{ height: 30 }}>
+            <Text
+              testID="Text Header M 1"
+              style={[guideTextStyle, todayWeekNum === date.day() && u['text-primary']]}
+            >
               {date.format('ddd')}
             </Text>
           </View>

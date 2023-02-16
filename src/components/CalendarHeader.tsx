@@ -50,11 +50,12 @@ function _CalendarHeader<T>({
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
           >
-            <View style={[u['justify-between'], { height: cellHeight }]}>
-              <Text style={[guideTextStyle, _isToday && u['text-primary']]}>
-                {date.format('ddd')}
+            <View testID="View Header 1" style={[u['justify-between'], { height: cellHeight }]}>
+              <Text testID="Text Header 1" style={[guideTextStyle, _isToday && u['text-primary']]}>
+                test: {date.format('ddd')}
               </Text>
               <View
+                testID="View Header 2"
                 style={
                   _isToday
                     ? [
@@ -85,13 +86,17 @@ function _CalendarHeader<T>({
               </View>
             </View>
             {allDayEvents.length ? (
-              <View style={[dateCellStyle, { height: cellHeight }]}>
+              <View testID="View Header 3" style={[dateCellStyle, { height: cellHeight }]}>
                 {allDayEvents.map((event) => {
                   if (!dayjs(event.start).isSame(date, 'day')) {
                     return null
                   }
                   return (
-                    <View style={commonStyles.eventCell} key={`${event.start}${event.title}`}>
+                    <View
+                      testID="View Header 4"
+                      style={commonStyles.eventCell}
+                      key={`${event.start}${event.title}`}
+                    >
                       <Text style={eventTitleStyle}>{event.title}</Text>
                     </View>
                   )
