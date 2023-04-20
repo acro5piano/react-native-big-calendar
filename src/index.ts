@@ -2,8 +2,6 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
 
-import { Calendar } from './components/Calendar'
-
 dayjs.extend(duration)
 dayjs.extend(isBetween)
 
@@ -24,6 +22,3 @@ export * from './theme/defaultTheme'
 export * from './utils'
 
 export * from './interfaces'
-
-/* eslint-disable */
-export default Calendar
