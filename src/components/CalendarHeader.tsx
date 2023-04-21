@@ -52,7 +52,7 @@ function _CalendarHeader<T>({
           >
             <View testID="View Header 1" style={[u['justify-between'], { height: cellHeight }]}>
               <Text testID="Text Header 1" style={[guideTextStyle, _isToday && u['text-primary']]}>
-                test: {date.format('ddd')}
+                {date.format('ddd')}
               </Text>
               <View
                 testID="View Header 2"
