@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
+import { HEADER_HEIGHT } from '../../stories/components/AppHeader'
 import { eventCellCss, u } from '../commonStyles'
 import { ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
@@ -79,7 +80,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
           >
             <View
               style={[
-                { height: cellHeight },
+                { height: headerContentStyle?.height ?? HEADER_HEIGHT },
                 objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
               ]}
             >
