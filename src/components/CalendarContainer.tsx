@@ -294,8 +294,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         overlapOffset={overlapOffset}
         scrollOffsetMinutes={scrollOffsetMinutes}
         ampm={ampm}
-        cellHeight={cellHeight}
-        hideHours={hideHours}
         showTime={showTime}
         onPressCell={onPressCell}
         onPressEvent={onPressEvent}
