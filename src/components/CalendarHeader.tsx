@@ -1,13 +1,13 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { typedMemo } from 'src/utils/react'
 
 import { eventCellCss, u } from '../commonStyles'
 import { ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday } from '../utils/datetime'
 import { objHasContent, stringHasContent } from '../utils/object'
+import { typedMemo } from '../utils/react'
 
 export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dateRange: dayjs.Dayjs[]

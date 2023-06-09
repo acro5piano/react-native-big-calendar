@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import { TextStyle, ViewStyle } from 'react-native'
-import { typedMemo } from 'src/utils/react'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
@@ -27,6 +26,7 @@ import {
   isAllDayEvent,
   modeToNum,
 } from '../utils/datetime'
+import { typedMemo } from '../utils/react'
 import { CalendarBody } from './CalendarBody'
 import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
 import { CalendarHeader } from './CalendarHeader'

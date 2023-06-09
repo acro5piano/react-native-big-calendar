@@ -38,7 +38,6 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "module": "esnext",
-    "baseUrl": "./",
     "outDir": "build"
   },
   "exclude": [

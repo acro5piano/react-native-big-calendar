@@ -1,12 +1,12 @@
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import React from 'react'
-import { deepMerge } from 'src/utils/object'
 
 import { ICalendarEventBase } from '../interfaces'
 import { defaultTheme } from '../theme/defaultTheme'
 import { ThemeContext } from '../theme/ThemeContext'
 import { ThemeInterface } from '../theme/ThemeInterface'
+import { deepMerge } from '../utils/object'
 import { typedMemo } from '../utils/react'
 import { DeepPartial } from '../utils/utility-types'
 import { CalendarContainer, CalendarContainerProps } from './CalendarContainer'

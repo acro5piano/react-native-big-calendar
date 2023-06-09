@@ -1,12 +1,12 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { typedMemo } from 'src/utils/react'
 
 import { OVERLAP_OFFSET, u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
 import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent } from '../utils/datetime'
+import { typedMemo } from '../utils/react'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {

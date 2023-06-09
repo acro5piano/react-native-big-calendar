@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { TouchableWithoutFeedback, View } from 'react-native'
-import { CalendarCellStyle } from 'src'
 
 import { u } from '../commonStyles'
+import { CalendarCellStyle } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 
 interface HourGuideCellProps {

@@ -1,12 +1,12 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { Text, View, ViewStyle } from 'react-native'
-import { typedMemo } from 'src/utils/react'
 
 import { u } from '../commonStyles'
 import { WeekNum } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { getDatesInWeek } from '../utils/datetime'
+import { typedMemo } from '../utils/react'
 
 export interface CalendarHeaderForMonthViewProps {
   weekStartsOn: WeekNum
