@@ -5,7 +5,9 @@ import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { eventCellCss, u } from '../commonStyles'
 import { ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { isToday, objHasContent, stringHasContent, typedMemo } from '../utils'
+import { isToday } from '../utils/datetime'
+import { objHasContent, stringHasContent } from '../utils/object'
+import { typedMemo } from '../utils/react'
 
 export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dateRange: dayjs.Dayjs[]

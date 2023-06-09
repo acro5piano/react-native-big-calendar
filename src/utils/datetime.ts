@@ -1,13 +1,9 @@
 import calendarize, { Week } from 'calendarize'
 import dayjs from 'dayjs'
-import React from 'react'
-import { TextStyle, ViewStyle } from 'react-native'
 
-import { OVERLAP_PADDING } from './commonStyles'
-import { ICalendarEventBase, Mode, WeekNum } from './interfaces'
-import { Palette } from './theme/ThemeInterface'
-
-export const typedMemo: <T>(c: T) => T = React.memo
+import { OVERLAP_PADDING } from '../commonStyles'
+import { ICalendarEventBase, Mode, WeekNum } from '../interfaces'
+import { Palette } from '../theme/ThemeInterface'
 
 export const DAY_MINUTES = 1440
 
@@ -252,14 +248,6 @@ export function getEventSpanningInfo(
   const eventWidth = dayWidth * eventWeekDuration - 6
 
   return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
-}
-
-export function objHasContent(obj: ViewStyle | TextStyle): boolean {
-  return !!Object.keys(obj).length
-}
-
-export function stringHasContent(string: string): boolean {
-  return !!string.length
 }
 
 export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn: WeekNum) {

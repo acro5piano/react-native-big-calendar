@@ -3,7 +3,7 @@
 // https://material-ui.com/customization/default-theme/#default-theme
 import { TextStyle } from 'react-native'
 
-import { DeepPartial } from '../utility-types'
+import { DeepPartial } from '../utils/utility-types'
 
 export interface Palette {
   main: string

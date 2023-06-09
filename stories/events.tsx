@@ -3,7 +3,7 @@ import React from 'react'
 import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { EventRenderer, ICalendarEventBase } from '../src/interfaces'
-import { formatStartEnd } from '../src/utils'
+import { formatStartEnd } from '../src/utils/datetime'
 
 const eventNotes = (
   <View style={{ marginTop: 3 }}>

@@ -21,7 +21,7 @@ It's a hard task to debug this library on three platforms. I usually develop wit
 - Cross Platform: Runs on the Web, iOS, Android with the power of React
 - Type-safe: Fully written in TypeScript
 - Customizable: Able to provide your own theme, and pass your component to render.
-- Lightweight: ~37.4KB, dependency is `dayjs` and `calendarize` and `merge-anything`
+- Lightweight: ~9KB (min + gzip), dependency is `dayjs` and `calendarize`
 
 # Install
 
