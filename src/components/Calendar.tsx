@@ -7,8 +7,8 @@ import { ICalendarEventBase } from '../interfaces'
 import { defaultTheme } from '../theme/defaultTheme'
 import { ThemeContext } from '../theme/ThemeContext'
 import { ThemeInterface } from '../theme/ThemeInterface'
-import { DeepPartial } from '../utility-types'
-import { typedMemo } from '../utils'
+import { typedMemo } from '../utils/react'
+import { DeepPartial } from '../utils/utility-types'
 import { CalendarContainer, CalendarContainerProps } from './CalendarContainer'
 
 // Since Metro Bundler does not load .cjs and .es.js files, we should require it like this.

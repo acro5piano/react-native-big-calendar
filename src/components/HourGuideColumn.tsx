@@ -3,8 +3,8 @@ import { Text, TextStyle, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
-import { formatHour } from '../utils'
-import { objHasContent } from '../utils'
+import { formatHour } from '../utils/datetime'
+import { objHasContent } from '../utils/object'
 
 interface HourGuideColumnProps {
   cellHeight: number

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { typedMemo } from 'src/utils/react'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -19,8 +20,7 @@ import {
   getRelativeTopInDay,
   hours,
   isToday,
-  typedMemo,
-} from '../utils'
+} from '../utils/datetime'
 import { CalendarEvent } from './CalendarEvent'
 import { HourGuideCell } from './HourGuideCell'
 import { HourGuideColumn } from './HourGuideColumn'
