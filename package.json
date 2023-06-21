@@ -1,6 +1,6 @@
 {
   "name": "@axsy-dev/react-native-big-calendar",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
@@ -9,7 +9,7 @@
   "authors": "gosho-kazuya <ketsume0211@gmail.com>, chukcha-wtf <pavlo.babenko@axsy.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "simple-git-hooks",
+    "prepare": "simple-git-hooks && npm-run-all build:clean build:ts",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook -o .storybook-build",
     "sync-rndemo": "yarn build && cp -r build rndemo",
