@@ -229,7 +229,12 @@ export function getEventSpanningInfo(
   const weekDaysLeft = 7 - dayOfTheWeek
   const monthDaysLeft = date.endOf('month').date() - date.date()
   // console.log(dayOfTheWeek === 0 && !showAdjacentMonths && monthDaysLeft < 7)
-  const isMultipleDays = eventDuration > 1
+  // const isMultipleDays = eventDuration > 1
+  const isMultipleDays = dayjs(event.end).day() != dayjs(event.start).day();
+  if(isMultipleDays) {
+      //if event span accross multiple days, then eventDuration should at least be 2 days
+      eventDuration = Math.max(2, eventDuration); 
+  }
   // This is to determine how many days from the event to show during a week
   const eventWeekDuration =
     !showAdjacentMonths && monthDaysLeft < 7 && monthDaysLeft < eventDuration
