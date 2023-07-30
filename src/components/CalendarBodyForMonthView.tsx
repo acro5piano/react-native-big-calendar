@@ -16,9 +16,9 @@ import {
   WeekNum,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { typedMemo } from '../utils'
+import { getWeeksWithAdjacentMonths } from '../utils/datetime'
+import { typedMemo } from '../utils/react'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
-import { getWeeksWithAdjacentMonths } from '..'
 
 interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   containerHeight: number
@@ -92,22 +92,95 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 
   const sortedEvents = React.useCallback(
     (day: dayjs.Dayjs) => {
-      return sortedMonthView
-        ? events
-            .filter(({ start, end }) =>
-              day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
-            )
-            .sort((a, b) => {
-              if (dayjs(a.start).isSame(b.start, 'day')) {
-                const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
-                const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
-                return bDuration - aDuration
-              }
-              return a.start.getTime() - b.start.getTime()
-            })
-        : events.filter(({ start, end }) =>
-            day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
+      if (sortedMonthView) {
+        return events.filter(({ start, end }) =>
+          day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
+        )
+      } else {
+        /**
+         * Better way to sort overlapping events that spans accross multiple days
+         * For example, if you want following events
+         * Event 1, start = 01/01 12:00, end = 02/01 12:00
+         * Event 2, start = 02/01 12:00, end = 03/01 12:00
+         * Event 3, start = 03/01 12:00, end = 04/01 12:00
+         *
+         * When drawing calendar in month view, event 3 should be placed at 3rd index for 03/01, because Event 2 are placed at 2nd index for 02/01 and 03/01
+         *
+         */
+        let min = day.startOf('day'),
+          max = day.endOf('day')
+
+        //filter all events that starts from the current week until the current day, and sort them by reverse starting time
+        let filteredEvents = events
+          .filter(
+            ({ start, end }) =>
+              dayjs(end).isAfter(day.startOf('week')) && dayjs(start).isBefore(max),
           )
+          .sort((a, b) => {
+            if (dayjs(a.start).isSame(b.start, 'day')) {
+              const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
+              const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
+              return aDuration - bDuration
+            }
+            return b.start.getTime() - a.start.getTime()
+          })
+
+        /**
+         * find the most relevant min date to filter the events
+         * in the example:
+         * 1. when rendering for 01/01, min date will be 01/01 (start of day for event 1)
+         * 2. when rendering for 02/01, min date will be 01/01 (start of day for event 1)
+         * 3. when rendering for 03/01, min date will be 01/01 (start of day for event 1)
+         * 4. when rendering for 04/01, min date will be 01/01 (start of day for event 1)
+         * 5. when rendering for 05/01, min date will be 05/01 (no event overlaps with 05/01)
+         */
+        filteredEvents.forEach(({ start, end }) => {
+          if (dayjs(end).isAfter(min) && dayjs(start).isBefore(min)) {
+            min = dayjs(start).startOf('day')
+          }
+        })
+
+        filteredEvents = filteredEvents
+          .filter(
+            ({ start, end }) => dayjs(end).endOf('day').isAfter(min) && dayjs(start).isBefore(max),
+          )
+          .reverse()
+        /**
+         * We move eligible event to the top
+         * For example, when rendering for 03/01, Event 3 should be moved to the top, since there is a gap left by Event 1
+         */
+        let finalEvents: T[] = []
+        let tmpDay: dayjs.Dayjs = day.startOf('week')
+        //re-sort events from the start of week until the calendar cell date
+        //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
+        while (!tmpDay.isAfter(day)) {
+          filteredEvents.forEach((event) => {
+            if (dayjs(event.end).isBefore(tmpDay.startOf('day'))) {
+              let eventToMoveUp = filteredEvents.find((e) =>
+                dayjs(e.start).startOf('day').isSame(tmpDay.startOf('day')),
+              )
+              if (eventToMoveUp != undefined) {
+                //remove eventToMoveUp from finalEvents first
+                if (finalEvents.indexOf(eventToMoveUp) > -1) {
+                  finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 1)
+                }
+
+                if (finalEvents.indexOf(event) > -1) {
+                  finalEvents.splice(finalEvents.indexOf(event), 1, eventToMoveUp)
+                } else {
+                  finalEvents.push(eventToMoveUp)
+                }
+              }
+            } else if (finalEvents.indexOf(event) == -1) {
+              finalEvents.push(event)
+            }
+          })
+
+          tmpDay = tmpDay.add(1, 'day')
+        }
+
+        return finalEvents
+      }
     },
     [events, sortedMonthView],
   )

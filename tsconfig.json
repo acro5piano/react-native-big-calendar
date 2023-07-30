@@ -37,11 +37,9 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "module": "esnext",
-    "baseUrl": "./",
     "outDir": "build"
   },
   "exclude": [
-    "./src/merge-anything/**",
     "./example/**",
     "./rndemo/**",
     "**/node_modules/**",

@@ -7,8 +7,9 @@ import { merge } from '../merge-anything'
 import { defaultTheme } from '../theme/defaultTheme'
 import { ThemeContext } from '../theme/ThemeContext'
 import { ThemeInterface } from '../theme/ThemeInterface'
-import { DeepPartial } from '../utility-types'
-import { typedMemo } from '../utils'
+import { deepMerge } from '../utils/object'
+import { typedMemo } from '../utils/react'
+import { DeepPartial } from '../utils/utility-types'
 import { CalendarContainer, CalendarContainerProps } from './CalendarContainer'
 
 export interface CalendarProps<T extends ICalendarEventBase> extends CalendarContainerProps<T> {
@@ -23,7 +24,11 @@ function _Calendar<T extends ICalendarEventBase>({
   isRTL,
   ...props
 }: CalendarProps<T>) {
-  const _theme = merge(defaultTheme, theme, { isRTL }) as ThemeInterface
+  // TODO: Old prop support. This should be included in custom theme itself.
+  if (isRTL !== undefined) {
+    theme.isRTL = isRTL
+  }
+  const _theme = deepMerge(defaultTheme, theme) as ThemeInterface
   return (
     <ThemeContext.Provider value={_theme}>
       <CalendarContainer {...props} />

@@ -5,7 +5,8 @@ import { Text, View, ViewStyle } from 'react-native'
 import { u } from '../commonStyles'
 import { WeekNum } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { getDatesInWeek, typedMemo } from '../utils'
+import { getDatesInWeek } from '../utils/datetime'
+import { typedMemo } from '../utils/react'
 
 export interface CalendarHeaderForMonthViewProps {
   weekStartsOn: WeekNum

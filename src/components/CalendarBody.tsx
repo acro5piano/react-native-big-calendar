@@ -19,8 +19,8 @@ import {
   getRelativeTopInDay,
   hours,
   isToday,
-  typedMemo,
-} from '../utils'
+} from '../utils/datetime'
+import { typedMemo } from '../utils/react'
 import { CalendarEvent } from './CalendarEvent'
 import { HourGuideCell } from './HourGuideCell'
 import { HourGuideColumn } from './HourGuideColumn'
