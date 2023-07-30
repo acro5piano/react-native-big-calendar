@@ -10,11 +10,11 @@ export function stringHasContent(string: string): boolean {
   return !!string.length
 }
 
-function isObject(item: any) {
+function isObject(item: any): item is object {
   return item && typeof item === 'object' && !Array.isArray(item)
 }
 
-function keys<T extends object>(obj: T): Array<keyof T> {
+function keys<T extends object>(obj: T): (keyof T)[] {
   return Object.keys(obj) as any
 }
 
