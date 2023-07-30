@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/core": "^7.22.1",
     "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@storybook/react": "^6.5.16",
     "@types/jest": "^27.4.0",
     "@types/node": "^20.2.5",
