@@ -11,7 +11,6 @@
   "dependencies": {
     "calendarize": "^1.1.1",
     "dayjs": "^1.10.4",
-    "merge-anything": "^4.0.1",
     "react": "17.0.1",
     "react-native": "0.64.1"
   },
@@ -21,7 +20,8 @@
     "babel-jest": "^26.6.3",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.64.0",
-    "react-test-renderer": "17.0.1"
+    "react-test-renderer": "17.0.1",
+    "typescript": "^5.1.6"
   },
   "jest": {
     "preset": "react-native"

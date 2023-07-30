@@ -3,7 +3,6 @@ import isBetween from 'dayjs/plugin/isBetween'
 import React from 'react'
 
 import { ICalendarEventBase } from '../interfaces'
-import { merge } from '../merge-anything'
 import { defaultTheme } from '../theme/defaultTheme'
 import { ThemeContext } from '../theme/ThemeContext'
 import { ThemeInterface } from '../theme/ThemeInterface'
