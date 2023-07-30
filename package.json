@@ -69,7 +69,7 @@
     "tailwind-rn": "^3.0.1",
     "ts-jest": "^25.5.1",
     "ts-loader": "^9.2.6",
-    "tslib": "^2.5.0",
+    "tslib": "^2.6.1",
     "typescript": "4.9.5",
     "webpack-merge": "^5.8.0"
   },
