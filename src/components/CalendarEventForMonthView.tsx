@@ -6,7 +6,8 @@ import { u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
 import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { getEventSpanningInfo, typedMemo } from '../utils'
+import { getEventSpanningInfo } from '../utils/datetime'
+import { typedMemo } from '../utils/react'
 
 interface CalendarEventProps<T extends ICalendarEventBase> {
   event: T

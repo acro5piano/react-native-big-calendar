@@ -1,6 +1,6 @@
 {
   "name": "react-native-big-calendar",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
@@ -27,27 +27,26 @@
   },
   "dependencies": {
     "calendarize": "^1.1.1",
-    "dayjs": "^1.11.7",
-    "merge-anything": "5.1.4"
+    "dayjs": "^1.11.9"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.3",
+    "@babel/core": "^7.22.1",
     "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@storybook/react": "^6.5.16",
     "@types/jest": "^27.4.0",
-    "@types/node": "^18.15.11",
+    "@types/node": "^20.2.5",
     "@types/react-native": "^0.65.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "acorn-jsx": "^5.3.2",
     "babel-loader": "^9.1.2",
     "eslint": "^7.30.0",
-    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "import-sort-style-module": "^6.0.0",
@@ -55,13 +54,13 @@
     "lint-staged": "^13.1.0",
     "mockdate": "^3.0.5",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.3",
+    "prettier": "^2.8.8",
     "prettier-plugin-import-sort": "^0.0.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-native": "^0.68.5",
     "react-native-web": "^0.17.5",
-    "remeda": "^1.6.1",
+    "remeda": "^1.19.0",
     "rimraf": "^4.1.2",
     "rn-tailwind": "^1.0.16",
     "rollup": "^2.79.1",
@@ -71,7 +70,7 @@
     "ts-jest": "^25.5.1",
     "ts-loader": "^9.2.6",
     "tslib": "^2.5.0",
-    "typescript": "^4.8.4",
+    "typescript": "4.9.5",
     "webpack-merge": "^5.8.0"
   },
   "simple-git-hooks": {

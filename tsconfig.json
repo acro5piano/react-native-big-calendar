@@ -11,7 +11,6 @@
     "jsx": "react",
     "types": ["@types/node", "@types/jest"],
     "lib": [],
-    "keyofStringsOnly": true,
     "noEmit": true,
 
     /* Strict Type-Checking Options */
@@ -38,7 +37,6 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "module": "esnext",
-    "baseUrl": "./",
     "outDir": "build"
   },
   "exclude": [

@@ -25,8 +25,8 @@ import {
   getDatesInWeek,
   isAllDayEvent,
   modeToNum,
-  typedMemo,
-} from '../utils'
+} from '../utils/datetime'
+import { typedMemo } from '../utils/react'
 import { CalendarBody } from './CalendarBody'
 import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
 import { CalendarHeader } from './CalendarHeader'
