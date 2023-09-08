@@ -39,6 +39,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   weekStartsOn: WeekNum
   eventMinHeightForMonthView: number
   moreLabel: string
+  onPressMoreLabel?: () => void
   sortedMonthView: boolean
 }
 
@@ -61,6 +62,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   weekStartsOn,
   eventMinHeightForMonthView,
   moreLabel,
+  onPressMoreLabel,
   sortedMonthView,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
@@ -274,6 +276,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
                         <Text
                           key={index}
+                          onPress={onPressMoreLabel}
                           style={[
                             theme.typography.moreLabel,
                             { marginTop: 2, color: theme.palette.moreLabel },
