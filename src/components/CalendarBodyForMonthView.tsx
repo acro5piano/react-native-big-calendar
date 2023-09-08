@@ -39,7 +39,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   weekStartsOn: WeekNum
   eventMinHeightForMonthView: number
   moreLabel: string
-  onPressMoreLabel?: (event: T, date: Date) => void
+  onPressMoreLabel?: (events: T[], date: Date) => void
   sortedMonthView: boolean
 }
 
@@ -280,7 +280,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                             theme.typography.moreLabel,
                             { marginTop: 2, color: theme.palette.moreLabel },
                           ]}
-                          onPress={() => onPressMoreLabel?.(event, date.toDate())}
+                          onPress={() => onPressMoreLabel?.(events, date.toDate())}
                         >
                           {moreLabel.replace(
                             '{moreCount}',
