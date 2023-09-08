@@ -275,6 +275,7 @@ export interface ThemeInterface {
       500: string
       800: string
     }
+    moreLabel: string
   }
   isRTL: boolean
   typography: {
@@ -282,6 +283,7 @@ export interface ThemeInterface {
     xs: Typography
     sm: Typography
     xl: Typography
+    moreLabel: Typography
   }
   eventCellOverlappings: readonly Palette[]
   moreLabel: TextStyle
