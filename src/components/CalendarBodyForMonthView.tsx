@@ -1,7 +1,7 @@
 import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Platform, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -39,6 +39,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   weekStartsOn: WeekNum
   eventMinHeightForMonthView: number
   moreLabel: string
+  moreLabelStyle: TextStyle
   onPressMoreLabel?: () => void
   sortedMonthView: boolean
 }
@@ -61,6 +62,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   maxVisibleEventCount,
   weekStartsOn,
   eventMinHeightForMonthView,
+  moreLabelStyle,
   moreLabel,
   onPressMoreLabel,
   sortedMonthView,
@@ -280,6 +282,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                           style={[
                             theme.typography.moreLabel,
                             { marginTop: 2, color: theme.palette.moreLabel },
+                            moreLabelStyle,
                           ]}
                         >
                           {moreLabel.replace(
