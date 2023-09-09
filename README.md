@@ -373,7 +373,7 @@ yarn sync-rndemo
 
 <p>
 <a href="https://www.nupp1.io?utm_source=react-native-big-calendar">
-  <img src="https://www.nupp1.io/images/logo-with-text.svg" height="80" />
+  <img src="https://www.nupp1.io/favicon.ico" height="80" />
 </a>
 </p>
 </p>
