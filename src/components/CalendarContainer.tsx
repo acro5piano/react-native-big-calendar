@@ -102,6 +102,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   sortedMonthView?: boolean
   moreLabel?: string
   isEventOrderingEnabled?: boolean
+  onPressMoreLabel?: (event: T[]) => void
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -147,6 +148,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   sortedMonthView = true,
   hideHours = false,
   isEventOrderingEnabled,
+  onPressMoreLabel,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -262,6 +264,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           eventMinHeightForMonthView={eventMinHeightForMonthView}
           sortedMonthView={sortedMonthView}
           moreLabel={moreLabel}
+          onPressMoreLabel={onPressMoreLabel}
         />
       </React.Fragment>
     )

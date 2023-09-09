@@ -425,6 +425,10 @@ export const App = () => {
           onPressCell={addEvent}
           sortedMonthView={false}
           mode={mode}
+          moreLabel="+{moreCount}"
+          onPressMoreLabel={(events) => {
+            console.log(events)
+          }}
         />
       </SafeAreaView>
     </React.Fragment>
