@@ -13,8 +13,6 @@
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook -o .storybook-build",
     "sync-rndemo": "yarn build && cp -r build rndemo",
-    "start-rndemo-ios": "yarn sync-rndemo && cd rndemo && yarn ios",
-    "start-rndemo-android": "yarn sync-rndemo && cd rndemo && yarn android",
     "test": "jest",
     "format": "prettier --write {src,stories}/**.{ts,tsx}",
     "lint": "eslint --ext ts,tsx src stories",

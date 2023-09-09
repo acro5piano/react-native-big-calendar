@@ -332,16 +332,33 @@ https://github.com/iamkun/dayjs/tree/dev/src/locale
 
 # Running demo on a real device and develop
 
+## Setup
+
 After checking this repo, please run:
 
 ```sh
 yarn install
+yarn sync-rndemo
 cd rndemo
 yarn install
+```
+
+## Start
+
+Start React Native development server in the demo directory:
+
+```sh
+cd rndemo
 yarn start
 
-# On another shell,
+# Then, open another terminal and run:
 yarn start-rndemo-android
+```
+
+Every time you modify library code, run the following command in the root directory:
+
+```sh
+yarn sync-rndemo
 ```
 
 # Screenshots
