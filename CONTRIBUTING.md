@@ -32,7 +32,7 @@ And then maintainer (currently only @acro5piano) will review your code. We might
 
 ## Release
 
-@acro5piano will create a relase on GitHub.
+@acro5piano will create a release on GitHub.
 
 - Edit `package.json` and bump version
 - Add summary to `Changelog.md`
