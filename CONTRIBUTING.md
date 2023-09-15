@@ -4,7 +4,7 @@ First off, thanks for your interest in `react-native-big-calendar` and for wanti
 
 ## Installation
 
-After cheking out the repo, to install:
+After checking out the repo, to install:
 
 ```
 yarn install
