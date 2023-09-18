@@ -41,8 +41,6 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   moreLabel: string
   onPressMoreLabel?: (events: T[], date: Date) => void
   sortedMonthView: boolean
-  focusedDate?: Date
-  renderFocusedDateForMonth?: (date: Date) => React.ReactElement | null
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
 }
 
@@ -67,8 +65,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   moreLabel,
   onPressMoreLabel,
   sortedMonthView,
-  focusedDate,
-  renderFocusedDateForMonth,
   renderCustomDateForMonth,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
@@ -194,15 +190,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   )
 
   const renderDateCell = (date: dayjs.Dayjs | null, index: number) => {
-    if (
-      date &&
-      focusedDate &&
-      renderFocusedDateForMonth &&
-      dayjs(focusedDate).format('YYYY-MM-DD') === date.format('YYYY-MM-DD')
-    ) {
-      return renderFocusedDateForMonth(date.toDate())
-    }
-
     if (date && renderCustomDateForMonth) {
       return renderCustomDateForMonth(date.toDate())
     }

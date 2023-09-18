@@ -75,7 +75,6 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   renderEvent?: EventRenderer<T>
   renderHeader?: HeaderRenderer<T>
   renderHeaderForMonthView?: MonthHeaderRenderer
-  renderFocusedDateForMonth?: (date: Date) => React.ReactElement | null
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
 
   ampm?: boolean
@@ -93,7 +92,6 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
-  focusedDate?: Date
   weekEndsOn?: WeekNum
   maxVisibleEventCount?: number
   eventMinHeightForMonthView?: number
@@ -152,8 +150,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   hideHours = false,
   isEventOrderingEnabled,
   onPressMoreLabel,
-  focusedDate,
-  renderFocusedDateForMonth,
   renderCustomDateForMonth,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
@@ -271,8 +267,6 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           sortedMonthView={sortedMonthView}
           moreLabel={moreLabel}
           onPressMoreLabel={onPressMoreLabel}
-          focusedDate={focusedDate}
-          renderFocusedDateForMonth={renderFocusedDateForMonth}
           renderCustomDateForMonth={renderCustomDateForMonth}
         />
       </React.Fragment>
