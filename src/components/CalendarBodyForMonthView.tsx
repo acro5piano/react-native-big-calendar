@@ -41,6 +41,9 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   moreLabel: string
   onPressMoreLabel?: (events: T[], date: Date) => void
   sortedMonthView: boolean
+  focusedDate?: Date
+  renderFocusedDateForMonth?: (date: Date) => React.ReactElement | null
+  renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -64,6 +67,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   moreLabel,
   onPressMoreLabel,
   sortedMonthView,
+  focusedDate,
+  renderFocusedDateForMonth,
+  renderCustomDateForMonth,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -187,6 +193,43 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
     [events, sortedMonthView],
   )
 
+  const renderDateCell = (date: dayjs.Dayjs | null, index: number) => {
+    if (
+      date &&
+      focusedDate &&
+      renderFocusedDateForMonth &&
+      dayjs(focusedDate).format('YYYY-MM-DD') === date.format('YYYY-MM-DD')
+    ) {
+      return renderFocusedDateForMonth(date.toDate())
+    }
+
+    if (date && renderCustomDateForMonth) {
+      return renderCustomDateForMonth(date.toDate())
+    }
+
+    return (
+      <Text
+        style={[
+          { textAlign: 'center' },
+          theme.typography.sm,
+          {
+            color:
+              date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
+                ? theme.palette.primary.main
+                : date?.month() !== targetDate.month()
+                ? theme.palette.gray['500']
+                : theme.palette.gray['800'],
+          },
+          {
+            ...getCalendarCellTextStyle(date?.toDate(), index),
+          },
+        ]}
+      >
+        {date && date.format('D')}
+      </Text>
+    )
+  }
+
   return (
     <View
       style={[
@@ -249,25 +292,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       : onPressCell && onPressCell(date.toDate()))
                   }
                 >
-                  <Text
-                    style={[
-                      { textAlign: 'center' },
-                      theme.typography.sm,
-                      {
-                        color:
-                          date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
-                            ? theme.palette.primary.main
-                            : date?.month() !== targetDate.month()
-                            ? theme.palette.gray['500']
-                            : theme.palette.gray['800'],
-                      },
-                      {
-                        ...getCalendarCellTextStyle(date?.toDate(), i),
-                      },
-                    ]}
-                  >
-                    {date && date.format('D')}
-                  </Text>
+                  {renderDateCell(date, i)}
                 </TouchableOpacity>
                 {date &&
                   sortedEvents(date).reduce(
