@@ -12,7 +12,7 @@ export interface Palette {
 
 export type Typography = Pick<
   TextStyle,
-  'fontFamily' | 'fontWeight' | 'fontSize' | 'lineHeight' | 'letterSpacing'
+  'fontFamily' | 'fontWeight' | 'fontSize' | 'lineHeight' | 'letterSpacing' | 'textAlign'
 >
 
 export interface ThemeInterface {
