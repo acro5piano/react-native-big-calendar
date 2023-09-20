@@ -75,6 +75,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   renderEvent?: EventRenderer<T>
   renderHeader?: HeaderRenderer<T>
   renderHeaderForMonthView?: MonthHeaderRenderer
+  renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
 
   ampm?: boolean
   date?: Date
@@ -149,6 +150,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   hideHours = false,
   isEventOrderingEnabled,
   onPressMoreLabel,
+  renderCustomDateForMonth,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -265,6 +267,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           sortedMonthView={sortedMonthView}
           moreLabel={moreLabel}
           onPressMoreLabel={onPressMoreLabel}
+          renderCustomDateForMonth={renderCustomDateForMonth}
         />
       </React.Fragment>
     )
