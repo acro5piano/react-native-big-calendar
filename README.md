@@ -265,6 +265,11 @@ export interface Palette {
   contrastText: string
 }
 
+export type Typography = Pick<
+  TextStyle,
+  'fontFamily' | 'fontWeight' | 'fontSize' | 'lineHeight' | 'letterSpacing' | 'textAlign'
+>
+
 export interface ThemeInterface {
   palette: {
     primary: Palette
