@@ -386,10 +386,17 @@ yarn sync-rndemo
 <a href="https://www.telaqua.com?utm_source=react-native-big-calendar">
   <img src="https://user-images.githubusercontent.com/10719495/195131400-cd334757-caad-4ed8-ba73-786affa2a6b0.png" height="80" />
 </a>
-
 </p>
 
 If you are using this library, please send a PR to add your organization!
+
+# Sponsors
+
+<p>
+<a href="https://moncargo?utm_source=react-native-big-calendar">
+  <img src="https://github.com/acro5piano/react-native-big-calendar/assets/10719495/9acf71c0-975b-4632-9a2d-e73b93077a06" height="80" />
+</a>
+</p>
 
 # Enterprise support
 
