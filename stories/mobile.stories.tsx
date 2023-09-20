@@ -240,3 +240,34 @@ storiesOf('showcase - Mobile', module)
       />
     </View>
   ))
+  .add('Month - Calendar Cell - Custom Date Cell Renderer', () => {
+    const renderCustomDate = (_date: Date) => {
+      return (
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View
+            style={{
+              backgroundColor: '#D4E0FE',
+              borderRadius: 20,
+              width: 15,
+              height: 15,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text>{_date.getDay()}</Text>
+          </View>
+        </View>
+      )
+    }
+
+    return (
+      <View style={styles.mobile}>
+        <Calendar
+          height={MOBILE_HEIGHT}
+          events={events}
+          mode={'month'}
+          renderCustomDateForMonth={renderCustomDate}
+        />
+      </View>
+    )
+  })
