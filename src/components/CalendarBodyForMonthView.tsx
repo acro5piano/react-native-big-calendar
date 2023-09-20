@@ -96,7 +96,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 
   const sortedEvents = React.useCallback(
     (day: dayjs.Dayjs) => {
-      if (sortedMonthView) {
+      if (!sortedMonthView) {
         return events.filter(({ start, end }) =>
           day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
         )
