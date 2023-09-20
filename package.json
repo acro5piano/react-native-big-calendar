@@ -62,7 +62,7 @@
     "rimraf": "^4.1.2",
     "rn-tailwind": "^1.0.16",
     "rollup": "^2.79.1",
-    "rollup-plugin-typescript2": "^0.34.1",
+    "rollup-plugin-typescript2": "^0.35.0",
     "simple-git-hooks": "^2.8.1",
     "tailwind-rn": "^3.0.1",
     "ts-jest": "^25.5.1",
