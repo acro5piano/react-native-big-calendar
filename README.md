@@ -393,10 +393,12 @@ If you are using this library, please send a PR to add your organization!
 # Sponsors
 
 <p>
-<a href="https://moncargo?utm_source=react-native-big-calendar">
-  <img src="https://github.com/acro5piano/react-native-big-calendar/assets/10719495/9acf71c0-975b-4632-9a2d-e73b93077a06" height="80" />
+<a href="https://moncargo.io?utm_source=react-native-big-calendar">
+  <img src="https://images.ctfassets.net/jk5e9i3ije9y/1K8rFn7DeHTdGg9Mn4Hmzl/c95d1a87b7de549e1463e85a3a10829e/logo-with-text-copy__2_.png?h=250" height="80" />
 </a>
 </p>
+
+
 
 # Enterprise support
 
