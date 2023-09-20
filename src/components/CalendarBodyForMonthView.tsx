@@ -1,7 +1,7 @@
 import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, Text, TouchableHighlight, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -326,21 +326,16 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     )}
                 </TouchableOpacity>
                 {disableMonthEventCellPress && (
-                  <TouchableHighlight
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      position: 'absolute',
-
-                      // Ignore borderWidths
-                      marginLeft: -2,
-                      marginTop: -2,
-                    }}
-                    underlayColor="rgba(0, 0, 0, 0.05)"
+                  <TouchableOpacity
+                    style={[
+                      {
+                        height: '110%',
+                        width: '110%',
+                        position: 'absolute',
+                      },
+                    ]}
                     onPress={() => date && onPressCell && onPressCell(date.toDate())}
-                  >
-                    <View />
-                  </TouchableHighlight>
+                  />
                 )}
               </View>
             ))}
