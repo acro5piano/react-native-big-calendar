@@ -69,7 +69,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
-  const [calendarCellHeight, setCalendarCellHeight] = React.useState<number>(0)
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -254,10 +253,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
             )
             .map((date, ii) => (
               <View
-                onLayout={({ nativeEvent: { layout } }) => {
-                  // Only set cell height once because all cells' heights are same.
-                  i === 0 && ii === 0 && setCalendarCellHeight(layout.height)
-                }}
                 key={ii}
                 style={[
                   i > 0 && u['border-t'],
@@ -269,7 +264,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   u['flex-column'],
                   {
                     minHeight: minCellHeight,
-                    height: calendarCellHeight,
                   },
                   {
                     ...getCalendarCellStyle(date?.toDate(), i),
@@ -278,7 +272,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               >
                 <TouchableOpacity
                   style={{
-                    height: calendarCellHeight,
+                    height: '100%',
                   }}
                   onPress={() => date && onPressCell && onPressCell(date.toDate())}
                 >
