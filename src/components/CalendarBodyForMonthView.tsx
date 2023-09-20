@@ -323,6 +323,14 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       [] as (null | JSX.Element)[],
                     )}
                 </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    height: '100%',
+                    width: '100%',
+                    position: 'absolute',
+                  }}
+                  onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                />
               </View>
             ))}
         </View>
