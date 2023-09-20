@@ -69,6 +69,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
+  const [calendarCellHeight, setCalendarCellHeight] = React.useState<number>(0)
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -252,8 +253,12 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               showAdjacentMonths ? targetDate.date(d) : d > 0 ? targetDate.date(d) : null,
             )
             .map((date, ii) => (
-              <TouchableOpacity
-                onPress={() => date && onPressCell && onPressCell(date.toDate())}
+              <View
+                onLayout={({ nativeEvent: { layout } }) => {
+                  // Only set cell height once because all cells' heights are same.
+                  i === 0 && ii === 0 && setCalendarCellHeight(layout.height)
+                }}
+                key={ii}
                 style={[
                   i > 0 && u['border-t'],
                   theme.isRTL && ii > 0 && u['border-r'],
@@ -264,60 +269,67 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   u['flex-column'],
                   {
                     minHeight: minCellHeight,
+                    height: calendarCellHeight,
                   },
                   {
                     ...getCalendarCellStyle(date?.toDate(), i),
                   },
                 ]}
-                key={ii}
               >
                 <TouchableOpacity
-                  onPress={() =>
-                    date &&
-                    (onPressDateHeader
-                      ? onPressDateHeader(date.toDate())
-                      : onPressCell && onPressCell(date.toDate()))
-                  }
+                  style={{
+                    height: calendarCellHeight,
+                  }}
+                  onPress={() => date && onPressCell && onPressCell(date.toDate())}
                 >
-                  {renderDateCell(date, i)}
+                  <TouchableOpacity
+                    onPress={() =>
+                      date &&
+                      (onPressDateHeader
+                        ? onPressDateHeader(date.toDate())
+                        : onPressCell && onPressCell(date.toDate()))
+                    }
+                  >
+                    {renderDateCell(date, i)}
+                  </TouchableOpacity>
+                  {date &&
+                    sortedEvents(date).reduce(
+                      (elements, event, index, events) => [
+                        ...elements,
+                        index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
+                          <Text
+                            key={index}
+                            style={[
+                              theme.typography.moreLabel,
+                              { marginTop: 2, color: theme.palette.moreLabel },
+                            ]}
+                            onPress={() => onPressMoreLabel?.(events, date.toDate())}
+                          >
+                            {moreLabel.replace(
+                              '{moreCount}',
+                              `${events.length - maxVisibleEventCount}`,
+                            )}
+                          </Text>
+                        ) : (
+                          <CalendarEventForMonthView
+                            key={index}
+                            event={event}
+                            eventCellStyle={eventCellStyle}
+                            onPressEvent={onPressEvent}
+                            renderEvent={renderEvent}
+                            date={date}
+                            dayOfTheWeek={ii}
+                            calendarWidth={calendarWidth}
+                            isRTL={theme.isRTL}
+                            eventMinHeightForMonthView={eventMinHeightForMonthView}
+                            showAdjacentMonths={showAdjacentMonths}
+                          />
+                        ),
+                      ],
+                      [] as (null | JSX.Element)[],
+                    )}
                 </TouchableOpacity>
-                {date &&
-                  sortedEvents(date).reduce(
-                    (elements, event, index, events) => [
-                      ...elements,
-                      index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
-                        <Text
-                          key={index}
-                          style={[
-                            theme.typography.moreLabel,
-                            { marginTop: 2, color: theme.palette.moreLabel },
-                          ]}
-                          onPress={() => onPressMoreLabel?.(events, date.toDate())}
-                        >
-                          {moreLabel.replace(
-                            '{moreCount}',
-                            `${events.length - maxVisibleEventCount}`,
-                          )}
-                        </Text>
-                      ) : (
-                        <CalendarEventForMonthView
-                          key={index}
-                          event={event}
-                          eventCellStyle={eventCellStyle}
-                          onPressEvent={onPressEvent}
-                          renderEvent={renderEvent}
-                          date={date}
-                          dayOfTheWeek={ii}
-                          calendarWidth={calendarWidth}
-                          isRTL={theme.isRTL}
-                          eventMinHeightForMonthView={eventMinHeightForMonthView}
-                          showAdjacentMonths={showAdjacentMonths}
-                        />
-                      ),
-                    ],
-                    [] as (null | JSX.Element)[],
-                  )}
-              </TouchableOpacity>
+              </View>
             ))}
         </View>
       ))}
