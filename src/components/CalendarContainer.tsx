@@ -104,6 +104,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   moreLabel?: string
   isEventOrderingEnabled?: boolean
   onPressMoreLabel?: (event: T[]) => void
+  disableMonthEventCellPress?: boolean
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -151,6 +152,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   isEventOrderingEnabled,
   onPressMoreLabel,
   renderCustomDateForMonth,
+  disableMonthEventCellPress = false,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -268,6 +270,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           moreLabel={moreLabel}
           onPressMoreLabel={onPressMoreLabel}
           renderCustomDateForMonth={renderCustomDateForMonth}
+          disableMonthEventCellPress={disableMonthEventCellPress}
         />
       </React.Fragment>
     )

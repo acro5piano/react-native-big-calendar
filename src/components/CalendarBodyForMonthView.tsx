@@ -42,6 +42,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   onPressMoreLabel?: (events: T[], date: Date) => void
   sortedMonthView: boolean
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
+  disableMonthEventCellPress?: boolean
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -66,6 +67,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   onPressMoreLabel,
   sortedMonthView,
   renderCustomDateForMonth,
+  disableMonthEventCellPress,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -323,14 +325,16 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       [] as (null | JSX.Element)[],
                     )}
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    position: 'absolute',
-                  }}
-                  onPress={() => date && onPressCell && onPressCell(date.toDate())}
-                />
+                {disableMonthEventCellPress && (
+                  <TouchableOpacity
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      position: 'absolute',
+                    }}
+                    onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                  />
+                )}
               </View>
             ))}
         </View>
