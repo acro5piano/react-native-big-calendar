@@ -335,16 +335,18 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     [] as (null | JSX.Element)[],
                   )}
                 {disableMonthEventCellPress && (
-                  <TouchableGradually
-                    style={{
-                      height: calendarCellHeight,
-                      width: calendarWidth / 7,
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                    }}
-                    onPress={() => date && onPressCell && onPressCell(date.toDate())}
-                  />
+                  <>
+                    <TouchableGradually
+                      style={{
+                        height: calendarCellHeight,
+                        width: calendarWidth / 7,
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                      }}
+                      onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                    />
+                  </>
                 )}
               </TouchableOpacity>
             ))}
