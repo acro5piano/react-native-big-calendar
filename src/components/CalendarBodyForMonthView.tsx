@@ -1,7 +1,15 @@
 import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, Text, TouchableHighlight, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  Animated,
+  Platform,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -327,22 +335,16 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     [] as (null | JSX.Element)[],
                   )}
                 {disableMonthEventCellPress && (
-                  <TouchableHighlight
-                    underlayColor={'rgba(0, 0, 0, 0.1)'}
-                    activeOpacity={0.5}
-                    style={[
-                      {
-                        height: calendarCellHeight,
-                        width: calendarWidth / 7,
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                      },
-                    ]}
+                  <TouchableGradually
+                    style={{
+                      height: calendarCellHeight,
+                      width: calendarWidth / 7,
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                    }}
                     onPress={() => date && onPressCell && onPressCell(date.toDate())}
-                  >
-                    <View />
-                  </TouchableHighlight>
+                  />
                 )}
               </TouchableOpacity>
             ))}
@@ -353,3 +355,45 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 }
 
 export const CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView)
+
+function TouchableGradually({ onPress, style }: { style?: ViewStyle; onPress: () => void }) {
+  const backgroundColor = React.useRef(new Animated.Value(0)).current
+
+  const handlePressIn = () => {
+    Animated.timing(backgroundColor, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start()
+  }
+
+  const handlePressOut = () => {
+    Animated.timing(backgroundColor, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start()
+  }
+
+  return (
+    <TouchableHighlight
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={onPress}
+      underlayColor="transparent"
+      style={style}
+    >
+      <Animated.View
+        style={[
+          {
+            backgroundColor: backgroundColor.interpolate({
+              inputRange: [0, 1],
+              outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.2)'],
+            }),
+          },
+          style,
+        ]}
+      />
+    </TouchableHighlight>
+  )
+}
