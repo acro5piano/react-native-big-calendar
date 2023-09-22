@@ -339,7 +339,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     <TouchableGradually
                       style={{
                         height: calendarCellHeight,
-                        width: calendarWidth / 7,
+                        width: Math.floor(calendarWidth / 7),
                         position: 'absolute',
                         top: 0,
                         left: 0,
