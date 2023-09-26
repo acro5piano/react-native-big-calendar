@@ -166,7 +166,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               if (eventToMoveUp != undefined) {
                 //remove eventToMoveUp from finalEvents first
                 if (finalEvents.indexOf(eventToMoveUp) > -1) {
-                  finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 1)
+                  finalEvents.splice(finalEvents.indexOf(eventToMoveUp), maxVisibleEventCount + 1)
                 }
 
                 if (finalEvents.indexOf(event) > -1) {
@@ -186,7 +186,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
         return finalEvents
       }
     },
-    [events, sortedMonthView],
+    [events, maxVisibleEventCount, sortedMonthView],
   )
 
   const renderDateCell = (date: dayjs.Dayjs | null, index: number) => {
