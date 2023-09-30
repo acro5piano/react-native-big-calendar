@@ -335,18 +335,17 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     [] as (null | JSX.Element)[],
                   )}
                 {disableMonthEventCellPress && (
-                  <>
-                    <TouchableGradually
-                      style={{
-                        height: calendarCellHeight,
-                        width: Math.floor(calendarWidth / 7),
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                      }}
-                      onPress={() => date && onPressCell && onPressCell(date.toDate())}
-                    />
-                  </>
+                  {/* In this case, we render `TouchableGradually` on the date cell to prevent event cell's touch events from being called. */}
+                  <TouchableGradually
+                    style={{
+                      height: calendarCellHeight,
+                      width: Math.floor(calendarWidth / 7),
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                    }}
+                    onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                  />
                 )}
               </TouchableOpacity>
             ))}
@@ -358,6 +357,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 
 export const CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView)
 
+/**
+ * A utility component which prevents event cells from being pressed in Month View.
+ */
 function TouchableGradually({ onPress, style }: { style?: ViewStyle; onPress: () => void }) {
   const backgroundColor = React.useRef(new Animated.Value(0)).current
 
