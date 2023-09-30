@@ -358,12 +358,20 @@ Start React Native development server in the demo directory:
 ```sh
 cd rndemo
 yarn start
-
-# Then, open another terminal and run:
-yarn start-rndemo-android
 ```
 
-Every time you modify library code, run the following command in the root directory:
+Then, open another terminal and run:
+
+```sh
+# For ios
+pod install
+yarn ios
+
+# For Android
+yarn android
+```
+
+Every time you modify code of this library, you should run the following command in the root directory:
 
 ```sh
 yarn sync-rndemo
@@ -397,8 +405,6 @@ If you are using this library, please send a PR to add your organization!
   <img src="https://images.ctfassets.net/jk5e9i3ije9y/1K8rFn7DeHTdGg9Mn4Hmzl/c95d1a87b7de549e1463e85a3a10829e/logo-with-text-copy__2_.png?h=250" height="80" />
 </a>
 </p>
-
-
 
 # Enterprise support
 
