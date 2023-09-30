@@ -335,7 +335,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     [] as (null | JSX.Element)[],
                   )}
                 {disableMonthEventCellPress && (
-                  {/* In this case, we render `TouchableGradually` on the date cell to prevent event cell's touch events from being called. */}
+                  /* In this case, we render `TouchableGradually` on the date cell to prevent event cell's touch events from being called. */
                   <TouchableGradually
                     style={{
                       height: calendarCellHeight,
