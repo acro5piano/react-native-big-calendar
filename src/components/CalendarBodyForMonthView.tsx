@@ -1,7 +1,15 @@
 import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  Animated,
+  Platform,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -42,6 +50,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   onPressMoreLabel?: (events: T[], date: Date) => void
   sortedMonthView: boolean
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
+  disableMonthEventCellPress?: boolean
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -66,9 +75,11 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   onPressMoreLabel,
   sortedMonthView,
   renderCustomDateForMonth,
+  disableMonthEventCellPress,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
+  const [calendarCellHeight, setCalendarCellHeight] = React.useState<number>(0)
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -232,7 +243,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
         { borderColor: theme.palette.gray['200'] },
         style,
       ]}
-      onLayout={({ nativeEvent: { layout } }) => setCalendarWidth(layout.width)}
+      onLayout={({ nativeEvent: { layout } }) => {
+        setCalendarWidth(layout.width)
+      }}
       {...panResponder.panHandlers}
     >
       {weeks.map((week, i) => (
@@ -270,6 +283,10 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   },
                 ]}
                 key={ii}
+                onLayout={({ nativeEvent: { layout } }) =>
+                  // Only set calendarCellHeight once because they are all same
+                  i === 0 && ii === 0 && setCalendarCellHeight(layout.height)
+                }
               >
                 <TouchableOpacity
                   onPress={() =>
@@ -317,6 +334,19 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     ],
                     [] as (null | JSX.Element)[],
                   )}
+                {disableMonthEventCellPress && (
+                  /* In this case, we render `TouchableGradually` on the date cell to prevent event cell's touch events from being called. */
+                  <TouchableGradually
+                    style={{
+                      height: calendarCellHeight,
+                      width: Math.floor(calendarWidth / 7),
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                    }}
+                    onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                  />
+                )}
               </TouchableOpacity>
             ))}
         </View>
@@ -326,3 +356,48 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 }
 
 export const CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView)
+
+/**
+ * A utility component which prevents event cells from being pressed in Month View.
+ */
+function TouchableGradually({ onPress, style }: { style?: ViewStyle; onPress: () => void }) {
+  const backgroundColor = React.useRef(new Animated.Value(0)).current
+
+  const handlePressIn = () => {
+    Animated.timing(backgroundColor, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start()
+  }
+
+  const handlePressOut = () => {
+    Animated.timing(backgroundColor, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start()
+  }
+
+  return (
+    <TouchableHighlight
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={onPress}
+      underlayColor="transparent"
+      style={style}
+    >
+      <Animated.View
+        style={[
+          {
+            backgroundColor: backgroundColor.interpolate({
+              inputRange: [0, 1],
+              outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.2)'],
+            }),
+          },
+          style,
+        ]}
+      />
+    </TouchableHighlight>
+  )
+}

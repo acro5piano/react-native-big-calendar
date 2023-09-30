@@ -271,3 +271,18 @@ storiesOf('showcase - Mobile', module)
       </View>
     )
   })
+  .add('Month - Calendar Cell - Disabled Pressing Month Event Cell', () => {
+    return (
+      <View style={styles.mobile}>
+        <Calendar
+          height={MOBILE_HEIGHT}
+          events={events}
+          mode={'month'}
+          disableMonthEventCellPress={true}
+          onPressCell={(_date) => {
+            alert(`You can only press Date Cell. Not Event Cell ${_date.getDay()}`)
+          }}
+        />
+      </View>
+    )
+  })
