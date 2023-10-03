@@ -1,11 +1,12 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { TextStyle, ViewStyle } from 'react-native'
+import { Text, TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
   CalendarCellStyle,
   CalendarCellTextStyle,
+  ColorPalettes,
   DateRangeHandler,
   EventCellStyle,
   EventRenderer,
@@ -104,6 +105,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   moreLabel?: string
   isEventOrderingEnabled?: boolean
   onPressMoreLabel?: (event: T[]) => void
+  colorPalettes: ColorPalettes
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -151,6 +153,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   isEventOrderingEnabled,
   onPressMoreLabel,
   renderCustomDateForMonth,
+  colorPalettes,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -242,9 +245,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
       showAllDayEventCell: showAllDayEventCell,
     }
+
+    console.log('allday', daytimeEvents)
+
     return (
       <React.Fragment>
-        <HeaderComponentForMonthView {...headerProps} />
+        <Text>{targetDate.format('MM')}</Text>
+        <CalendarHeaderForMonthView {...headerProps} />
         <CalendarBodyForMonthView<T>
           {...commonProps}
           style={bodyContainerStyle}
@@ -268,6 +275,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           moreLabel={moreLabel}
           onPressMoreLabel={onPressMoreLabel}
           renderCustomDateForMonth={renderCustomDateForMonth}
+          colorPalettes={colorPalettes}
         />
       </React.Fragment>
     )

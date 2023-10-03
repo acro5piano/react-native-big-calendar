@@ -10,6 +10,7 @@ export interface ICalendarEventBase {
   title: string
   children?: ReactElement | null
   hideHours?: boolean
+  color: number
 }
 
 export type CalendarTouchableOpacityProps = {
@@ -26,6 +27,13 @@ export type EventCellStyle<T extends ICalendarEventBase> =
   | ViewStyle
   | ViewStyle[]
   | ((event: T) => ViewStyle | ViewStyle[])
+
+export type ColorPalettes = {
+  [key: number]: {
+    background: string
+    text: string
+  }
+}
 
 export type CalendarCellStyle = ViewStyle | ((date?: Date, hourRowIndex?: number) => ViewStyle)
 

@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
+import { ColorPalettes, EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { getEventSpanningInfo } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
@@ -20,6 +20,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   isRTL: boolean
   eventMinHeightForMonthView: number
   showAdjacentMonths: boolean
+  colorPalettes: ColorPalettes
 }
 
 function _CalendarEventForMonthView<T extends ICalendarEventBase>({
@@ -33,6 +34,7 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   isRTL,
   eventMinHeightForMonthView,
   showAdjacentMonths,
+  colorPalettes,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -61,7 +63,9 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
 
   return (
     <TouchableOpacity
-      style={{ minHeight: eventMinHeightForMonthView }}
+      style={{
+        minHeight: eventMinHeightForMonthView,
+      }}
       onPress={() => onPressEvent?.(event)}
     >
       {(!isMultipleDays && date.isSame(event.start, 'day')) ||
@@ -72,7 +76,7 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
           <View {...touchableOpacityProps}>
             <Text
               style={[
-                { color: theme.palette.primary.contrastText },
+                { color: colorPalettes[event.color].text },
                 theme.typography.xs,
                 u['truncate'],
                 isRTL && { textAlign: 'right' },

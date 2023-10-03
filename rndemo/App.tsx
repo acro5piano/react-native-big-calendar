@@ -1,394 +1,44 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { Dimensions, Picker, SafeAreaView, StatusBar, View } from 'react-native'
-
-import { Calendar, ICalendarEventBase, Mode } from './build'
+import { Dimensions, Picker, SafeAreaView, StatusBar, Text, View } from 'react-native'
+import { Calendar, ICalendarEventBase } from './src'
 
 const events = [
   {
-    title: 'Meeting',
-    start: dayjs().set('hour', 10).set('minute', 0).toDate(),
-    end: dayjs().set('hour', 10).set('minute', 30).toDate(),
+    title: '고구마 감자 무른밥',
+    start: dayjs('2023-09-20T00:01').toDate(),
+    end: dayjs('2023-09-24T00:01').toDate(),
+    color: 0,
   },
   {
-    title: 'Coffee break',
-    start: dayjs().set('hour', 14).set('minute', 30).toDate(),
-    end: dayjs().set('hour', 15).set('minute', 30).toDate(),
+    title: '소고기 청경채 미음',
+    start: dayjs('2023-09-17T00:01').toDate(),
+    end: dayjs('2023-09-21T00:01').toDate(),
+    color: 1,
   },
   {
-    title: 'Meeting again',
-    start: dayjs().set('hour', 16).set('minute', 30).toDate(),
-    end: dayjs().set('hour', 17).set('minute', 30).toDate(),
+    title: '소고기 당근 무른밥',
+    start: dayjs('2023-09-17T00:01').toDate(),
+    end: dayjs('2023-09-18T00:01').toDate(),
+    color: 2,
   },
   {
-    title: 'Dinner at the Plaza',
-    start: dayjs().set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().set('hour', 19).set('minute', 30).toDate(),
+    title: '소고기 브로콜리 무른밥',
+    start: dayjs('2023-09-22T10:01').toDate(),
+    end: dayjs('2023-09-22T10:01').toDate(),
+    color: 4,
   },
   {
-    title: 'Go home',
-    start: dayjs().set('hour', 21).set('minute', 30).toDate(),
-    end: dayjs().set('hour', 22).set('minute', 30).toDate(),
+    title: '호박 고구마',
+    start: dayjs('2023-09-22T10:01').toDate(),
+    end: dayjs('2023-09-22T10:01').toDate(),
+    color: 3,
   },
   {
-    title: 'Read a book',
-    start: dayjs().set('hour', 22).set('minute', 30).toDate(),
-    end: dayjs().set('hour', 23).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Exercise',
-    start: dayjs().add(1, 'day').set('hour', 5).set('minute', 0).toDate(),
-    end: dayjs().add(1, 'day').set('hour', 5).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Repair my car',
-    start: dayjs().add(1, 'day').set('hour', 7).set('minute', 45).toDate(),
-    end: dayjs().add(1, 'day').set('hour', 13).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gardening',
-    start: dayjs().add(2, 'day').set('hour', 10).set('minute', 0).toDate(),
-    end: dayjs().add(2, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Mowing',
-    start: dayjs().add(2, 'day').set('hour', 11).set('minute', 0).toDate(),
-    end: dayjs().add(2, 'day').set('hour', 11).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Go to beach',
-    start: dayjs().add(3, 'day').set('hour', 8).set('minute', 0).toDate(),
-    end: dayjs().add(3, 'day').set('hour', 8).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Meeting 2',
-    start: dayjs().add(7, 'day').set('hour', 10).set('minute', 0).toDate(),
-    end: dayjs().add(7, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Coffee break',
-    start: dayjs().add(7, 'day').set('hour', 14).set('minute', 30).toDate(),
-    end: dayjs().add(7, 'day').set('hour', 15).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dentist appointment',
-    start: dayjs().add(8, 'day').set('hour', 14).set('minute', 30).toDate(),
-    end: dayjs().add(8, 'day').set('hour', 15).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Study',
-    start: dayjs().add(9, 'day').set('hour', 7).set('minute', 45).toDate(),
-    end: dayjs().add(12, 'day').set('hour', 20).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Go to airport',
-    start: dayjs().add(10, 'day').set('hour', 7).set('minute', 45).toDate(),
-    end: dayjs().add(10, 'day').set('hour', 13).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Meeting',
-    start: dayjs().add(11, 'day').set('hour', 7).set('minute', 45).toDate(),
-    end: dayjs().add(11, 'day').set('hour', 13).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Lunch',
-    start: dayjs().add(11, 'day').set('hour', 12).set('minute', 0).toDate(),
-    end: dayjs().add(11, 'day').set('hour', 13).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Shopping',
-    start: dayjs().add(11, 'day').set('hour', 14).set('minute', 0).toDate(),
-    end: dayjs().add(11, 'day').set('hour', 15).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(11, 'day').set('hour', 18).set('minute', 0).toDate(),
-    end: dayjs().add(11, 'day').set('hour', 19).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Go to movies',
-    start: dayjs().add(11, 'day').set('hour', 20).set('minute', 0).toDate(),
-    end: dayjs().add(11, 'day').set('hour', 22).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(12, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(12, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(12, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(12, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(12, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(12, 'day').set('hour', 17).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(12, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(12, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(13, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(13, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(13, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(13, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(13, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(13, 'day').set('hour', 17).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(13, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(13, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(14, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(14, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(14, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(14, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(14, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(14, 'day').set('hour', 17).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(14, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(14, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(15, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(15, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(15, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(15, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(15, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(15, 'day').set('hour', 17).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(15, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(15, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(16, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(16, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(16, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(16, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(16, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(16, 'day').set('hour', 17).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(16, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(16, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(17, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(17, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(17, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(17, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(17, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(17, 'day').set('hour', 17).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(17, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(17, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(18, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(18, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(18, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(18, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(18, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(18, 'day').set('hour', 18).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(18, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(18, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(19, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(19, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(19, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(19, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(19, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(19, 'day').set('hour', 18).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(19, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(19, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(20, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(20, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(20, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(20, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(20, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(20, 'day').set('hour', 18).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(20, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(20, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(21, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(21, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(21, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(21, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(21, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(21, 'day').set('hour', 18).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(21, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(21, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(22, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(22, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(22, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(22, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(22, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(22, 'day').set('hour', 18).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(22, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(22, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(23, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(23, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(23, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(23, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(23, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(23, 'day').set('hour', 18).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(23, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(23, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(24, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(24, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(24, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(24, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(24, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(24, 'day').set('hour', 18).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(24, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(24, 'day').set('hour', 19).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Gym',
-    start: dayjs().add(25, 'day').set('hour', 6).set('minute', 0).toDate(),
-    end: dayjs().add(25, 'day').set('hour', 7).set('minute', 0).toDate(),
-  },
-  {
-    title: 'Brunch',
-    start: dayjs().add(25, 'day').set('hour', 9).set('minute', 30).toDate(),
-    end: dayjs().add(25, 'day').set('hour', 10).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Work',
-    start: dayjs().add(25, 'day').set('hour', 11).set('minute', 30).toDate(),
-    end: dayjs().add(25, 'day').set('hour', 18).set('minute', 30).toDate(),
-  },
-  {
-    title: 'Dinner',
-    start: dayjs().add(25, 'day').set('hour', 18).set('minute', 30).toDate(),
-    end: dayjs().add(25, 'day').set('hour', 19).set('minute', 30).toDate(),
+    title: '찹쌀영양닭죽',
+    start: dayjs('2023-09-21T10:01').toDate(),
+    end: dayjs('2023-09-22T10:01').toDate(),
+    color: 5,
   },
 ]
 
@@ -400,16 +50,44 @@ export const App = () => {
     (start) => {
       const title = 'new Event'
       const end = dayjs(start).add(59, 'minute').toDate()
-      setAdditionalEvents([...additionalEvents, { start, end, title }])
+      setAdditionalEvents([...additionalEvents, { start, end, title, color }])
     },
     [additionalEvents, setAdditionalEvents],
   )
+
+  const [current, setCurrent] = React.useState(dayjs())
+  const basicColorSet = {
+    0: {
+      background: '#E57373',
+      text: '#ffffff',
+    },
+    1: {
+      background: '#BA68C8',
+      text: '#ffffff',
+    },
+    2: {
+      background: '#7986CB',
+      text: '#ffffff',
+    },
+    3: {
+      background: '#4FC3F7',
+      text: '#ffffff',
+    },
+    4: {
+      background: '#C8E6C9',
+      text: '#000000',
+    },
+    5: {
+      background: '#ffeecc',
+      text: '#000000',
+    },
+  }
 
   return (
     <React.Fragment>
       <StatusBar barStyle="light-content" />
       <SafeAreaView>
-        <View style={{ height: 60, borderBottomWidth: 0.5 }}>
+        {/* <View style={{ height: 60, borderBottomWidth: 0.5 }}>
           <View style={{ width: '50%', marginLeft: 'auto' }}>
             <Picker onValueChange={setMode} mode="dropdown">
               <Picker.Item value="week" label="week" />
@@ -418,17 +96,36 @@ export const App = () => {
               <Picker.Item value="month" label="month" />
             </Picker>
           </View>
-        </View>
-        <Calendar
+        </View> */}
+        {/* <Calendar
           height={Dimensions.get('window').height - 60}
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
           sortedMonthView={false}
-          mode={mode}
+          mode={'month'}
           moreLabel="+{moreCount}"
           onPressMoreLabel={(events) => {
             console.log(events)
           }}
+        /> */}
+        <Calendar
+          calendarCellStyle={{ borderColor: 'transparent' }}
+          mode="month"
+          events={events}
+          eventCellStyle={(events) => ({
+            backgroundColor: basicColorSet[events.color].background,
+            elevation: 0,
+          })}
+          date={current.toDate()}
+          height={800}
+          maxVisibleEventCount={4}
+          moreLabel={'{moreCount}개 더보기'}
+          showAdjacentMonths={true}
+          overlapOffset={10}
+          sortedMonthView={true}
+          eventMinHeightForMonthView={22}
+          colorPalettes={basicColorSet}
+          onPressEvent={(events) => console.log('test', events.title)}
         />
       </SafeAreaView>
     </React.Fragment>

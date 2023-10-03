@@ -7,6 +7,7 @@ import { useNow } from '../hooks/useNow'
 import { usePanResponder } from '../hooks/usePanResponder'
 import {
   CalendarCellStyle,
+  ColorPalettes,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
@@ -56,6 +57,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   hideHours?: Boolean
   isEventOrderingEnabled?: boolean
+  colorPalettes?: ColorPalettes
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -80,6 +82,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hourStyle = {},
   hideHours = false,
   isEventOrderingEnabled = true,
+  colorPalettes,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)

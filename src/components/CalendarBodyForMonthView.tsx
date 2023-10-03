@@ -9,6 +9,7 @@ import { usePanResponder } from '../hooks/usePanResponder'
 import {
   CalendarCellStyle,
   CalendarCellTextStyle,
+  ColorPalettes,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
@@ -42,6 +43,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   onPressMoreLabel?: (events: T[], date: Date) => void
   sortedMonthView: boolean
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
+  colorPalettes: ColorPalettes
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -66,6 +68,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   onPressMoreLabel,
   sortedMonthView,
   renderCustomDateForMonth,
+  colorPalettes,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -128,7 +131,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
             }
             return b.start.getTime() - a.start.getTime()
           })
-
         /**
          * find the most relevant min date to filter the events
          * in the example:
@@ -157,6 +159,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
         let tmpDay: dayjs.Dayjs = day.startOf('week')
         //re-sort events from the start of week until the calendar cell date
         //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
+
         while (!tmpDay.isAfter(day)) {
           filteredEvents.forEach((event) => {
             if (dayjs(event.end).isBefore(tmpDay.startOf('day'))) {
@@ -166,7 +169,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               if (eventToMoveUp != undefined) {
                 //remove eventToMoveUp from finalEvents first
                 if (finalEvents.indexOf(eventToMoveUp) > -1) {
-                  finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 1)
+                  finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 99)
                 }
 
                 if (finalEvents.indexOf(event) > -1) {
@@ -312,6 +315,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                           isRTL={theme.isRTL}
                           eventMinHeightForMonthView={eventMinHeightForMonthView}
                           showAdjacentMonths={showAdjacentMonths}
+                          colorPalettes={colorPalettes}
                         />
                       ),
                     ],
