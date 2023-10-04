@@ -56,6 +56,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   hideHours?: Boolean
   isEventOrderingEnabled?: boolean
+  showVerticalScrollIndicator?: boolean
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -80,6 +81,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hourStyle = {},
   hideHours = false,
   isEventOrderingEnabled = true,
+  showVerticalScrollIndicator = false,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -163,7 +165,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         ref={scrollView}
         scrollEventThrottle={32}
         {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={showVerticalScrollIndicator}
         nestedScrollEnabled
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
       >
