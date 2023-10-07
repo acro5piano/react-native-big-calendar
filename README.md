@@ -127,6 +127,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   moreLabel?: string
   showAdjacentMonths?: boolean
   sortedMonthView?: boolean
+  showVerticalScrollIndicator?: boolean
 }
 ```
 
