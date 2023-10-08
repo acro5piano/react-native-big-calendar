@@ -65,7 +65,7 @@ function assertDateRange(expected: any[], actual: any[]) {
 }
 
 describe('getDatesInMonth', () => {
-  const expected = R.range(1, 31).map((date) => new Date(2021, 4, date))
+  const expected = R.range(1, 32).map((date) => new Date(2021, 4, date))
 
   test('may 2021', () => {
     const actual = utils.getDatesInMonth(new Date(2021, 4, 9))
