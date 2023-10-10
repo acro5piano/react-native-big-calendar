@@ -1,6 +1,13 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { Dimensions, Picker, SafeAreaView, StatusBar, View } from 'react-native'
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View
+} from 'react-native'
 
 import { Calendar, ICalendarEventBase, Mode } from './build'
 
@@ -393,11 +400,12 @@ const events = [
 ]
 
 export const App = () => {
+  const { height } = useWindowDimensions()
   const [mode, setMode] = React.useState<Mode>('week')
   const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEventBase[]>([])
 
   const addEvent = React.useCallback(
-    (start) => {
+    (start: Date) => {
       const title = 'new Event'
       const end = dayjs(start).add(59, 'minute').toDate()
       setAdditionalEvents([...additionalEvents, { start, end, title }])
@@ -406,31 +414,80 @@ export const App = () => {
   )
 
   return (
-    <React.Fragment>
-      <StatusBar barStyle="light-content" />
+    <View>
       <SafeAreaView>
-        <View style={{ height: 60, borderBottomWidth: 0.5 }}>
-          <View style={{ width: '50%', marginLeft: 'auto' }}>
-            <Picker onValueChange={setMode} mode="dropdown">
-              <Picker.Item value="week" label="week" />
-              <Picker.Item value="day" label="day" />
-              <Picker.Item value="3days" label="3days" />
-              <Picker.Item value="month" label="month" />
-            </Picker>
+        <View>
+          <Text style={styles.headline}>Calendar Mode</Text>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              onPress={() => setMode('week')}
+              style={[
+                styles.buttonContainer,
+                mode === 'week' && styles.buttonContainerActive,
+              ]}>
+              <Text>week</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setMode('day')}
+              style={[
+                styles.buttonContainer,
+                mode === 'day' && styles.buttonContainerActive,
+              ]}>
+              <Text>day</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setMode('3days')}
+              style={[
+                styles.buttonContainer,
+                mode === '3days' && styles.buttonContainerActive,
+              ]}>
+              <Text>3days</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setMode('month')}
+              style={[
+                styles.buttonContainer,
+                mode === 'month' && styles.buttonContainerActive,
+              ]}>
+              <Text>month</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <Calendar
-          height={Dimensions.get('window').height - 60}
+          height={height - 60}
           events={[...events, ...additionalEvents]}
           onPressCell={addEvent}
           sortedMonthView={false}
           mode={mode}
           moreLabel="+{moreCount}"
-          onPressMoreLabel={(events) => {
-            console.log(events)
+          onPressMoreLabel={(moreEvents) => {
+            console.log(moreEvents)
           }}
         />
       </SafeAreaView>
-    </React.Fragment>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    backgroundColor: '#f1f1f1',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  buttonContainerActive: {
+    borderBottomColor: 'blue',
+    borderBottomWidth: 3,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  headline: {
+    fontSize: 16,
+  },
+})
+
+export default App
