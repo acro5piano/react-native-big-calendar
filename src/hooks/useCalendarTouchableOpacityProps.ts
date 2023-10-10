@@ -41,7 +41,7 @@ export function useCalendarTouchableOpacityProps<T extends ICalendarEventBase>({
     key: `${event.start.toISOString()}_${event.title}`,
     style: [eventCellCss.style, ...injectedStyles, getEventStyle(plainJsEvent)],
     onPress: _onPress,
-    disabled: !onPressEvent,
+    disabled: !onPressEvent || !!event.disabled,
   }
 
   return touchableOpacityProps
