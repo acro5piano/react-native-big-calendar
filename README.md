@@ -193,6 +193,7 @@ interface ICalendarEventBase {
   end: Date
   title: string
   children?: ReactElement | null
+  disabled?: boolean
 }
 ```
 
