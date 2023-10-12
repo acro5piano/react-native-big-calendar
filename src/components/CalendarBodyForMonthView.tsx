@@ -38,6 +38,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
   showAdjacentMonths: boolean
+  onLongPressCell?: (date: Date) => void
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
@@ -57,6 +58,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   containerHeight,
   targetDate,
   style,
+  onLongPressCell,
   onPressCell,
   onPressDateHeader,
   events,
@@ -266,6 +268,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
             )
             .map((date, ii) => (
               <TouchableOpacity
+                onLongPress={() => date && onLongPressCell && onLongPressCell(date.toDate())}
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
                 style={[
                   i > 0 && u['border-t'],
@@ -294,6 +297,12 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     (onPressDateHeader
                       ? onPressDateHeader(date.toDate())
                       : onPressCell && onPressCell(date.toDate()))
+                  }
+                  onLongPress={() =>
+                    date &&
+                    (onPressDateHeader
+                      ? onPressDateHeader(date.toDate())
+                      : onLongPressCell && onLongPressCell(date.toDate()))
                   }
                 >
                   {renderDateCell(date, i)}
@@ -344,6 +353,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       top: 0,
                       left: 0,
                     }}
+                    onLongPress={() => date && onLongPressCell && onLongPressCell(date.toDate())}
                     onPress={() => date && onPressCell && onPressCell(date.toDate())}
                   />
                 )}
@@ -360,7 +370,15 @@ export const CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView)
 /**
  * A utility component which prevents event cells from being pressed in Month View.
  */
-function TouchableGradually({ onPress, style }: { style?: ViewStyle; onPress: () => void }) {
+function TouchableGradually({
+  onLongPress,
+  onPress,
+  style,
+}: {
+  style?: ViewStyle
+  onLongPress: () => void
+  onPress: () => void
+}) {
   const backgroundColor = React.useRef(new Animated.Value(0)).current
 
   const handlePressIn = () => {
@@ -381,6 +399,7 @@ function TouchableGradually({ onPress, style }: { style?: ViewStyle; onPress: ()
 
   return (
     <TouchableHighlight
+      onLongPress={onLongPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       onPress={onPress}

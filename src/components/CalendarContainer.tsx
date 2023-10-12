@@ -89,6 +89,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   swipeEnabled?: boolean
   weekStartsOn?: WeekNum
   onChangeDate?: DateRangeHandler
+  onLongPressCell?: (date: Date) => void
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
@@ -132,6 +133,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   swipeEnabled = true,
   weekStartsOn = 0,
   onChangeDate,
+  onLongPressCell,
   onPressCell,
   onPressDateHeader,
   onPressEvent,
@@ -260,6 +262,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
           showAdjacentMonths={showAdjacentMonths}
+          onLongPressCell={onLongPressCell}
           onPressCell={onPressCell}
           onPressDateHeader={onPressDateHeader}
           onPressEvent={onPressEvent}
@@ -306,6 +309,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         scrollOffsetMinutes={scrollOffsetMinutes}
         ampm={ampm}
         showTime={showTime}
+        onLongPressCell={onLongPressCell}
         onPressCell={onPressCell}
         onPressEvent={onPressEvent}
         onSwipeHorizontal={onSwipeHorizontal}
