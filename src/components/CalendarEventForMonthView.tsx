@@ -62,7 +62,7 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   return (
     <TouchableOpacity
       style={{ minHeight: eventMinHeightForMonthView }}
-      onPress={() => onPressEvent?.(event)}
+      onPress={() => !event.disabled && onPressEvent?.(event)}
     >
       {(!isMultipleDays && date.isSame(event.start, 'day')) ||
       (isMultipleDays && isMultipleDaysStart) ? (
