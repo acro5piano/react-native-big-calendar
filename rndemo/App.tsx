@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 
-import {Calendar, ICalendarEventBase, Mode} from './build'
+import { Calendar, ICalendarEventBase, Mode } from './build'
 
 const events = [
   {
@@ -400,17 +400,15 @@ const events = [
 ]
 
 export const App = () => {
-  const {height} = useWindowDimensions()
+  const { height } = useWindowDimensions()
   const [mode, setMode] = React.useState<Mode>('week')
-  const [additionalEvents, setAdditionalEvents] = React.useState<
-    ICalendarEventBase[]
-  >([])
+  const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEventBase[]>([])
 
   const addEvent = React.useCallback(
     (start: Date) => {
       const title = 'new Event'
       const end = dayjs(start).add(59, 'minute').toDate()
-      setAdditionalEvents([...additionalEvents, {start, end, title}])
+      setAdditionalEvents([...additionalEvents, { start, end, title }])
     },
     [additionalEvents, setAdditionalEvents],
   )
@@ -419,7 +417,7 @@ export const App = () => {
     (start: Date) => {
       const title = 'new Long Event'
       const end = dayjs(start).add(1, 'hour').add(59, 'minute').toDate()
-      setAdditionalEvents([...additionalEvents, {start, end, title}])
+      setAdditionalEvents([...additionalEvents, { start, end, title }])
     },
     [additionalEvents, setAdditionalEvents],
   )
@@ -432,34 +430,26 @@ export const App = () => {
           <View style={styles.buttonRow}>
             <TouchableOpacity
               onPress={() => setMode('week')}
-              style={[
-                styles.buttonContainer,
-                mode === 'week' && styles.buttonContainerActive,
-              ]}>
+              style={[styles.buttonContainer, mode === 'week' && styles.buttonContainerActive]}
+            >
               <Text>week</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setMode('day')}
-              style={[
-                styles.buttonContainer,
-                mode === 'day' && styles.buttonContainerActive,
-              ]}>
+              style={[styles.buttonContainer, mode === 'day' && styles.buttonContainerActive]}
+            >
               <Text>day</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setMode('3days')}
-              style={[
-                styles.buttonContainer,
-                mode === '3days' && styles.buttonContainerActive,
-              ]}>
+              style={[styles.buttonContainer, mode === '3days' && styles.buttonContainerActive]}
+            >
               <Text>3days</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setMode('month')}
-              style={[
-                styles.buttonContainer,
-                mode === 'month' && styles.buttonContainerActive,
-              ]}>
+              style={[styles.buttonContainer, mode === 'month' && styles.buttonContainerActive]}
+            >
               <Text>month</Text>
             </TouchableOpacity>
           </View>
@@ -472,7 +462,7 @@ export const App = () => {
           sortedMonthView={false}
           mode={mode}
           moreLabel="+{moreCount}"
-          onPressMoreLabel={moreEvents => {
+          onPressMoreLabel={(moreEvents) => {
             console.log(moreEvents)
           }}
         />
@@ -501,5 +491,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 })
-
-export default App
