@@ -6,10 +6,10 @@ import {
   Text,
   TouchableOpacity,
   useWindowDimensions,
-  View
+  View,
 } from 'react-native'
 
-import { Calendar, ICalendarEventBase, Mode } from './build'
+import {Calendar, ICalendarEventBase, Mode} from './build'
 
 const events = [
   {
@@ -400,15 +400,26 @@ const events = [
 ]
 
 export const App = () => {
-  const { height } = useWindowDimensions()
+  const {height} = useWindowDimensions()
   const [mode, setMode] = React.useState<Mode>('week')
-  const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEventBase[]>([])
+  const [additionalEvents, setAdditionalEvents] = React.useState<
+    ICalendarEventBase[]
+  >([])
 
   const addEvent = React.useCallback(
     (start: Date) => {
       const title = 'new Event'
       const end = dayjs(start).add(59, 'minute').toDate()
-      setAdditionalEvents([...additionalEvents, { start, end, title }])
+      setAdditionalEvents([...additionalEvents, {start, end, title}])
+    },
+    [additionalEvents, setAdditionalEvents],
+  )
+
+  const addLongEvent = React.useCallback(
+    (start: Date) => {
+      const title = 'new Long Event'
+      const end = dayjs(start).add(1, 'hour').add(59, 'minute').toDate()
+      setAdditionalEvents([...additionalEvents, {start, end, title}])
     },
     [additionalEvents, setAdditionalEvents],
   )
@@ -456,11 +467,12 @@ export const App = () => {
         <Calendar
           height={height - 60}
           events={[...events, ...additionalEvents]}
+          onLongPressCell={addLongEvent}
           onPressCell={addEvent}
           sortedMonthView={false}
           mode={mode}
           moreLabel="+{moreCount}"
-          onPressMoreLabel={(moreEvents) => {
+          onPressMoreLabel={moreEvents => {
             console.log(moreEvents)
           }}
         />

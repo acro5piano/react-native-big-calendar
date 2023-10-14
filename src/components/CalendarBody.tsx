@@ -47,6 +47,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   calendarCellStyle?: CalendarCellStyle
   hideNowIndicator?: boolean
   overlapOffset?: number
+  onLongPressCell?: (date: Date) => void
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: T) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
@@ -64,6 +65,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   cellHeight,
   dateRange,
   style,
+  onLongPressCell,
   onPressCell,
   events,
   onPressEvent,
@@ -119,6 +121,13 @@ function _CalendarBody<T extends ICalendarEventBase>({
       onPressCell && onPressCell(date.toDate())
     },
     [onPressCell],
+  )
+
+  const _onLongPressCell = React.useCallback(
+    (date: dayjs.Dayjs) => {
+      onLongPressCell && onLongPressCell(date.toDate())
+    },
+    [onLongPressCell],
   )
 
   const _renderMappedEvent = React.useCallback(
@@ -195,6 +204,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   cellHeight={cellHeight}
                   date={date}
                   hour={hour}
+                  onLongPress={_onLongPressCell}
                   onPress={_onPressCell}
                   index={index}
                   calendarCellStyle={calendarCellStyle}

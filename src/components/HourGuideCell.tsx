@@ -8,6 +8,7 @@ import { useTheme } from '../theme/ThemeContext'
 
 interface HourGuideCellProps {
   cellHeight: number
+  onLongPress: (d: dayjs.Dayjs) => void
   onPress: (d: dayjs.Dayjs) => void
   date: dayjs.Dayjs
   hour: number
@@ -17,6 +18,7 @@ interface HourGuideCellProps {
 
 const _HourGuideCell = ({
   cellHeight,
+  onLongPress,
   onPress,
   date,
   hour,
@@ -31,7 +33,10 @@ const _HourGuideCell = ({
   )
 
   return (
-    <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
+    <TouchableWithoutFeedback
+      onLongPress={() => onLongPress(date.hour(hour).minute(0))}
+      onPress={() => onPress(date.hour(hour).minute(0))}
+    >
       <View
         style={[
           u['border-l'],
