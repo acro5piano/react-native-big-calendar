@@ -63,3 +63,5 @@ build
 .jest
 .storybook-build
 /.idea
+
+.DS_Store
