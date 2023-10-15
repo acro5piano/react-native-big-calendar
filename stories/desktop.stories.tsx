@@ -368,3 +368,16 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
+  .add('Schedule mode', () => {
+    const state = useEvents(events)
+    return (
+      <View style={[styles.desktop]}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          mode="schedule"
+          eventCellStyle={[{ backgroundColor: 'red' }, { borderWidth: 1, borderColor: 'green' }]}
+        />
+      </View>
+    )
+  })
