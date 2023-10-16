@@ -31,6 +31,7 @@ import { CalendarBody } from './CalendarBody'
 import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
 import { CalendarHeader } from './CalendarHeader'
 import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
+import { Schedule } from './Schedule'
 
 export interface CalendarContainerProps<T extends ICalendarEventBase> {
   /**
@@ -189,6 +190,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           return getDatesInNextOneDay(date, locale)
         case 'custom':
           return getDatesInNextCustomDays(date, weekStartsOn, weekEndsOn, locale)
+        case 'schedule': // TODO: this will update
+          return getDatesInMonth(date, locale)
         default:
           throw new Error(
             `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
@@ -292,6 +295,34 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     dayHeaderHighlightColor: dayHeaderHighlightColor,
     weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
     showAllDayEventCell: showAllDayEventCell,
+  }
+
+  if (mode === 'schedule') {
+    return (
+      <Schedule
+        events={[...daytimeEvents, ...allDayEvents]}
+        {...commonProps}
+        style={bodyContainerStyle}
+        containerHeight={height}
+        eventCellStyle={eventCellStyle}
+        calendarCellStyle={calendarCellStyle}
+        hideNowIndicator={hideNowIndicator}
+        overlapOffset={overlapOffset}
+        scrollOffsetMinutes={scrollOffsetMinutes}
+        ampm={ampm}
+        showTime={showTime}
+        onLongPressCell={onLongPressCell}
+        onPressCell={onPressCell}
+        onPressEvent={onPressEvent}
+        onSwipeHorizontal={onSwipeHorizontal}
+        renderEvent={renderEvent}
+        headerComponent={headerComponent}
+        headerComponentStyle={headerComponentStyle}
+        hourStyle={hourStyle}
+        isEventOrderingEnabled={isEventOrderingEnabled}
+        showVerticalScrollIndicator={showVerticalScrollIndicator}
+      />
+    )
   }
 
   return (
