@@ -301,7 +301,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     return (
       <Schedule
         events={[...daytimeEvents, ...allDayEvents]}
-        {...commonProps}
+        {...headerProps}
         style={bodyContainerStyle}
         containerHeight={height}
         eventCellStyle={eventCellStyle}
