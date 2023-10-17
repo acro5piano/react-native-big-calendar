@@ -108,6 +108,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   onPressMoreLabel?: (event: T[]) => void
   disableMonthEventCellPress?: boolean
   showVerticalScrollIndicator?: boolean
+  itemSeparatorComponent?: React.ComponentType<any> | null | undefined
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -158,6 +159,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   renderCustomDateForMonth,
   disableMonthEventCellPress = false,
   showVerticalScrollIndicator = false,
+  itemSeparatorComponent = null,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -321,6 +323,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         hourStyle={hourStyle}
         isEventOrderingEnabled={isEventOrderingEnabled}
         showVerticalScrollIndicator={showVerticalScrollIndicator}
+        itemSeparatorComponent={itemSeparatorComponent}
       />
     )
   }
