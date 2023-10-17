@@ -151,8 +151,15 @@ export const u = StyleSheet.create({
   'w-50': {
     width: 50,
   },
+
+  /*
+   * Height
+   */
   'h-36': {
     height: 36,
+  },
+  'h-50': {
+    height: 50,
   },
 
   /*
