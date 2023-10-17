@@ -39,6 +39,9 @@ export const u = StyleSheet.create({
   'flex-column': {
     flexDirection: 'column',
   },
+  'flex-column-reverse': {
+    flexDirection: 'column-reverse',
+  },
   'flex-1': {
     flex: 1,
   },
