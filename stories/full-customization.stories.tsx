@@ -1,7 +1,8 @@
 import { storiesOf } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
-import { Dimensions, Picker, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import tailwind from 'tailwind-rn'
 
 import { Calendar, Mode, modeToNum } from '../src'
