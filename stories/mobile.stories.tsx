@@ -286,3 +286,16 @@ storiesOf('showcase - Mobile', module)
       </View>
     )
   })
+  .add('Schedule mode', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.mobile}>
+        <Calendar
+          height={MOBILE_HEIGHT}
+          events={state.events}
+          mode="schedule"
+          eventCellStyle={[{ backgroundColor: 'red' }, { borderWidth: 1, borderColor: 'green' }]}
+        />
+      </View>
+    )
+  })

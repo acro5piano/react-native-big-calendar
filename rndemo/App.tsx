@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import {
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -401,7 +402,7 @@ const events = [
 
 export const App = () => {
   const { height } = useWindowDimensions()
-  const [mode, setMode] = React.useState<Mode>('week')
+  const [mode, setMode] = React.useState<Mode>('schedule')
   const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEventBase[]>([])
 
   const addEvent = React.useCallback(
@@ -425,8 +426,8 @@ export const App = () => {
   return (
     <View>
       <SafeAreaView>
-        <View>
-          <Text style={styles.headline}>Calendar Mode</Text>
+        <Text style={styles.headline}>Calendar Mode</Text>
+        <ScrollView horizontal={true}>
           <View style={styles.buttonRow}>
             <TouchableOpacity
               onPress={() => setMode('week')}
@@ -452,8 +453,14 @@ export const App = () => {
             >
               <Text>month</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setMode('schedule')}
+              style={[styles.buttonContainer, mode === 'schedule' && styles.buttonContainerActive]}
+            >
+              <Text>schedule</Text>
+            </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
         <Calendar
           height={height - 60}
           events={[...events, ...additionalEvents]}
@@ -465,6 +472,7 @@ export const App = () => {
           onPressMoreLabel={(moreEvents) => {
             console.log(moreEvents)
           }}
+          itemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         />
       </SafeAreaView>
     </View>
@@ -477,6 +485,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 5,
+    marginEnd: 15,
   },
   buttonContainerActive: {
     borderBottomColor: 'blue',
@@ -489,5 +498,9 @@ const styles = StyleSheet.create({
   },
   headline: {
     fontSize: 16,
+  },
+  itemSeparator: {
+    height: 5,
+    marginBottom: 20,
   },
 })
