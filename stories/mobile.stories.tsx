@@ -48,7 +48,7 @@ storiesOf('showcase - Mobile', module)
         events={tonsOfEventsSorted}
         mode="day"
         onPressEvent={(event) => alert(event.title)}
-        useEnrichedEvents
+        enableEnrichedEvents
         eventsAreSorted
       />
     </View>

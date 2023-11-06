@@ -60,7 +60,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hideHours?: Boolean
   isEventOrderingEnabled?: boolean
   showVerticalScrollIndicator?: boolean
-  useEnrichedEvents?: boolean
+  enableEnrichedEvents?: boolean
   eventsAreSorted?: boolean
 }
 
@@ -88,7 +88,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hideHours = false,
   isEventOrderingEnabled = true,
   showVerticalScrollIndicator = false,
-  useEnrichedEvents = false,
+  enableEnrichedEvents = false,
   eventsAreSorted = false,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
@@ -137,7 +137,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   )
 
   const enrichedEvents = useMemo(() => {
-    if (useEnrichedEvents) {
+    if (enableEnrichedEvents) {
       return enrichEvents(events, eventsAreSorted)
     }
     if (isEventOrderingEnabled) {
@@ -149,7 +149,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
     }
 
     return events
-  }, [events, eventsAreSorted, isEventOrderingEnabled, useEnrichedEvents])
+  }, [events, eventsAreSorted, isEventOrderingEnabled, enableEnrichedEvents])
 
   const _renderMappedEvent = React.useCallback(
     (event: T, index: number) => {
