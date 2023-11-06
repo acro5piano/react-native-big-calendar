@@ -70,7 +70,6 @@ function _CalendarEvent<T extends ICalendarEventBase>({
     const fgColors = palettes.map((p) => p.contrastText)
     return fgColors[eventCount % fgColors.length] || fgColors[0]
   }, [eventCount, palettes])
-
   if (renderEvent) {
     return renderEvent(event, touchableOpacityProps)
   }

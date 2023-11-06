@@ -5,6 +5,10 @@ import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-n
 import { EventRenderer, ICalendarEventBase } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils/datetime'
 
+const getRandomInt = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min)) + min
+}
+
 const eventNotes = (
   <View style={{ marginTop: 3 }}>
     <Text style={{ fontSize: 10, color: 'white' }}> Phone number: 555-123-4567 </Text>
@@ -56,6 +60,22 @@ export const events: Array<ICalendarEventBase & { color?: string }> = [
     children: eventNotes,
   },
 ]
+
+export const tonsOfEvents: Array<ICalendarEventBase & { color?: string }> = new Array(200)
+  .fill(undefined)
+  .map((_) => {
+    const startHour = getRandomInt(0, 23)
+    const endHour = getRandomInt(startHour + 1, 24)
+    const startMinute = getRandomInt(0, 59)
+    const endMinute = getRandomInt(0, 59)
+    return {
+      title: 'Watch Boxing',
+      start: dayjs().set('hour', startHour).set('minute', startMinute).set('second', 0).toDate(),
+      end: dayjs().set('hour', endHour).set('minute', endMinute).toDate(),
+    }
+  })
+
+export const tonsOfEventsSorted = tonsOfEvents.sort((a, b) => a.start.getTime() - b.start.getTime())
 
 export const spanningEvents: Array<ICalendarEventBase & { color?: string }> = [
   {

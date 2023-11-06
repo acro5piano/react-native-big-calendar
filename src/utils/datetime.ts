@@ -151,6 +151,65 @@ export function getOrderOfEvent(event: ICalendarEventBase, eventList: ICalendarE
   return index === -1 ? 0 : index
 }
 
+/**
+ * Iterate over a sorted list of events and add the following properties:
+ * - overlapPosition: position of the event in the stack of overlapping events
+ * - overlapsCount: number of events that overlap with this event
+ * @param events Sorted list of events by start time
+ * @param eventsAreSorted indicates if the events are already sorted
+ */
+export function enrichEvents(
+  events: ICalendarEventBase[],
+  eventsAreSorted?: boolean,
+): ICalendarEventBase[] {
+  let groupEndTime = events[0].end
+  let overlapPosition = 0
+  let overlapCounting = 0
+  let overlapCountingPointers: number[] = []
+
+  // If events are not sorted, sort them by start time
+  const baseEvents = eventsAreSorted
+    ? events
+    : events.sort((a, b) => a.start.getTime() - b.start.getTime())
+
+  const eventsWithOverlaps = baseEvents.map((event, index) => {
+    // If the event starts before the group end time, it overlaps
+    if (event.start < groupEndTime) {
+      // Update the group end time if this overlapping event ends after the current group end time
+      if (event.end > groupEndTime) {
+        groupEndTime = event.end
+      }
+      overlapCounting++
+      // If this is the last event, we need to add the overlap counting to the overlap counting pointers
+      if (index === baseEvents.length - 1) {
+        overlapCountingPointers.push(...Array(overlapCounting).fill(overlapCounting))
+      }
+      //  Otherwise, it doesn't overlap and we reset the pointers
+    } else {
+      groupEndTime = event.end
+      overlapCountingPointers.push(...Array(overlapCounting).fill(overlapCounting))
+      // If this is the last event, we need to add a "group" of 1 into the overlap counting pointers
+      if (index === baseEvents.length - 1) {
+        overlapCountingPointers.push(1)
+      }
+      overlapPosition = 0
+      overlapCounting = 1
+    }
+
+    return {
+      ...event,
+      // Add the overlap position to the event and increment by 1 for the next event
+      overlapPosition: overlapPosition++,
+    }
+  })
+
+  // Add overlap count to each event
+  return eventsWithOverlaps.map((event, index) => ({
+    ...event,
+    overlapCount: overlapCountingPointers[index],
+  }))
+}
+
 export function getStyleForOverlappingEvent(
   eventPosition: number,
   overlapOffset: number,
