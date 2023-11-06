@@ -16,6 +16,7 @@ import { useTheme } from '../theme/ThemeContext'
 import {
   enrichEvents,
   getCountOfEventsAtEvent,
+  getOrderOfEvent,
   getRelativeTopInDay,
   hours,
   isToday,
@@ -25,7 +26,6 @@ import { CalendarEvent } from './CalendarEvent'
 import { HourGuideCell } from './HourGuideCell'
 import { HourGuideColumn } from './HourGuideColumn'
 import { useMemo } from 'react'
-import { getOrderOfEvent } from '../../build'
 
 const styles = StyleSheet.create({
   nowIndicator: {
