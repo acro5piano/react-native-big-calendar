@@ -71,7 +71,7 @@
     "ts-loader": "^9.5.0",
     "tslib": "^2.6.1",
     "typescript": "^5.2.2",
-    "webpack-merge": "^5.9.0"
+    "webpack-merge": "^5.10.0"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
