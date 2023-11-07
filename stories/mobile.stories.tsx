@@ -5,7 +5,7 @@ import { Alert, Text, TouchableOpacity, View } from 'react-native'
 
 import { Calendar, EventRenderer } from '../src'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
-import { events } from './events'
+import { events, tonsOfEvents, tonsOfEventsSorted } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 
@@ -28,6 +28,28 @@ storiesOf('showcase - Mobile', module)
         events={events}
         mode="day"
         onPressEvent={(event) => alert(event.title)}
+      />
+    </View>
+  ))
+  .add('Tons of events', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={tonsOfEvents}
+        mode="day"
+        onPressEvent={(event) => alert(event.title)}
+      />
+    </View>
+  ))
+  .add('Tons of sorted events', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={tonsOfEventsSorted}
+        mode="day"
+        onPressEvent={(event) => alert(event.title)}
+        enableEnrichedEvents
+        eventsAreSorted
       />
     </View>
   ))

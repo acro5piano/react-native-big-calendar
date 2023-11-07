@@ -14,6 +14,7 @@ import {
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import {
+  enrichEvents,
   getCountOfEventsAtEvent,
   getOrderOfEvent,
   getRelativeTopInDay,
@@ -24,6 +25,7 @@ import { typedMemo } from '../utils/react'
 import { CalendarEvent } from './CalendarEvent'
 import { HourGuideCell } from './HourGuideCell'
 import { HourGuideColumn } from './HourGuideColumn'
+import { useMemo } from 'react'
 
 const styles = StyleSheet.create({
   nowIndicator: {
@@ -58,6 +60,8 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hideHours?: Boolean
   isEventOrderingEnabled?: boolean
   showVerticalScrollIndicator?: boolean
+  enableEnrichedEvents?: boolean
+  eventsAreSorted?: boolean
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -84,6 +88,8 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hideHours = false,
   isEventOrderingEnabled = true,
   showVerticalScrollIndicator = false,
+  enableEnrichedEvents = false,
+  eventsAreSorted = false,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -130,6 +136,21 @@ function _CalendarBody<T extends ICalendarEventBase>({
     [onLongPressCell],
   )
 
+  const enrichedEvents = useMemo(() => {
+    if (enableEnrichedEvents) {
+      return enrichEvents(events, eventsAreSorted)
+    }
+    if (isEventOrderingEnabled) {
+      return events.map((event) => ({
+        ...event,
+        overlapPosition: getOrderOfEvent(event, events),
+        overlapCount: getCountOfEventsAtEvent(event, events),
+      }))
+    }
+
+    return events
+  }, [events, eventsAreSorted, isEventOrderingEnabled, enableEnrichedEvents])
+
   const _renderMappedEvent = React.useCallback(
     (event: T, index: number) => {
       return (
@@ -139,24 +160,15 @@ function _CalendarBody<T extends ICalendarEventBase>({
           onPressEvent={onPressEvent}
           eventCellStyle={eventCellStyle}
           showTime={showTime}
-          eventCount={isEventOrderingEnabled ? getCountOfEventsAtEvent(event, events) : undefined}
-          eventOrder={isEventOrderingEnabled ? getOrderOfEvent(event, events) : undefined}
+          eventCount={event.overlapCount}
+          eventOrder={event.overlapPosition}
           overlapOffset={overlapOffset}
           renderEvent={renderEvent}
           ampm={ampm}
         />
       )
     },
-    [
-      ampm,
-      eventCellStyle,
-      events,
-      isEventOrderingEnabled,
-      onPressEvent,
-      overlapOffset,
-      renderEvent,
-      showTime,
-    ],
+    [ampm, eventCellStyle, onPressEvent, overlapOffset, renderEvent, showTime],
   )
 
   const theme = useTheme()
@@ -214,7 +226,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
               {/* Render events of this date */}
               {/* M  T  (W)  T  F  S  S */}
               {/*       S-E             */}
-              {events
+              {(enrichedEvents as T[])
                 .filter(({ start }) =>
                   dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
                 )
@@ -223,7 +235,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
               {/* Render events which starts before this date and ends on this date */}
               {/* M  T  (W)  T  F  S  S */}
               {/* S------E              */}
-              {events
+              {(enrichedEvents as T[])
                 .filter(
                   ({ start, end }) =>
                     dayjs(start).isBefore(date.startOf('day')) &&
@@ -238,7 +250,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
               {/* Render events which starts before this date and ends after this date */}
               {/* M  T  (W)  T  F  S  S */}
               {/*    S-------E          */}
-              {events
+              {(enrichedEvents as T[])
                 .filter(
                   ({ start, end }) =>
                     dayjs(start).isBefore(date.startOf('day')) &&

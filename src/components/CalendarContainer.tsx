@@ -109,6 +109,18 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   disableMonthEventCellPress?: boolean
   showVerticalScrollIndicator?: boolean
   itemSeparatorComponent?: React.ComponentType<any> | null | undefined
+  /**
+   * If true, the events will be enriched with the following properties:
+   * - `overlapPosition`: position of the event in the stack of overlapping events
+   * Default value is `false`.
+   */
+  enableEnrichedEvents?: boolean
+  /**
+   * If true, skip the sorting of events improving the performance.
+   * This parameter is ignored if `enableEnrichedEvents` is `false`.
+   * Default value is `false`.
+   */
+  eventsAreSorted?: boolean
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -160,6 +172,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   disableMonthEventCellPress = false,
   showVerticalScrollIndicator = false,
   itemSeparatorComponent = null,
+  enableEnrichedEvents = false,
+  eventsAreSorted = false,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -353,6 +367,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         hourStyle={hourStyle}
         isEventOrderingEnabled={isEventOrderingEnabled}
         showVerticalScrollIndicator={showVerticalScrollIndicator}
+        enableEnrichedEvents={enableEnrichedEvents}
+        eventsAreSorted={eventsAreSorted}
       />
     </React.Fragment>
   )
