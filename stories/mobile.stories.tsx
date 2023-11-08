@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Text, TouchableOpacity, View } from 'react-native'
 
-import { Calendar, EventRenderer } from '../src'
+import { Calendar, EventRenderer, ICalendarEventBase } from '../src'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events, tonsOfEvents, tonsOfEventsSorted } from './events'
 import { useEvents } from './hooks'
@@ -316,7 +316,12 @@ storiesOf('showcase - Mobile', module)
           height={MOBILE_HEIGHT}
           events={state.events}
           mode="schedule"
-          eventCellStyle={[{ backgroundColor: 'red' }, { borderWidth: 1, borderColor: 'green' }]}
+          eventCellStyle={(event: ICalendarEventBase & { color?: string }) => {
+            return [
+              { backgroundColor: event.color ?? 'red' },
+              { borderWidth: 1, borderColor: 'green' },
+            ]
+          }}
         />
       </View>
     )
