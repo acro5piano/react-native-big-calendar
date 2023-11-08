@@ -21,6 +21,7 @@ export const events: Array<ICalendarEventBase & { color?: string }> = [
     title: 'Watch Boxing',
     start: dayjs().set('hour', 0).set('minute', 0).set('second', 0).toDate(),
     end: dayjs().set('hour', 1).set('minute', 30).toDate(),
+    color: '#02edda',
   },
   {
     title: 'Meeting',
