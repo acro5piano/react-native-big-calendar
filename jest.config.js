@@ -1,19 +1,13 @@
 module.exports = {
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.(t|j)sx?$': '@swc/jest',
   },
-  timers: 'fake',
+  moduleNameMapper: {
+    '^react-native$': 'react-native-web',
+  },
   testPathIgnorePatterns: [
     '<rootDir>/build/',
     '<rootDir>/node_modules/',
     '<rootDir>/rndemo/build/',
   ],
-  globals: {
-    'ts-jest': {
-      diagnostics: {
-        warnOnly: true,
-      },
-    },
-  },
-  preset: 'react-native-web',
 }

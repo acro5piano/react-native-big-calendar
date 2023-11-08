@@ -11,6 +11,14 @@ export interface ICalendarEventBase {
   children?: ReactElement | null
   hideHours?: boolean
   disabled?: boolean
+  /**
+   * overlapping position of event starting from 0 (optional)
+   */
+  overlapPosition?: number
+  /**
+   * number of events overlapping with this event (optional)
+   */
+  overlapCount?: number
 }
 
 export type CalendarTouchableOpacityProps = {
