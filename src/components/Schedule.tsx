@@ -198,6 +198,7 @@ function _Schedule<T extends ICalendarEventBase>({
         data={getItem}
         renderItem={({ item }: { item: any }) => renderFlatListItem(item)}
         ItemSeparatorComponent={itemSeparatorComponent}
+        keyExtractor={(_, index) => index.toString()}
       />
     </View>
   )
