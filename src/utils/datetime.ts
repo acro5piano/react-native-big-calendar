@@ -162,6 +162,8 @@ export function enrichEvents(
   events: ICalendarEventBase[],
   eventsAreSorted?: boolean,
 ): ICalendarEventBase[] {
+  if (!events.length) return []
+
   let groupEndTime = events[0].end
   let overlapPosition = 0
   let overlapCounting = 0
