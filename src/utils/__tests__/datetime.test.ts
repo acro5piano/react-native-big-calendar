@@ -236,6 +236,11 @@ describe('spanning events', () => {
 })
 
 describe('enrichEvents', () => {
+  test('should return empty when gets empty', () => {
+    const events: ICalendarEventBase[] = []
+    const groups = enrichEvents(events)
+    expect(groups).toEqual([])
+  })
   test('should add positions and overlap counts to sorted events when ends with a single group', () => {
     const eventsWithOverlaps = getEvents([
       { startHour: 1, endHour: 3 },
