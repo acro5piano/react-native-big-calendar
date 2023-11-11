@@ -66,22 +66,33 @@ function _Schedule<T extends ICalendarEventBase>({
   /**
    * Bind default style for eventCellStyle.
    */
-  const eventStyles = React.useMemo((): EventCellStyle<T> => {
-    // This default style  need for Schedule view
-    const defaultEventStyle = {
-      ...u['flex-column'],
-      ...u['h-50'],
-    }
+  const eventStyles = React.useCallback(
+    (event: T) => {
+      // This default style  need for Schedule view
+      const defaultEventStyle = {
+        ...u['flex-column'],
+        ...u['h-50'],
+      }
 
-    if (Array.isArray(eventCellStyle)) {
-      return [...[defaultEventStyle], ...eventCellStyle]
-    }
-    if (typeof eventCellStyle === 'object') {
-      return { ...defaultEventStyle, ...eventCellStyle }
-    }
-
-    return defaultEventStyle
-  }, [eventCellStyle])
+      if (Array.isArray(eventCellStyle)) {
+        return [...[defaultEventStyle], ...eventCellStyle]
+      }
+      if (typeof eventCellStyle === 'object') {
+        return { ...defaultEventStyle, ...eventCellStyle }
+      }
+      if (typeof eventCellStyle === 'function') {
+        const output = eventCellStyle(event)
+        if (Array.isArray(output)) {
+          return [...[defaultEventStyle], ...output]
+        }
+        if (typeof output === 'object') {
+          return { ...defaultEventStyle, ...output }
+        }
+      }
+      return defaultEventStyle
+    },
+    [eventCellStyle],
+  )
 
   /**
    * Group by events by start date.
@@ -187,6 +198,7 @@ function _Schedule<T extends ICalendarEventBase>({
         data={getItem}
         renderItem={({ item }: { item: any }) => renderFlatListItem(item)}
         ItemSeparatorComponent={itemSeparatorComponent}
+        keyExtractor={(_, index) => index.toString()}
       />
     </View>
   )

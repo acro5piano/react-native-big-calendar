@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Dimensions, View } from 'react-native'
 
-import { Calendar } from '../src'
+import { Calendar, ICalendarEventBase } from '../src'
 import { CONTROL_HEIGHT, Control } from './components/Control'
 import { customEventRenderer, events, spanningEvents } from './events'
 import { useEvents } from './hooks'
@@ -376,7 +376,12 @@ storiesOf('showcase - Desktop', module)
           height={SCREEN_HEIGHT}
           events={state.events}
           mode="schedule"
-          eventCellStyle={[{ backgroundColor: 'red' }, { borderWidth: 1, borderColor: 'green' }]}
+          eventCellStyle={(event: ICalendarEventBase & { color?: string }) => {
+            return [
+              { backgroundColor: event.color ?? 'red' },
+              { borderWidth: 1, borderColor: 'green' },
+            ]
+          }}
         />
       </View>
     )
