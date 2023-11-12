@@ -175,13 +175,16 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   enableEnrichedEvents = false,
   eventsAreSorted = false,
 }: CalendarContainerProps<T>) {
-  const [targetDate, setTargetDate] = React.useState(dayjs(date))
+  // To ensure we have proper effect callback, use string to date comparision.
+  const dateString = date?.toString()
+
+  const [targetDate, setTargetDate] = React.useState(() => dayjs(date))
 
   React.useEffect(() => {
-    if (date) {
-      setTargetDate(dayjs(date))
+    if (dateString) {
+      setTargetDate(dayjs(dateString))
     }
-  }, [date])
+  }, [dateString]) // if setting `[date]`, it will triggered twice
 
   const allDayEvents = React.useMemo(
     () => events.filter((event) => isAllDayEvent(event.start, event.end)),
@@ -194,7 +197,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   )
 
   const getDateRange = React.useCallback(
-    (date: dayjs.Dayjs) => {
+    (date: string | dayjs.Dayjs) => {
       switch (mode) {
         case 'month':
           return getDatesInMonth(date, locale)
@@ -240,13 +243,16 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         }
       }
       setTargetDate(nextTargetDate)
-      if (onChangeDate) {
-        const nextDateRange = getDateRange(nextTargetDate)
-        onChangeDate([nextDateRange[0].toDate(), nextDateRange.slice(-1)[0].toDate()])
-      }
     },
-    [swipeEnabled, targetDate, mode, theme.isRTL, getDateRange, onChangeDate],
+    [swipeEnabled, targetDate, mode, theme.isRTL],
   )
+
+  React.useEffect(() => {
+    if (dateString && onChangeDate) {
+      const dateRange = getDateRange(dateString)
+      onChangeDate([dateRange[0].toDate(), dateRange[dateRange.length - 1].toDate()])
+    }
+  }, [dateString, onChangeDate, getDateRange])
 
   const commonProps = {
     cellHeight,
