@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/react'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Button } from 'react-native'
 
 import { Calendar } from '../src'
@@ -29,7 +29,7 @@ const CalendarContainer: React.FC<CalendarContainerProps> = ({ swipeEnabled }) =
     setDate(lastWeek)
   }
 
-  const onChangeDate = ([start, end]) => {
+  const onChangeDate = useCallback(([start, end]: [Date, Date]) => {
     //here I normally do my event fetching with the given timeframe.
     //this way I dont need to calculate the start and end date by myself
     //but the function is only called if I swipe the calendar
@@ -37,7 +37,7 @@ const CalendarContainer: React.FC<CalendarContainerProps> = ({ swipeEnabled }) =
 
     console.log(start)
     console.log(end)
-  }
+  }, [])
 
   return (
     <>
