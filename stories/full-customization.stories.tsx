@@ -4,6 +4,7 @@ import React from 'react'
 import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import tailwind from 'tailwind-rn'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Calendar, Mode, modeToNum } from '../src'
 import { events } from './events'
@@ -15,7 +16,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 
 const today = new Date()
 
-storiesOf('Full Customization', module).add('Main', () => {
+const Component = () => {
   const { events: calendarEvents, addEvent } = useEvents(events)
 
   const [mode, setMode] = React.useState<Mode>('week')
@@ -106,4 +107,15 @@ storiesOf('Full Customization', module).add('Main', () => {
       </View>
     </View>
   )
-})
+}
+
+const meta: Meta = {
+  component: Component,
+}
+
+type Story = StoryObj<typeof meta>
+
+export const Primary: Story = {}
+
+/* eslint-disable */
+export default meta
