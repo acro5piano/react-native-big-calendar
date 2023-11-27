@@ -62,19 +62,37 @@ export const events: Array<ICalendarEventBase & { color?: string }> = [
   },
 ]
 
-export const tonsOfEvents: Array<ICalendarEventBase & { color?: string }> = new Array(200)
+export const tonsOfEvents: Array<ICalendarEventBase & { color?: string }> = new Array(10)
   .fill(undefined)
   .map((_) => {
+    const day = getRandomInt(dayjs().startOf('week').get('day'), dayjs().endOf('week').get('day'))
     const startHour = getRandomInt(0, 23)
-    const endHour = getRandomInt(startHour + 1, 24)
+    const endHour = getRandomInt(startHour + 2, 24)
     const startMinute = getRandomInt(0, 59)
     const endMinute = getRandomInt(0, 59)
     return {
       title: 'Watch Boxing',
-      start: dayjs().set('hour', startHour).set('minute', startMinute).set('second', 0).toDate(),
-      end: dayjs().set('hour', endHour).set('minute', endMinute).toDate(),
+      start: dayjs()
+        .set('day', day)
+        .set('hour', startHour)
+        .set('minute', startMinute)
+        .set('second', 0)
+        .toDate(),
+      end: dayjs()
+        .set('day', day)
+        .set('hour', endHour)
+        .set('minute', endMinute)
+        .set('second', 0)
+        .toDate(),
     }
   })
+
+// Add an event that spans multiple days
+tonsOfEvents.push({
+  title: 'Overlapping event',
+  start: dayjs().set('hour', 10).set('minute', 0).toDate(),
+  end: dayjs().set('hour', 10).set('minute', 0).add(1, 'day').toDate(),
+})
 
 export const tonsOfEventsSorted = tonsOfEvents.sort((a, b) => a.start.getTime() - b.start.getTime())
 

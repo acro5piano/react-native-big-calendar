@@ -6,7 +6,7 @@ import * as R from 'remeda'
 
 import { ICalendarEventBase } from '../../interfaces'
 import * as utils from '../datetime'
-import { enrichEvents } from '../datetime'
+import { enrichEvents, SIMPLE_DATE_FORMAT } from '../datetime'
 
 Mockdate.set('2021-09-17T04:00:00.000Z')
 
@@ -239,7 +239,7 @@ describe('enrichEvents', () => {
   test('should return empty when gets empty', () => {
     const events: ICalendarEventBase[] = []
     const groups = enrichEvents(events)
-    expect(groups).toEqual([])
+    expect(groups).toEqual({})
   })
   test('should add positions and overlap counts to sorted events when ends with a single group', () => {
     const eventsWithOverlaps = getEvents([
@@ -254,43 +254,45 @@ describe('enrichEvents', () => {
 
     const groups = enrichEvents(eventsWithOverlaps, true)
 
-    expect(groups).toEqual([
-      {
-        ...eventsWithOverlaps[0],
-        overlapPosition: 0,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[1],
-        overlapPosition: 1,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[2],
-        overlapPosition: 2,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[3],
-        overlapPosition: 3,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[4],
-        overlapPosition: 0,
-        overlapCount: 2,
-      },
-      {
-        ...eventsWithOverlaps[5],
-        overlapPosition: 1,
-        overlapCount: 2,
-      },
-      {
-        ...eventsWithOverlaps[6],
-        overlapPosition: 0,
-        overlapCount: 1,
-      },
-    ])
+    expect(groups).toEqual({
+      [dayjs().format(SIMPLE_DATE_FORMAT)]: [
+        {
+          ...eventsWithOverlaps[0],
+          overlapPosition: 0,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[1],
+          overlapPosition: 1,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[2],
+          overlapPosition: 2,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[3],
+          overlapPosition: 3,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[4],
+          overlapPosition: 0,
+          overlapCount: 2,
+        },
+        {
+          ...eventsWithOverlaps[5],
+          overlapPosition: 1,
+          overlapCount: 2,
+        },
+        {
+          ...eventsWithOverlaps[6],
+          overlapPosition: 0,
+          overlapCount: 1,
+        },
+      ],
+    })
   })
   test('should add positions and overlap counts to sorted events when ends with a overlapping group', () => {
     const eventsWithOverlaps = getEvents([
@@ -305,43 +307,45 @@ describe('enrichEvents', () => {
 
     const groups = enrichEvents(eventsWithOverlaps, true)
 
-    expect(groups).toEqual([
-      {
-        ...eventsWithOverlaps[0],
-        overlapPosition: 0,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[1],
-        overlapPosition: 1,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[2],
-        overlapPosition: 2,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[3],
-        overlapPosition: 3,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[4],
-        overlapPosition: 0,
-        overlapCount: 3,
-      },
-      {
-        ...eventsWithOverlaps[5],
-        overlapPosition: 1,
-        overlapCount: 3,
-      },
-      {
-        ...eventsWithOverlaps[6],
-        overlapPosition: 2,
-        overlapCount: 3,
-      },
-    ])
+    expect(groups).toEqual({
+      [dayjs().format(SIMPLE_DATE_FORMAT)]: [
+        {
+          ...eventsWithOverlaps[0],
+          overlapPosition: 0,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[1],
+          overlapPosition: 1,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[2],
+          overlapPosition: 2,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[3],
+          overlapPosition: 3,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[4],
+          overlapPosition: 0,
+          overlapCount: 3,
+        },
+        {
+          ...eventsWithOverlaps[5],
+          overlapPosition: 1,
+          overlapCount: 3,
+        },
+        {
+          ...eventsWithOverlaps[6],
+          overlapPosition: 2,
+          overlapCount: 3,
+        },
+      ],
+    })
   })
   test('should add positions to non-sorted events', () => {
     const eventsWithOverlaps = getEvents([
@@ -356,42 +360,44 @@ describe('enrichEvents', () => {
 
     const groups = enrichEvents(eventsWithOverlaps)
 
-    expect(groups).toEqual([
-      {
-        ...eventsWithOverlaps[0],
-        overlapPosition: 0,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[1],
-        overlapPosition: 1,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[2],
-        overlapPosition: 2,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[3],
-        overlapPosition: 3,
-        overlapCount: 4,
-      },
-      {
-        ...eventsWithOverlaps[4],
-        overlapPosition: 0,
-        overlapCount: 2,
-      },
-      {
-        ...eventsWithOverlaps[5],
-        overlapPosition: 1,
-        overlapCount: 2,
-      },
-      {
-        ...eventsWithOverlaps[6],
-        overlapPosition: 0,
-        overlapCount: 1,
-      },
-    ])
+    expect(groups).toEqual({
+      [dayjs().format(SIMPLE_DATE_FORMAT)]: [
+        {
+          ...eventsWithOverlaps[0],
+          overlapPosition: 0,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[1],
+          overlapPosition: 1,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[2],
+          overlapPosition: 2,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[3],
+          overlapPosition: 3,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[4],
+          overlapPosition: 0,
+          overlapCount: 2,
+        },
+        {
+          ...eventsWithOverlaps[5],
+          overlapPosition: 1,
+          overlapCount: 2,
+        },
+        {
+          ...eventsWithOverlaps[6],
+          overlapPosition: 0,
+          overlapCount: 1,
+        },
+      ],
+    })
   })
 })

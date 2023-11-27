@@ -31,28 +31,6 @@ storiesOf('showcase - Mobile', module)
       />
     </View>
   ))
-  .add('Tons of events', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={tonsOfEvents}
-        mode="day"
-        onPressEvent={(event) => alert(event.title)}
-      />
-    </View>
-  ))
-  .add('Tons of sorted events', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={tonsOfEventsSorted}
-        mode="day"
-        onPressEvent={(event) => alert(event.title)}
-        enableEnrichedEvents
-        eventsAreSorted
-      />
-    </View>
-  ))
   .add('3days mode', () => (
     <View style={styles.mobile}>
       <Calendar
@@ -66,6 +44,28 @@ storiesOf('showcase - Mobile', module)
   .add('week mode', () => (
     <View style={styles.mobile}>
       <Calendar hideHours height={MOBILE_HEIGHT} events={events} />
+    </View>
+  ))
+  .add('Tons of events', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={tonsOfEvents}
+        mode="week"
+        onPressEvent={(event) => alert(event.title)}
+      />
+    </View>
+  ))
+  .add('Tons of sorted events', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={tonsOfEventsSorted}
+        mode="week"
+        onPressEvent={(event) => alert(event.title)}
+        enableEnrichedEvents
+        eventsAreSorted
+      />
     </View>
   ))
   .add('Month mode', () => {
