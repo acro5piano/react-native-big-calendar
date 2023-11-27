@@ -12,7 +12,12 @@ import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
 import dayjs from 'dayjs'
 import { CalendarEvent } from './CalendarEvent'
-import { getCountOfEventsAtEvent, getOrderOfEvent, isToday } from '../utils/datetime'
+import {
+  getCountOfEventsAtEvent,
+  getOrderOfEvent,
+  isToday,
+  SIMPLE_DATE_FORMAT,
+} from '../utils/datetime'
 import { stringHasContent } from '../utils/object'
 
 interface ScheduleProps<T extends ICalendarEventBase> {
@@ -99,7 +104,7 @@ function _Schedule<T extends ICalendarEventBase>({
    */
   const getItem = React.useMemo(() => {
     const groupedData = events.reduce((result: any, item: T): any => {
-      const startDate = dayjs(item.start).format('YYYY-MM-DD')
+      const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
       if (!result[startDate]) {
         result[startDate] = []
       }

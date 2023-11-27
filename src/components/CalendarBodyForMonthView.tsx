@@ -24,7 +24,7 @@ import {
   WeekNum,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { getWeeksWithAdjacentMonths } from '../utils/datetime'
+import { getWeeksWithAdjacentMonths, SIMPLE_DATE_FORMAT } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 
@@ -214,7 +214,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
           theme.typography.sm,
           {
             color:
-              date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
+              date?.format(SIMPLE_DATE_FORMAT) === now.format(SIMPLE_DATE_FORMAT)
                 ? theme.palette.primary.main
                 : date?.month() !== targetDate.month()
                 ? theme.palette.gray['500']

@@ -20,6 +20,7 @@ import {
   getRelativeTopInDay,
   hours,
   isToday,
+  SIMPLE_DATE_FORMAT,
 } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
 import { CalendarEvent } from './CalendarEvent'
@@ -136,10 +137,16 @@ function _CalendarBody<T extends ICalendarEventBase>({
     [onLongPressCell],
   )
 
-  const enrichedEvents = useMemo(() => {
+  const enrichedEventsByDate = useMemo(() => {
     if (enableEnrichedEvents) {
       return enrichEvents(events, eventsAreSorted)
     }
+    return {}
+  }, [enableEnrichedEvents, events, eventsAreSorted])
+
+  const enrichedEvents = useMemo(() => {
+    if (enableEnrichedEvents) return []
+
     if (isEventOrderingEnabled) {
       return events.map((event) => ({
         ...event,
@@ -149,7 +156,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
     }
 
     return events
-  }, [events, eventsAreSorted, isEventOrderingEnabled, enableEnrichedEvents])
+  }, [enableEnrichedEvents, events, isEventOrderingEnabled])
 
   const _renderMappedEvent = React.useCallback(
     (event: T, index: number) => {
@@ -169,6 +176,59 @@ function _CalendarBody<T extends ICalendarEventBase>({
       )
     },
     [ampm, eventCellStyle, onPressEvent, overlapOffset, renderEvent, showTime],
+  )
+
+  const _renderEvents = React.useCallback(
+    (date) => {
+      if (enableEnrichedEvents) {
+        return (enrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(_renderMappedEvent)
+      } else {
+        return (
+          <>
+            {/* Render events of this date */}
+            {/* M  T  (W)  T  F  S  S */}
+            {/*       S-E             */}
+            {(enrichedEvents as T[])
+              .filter(({ start }) =>
+                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+              )
+              .map(_renderMappedEvent)}
+
+            {/* Render events which starts before this date and ends on this date */}
+            {/* M  T  (W)  T  F  S  S */}
+            {/* S------E              */}
+            {(enrichedEvents as T[])
+              .filter(
+                ({ start, end }) =>
+                  dayjs(start).isBefore(date.startOf('day')) &&
+                  dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+              )
+              .map((event) => ({
+                ...event,
+                start: dayjs(event.end).startOf('day'),
+              }))
+              .map(_renderMappedEvent)}
+
+            {/* Render events which starts before this date and ends after this date */}
+            {/* M  T  (W)  T  F  S  S */}
+            {/*    S-------E          */}
+            {(enrichedEvents as T[])
+              .filter(
+                ({ start, end }) =>
+                  dayjs(start).isBefore(date.startOf('day')) &&
+                  dayjs(end).isAfter(date.endOf('day')),
+              )
+              .map((event) => ({
+                ...event,
+                start: dayjs(event.end).startOf('day'),
+                end: dayjs(event.end).endOf('day'),
+              }))
+              .map(_renderMappedEvent)}
+          </>
+        )
+      }
+    },
+    [_renderMappedEvent, enableEnrichedEvents, enrichedEvents, enrichedEventsByDate],
   )
 
   const theme = useTheme()
@@ -222,47 +282,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   calendarCellStyle={calendarCellStyle}
                 />
               ))}
-
-              {/* Render events of this date */}
-              {/* M  T  (W)  T  F  S  S */}
-              {/*       S-E             */}
-              {(enrichedEvents as T[])
-                .filter(({ start }) =>
-                  dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                )
-                .map(_renderMappedEvent)}
-
-              {/* Render events which starts before this date and ends on this date */}
-              {/* M  T  (W)  T  F  S  S */}
-              {/* S------E              */}
-              {(enrichedEvents as T[])
-                .filter(
-                  ({ start, end }) =>
-                    dayjs(start).isBefore(date.startOf('day')) &&
-                    dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-                )
-                .map((event) => ({
-                  ...event,
-                  start: dayjs(event.end).startOf('day'),
-                }))
-                .map(_renderMappedEvent)}
-
-              {/* Render events which starts before this date and ends after this date */}
-              {/* M  T  (W)  T  F  S  S */}
-              {/*    S-------E          */}
-              {(enrichedEvents as T[])
-                .filter(
-                  ({ start, end }) =>
-                    dayjs(start).isBefore(date.startOf('day')) &&
-                    dayjs(end).isAfter(date.endOf('day')),
-                )
-                .map((event) => ({
-                  ...event,
-                  start: dayjs(event.end).startOf('day'),
-                  end: dayjs(event.end).endOf('day'),
-                }))
-                .map(_renderMappedEvent)}
-
+              {_renderEvents(date)}
               {isToday(date) && !hideNowIndicator && (
                 <View
                   style={[
