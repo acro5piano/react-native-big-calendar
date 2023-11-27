@@ -23,11 +23,11 @@ function _Calendar<T extends ICalendarEventBase>({
   isRTL,
   ...props
 }: CalendarProps<T>) {
+  const _theme = deepMerge(defaultTheme, theme) as ThemeInterface
   // TODO: Old prop support. This should be included in custom theme itself.
   if (isRTL !== undefined) {
-    theme.isRTL = isRTL
+    _theme.isRTL = isRTL
   }
-  const _theme = deepMerge(defaultTheme, theme) as ThemeInterface
   return (
     <ThemeContext.Provider value={_theme}>
       <CalendarContainer {...props} />
