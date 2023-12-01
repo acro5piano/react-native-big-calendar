@@ -61,6 +61,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hideHours?: Boolean
   isEventOrderingEnabled?: boolean
   showVerticalScrollIndicator?: boolean
+  enrichedEventsByDate?: Record<string, T[]>
   enableEnrichedEvents?: boolean
   eventsAreSorted?: boolean
 }
@@ -89,6 +90,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hideHours = false,
   isEventOrderingEnabled = true,
   showVerticalScrollIndicator = false,
+  enrichedEventsByDate,
   enableEnrichedEvents = false,
   eventsAreSorted = false,
 }: CalendarBodyProps<T>) {
@@ -137,12 +139,12 @@ function _CalendarBody<T extends ICalendarEventBase>({
     [onLongPressCell],
   )
 
-  const enrichedEventsByDate = useMemo(() => {
+  const internalEnrichedEventsByDate = useMemo(() => {
     if (enableEnrichedEvents) {
-      return enrichEvents(events, eventsAreSorted)
+      return enrichedEventsByDate || enrichEvents(events, eventsAreSorted)
     }
     return {}
-  }, [enableEnrichedEvents, events, eventsAreSorted])
+  }, [enableEnrichedEvents, enrichedEventsByDate, events, eventsAreSorted])
 
   const enrichedEvents = useMemo(() => {
     if (enableEnrichedEvents) return []
@@ -181,7 +183,9 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const _renderEvents = React.useCallback(
     (date) => {
       if (enableEnrichedEvents) {
-        return (enrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(_renderMappedEvent)
+        return (internalEnrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(
+          _renderMappedEvent,
+        )
       } else {
         return (
           <>
@@ -228,7 +232,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         )
       }
     },
-    [_renderMappedEvent, enableEnrichedEvents, enrichedEvents, enrichedEventsByDate],
+    [_renderMappedEvent, enableEnrichedEvents, enrichedEvents, internalEnrichedEventsByDate],
   )
 
   const theme = useTheme()

@@ -110,6 +110,10 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   showVerticalScrollIndicator?: boolean
   itemSeparatorComponent?: React.ComponentType<any> | null | undefined
   /**
+   * If provided, we will skip the internal process of building the enriched events by date dictionary.
+   */
+  enrichedEventsByDate?: Record<string, T[]>
+  /**
    * If true, the events will be enriched with the following properties:
    * - `overlapPosition`: position of the event in the stack of overlapping events
    * Default value is `false`.
@@ -172,6 +176,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   disableMonthEventCellPress = false,
   showVerticalScrollIndicator = false,
   itemSeparatorComponent = null,
+  enrichedEventsByDate,
   enableEnrichedEvents = false,
   eventsAreSorted = false,
 }: CalendarContainerProps<T>) {
@@ -373,6 +378,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         hourStyle={hourStyle}
         isEventOrderingEnabled={isEventOrderingEnabled}
         showVerticalScrollIndicator={showVerticalScrollIndicator}
+        enrichedEventsByDate={enrichedEventsByDate}
         enableEnrichedEvents={enableEnrichedEvents}
         eventsAreSorted={eventsAreSorted}
       />
