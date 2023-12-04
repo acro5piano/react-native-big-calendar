@@ -373,18 +373,18 @@ When an event spans multiple days, we create a new event for each day it spans. 
 2021-05-01: {
    ...other data
    start: event start datetime
-   end: midnight
+   end: current day midnight
 }
 -- All the intermediate days:
 2021-05-02: {
    ...other data
-   start: midnight
-   end: midnight
+   start: previous day midnight
+   end: current day midnight
 }
 -- Final day
 2021-05-03: {
    ...other data
-   start: midnight
+   start: previous day midnight
    end: event start datetime
 }
 ```
