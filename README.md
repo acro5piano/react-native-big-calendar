@@ -354,11 +354,14 @@ We create and cache a dictionary keyed by date with all the events properties pl
 
 ```
 {
- [YYYY-MM-DD]: {
-    ...all event information,
-    overlapPosition: int
-    overlapCount: int
- }
+    [YYYY-MM-DD]: [
+        {
+            ...all event information,
+            overlapPosition: int
+            overlapCount: int
+        }
+    ]
+}
 ```
 
 ### Multi-days events
