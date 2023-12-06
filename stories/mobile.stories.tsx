@@ -333,7 +333,7 @@ storiesOf('showcase - Mobile', module)
         events={events}
         mode="day"
         onPressEvent={(event) => alert(event.title)}
-        onSwipe={(date) => alert(`You swiped to ${date.toUTCString()}`)}
+        onSwipeEnd={(date) => alert(`You swiped to ${date.toUTCString()}`)}
       />
     </View>
   ))
