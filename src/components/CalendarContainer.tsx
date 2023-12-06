@@ -111,9 +111,10 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   itemSeparatorComponent?: React.ComponentType<any> | null | undefined
   /**
    * Callback when the user swipes horizontally.
+   * Note: Memoize this callback to avoid un-necessary re-renders.
    * @param date The date where the user swiped to.
    */
-  onSwipe?: (date: Date) => void
+  onSwipeEnd?: (date: Date) => void
   /**
    * If provided, we will skip the internal process of building the enriched events by date dictionary.
    */
@@ -184,7 +185,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   enrichedEventsByDate,
   enableEnrichedEvents = false,
   eventsAreSorted = false,
-  onSwipe,
+  onSwipeEnd,
 }: CalendarContainerProps<T>) {
   // To ensure we have proper effect callback, use string to date comparision.
   const dateString = date?.toString()
@@ -254,11 +255,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         }
       }
       setTargetDate(nextTargetDate)
-      if (onSwipe) {
-        onSwipe(nextTargetDate.toDate())
-      }
+      onSwipeEnd?.(nextTargetDate.toDate())
     },
-    [swipeEnabled, theme.isRTL, onSwipe, targetDate, mode],
+    [swipeEnabled, theme.isRTL, onSwipeEnd, targetDate, mode],
   )
 
   React.useEffect(() => {
