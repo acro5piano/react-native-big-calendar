@@ -6,13 +6,22 @@ export function useNow(enabled: boolean) {
 
   React.useEffect(() => {
     if (!enabled) {
-      return () => {}
+      return () => {};
     }
-    const pid = setInterval(() => setNow(dayjs()), 60 * 1000)
-    return () => clearInterval(pid)
-  }, [enabled])
-
+    const updateNow = () => {
+      const currentMinute = dayjs().minute();
+      setNow(dayjs());
+      if (currentMinute !== lastMinuteRef.current) {
+        lastMinuteRef.current = currentMinute;
+        setNow(dayjs());
+      }
+    };
+    updateNow();
+    const intervalId = setInterval(updateNow, 1000);
+    return () => clearInterval(intervalId);
+  }, [enabled]);
+  const lastMinuteRef = React.useRef(dayjs().minute());
   return {
     now,
-  }
+  };
 }
