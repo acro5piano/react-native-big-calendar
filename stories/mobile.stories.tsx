@@ -326,3 +326,14 @@ storiesOf('showcase - Mobile', module)
       </View>
     )
   })
+  .add('With OnSwipe handler', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={events}
+        mode="day"
+        onPressEvent={(event) => alert(event.title)}
+        onSwipeEnd={(date) => alert(`You swiped to ${date.toUTCString()}`)}
+      />
+    </View>
+  ))
