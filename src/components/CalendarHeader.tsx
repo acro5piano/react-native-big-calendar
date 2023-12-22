@@ -149,12 +149,13 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                 ]}
               >
                 {allDayEvents.map((event, index) => {
+                  const bg: any = (event?.color) ? {backgroundColor: event.color} : primaryBg;
                   if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
                     return null
                   }
                   return (
                     <TouchableOpacity
-                      style={[eventCellCss.style, primaryBg, u['mt-2']]}
+                      style={[eventCellCss.style, bg, u['mt-2']]}
                       key={index}
                       onPress={() => _onPressEvent(event)}
                     >
