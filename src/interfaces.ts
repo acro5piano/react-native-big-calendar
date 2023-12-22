@@ -11,6 +11,7 @@ export interface ICalendarEventBase {
   children?: ReactElement | null
   hideHours?: boolean
   disabled?: boolean
+  color?: string
   /**
    * overlapping position of event starting from 0 (optional)
    */
