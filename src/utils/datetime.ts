@@ -6,10 +6,11 @@ import { ICalendarEventBase, Mode, WeekNum } from '../interfaces'
 import { Palette } from '../theme/ThemeInterface'
 
 export const DAY_MINUTES = 1440
+export const SIMPLE_DATE_FORMAT = 'YYYY-MM-DD'
 
-export function getDatesInMonth(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
+export function getDatesInMonth(date: string | Date | dayjs.Dayjs = new Date(), locale = 'en') {
   const subject = dayjs(date)
-  const days = Array(subject.daysInMonth() - 1)
+  const days = Array(subject.daysInMonth())
     .fill(0)
     .map((_, i) => {
       return subject.date(i + 1).locale(locale)
@@ -18,7 +19,7 @@ export function getDatesInMonth(date: Date | dayjs.Dayjs = new Date(), locale = 
 }
 
 export function getDatesInWeek(
-  date: Date | dayjs.Dayjs = new Date(),
+  date: string | Date | dayjs.Dayjs = new Date(),
   weekStartsOn: WeekNum = 0,
   locale = 'en',
 ) {
@@ -34,7 +35,10 @@ export function getDatesInWeek(
   return days
 }
 
-export function getDatesInNextThreeDays(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
+export function getDatesInNextThreeDays(
+  date: string | Date | dayjs.Dayjs = new Date(),
+  locale = 'en',
+) {
   const subject = dayjs(date).locale(locale)
   const days = Array(3)
     .fill(0)
@@ -44,7 +48,10 @@ export function getDatesInNextThreeDays(date: Date | dayjs.Dayjs = new Date(), l
   return days
 }
 
-export function getDatesInNextOneDay(date: Date | dayjs.Dayjs = new Date(), locale = 'en') {
+export function getDatesInNextOneDay(
+  date: string | Date | dayjs.Dayjs = new Date(),
+  locale = 'en',
+) {
   const subject = dayjs(date).locale(locale)
   const days = Array(1)
     .fill(0)
@@ -151,6 +158,117 @@ export function getOrderOfEvent(event: ICalendarEventBase, eventList: ICalendarE
   return index === -1 ? 0 : index
 }
 
+/**
+ * Iterate over a sorted list of events and add the following properties:
+ * - overlapPosition: position of the event in the stack of overlapping events
+ * - overlapsCount: number of events that overlap with this event
+ * @param events Sorted list of events by start time
+ * @param eventsAreSorted indicates if the events are already sorted
+ */
+export function enrichEvents<T extends ICalendarEventBase>(
+  events: T[],
+  eventsAreSorted?: boolean,
+): Record<string, T[]> {
+  if (!events.length) return {}
+
+  let groupEndTime = events[0].end
+  let overlapPosition = 0
+  let overlapCounting = 0
+  let overlapCountingPointers: number[] = []
+
+  // If events are not sorted, sort them by start time
+  const baseEvents = eventsAreSorted
+    ? events
+    : events.sort((a, b) => a.start.getTime() - b.start.getTime())
+
+  const eventsWithOverlaps = baseEvents.map((event, index) => {
+    // If the event starts before the group end time, it overlaps
+    if (event.start < groupEndTime) {
+      // Update the group end time if this overlapping event ends after the current group end time
+      if (event.end > groupEndTime) {
+        groupEndTime = event.end
+      }
+      overlapCounting++
+      // If this is the last event, we need to add the overlap counting to the overlap counting pointers
+      if (index === baseEvents.length - 1) {
+        overlapCountingPointers.push(...Array(overlapCounting).fill(overlapCounting))
+      }
+      //  Otherwise, it doesn't overlap and we reset the pointers
+    } else {
+      groupEndTime = event.end
+      overlapCountingPointers.push(...Array(overlapCounting).fill(overlapCounting))
+      // If this is the last event, we need to add a "group" of 1 into the overlap counting pointers
+      if (index === baseEvents.length - 1) {
+        overlapCountingPointers.push(1)
+      }
+      overlapPosition = 0
+      overlapCounting = 1
+    }
+
+    return {
+      ...event,
+      // Add the overlap position to the event and increment by 1 for the next event
+      overlapPosition: overlapPosition++,
+    }
+  })
+
+  const eventsByDate: Record<string, T[]> = {}
+  eventsWithOverlaps.forEach((event, index) => {
+    // Add overlap count to the event
+    const enrichedEvent = {
+      ...event,
+      overlapCount: overlapCountingPointers[index],
+    }
+
+    const startDate = dayjs(enrichedEvent.start).format(SIMPLE_DATE_FORMAT)
+    const endDate = dayjs(enrichedEvent.end).format(SIMPLE_DATE_FORMAT)
+
+    if (!eventsByDate[startDate]) {
+      eventsByDate[startDate] = []
+    }
+
+    if (!eventsByDate[endDate]) {
+      eventsByDate[endDate] = []
+    }
+
+    if (startDate === endDate) {
+      eventsByDate[startDate].push(enrichedEvent)
+    } else {
+      /**
+       * In case of multi-day events, we need to create an event for each day setting the start
+       * and end dates of the middle days to the start and end of the day.
+       */
+
+      // Add the event to the bucket of the start date
+      eventsByDate[startDate].push({
+        ...enrichedEvent,
+        end: dayjs(enrichedEvent.start).endOf('day').toDate(),
+      })
+
+      // Add events in the bucket of the middle dates
+      const amountOfDaysBetweenDates = dayjs(enrichedEvent.start).diff(enrichedEvent.end, 'day')
+      for (let i = 1; i <= amountOfDaysBetweenDates; i++) {
+        const intermediateDate = dayjs(enrichedEvent.start).add(1, 'day')
+        if (!eventsByDate[intermediateDate.format(SIMPLE_DATE_FORMAT)]) {
+          eventsByDate[intermediateDate.format(SIMPLE_DATE_FORMAT)] = []
+        }
+        eventsByDate[intermediateDate.format(SIMPLE_DATE_FORMAT)].push({
+          ...enrichedEvent,
+          start: intermediateDate.startOf('day').toDate(),
+        })
+      }
+
+      // Add the event to the bucket of the end date
+      eventsByDate[endDate].push({
+        ...enrichedEvent,
+        start: dayjs(enrichedEvent.end).startOf('day').toDate(),
+      })
+    }
+  })
+
+  return eventsByDate
+}
+
 export function getStyleForOverlappingEvent(
   eventPosition: number,
   overlapOffset: number,
@@ -171,7 +289,7 @@ export function getStyleForOverlappingEvent(
 }
 
 export function getDatesInNextCustomDays(
-  date: Date | dayjs.Dayjs = new Date(),
+  date: string | Date | dayjs.Dayjs = new Date(),
   weekStartsOn: WeekNum = 0,
   weekEndsOn: WeekNum = 6,
   locale = 'en',
@@ -224,11 +342,11 @@ export function getEventSpanningInfo(
 
   // adding + 1 because durations start at 0
   const eventDuration =
-    Math.floor(dayjs.duration(dayjs(event.end).diff(dayjs(event.start))).asDays()) + 1
-  const eventDaysLeft = Math.floor(dayjs.duration(dayjs(event.end).diff(date)).asDays()) + 1
+    Math.floor(dayjs.duration(dayjs(event.end).endOf('day').diff(dayjs(event.start))).asDays()) + 1
+  const eventDaysLeft =
+    Math.floor(dayjs.duration(dayjs(event.end).endOf('day').diff(date)).asDays()) + 1
   const weekDaysLeft = 7 - dayOfTheWeek
   const monthDaysLeft = date.endOf('month').date() - date.date()
-  // console.log(dayOfTheWeek === 0 && !showAdjacentMonths && monthDaysLeft < 7)
   const isMultipleDays = eventDuration > 1
   // This is to determine how many days from the event to show during a week
   const eventWeekDuration =

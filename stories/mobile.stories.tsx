@@ -3,9 +3,9 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Text, TouchableOpacity, View } from 'react-native'
 
-import { Calendar, EventRenderer } from '../src'
+import { Calendar, EventRenderer, ICalendarEventBase } from '../src'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
-import { events } from './events'
+import { events, tonsOfEvents, tonsOfEventsSorted } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 
@@ -44,6 +44,28 @@ storiesOf('showcase - Mobile', module)
   .add('week mode', () => (
     <View style={styles.mobile}>
       <Calendar hideHours height={MOBILE_HEIGHT} events={events} />
+    </View>
+  ))
+  .add('Tons of events', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={tonsOfEvents}
+        mode="week"
+        onPressEvent={(event) => alert(event.title)}
+      />
+    </View>
+  ))
+  .add('Tons of sorted events', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={tonsOfEventsSorted}
+        mode="week"
+        onPressEvent={(event) => alert(event.title)}
+        enableEnrichedEvents
+        eventsAreSorted
+      />
     </View>
   ))
   .add('Month mode', () => {
@@ -237,6 +259,81 @@ storiesOf('showcase - Mobile', module)
             backgroundColor: isEvenRow ? 'red' : 'green',
           }
         }}
+      />
+    </View>
+  ))
+  .add('Month - Calendar Cell - Custom Date Cell Renderer', () => {
+    const renderCustomDate = (_date: Date) => {
+      return (
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View
+            style={{
+              backgroundColor: '#D4E0FE',
+              borderRadius: 20,
+              width: 15,
+              height: 15,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text>{_date.getDay()}</Text>
+          </View>
+        </View>
+      )
+    }
+
+    return (
+      <View style={styles.mobile}>
+        <Calendar
+          height={MOBILE_HEIGHT}
+          events={events}
+          mode={'month'}
+          renderCustomDateForMonth={renderCustomDate}
+        />
+      </View>
+    )
+  })
+  .add('Month - Calendar Cell - Disabled Pressing Month Event Cell', () => {
+    return (
+      <View style={styles.mobile}>
+        <Calendar
+          height={MOBILE_HEIGHT}
+          events={events}
+          mode={'month'}
+          disableMonthEventCellPress={true}
+          onPressCell={(_date) => {
+            alert(`You can only press Date Cell. Not Event Cell ${_date.getDay()}`)
+          }}
+        />
+      </View>
+    )
+  })
+  .add('Schedule mode', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.mobile}>
+        <Calendar
+          height={MOBILE_HEIGHT}
+          events={state.events}
+          mode="schedule"
+          eventCellStyle={(event: ICalendarEventBase & { color?: string }) => {
+            return [
+              { backgroundColor: event.color ?? 'red' },
+              { borderWidth: 1, borderColor: 'green' },
+            ]
+          }}
+        />
+      </View>
+    )
+  })
+  .add('With OnSwipe handler', () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={events}
+        mode="day"
+        onPressEvent={(event) => alert(event.title)}
+        onSwipeEnd={(date) => alert(`You swiped to ${date.toUTCString()}`)}
       />
     </View>
   ))

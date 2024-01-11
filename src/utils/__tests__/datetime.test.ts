@@ -6,6 +6,7 @@ import * as R from 'remeda'
 
 import { ICalendarEventBase } from '../../interfaces'
 import * as utils from '../datetime'
+import { SIMPLE_DATE_FORMAT, enrichEvents } from '../datetime'
 
 Mockdate.set('2021-09-17T04:00:00.000Z')
 
@@ -59,13 +60,20 @@ const events: ICalendarEventBase[] = [
   end: e.end.toDate(),
 }))
 
+const getEvents = (eventsHours: { startHour: number; endHour: number }[]): ICalendarEventBase[] =>
+  eventsHours.map(({ startHour, endHour }) => ({
+    title: `Meeting from ${startHour} to ${endHour}`,
+    start: dayjs().set('hour', startHour).set('minute', 0).toDate(),
+    end: dayjs().set('hour', endHour).set('minute', 0).toDate(),
+  }))
+
 function assertDateRange(expected: any[], actual: any[]) {
   const formatToIso = (a: any) => a.toISOString()
   expect(actual.map(formatToIso)).toEqual(expected.map(formatToIso))
 }
 
 describe('getDatesInMonth', () => {
-  const expected = R.range(1, 31).map((date) => new Date(2021, 4, date))
+  const expected = R.range(1, 32).map((date) => new Date(2021, 4, date))
 
   test('may 2021', () => {
     const actual = utils.getDatesInMonth(new Date(2021, 4, 9))
@@ -224,5 +232,172 @@ describe('spanning events', () => {
     expect(isMultipleDays).toBe(true)
     expect(isMultipleDaysStart).toBe(true)
     expect(eventWeekDuration).toBe(6)
+  })
+})
+
+describe('enrichEvents', () => {
+  test('should return empty when gets empty', () => {
+    const events: ICalendarEventBase[] = []
+    const groups = enrichEvents(events)
+    expect(groups).toEqual({})
+  })
+  test('should add positions and overlap counts to sorted events when ends with a single group', () => {
+    const eventsWithOverlaps = getEvents([
+      { startHour: 1, endHour: 3 },
+      { startHour: 1, endHour: 5 },
+      { startHour: 2, endHour: 4 },
+      { startHour: 4, endHour: 6 },
+      { startHour: 6, endHour: 8 },
+      { startHour: 7, endHour: 8 },
+      { startHour: 8, endHour: 9 },
+    ])
+
+    const groups = enrichEvents(eventsWithOverlaps, true)
+
+    expect(groups).toEqual({
+      [dayjs().format(SIMPLE_DATE_FORMAT)]: [
+        {
+          ...eventsWithOverlaps[0],
+          overlapPosition: 0,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[1],
+          overlapPosition: 1,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[2],
+          overlapPosition: 2,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[3],
+          overlapPosition: 3,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[4],
+          overlapPosition: 0,
+          overlapCount: 2,
+        },
+        {
+          ...eventsWithOverlaps[5],
+          overlapPosition: 1,
+          overlapCount: 2,
+        },
+        {
+          ...eventsWithOverlaps[6],
+          overlapPosition: 0,
+          overlapCount: 1,
+        },
+      ],
+    })
+  })
+  test('should add positions and overlap counts to sorted events when ends with a overlapping group', () => {
+    const eventsWithOverlaps = getEvents([
+      { startHour: 1, endHour: 3 },
+      { startHour: 1, endHour: 5 },
+      { startHour: 2, endHour: 4 },
+      { startHour: 4, endHour: 6 },
+      { startHour: 6, endHour: 8 },
+      { startHour: 7, endHour: 8 },
+      { startHour: 7, endHour: 9 },
+    ])
+
+    const groups = enrichEvents(eventsWithOverlaps, true)
+
+    expect(groups).toEqual({
+      [dayjs().format(SIMPLE_DATE_FORMAT)]: [
+        {
+          ...eventsWithOverlaps[0],
+          overlapPosition: 0,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[1],
+          overlapPosition: 1,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[2],
+          overlapPosition: 2,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[3],
+          overlapPosition: 3,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[4],
+          overlapPosition: 0,
+          overlapCount: 3,
+        },
+        {
+          ...eventsWithOverlaps[5],
+          overlapPosition: 1,
+          overlapCount: 3,
+        },
+        {
+          ...eventsWithOverlaps[6],
+          overlapPosition: 2,
+          overlapCount: 3,
+        },
+      ],
+    })
+  })
+  test('should add positions to non-sorted events', () => {
+    const eventsWithOverlaps = getEvents([
+      { startHour: 1, endHour: 3 },
+      { startHour: 6, endHour: 8 },
+      { startHour: 2, endHour: 4 },
+      { startHour: 4, endHour: 6 },
+      { startHour: 8, endHour: 9 },
+      { startHour: 1, endHour: 5 },
+      { startHour: 7, endHour: 8 },
+    ])
+
+    const groups = enrichEvents(eventsWithOverlaps)
+
+    expect(groups).toEqual({
+      [dayjs().format(SIMPLE_DATE_FORMAT)]: [
+        {
+          ...eventsWithOverlaps[0],
+          overlapPosition: 0,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[1],
+          overlapPosition: 1,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[2],
+          overlapPosition: 2,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[3],
+          overlapPosition: 3,
+          overlapCount: 4,
+        },
+        {
+          ...eventsWithOverlaps[4],
+          overlapPosition: 0,
+          overlapCount: 2,
+        },
+        {
+          ...eventsWithOverlaps[5],
+          overlapPosition: 1,
+          overlapCount: 2,
+        },
+        {
+          ...eventsWithOverlaps[6],
+          overlapPosition: 0,
+          overlapCount: 1,
+        },
+      ],
+    })
   })
 })

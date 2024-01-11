@@ -1,7 +1,15 @@
 import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  Animated,
+  Platform,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -16,7 +24,7 @@ import {
   WeekNum,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { getWeeksWithAdjacentMonths } from '../utils/datetime'
+import { SIMPLE_DATE_FORMAT, getWeeksWithAdjacentMonths } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 
@@ -30,6 +38,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
   showAdjacentMonths: boolean
+  onLongPressCell?: (date: Date) => void
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
@@ -39,14 +48,18 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   weekStartsOn: WeekNum
   eventMinHeightForMonthView: number
   moreLabel: string
+  onPressMoreLabel?: (events: T[], date: Date) => void
   sortedMonthView: boolean
   showWeekNumber?: boolean
+  renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
+  disableMonthEventCellPress?: boolean
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   containerHeight,
   targetDate,
   style,
+  onLongPressCell,
   onPressCell,
   onPressDateHeader,
   events,
@@ -62,11 +75,15 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   weekStartsOn,
   eventMinHeightForMonthView,
   moreLabel,
+  onPressMoreLabel,
   sortedMonthView,
   showWeekNumber = false,
+  renderCustomDateForMonth,
+  disableMonthEventCellPress,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
+  const [calendarCellHeight, setCalendarCellHeight] = React.useState<number>(0)
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
@@ -94,25 +111,126 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 
   const sortedEvents = React.useCallback(
     (day: dayjs.Dayjs) => {
-      return sortedMonthView
-        ? events
-            .filter(({ start, end }) =>
-              day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
-            )
-            .sort((a, b) => {
-              if (dayjs(a.start).isSame(b.start, 'day')) {
-                const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
-                const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
-                return bDuration - aDuration
-              }
-              return a.start.getTime() - b.start.getTime()
-            })
-        : events.filter(({ start, end }) =>
-            day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
+      if (!sortedMonthView) {
+        return events.filter(({ start, end }) =>
+          day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
+        )
+      } else {
+        /**
+         * Better way to sort overlapping events that spans accross multiple days
+         * For example, if you want following events
+         * Event 1, start = 01/01 12:00, end = 02/01 12:00
+         * Event 2, start = 02/01 12:00, end = 03/01 12:00
+         * Event 3, start = 03/01 12:00, end = 04/01 12:00
+         *
+         * When drawing calendar in month view, event 3 should be placed at 3rd index for 03/01, because Event 2 are placed at 2nd index for 02/01 and 03/01
+         *
+         */
+        let min = day.startOf('day'),
+          max = day.endOf('day')
+
+        //filter all events that starts from the current week until the current day, and sort them by reverse starting time
+        let filteredEvents = events
+          .filter(
+            ({ start, end }) =>
+              dayjs(end).isAfter(day.startOf('week')) && dayjs(start).isBefore(max),
           )
+          .sort((a, b) => {
+            if (dayjs(a.start).isSame(b.start, 'day')) {
+              const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
+              const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
+              return aDuration - bDuration
+            }
+            return b.start.getTime() - a.start.getTime()
+          })
+
+        /**
+         * find the most relevant min date to filter the events
+         * in the example:
+         * 1. when rendering for 01/01, min date will be 01/01 (start of day for event 1)
+         * 2. when rendering for 02/01, min date will be 01/01 (start of day for event 1)
+         * 3. when rendering for 03/01, min date will be 01/01 (start of day for event 1)
+         * 4. when rendering for 04/01, min date will be 01/01 (start of day for event 1)
+         * 5. when rendering for 05/01, min date will be 05/01 (no event overlaps with 05/01)
+         */
+        filteredEvents.forEach(({ start, end }) => {
+          if (dayjs(end).isAfter(min) && dayjs(start).isBefore(min)) {
+            min = dayjs(start).startOf('day')
+          }
+        })
+
+        filteredEvents = filteredEvents
+          .filter(
+            ({ start, end }) => dayjs(end).endOf('day').isAfter(min) && dayjs(start).isBefore(max),
+          )
+          .reverse()
+        /**
+         * We move eligible event to the top
+         * For example, when rendering for 03/01, Event 3 should be moved to the top, since there is a gap left by Event 1
+         */
+        let finalEvents: T[] = []
+        let tmpDay: dayjs.Dayjs = day.startOf('week')
+        //re-sort events from the start of week until the calendar cell date
+        //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
+        while (!tmpDay.isAfter(day)) {
+          filteredEvents.forEach((event) => {
+            if (dayjs(event.end).isBefore(tmpDay.startOf('day'))) {
+              let eventToMoveUp = filteredEvents.find((e) =>
+                dayjs(e.start).startOf('day').isSame(tmpDay.startOf('day')),
+              )
+              if (eventToMoveUp != undefined) {
+                //remove eventToMoveUp from finalEvents first
+                if (finalEvents.indexOf(eventToMoveUp) > -1) {
+                  finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 1)
+                }
+
+                if (finalEvents.indexOf(event) > -1) {
+                  finalEvents.splice(finalEvents.indexOf(event), 1, eventToMoveUp)
+                } else {
+                  finalEvents.push(eventToMoveUp)
+                }
+              }
+            } else if (finalEvents.indexOf(event) == -1) {
+              finalEvents.push(event)
+            }
+          })
+
+          tmpDay = tmpDay.add(1, 'day')
+        }
+
+        return finalEvents
+      }
     },
     [events, sortedMonthView],
   )
+
+  const renderDateCell = (date: dayjs.Dayjs | null, index: number) => {
+    if (date && renderCustomDateForMonth) {
+      return renderCustomDateForMonth(date.toDate())
+    }
+
+    return (
+      <Text
+        style={[
+          { textAlign: 'center' },
+          theme.typography.sm,
+          {
+            color:
+              date?.format(SIMPLE_DATE_FORMAT) === now.format(SIMPLE_DATE_FORMAT)
+                ? theme.palette.primary.main
+                : date?.month() !== targetDate.month()
+                ? theme.palette.gray['500']
+                : theme.palette.gray['800'],
+          },
+          {
+            ...getCalendarCellTextStyle(date?.toDate(), index),
+          },
+        ]}
+      >
+        {date && date.format('D')}
+      </Text>
+    )
+  }
 
   return (
     <View
@@ -129,7 +247,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
         { borderColor: theme.palette.gray['200'] },
         style,
       ]}
-      onLayout={({ nativeEvent: { layout } }) => setCalendarWidth(layout.width)}
+      onLayout={({ nativeEvent: { layout } }) => {
+        setCalendarWidth(layout.width)
+      }}
       {...panResponder.panHandlers}
     >
       {weeks.map((week, i) => (
@@ -179,6 +299,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
             )
             .map((date, ii) => (
               <TouchableOpacity
+                onLongPress={() => date && onLongPressCell && onLongPressCell(date.toDate())}
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
                 style={[
                   i > 0 && u['border-t'],
@@ -196,6 +317,10 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   },
                 ]}
                 key={ii}
+                onLayout={({ nativeEvent: { layout } }) =>
+                  // Only set calendarCellHeight once because they are all same
+                  i === 0 && ii === 0 && setCalendarCellHeight(layout.height)
+                }
               >
                 <TouchableOpacity
                   onPress={() =>
@@ -204,26 +329,14 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       ? onPressDateHeader(date.toDate())
                       : onPressCell && onPressCell(date.toDate()))
                   }
+                  onLongPress={() =>
+                    date &&
+                    (onPressDateHeader
+                      ? onPressDateHeader(date.toDate())
+                      : onLongPressCell && onLongPressCell(date.toDate()))
+                  }
                 >
-                  <Text
-                    style={[
-                      { textAlign: 'center' },
-                      theme.typography.sm,
-                      {
-                        color:
-                          date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
-                            ? theme.palette.primary.main
-                            : date?.month() !== targetDate.month()
-                            ? theme.palette.gray['500']
-                            : theme.palette.gray['800'],
-                      },
-                      {
-                        ...getCalendarCellTextStyle(date?.toDate(), i),
-                      },
-                    ]}
-                  >
-                    {date && date.format('D')}
-                  </Text>
+                  {renderDateCell(date, i)}
                 </TouchableOpacity>
                 {date &&
                   sortedEvents(date).reduce(
@@ -236,6 +349,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                             theme.typography.moreLabel,
                             { marginTop: 2, color: theme.palette.moreLabel },
                           ]}
+                          onPress={() => onPressMoreLabel?.(events, date.toDate())}
                         >
                           {moreLabel.replace(
                             '{moreCount}',
@@ -260,6 +374,20 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     ],
                     [] as (null | JSX.Element)[],
                   )}
+                {disableMonthEventCellPress && (
+                  /* In this case, we render `TouchableGradually` on the date cell to prevent event cell's touch events from being called. */
+                  <TouchableGradually
+                    style={{
+                      height: calendarCellHeight,
+                      width: Math.floor(calendarWidth / 7),
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                    }}
+                    onLongPress={() => date && onLongPressCell && onLongPressCell(date.toDate())}
+                    onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                  />
+                )}
               </TouchableOpacity>
             ))}
         </View>
@@ -269,3 +397,57 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 }
 
 export const CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView)
+
+/**
+ * A utility component which prevents event cells from being pressed in Month View.
+ */
+function TouchableGradually({
+  onLongPress,
+  onPress,
+  style,
+}: {
+  style?: ViewStyle
+  onLongPress: () => void
+  onPress: () => void
+}) {
+  const backgroundColor = React.useRef(new Animated.Value(0)).current
+
+  const handlePressIn = () => {
+    Animated.timing(backgroundColor, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start()
+  }
+
+  const handlePressOut = () => {
+    Animated.timing(backgroundColor, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start()
+  }
+
+  return (
+    <TouchableHighlight
+      onLongPress={onLongPress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={onPress}
+      underlayColor="transparent"
+      style={style}
+    >
+      <Animated.View
+        style={[
+          {
+            backgroundColor: backgroundColor.interpolate({
+              inputRange: [0, 1],
+              outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.2)'],
+            }),
+          },
+          style,
+        ]}
+      />
+    </TouchableHighlight>
+  )
+}
