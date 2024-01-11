@@ -56,6 +56,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   hideHours?: Boolean
   isEventOrderingEnabled?: boolean
+  showWeekNumber?: boolean
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -80,6 +81,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hourStyle = {},
   hideHours = false,
   isEventOrderingEnabled = true,
+  showWeekNumber = false,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -171,7 +173,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
         >
-          {!hideHours && (
+          {(!hideHours || showWeekNumber) && (
             <View style={[u['z-20'], u['w-50']]}>
               {hours.map((hour) => (
                 <HourGuideColumn

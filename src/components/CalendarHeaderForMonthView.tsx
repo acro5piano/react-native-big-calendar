@@ -12,12 +12,16 @@ export interface CalendarHeaderForMonthViewProps {
   weekStartsOn: WeekNum
   locale: string
   style: ViewStyle
+  showWeekNumber?: boolean
+  weekNumberPrefix?: string
 }
 
 function _CalendarHeaderForMonthView({
   locale,
   weekStartsOn,
   style,
+  showWeekNumber = false,
+  weekNumberPrefix = '',
 }: CalendarHeaderForMonthViewProps) {
   const dates = getDatesInWeek(new Date(), weekStartsOn, locale)
   const todayWeekNum = dayjs().day()
@@ -33,6 +37,22 @@ function _CalendarHeaderForMonthView({
         style,
       ]}
     >
+      {showWeekNumber ? (
+        <View style={[u['w-20'], { paddingTop: 2 }]} key={'weekNumber'}>
+          <View style={{ flex: 1, height: 30 }}>
+            <Text
+              style={[
+                u['text-center'],
+                {
+                  color: theme.palette.gray['800'],
+                },
+              ]}
+            >
+              {weekNumberPrefix != undefined ? weekNumberPrefix : ''}
+            </Text>
+          </View>
+        </View>
+      ) : null}
       {dates.map((date) => (
         <View style={{ flex: 1, paddingTop: 2 }} key={date.toISOString()}>
           <View style={{ height: 30 }}>

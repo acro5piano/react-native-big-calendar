@@ -40,6 +40,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   eventMinHeightForMonthView: number
   moreLabel: string
   sortedMonthView: boolean
+  showWeekNumber?: boolean
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -62,6 +63,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   eventMinHeightForMonthView,
   moreLabel,
   sortedMonthView,
+  showWeekNumber = false,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -142,6 +144,35 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
             },
           ]}
         >
+          {showWeekNumber ? (
+            <View
+              style={[
+                i > 0 && u['border-t'],
+                { borderColor: theme.palette.gray['200'] },
+                u['p-2'],
+                u['w-20'],
+                u['flex-column'],
+                {
+                  minHeight: minCellHeight,
+                },
+              ]}
+              key={'weekNumber'}
+            >
+              <Text
+                style={[
+                  { textAlign: 'center' },
+                  theme.typography.sm,
+                  {
+                    color: theme.palette.gray['800'],
+                  },
+                ]}
+              >
+                {week.length > 0
+                  ? targetDate.date(week[0]).startOf('week').add(4, 'days').isoWeek()
+                  : ''}
+              </Text>
+            </View>
+          ) : null}
           {week
             .map((d) =>
               showAdjacentMonths ? targetDate.date(d) : d > 0 ? targetDate.date(d) : null,
@@ -151,8 +182,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
                 style={[
                   i > 0 && u['border-t'],
-                  theme.isRTL && ii > 0 && u['border-r'],
-                  !theme.isRTL && ii > 0 && u['border-l'],
+                  theme.isRTL && (ii > 0 || showWeekNumber) && u['border-r'],
+                  !theme.isRTL && (ii > 0 || showWeekNumber) && u['border-l'],
                   { borderColor: theme.palette.gray['200'] },
                   u['p-2'],
                   u['flex-1'],
