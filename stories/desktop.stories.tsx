@@ -401,7 +401,7 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
-  .add('Month mode', () => {
+  .add('Month mode - show week number', () => {
     const state = useEvents(events)
     return (
       <View style={styles.desktop}>
