@@ -139,60 +139,51 @@ export function getCountOfEventsAtEvent(
   ).length
 }
 
-export function getMaxCountOfEventsAtEvent(
-  event: ICalendarEventBase,
-  eventList: ICalendarEventBase[],
-) {
-  const totalMatchedEvents = eventList.filter(
+export function getOverlappingEvents(event: ICalendarEventBase, eventList: ICalendarEventBase[]) {
+  return eventList.filter(
     (e) =>
       dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
       dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
   )
+}
+export function getMaxCountOfEventsAtEvent(
+  event: ICalendarEventBase,
+  eventList: ICalendarEventBase[],
+) {
+  const totalMatchedEvents = getOverlappingEvents(event, eventList)
 
-  // console.log("---totalMatchedEvents---" + JSON.stringify(totalMatchedEvents))
   let maxCount = -1
-  for (let i = 0; i < totalMatchedEvents.length; i++) {
-    const orderEvent = getOrderOfEvent(totalMatchedEvents[i], totalMatchedEvents)
+  for (const e of totalMatchedEvents) {
+    const orderEvent = getOrderOfEvent(e, totalMatchedEvents)
     if (maxCount < orderEvent) {
       maxCount = orderEvent
     }
   }
   return maxCount + 1
 }
-
 export function getWidthOfEventsAtEvent(
   event: ICalendarEventBase,
   eventList: ICalendarEventBase[],
 ) {
-  const events = eventList
-    .filter(
-      (e) =>
-        dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
-        dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
-    )
-    .sort((a, b) => {
-      if (dayjs(a.start).isSame(b.start)) {
-        return dayjs(a.start).diff(a.end) < dayjs(b.start).diff(b.end) ? -1 : 1
-      } else {
-        return dayjs(a.start).isBefore(b.start) ? -1 : 1
-      }
-    })
+  const events = getOverlappingEvents(event, eventList).sort((a, b) => {
+    if (dayjs(a.start).isSame(b.start)) {
+      return dayjs(a.start).diff(a.end) < dayjs(b.start).diff(b.end) ? -1 : 1
+    } else {
+      return dayjs(a.start).isBefore(b.start) ? -1 : 1
+    }
+  })
 
-  const index = events.indexOf(event)
-  const eventIndex = index === -1 ? 0 : index
-  console.log('--title: ' + event.title + ' - ' + eventIndex)
+  const eventIndex = events.indexOf(event)
+  const eventIndexValid = eventIndex === -1 ? 0 : eventIndex
 
   let start = 0.0
   let finalWidth = 0.0
-  for (let i = 0; i < eventIndex + 1; i++) {
+  for (let i = 0; i <= eventIndexValid; i++) {
     const maxCount = getMaxCountOfEventsAtEvent(events[i], eventList)
     const width = (100 - start) / (maxCount - i)
-    console.log(maxCount)
-    console.log(width)
-    start = start + width
+    start += width
     finalWidth = width
   }
-  console.log({ start: start - finalWidth, end: 100.0 - start })
 
   return { start: start - finalWidth, end: 100.0 - start }
 }
@@ -354,8 +345,8 @@ export function getStyleForOverlappingEvent(
   }
 
   console.log({
-    startposition: position ? position.start : 0,
-    endposition: position ? position.end : 100,
+    start: position ? position.start : 0,
+    end: position ? position.end : 100,
     maxOverlapCount: maxOverlapCount,
     overlapCount: overlapCount,
     overlapPosition: overlapPosition,
@@ -444,7 +435,6 @@ export function getEventSpanningInfo(
 
   return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
 }
-
 export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn: WeekNum) {
   let weeks = calendarize(targetDate.toDate(), weekStartsOn)
   const firstDayIndex = weeks[0].findIndex((d) => d === 1)
