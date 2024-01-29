@@ -49,17 +49,36 @@ function _CalendarEvent<T extends ICalendarEventBase>({
     () => [theme.palette.primary, ...theme.eventCellOverlappings],
     [theme],
   )
-
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
     eventCellStyle,
     onPressEvent,
     injectedStyles:
       mode === 'schedule'
-        ? [getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes)]
+        ? [
+            getStyleForOverlappingEvent(
+              eventOrder,
+              overlapOffset,
+              palettes,
+              eventCount,
+              event.overlapCount,
+              event.overlapPosition,
+              event.maxOverlapCount,
+              event.position,
+            ),
+          ]
         : [
             getEventCellPositionStyle(event.start, event.end),
-            getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
+            getStyleForOverlappingEvent(
+              eventOrder,
+              overlapOffset,
+              palettes,
+              eventCount,
+              event.overlapCount,
+              event.overlapPosition,
+              event.maxOverlapCount,
+              event.position,
+            ),
             u['absolute'],
             u['mt-2'],
             u['mx-3'],

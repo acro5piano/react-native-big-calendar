@@ -21,6 +21,8 @@ import {
   hours,
   isToday,
   SIMPLE_DATE_FORMAT,
+  getMaxCountOfEventsAtEvent,
+  getWidthOfEventsAtEvent,
 } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
 import { CalendarEvent } from './CalendarEvent'
@@ -154,6 +156,8 @@ function _CalendarBody<T extends ICalendarEventBase>({
         ...event,
         overlapPosition: getOrderOfEvent(event, events),
         overlapCount: getCountOfEventsAtEvent(event, events),
+        maxOverlapCount: getMaxCountOfEventsAtEvent(event, events),
+        position: getWidthOfEventsAtEvent(event, events),
       }))
     }
 

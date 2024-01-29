@@ -1,7 +1,6 @@
 import calendarize, { Week } from 'calendarize'
 import dayjs from 'dayjs'
 
-import { OVERLAP_PADDING } from '../commonStyles'
 import { ICalendarEventBase, Mode, WeekNum } from '../interfaces'
 import { Palette } from '../theme/ThemeInterface'
 
@@ -140,6 +139,64 @@ export function getCountOfEventsAtEvent(
   ).length
 }
 
+export function getMaxCountOfEventsAtEvent(
+  event: ICalendarEventBase,
+  eventList: ICalendarEventBase[],
+) {
+  const totalMatchedEvents = eventList.filter(
+    (e) =>
+      dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
+      dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
+  )
+
+  // console.log("---totalMatchedEvents---" + JSON.stringify(totalMatchedEvents))
+  let maxCount = -1
+  for (let i = 0; i < totalMatchedEvents.length; i++) {
+    const orderEvent = getOrderOfEvent(totalMatchedEvents[i], totalMatchedEvents)
+    if (maxCount < orderEvent) {
+      maxCount = orderEvent
+    }
+  }
+  return maxCount + 1
+}
+
+export function getWidthOfEventsAtEvent(
+  event: ICalendarEventBase,
+  eventList: ICalendarEventBase[],
+) {
+  const events = eventList
+    .filter(
+      (e) =>
+        dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
+        dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
+    )
+    .sort((a, b) => {
+      if (dayjs(a.start).isSame(b.start)) {
+        return dayjs(a.start).diff(a.end) < dayjs(b.start).diff(b.end) ? -1 : 1
+      } else {
+        return dayjs(a.start).isBefore(b.start) ? -1 : 1
+      }
+    })
+
+  const index = events.indexOf(event)
+  const eventIndex = index === -1 ? 0 : index
+  console.log('--title: ' + event.title + ' - ' + eventIndex)
+
+  let start = 0.0
+  let finalWidth = 0.0
+  for (let i = 0; i < eventIndex + 1; i++) {
+    const maxCount = getMaxCountOfEventsAtEvent(events[i], eventList)
+    const width = (100 - start) / (maxCount - i)
+    console.log(maxCount)
+    console.log(width)
+    start = start + width
+    finalWidth = width
+  }
+  console.log({ start: start - finalWidth, end: 100.0 - start })
+
+  return { start: start - finalWidth, end: 100.0 - start }
+}
+
 export function getOrderOfEvent(event: ICalendarEventBase, eventList: ICalendarEventBase[]) {
   const events = eventList
     .filter(
@@ -273,6 +330,16 @@ export function getStyleForOverlappingEvent(
   eventPosition: number,
   overlapOffset: number,
   palettes: Palette[],
+  eventCount: number,
+  overlapCount: number | undefined,
+  overlapPosition: number | undefined,
+  maxOverlapCount: number | undefined,
+  position:
+    | {
+        start: number
+        end: number
+      }
+    | undefined,
 ) {
   let overlapStyle = {}
   const offset = overlapOffset
@@ -280,11 +347,21 @@ export function getStyleForOverlappingEvent(
   const zIndex = 100 + eventPosition
   const bgColors = palettes.map((p) => p.main)
   overlapStyle = {
-    start: start + OVERLAP_PADDING,
-    end: OVERLAP_PADDING,
+    start: `${position ? position.start : 0}%`,
+    end: `${position ? position.end : 100}%`,
     backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
     zIndex,
   }
+
+  console.log({
+    startposition: position ? position.start : 0,
+    endposition: position ? position.end : 100,
+    maxOverlapCount: maxOverlapCount,
+    overlapCount: overlapCount,
+    overlapPosition: overlapPosition,
+    eventCount1: eventCount,
+    start1: start,
+  })
   return overlapStyle
 }
 

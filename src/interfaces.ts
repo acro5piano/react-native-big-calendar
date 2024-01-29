@@ -19,6 +19,12 @@ export interface ICalendarEventBase {
    * number of events overlapping with this event (optional)
    */
   overlapCount?: number
+
+  maxOverlapCount?: number
+  position?: {
+    start: number
+    end: number
+  }
 }
 
 export type CalendarTouchableOpacityProps = {
