@@ -1,6 +1,7 @@
 import calendarize, { Week } from 'calendarize'
 import dayjs from 'dayjs'
 
+import { OVERLAP_PADDING } from '../commonStyles'
 import { ICalendarEventBase, Mode, WeekNum } from '../interfaces'
 import { Palette } from '../theme/ThemeInterface'
 
@@ -321,8 +322,8 @@ export function getStyleForOverlappingEvent(
   const zIndex = 100 + eventPosition
   const bgColors = palettes.map((p) => p.main)
   overlapStyle = {
-    start: `${position ? position.start : 0}%`,
-    end: `${position ? position.end : 100}%`,
+    start: `${position ? position.start + OVERLAP_PADDING : 0}%`,
+    end: `${position ? position.end + OVERLAP_PADDING : 100}%`,
     backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
     zIndex,
   }
