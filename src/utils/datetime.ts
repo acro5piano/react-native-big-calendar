@@ -311,6 +311,7 @@ export function enrichEvents<T extends ICalendarEventBase>(
 export function getStyleForOverlappingEvent(
   palettes: Palette[],
   eventPosition: number,
+  eventCount: number,
   position?:
     | {
         start: number
@@ -321,9 +322,11 @@ export function getStyleForOverlappingEvent(
   let overlapStyle = {}
   const zIndex = 100 + eventPosition
   const bgColors = palettes.map((p) => p.main)
+  const isLast = eventPosition === eventCount - 1
+  const rightOverlapPadding = isLast ? OVERLAP_PADDING : 0
   overlapStyle = {
     start: `${position ? position.start + OVERLAP_PADDING : 0}%`,
-    end: `${position ? position.end + OVERLAP_PADDING : 100}%`,
+    end: `${position ? position.end + rightOverlapPadding : 100}%`,
     backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
     zIndex,
   }
