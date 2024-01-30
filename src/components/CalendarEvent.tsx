@@ -55,30 +55,10 @@ function _CalendarEvent<T extends ICalendarEventBase>({
     onPressEvent,
     injectedStyles:
       mode === 'schedule'
-        ? [
-            getStyleForOverlappingEvent(
-              eventOrder,
-              overlapOffset,
-              palettes,
-              eventCount,
-              event.overlapCount,
-              event.overlapPosition,
-              event.maxOverlapCount,
-              event.position,
-            ),
-          ]
+        ? [getStyleForOverlappingEvent(palettes, eventOrder, event.position)]
         : [
             getEventCellPositionStyle(event.start, event.end),
-            getStyleForOverlappingEvent(
-              eventOrder,
-              overlapOffset,
-              palettes,
-              eventCount,
-              event.overlapCount,
-              event.overlapPosition,
-              event.maxOverlapCount,
-              event.position,
-            ),
+            getStyleForOverlappingEvent(palettes, eventOrder, event.position),
             u['absolute'],
             u['mt-2'],
             u['mx-3'],
