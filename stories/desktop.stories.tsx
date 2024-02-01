@@ -386,3 +386,34 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
+  .add('Week mode - show week number', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          showWeekNumber={true}
+          weekNumberPrefix={'W'}
+        />
+      </View>
+    )
+  })
+  .add('Month mode - show week number', () => {
+    const state = useEvents(events)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          mode="month"
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          showWeekNumber={true}
+          weekNumberPrefix={'W'}
+        />
+      </View>
+    )
+  })

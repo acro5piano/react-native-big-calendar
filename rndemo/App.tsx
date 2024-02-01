@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  useWindowDimensions,
   View,
+  useWindowDimensions,
 } from 'react-native'
 
 import { Calendar, ICalendarEventBase, Mode } from './build'

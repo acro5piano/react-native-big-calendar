@@ -1,6 +1,8 @@
+import dayjs from 'dayjs'
 import React from 'react'
-import { typedMemo } from '../utils/react'
 import { FlatList, Platform, Text, TextStyle, View, ViewStyle } from 'react-native'
+
+import { u } from '../commonStyles'
 import {
   CalendarCellStyle,
   EventCellStyle,
@@ -8,17 +10,16 @@ import {
   HorizontalDirection,
   ICalendarEventBase,
 } from '../interfaces'
-import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
-import dayjs from 'dayjs'
-import { CalendarEvent } from './CalendarEvent'
 import {
+  SIMPLE_DATE_FORMAT,
   getCountOfEventsAtEvent,
   getOrderOfEvent,
   isToday,
-  SIMPLE_DATE_FORMAT,
 } from '../utils/datetime'
 import { stringHasContent } from '../utils/object'
+import { typedMemo } from '../utils/react'
+import { CalendarEvent } from './CalendarEvent'
 
 interface ScheduleProps<T extends ICalendarEventBase> {
   events: T[]

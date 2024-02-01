@@ -23,6 +23,8 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   weekDayHeaderHighlightColor?: string
   showAllDayEventCell?: boolean
   hideHours?: Boolean
+  showWeekNumber?: boolean
+  weekNumberPrefix?: string
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -39,6 +41,8 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   weekDayHeaderHighlightColor = '',
   showAllDayEventCell = true,
   hideHours = false,
+  showWeekNumber = false,
+  weekNumberPrefix = '',
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -68,7 +72,45 @@ function _CalendarHeader<T extends ICalendarEventBase>({
         style,
       ]}
     >
-      {!hideHours && <View style={[u['z-10'], u['w-50'], borderColor]} />}
+      {(!hideHours || showWeekNumber) && (
+        <View style={[u['z-10'], u['w-50'], u['pt-2'], borderColor]}>
+          {showWeekNumber ? (
+            <View
+              style={[
+                { height: cellHeight },
+                objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
+              ]}
+            >
+              <Text
+                style={[
+                  theme.typography.xs,
+                  u['text-center'],
+                  {
+                    color: theme.palette.gray['500'],
+                  },
+                ]}
+              >
+                {weekNumberPrefix}
+              </Text>
+              <View style={objHasContent(dayHeaderStyle) ? dayHeaderStyle : [u['mb-6']]}>
+                <Text
+                  style={[
+                    {
+                      color: theme.palette.gray['800'],
+                    },
+                    theme.typography.xl,
+                    u['text-center'],
+                  ]}
+                >
+                  {dateRange.length > 0
+                    ? dateRange[0].startOf('week').add(4, 'days').isoWeek()
+                    : ''}
+                </Text>
+              </View>
+            </View>
+          ) : null}
+        </View>
+      )}
       {dateRange.map((date) => {
         const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
 

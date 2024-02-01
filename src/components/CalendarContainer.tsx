@@ -105,6 +105,10 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   sortedMonthView?: boolean
   moreLabel?: string
   isEventOrderingEnabled?: boolean
+
+  //Week Number
+  showWeekNumber?: boolean
+  weekNumberPrefix?: string
   onPressMoreLabel?: (event: T[]) => void
   disableMonthEventCellPress?: boolean
   showVerticalScrollIndicator?: boolean
@@ -177,6 +181,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   sortedMonthView = true,
   hideHours = false,
   isEventOrderingEnabled,
+  showWeekNumber = false,
+  weekNumberPrefix = '',
   onPressMoreLabel,
   renderCustomDateForMonth,
   disableMonthEventCellPress = false,
@@ -273,6 +279,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     mode,
     onPressEvent,
     hideHours,
+    showWeekNumber,
   }
 
   if (mode === 'month') {
@@ -285,6 +292,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       dayHeaderHighlightColor: dayHeaderHighlightColor,
       weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
       showAllDayEventCell: showAllDayEventCell,
+      showWeekNumber: showWeekNumber,
+      weekNumberPrefix: weekNumberPrefix,
     }
     return (
       <React.Fragment>
@@ -330,6 +339,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     dayHeaderHighlightColor: dayHeaderHighlightColor,
     weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
     showAllDayEventCell: showAllDayEventCell,
+    weekNumberPrefix: weekNumberPrefix,
   }
 
   if (mode === 'schedule') {

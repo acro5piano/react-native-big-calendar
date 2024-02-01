@@ -6,7 +6,7 @@ import * as R from 'remeda'
 
 import { ICalendarEventBase } from '../../interfaces'
 import * as utils from '../datetime'
-import { enrichEvents, SIMPLE_DATE_FORMAT } from '../datetime'
+import { SIMPLE_DATE_FORMAT, enrichEvents } from '../datetime'
 
 Mockdate.set('2021-09-17T04:00:00.000Z')
 

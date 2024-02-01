@@ -148,6 +148,9 @@ export const u = StyleSheet.create({
   /*
    * Width
    */
+  'w-20': {
+    width: 20,
+  },
   'w-36': {
     width: 36,
   },

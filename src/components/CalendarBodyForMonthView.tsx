@@ -24,7 +24,7 @@ import {
   WeekNum,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { getWeeksWithAdjacentMonths, SIMPLE_DATE_FORMAT } from '../utils/datetime'
+import { SIMPLE_DATE_FORMAT, getWeeksWithAdjacentMonths } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
 import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 
@@ -50,6 +50,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   moreLabel: string
   onPressMoreLabel?: (events: T[], date: Date) => void
   sortedMonthView: boolean
+  showWeekNumber?: boolean
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
   disableMonthEventCellPress?: boolean
 }
@@ -76,6 +77,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   moreLabel,
   onPressMoreLabel,
   sortedMonthView,
+  showWeekNumber = false,
   renderCustomDateForMonth,
   disableMonthEventCellPress,
 }: CalendarBodyForMonthViewProps<T>) {
@@ -262,6 +264,35 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
             },
           ]}
         >
+          {showWeekNumber ? (
+            <View
+              style={[
+                i > 0 && u['border-t'],
+                { borderColor: theme.palette.gray['200'] },
+                u['p-2'],
+                u['w-20'],
+                u['flex-column'],
+                {
+                  minHeight: minCellHeight,
+                },
+              ]}
+              key={'weekNumber'}
+            >
+              <Text
+                style={[
+                  { textAlign: 'center' },
+                  theme.typography.sm,
+                  {
+                    color: theme.palette.gray['800'],
+                  },
+                ]}
+              >
+                {week.length > 0
+                  ? targetDate.date(week[0]).startOf('week').add(4, 'days').isoWeek()
+                  : ''}
+              </Text>
+            </View>
+          ) : null}
           {week
             .map((d) =>
               showAdjacentMonths ? targetDate.date(d) : d > 0 ? targetDate.date(d) : null,
@@ -272,8 +303,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
                 style={[
                   i > 0 && u['border-t'],
-                  theme.isRTL && ii > 0 && u['border-r'],
-                  !theme.isRTL && ii > 0 && u['border-l'],
+                  theme.isRTL && (ii > 0 || showWeekNumber) && u['border-r'],
+                  !theme.isRTL && (ii > 0 || showWeekNumber) && u['border-l'],
                   { borderColor: theme.palette.gray['200'] },
                   u['p-2'],
                   u['flex-1'],

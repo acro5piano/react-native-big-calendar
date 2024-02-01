@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
+import { useMemo } from 'react'
 import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
@@ -14,19 +15,18 @@ import {
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import {
+  SIMPLE_DATE_FORMAT,
   enrichEvents,
   getCountOfEventsAtEvent,
   getOrderOfEvent,
   getRelativeTopInDay,
   hours,
   isToday,
-  SIMPLE_DATE_FORMAT,
 } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
 import { CalendarEvent } from './CalendarEvent'
 import { HourGuideCell } from './HourGuideCell'
 import { HourGuideColumn } from './HourGuideColumn'
-import { useMemo } from 'react'
 
 const styles = StyleSheet.create({
   nowIndicator: {
@@ -60,6 +60,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   hideHours?: Boolean
   isEventOrderingEnabled?: boolean
+  showWeekNumber?: boolean
   showVerticalScrollIndicator?: boolean
   enrichedEventsByDate?: Record<string, T[]>
   enableEnrichedEvents?: boolean
@@ -89,6 +90,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hourStyle = {},
   hideHours = false,
   isEventOrderingEnabled = true,
+  showWeekNumber = false,
   showVerticalScrollIndicator = false,
   enrichedEventsByDate,
   enableEnrichedEvents = false,
@@ -258,7 +260,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
           {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
         >
-          {!hideHours && (
+          {(!hideHours || showWeekNumber) && (
             <View style={[u['z-20'], u['w-50']]}>
               {hours.map((hour) => (
                 <HourGuideColumn
