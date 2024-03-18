@@ -4,6 +4,7 @@ import { TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
+  AllDayEventCellStyle,
   CalendarCellStyle,
   CalendarCellTextStyle,
   DateRangeHandler,
@@ -62,6 +63,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
    * Custom style. It accepts styles or an array of styles, or a function that returns styles or an array of styles.
    */
   eventCellStyle?: EventCellStyle<T>
+  allDayEventCellStyle?: AllDayEventCellStyle<T>
   calendarCellStyle?: CalendarCellStyle
   calendarCellTextStyle?: CalendarCellTextStyle
   calendarContainerStyle?: ViewStyle
@@ -143,6 +145,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   hourRowHeight,
   ampm = false,
   date,
+  allDayEventCellStyle = {},
   eventCellStyle,
   calendarCellStyle,
   calendarCellTextStyle,
@@ -331,6 +334,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const headerProps = {
     ...commonProps,
     style: headerContainerStyle,
+    allDayEventCellStyle,
     allDayEvents: allDayEvents,
     onPressDateHeader: onPressDateHeader,
     activeDate,

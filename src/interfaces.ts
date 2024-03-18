@@ -36,6 +36,10 @@ export type EventCellStyle<T extends ICalendarEventBase> =
   | ViewStyle[]
   | ((event: T) => ViewStyle | ViewStyle[])
 
+export type AllDayEventCellStyle<T extends ICalendarEventBase> =
+  | ViewStyle
+  | ((event: T) => ViewStyle)
+
 export type CalendarCellStyle = ViewStyle | ((date?: Date, hourRowIndex?: number) => ViewStyle)
 
 export type CalendarCellTextStyle = TextStyle | ((date?: Date, hourRowIndex?: number) => TextStyle)

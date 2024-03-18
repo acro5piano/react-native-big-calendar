@@ -13,6 +13,7 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
   style: ViewStyle
+  allDayEventCellStyle: ViewStyle | ((event: T) => ViewStyle)
   allDayEvents: T[]
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
@@ -31,6 +32,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   dateRange,
   cellHeight,
   style,
+  allDayEventCellStyle,
   allDayEvents,
   onPressDateHeader,
   onPressEvent,
@@ -194,9 +196,15 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                   if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
                     return null
                   }
+
+                  const getEventStyle =
+                    typeof allDayEventCellStyle === 'function'
+                      ? allDayEventCellStyle
+                      : () => allDayEventCellStyle
+
                   return (
                     <TouchableOpacity
-                      style={[eventCellCss.style, primaryBg, u['mt-2']]}
+                      style={[eventCellCss.style, primaryBg, u['mt-2'], getEventStyle(event)]}
                       key={index}
                       onPress={() => _onPressEvent(event)}
                     >
