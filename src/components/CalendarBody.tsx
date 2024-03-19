@@ -266,6 +266,13 @@ function _CalendarBody<T extends ICalendarEventBase>({
       }))
     }
 
+    console.log(
+      getCountOfEventsAtEvent,
+      getOrderOfEvent,
+      getMaxCountOfEventsAtEvent,
+      getWidthOfEventsAtEvent,
+    )
+
     return events
   }, [enableEnrichedEvents, events, isEventOrderingEnabled])
 
