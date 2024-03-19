@@ -101,6 +101,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   ampm?: boolean
   date?: Date
   eventCellStyle?: EventCellStyle<T>
+  allDayEventCellStyle?: allDayEventCellStyle<T>
   calendarContainerStyle?: ViewStyle
   headerContainerStyle?: ViewStyle
   bodyContainerStyle?: ViewStyle
