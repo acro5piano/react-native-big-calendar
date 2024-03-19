@@ -46,6 +46,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   ampm: boolean
   showTime: boolean
   style: ViewStyle
+  eventCellTextColor?: string
   eventCellStyle?: EventCellStyle<T>
   calendarCellStyle?: CalendarCellStyle
   hideNowIndicator?: boolean
@@ -76,6 +77,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   onPressCell,
   events,
   onPressEvent,
+  eventCellTextColor,
   eventCellStyle,
   calendarCellStyle,
   ampm,
@@ -170,6 +172,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           event={event}
           onPressEvent={onPressEvent}
           eventCellStyle={eventCellStyle}
+          eventCellTextColor={eventCellTextColor}
           showTime={showTime}
           eventCount={event.overlapCount}
           eventOrder={event.overlapPosition}
@@ -179,7 +182,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         />
       )
     },
-    [ampm, eventCellStyle, onPressEvent, overlapOffset, renderEvent, showTime],
+    [ampm, eventCellStyle, eventCellTextColor, onPressEvent, overlapOffset, renderEvent, showTime],
   )
 
   const _renderEvents = React.useCallback(

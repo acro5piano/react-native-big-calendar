@@ -63,7 +63,9 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
    * Custom style. It accepts styles or an array of styles, or a function that returns styles or an array of styles.
    */
   eventCellStyle?: EventCellStyle<T>
+  eventCellTextColor?: string
   allDayEventCellStyle?: AllDayEventCellStyle<T>
+  allDayEventCellTextColor?: string
   calendarCellStyle?: CalendarCellStyle
   calendarCellTextStyle?: CalendarCellTextStyle
   calendarContainerStyle?: ViewStyle
@@ -146,7 +148,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   ampm = false,
   date,
   allDayEventCellStyle = {},
+  allDayEventCellTextColor = '',
   eventCellStyle,
+  eventCellTextColor = '',
   calendarCellStyle,
   calendarCellTextStyle,
   locale = 'en',
@@ -335,6 +339,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     ...commonProps,
     style: headerContainerStyle,
     allDayEventCellStyle,
+    allDayEventCellTextColor,
     allDayEvents: allDayEvents,
     onPressDateHeader: onPressDateHeader,
     activeDate,
@@ -384,6 +389,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         containerHeight={height}
         events={daytimeEvents}
         eventCellStyle={eventCellStyle}
+        eventCellTextColor={eventCellTextColor}
         calendarCellStyle={calendarCellStyle}
         hideNowIndicator={hideNowIndicator}
         overlapOffset={overlapOffset}

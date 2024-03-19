@@ -22,6 +22,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   event: T
   onPressEvent?: (event: T) => void
   eventCellStyle?: EventCellStyle<T>
+  eventCellTextColor?: string
   showTime: boolean
   eventCount?: number
   eventOrder?: number
@@ -35,6 +36,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   event,
   onPressEvent,
   eventCellStyle,
+  eventCellTextColor,
   showTime,
   eventCount = 1,
   eventOrder = 0,
@@ -80,7 +82,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       showTime={showTime}
       ampm={ampm}
       touchableOpacityProps={touchableOpacityProps}
-      textColor={textColor}
+      textColor={eventCellTextColor || textColor}
     />
   )
 }
