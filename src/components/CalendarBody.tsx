@@ -152,12 +152,117 @@ function _CalendarBody<T extends ICalendarEventBase>({
     if (enableEnrichedEvents) return []
 
     if (isEventOrderingEnabled) {
+      const eventsByDate: any = {}
+      events.forEach((event) => {
+        const startDate = new Date(event.start)
+        const endDate = new Date(event.end)
+
+        // Check if event spans multiple days
+        while (startDate.toDateString() !== endDate.toDateString()) {
+          const nextDayEndTime = new Date(startDate)
+          nextDayEndTime.setHours(23, 59, 59, 999) // Set to end of day
+
+          // Create event for current day
+          const currentDayEvent = {
+            ...event,
+            end: nextDayEndTime,
+          }
+
+          // Extract date from start time
+          const currentDate = startDate.toLocaleDateString()
+
+          // Check if entry exists for date, if not, create one
+          if (!eventsByDate[currentDate]) {
+            eventsByDate[currentDate] = []
+          }
+
+          // Append event to array for that date
+          eventsByDate[currentDate].push(currentDayEvent)
+
+          // Move startDate to next day
+          startDate.setDate(startDate.getDate() + 1)
+          startDate.setHours(0, 0, 0, 0) // Set to start of day
+          event.start = startDate
+        }
+
+        // Extract date from start time
+        const date = startDate.toLocaleDateString()
+
+        // Check if entry exists for date, if not, create one
+        if (!eventsByDate[date]) {
+          eventsByDate[date] = []
+        }
+
+        // Append event to array for that date
+        eventsByDate[date].push(event)
+      })
+
+      // Get date wise events
+      for (let date in eventsByDate) {
+        let sortedEvents = eventsByDate[date].sort((a: any, b: any) => {
+          if (dayjs(a.start).isSame(b.start)) {
+            return dayjs(a.start).diff(a.end) < dayjs(b.start).diff(b.end) ? -1 : 1
+          } else {
+            return dayjs(a.start).isBefore(b.start) ? -1 : 1
+          }
+        })
+
+        const nonOverLappingLanes: any = []
+        while (sortedEvents.length > 0) {
+          const nonOverlappedEvents = [sortedEvents[0]]
+          let maxStartTime = sortedEvents[0].start
+          let maxEndTime = sortedEvents[0].end
+          if (sortedEvents.length > 1) {
+            for (let i = 1; i < sortedEvents.length; i++) {
+              if (
+                !dayjs(sortedEvents[0].start).isBetween(
+                  sortedEvents[i].start,
+                  sortedEvents[i].end,
+                  'second',
+                  '[)',
+                ) &&
+                !dayjs(sortedEvents[i].start).isBetween(
+                  sortedEvents[0].start,
+                  sortedEvents[0].end,
+                  'second',
+                  '[)',
+                ) &&
+                !dayjs(sortedEvents[i].start).isBetween(maxStartTime, maxEndTime, 'second', '[)') &&
+                !dayjs(sortedEvents[i].end).isBetween(maxStartTime, maxEndTime, 'second', '[)')
+              ) {
+                nonOverlappedEvents.push(sortedEvents[i])
+                if (dayjs(sortedEvents[i].start).isBefore(maxStartTime, 'second')) {
+                  maxStartTime = sortedEvents[i].start
+                }
+
+                if (dayjs(sortedEvents[i].end).isAfter(maxEndTime, 'second')) {
+                  maxEndTime = sortedEvents[i].end
+                }
+              }
+            }
+          }
+
+          nonOverLappingLanes.push(nonOverlappedEvents)
+          sortedEvents = sortedEvents.filter((item: any) => !nonOverlappedEvents.includes(item))
+        }
+
+        eventsByDate[date].forEach((event: { position: {} }) => {
+          for (let i = 0; i < nonOverLappingLanes.length; i++) {
+            if (nonOverLappingLanes[i].includes(event)) {
+              const width = 100.0 / nonOverLappingLanes.length
+              const start = i * width
+              event.position = { start: start, end: 100.0 - start - width }
+              break
+            }
+          }
+        })
+      }
       return events.map((event) => ({
         ...event,
-        overlapPosition: getOrderOfEvent(event, events),
-        overlapCount: getCountOfEventsAtEvent(event, events),
-        maxOverlapCount: getMaxCountOfEventsAtEvent(event, events),
-        position: getWidthOfEventsAtEvent(event, events),
+        // overlapPosition: getOrderOfEvent(event, events),
+        // overlapCount: getCountOfEventsAtEvent(event, events),
+        // maxOverlapCount: getMaxCountOfEventsAtEvent(event, events),
+        // position: getWidthOfEventsAtEvent(event, events)
       }))
     }
 
