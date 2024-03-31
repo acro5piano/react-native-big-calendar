@@ -296,7 +296,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     const width = leftValue.current?.width || 0
     const presentcurrent = currentPresentLeftVal.current || 0
 
-    // Step 1: move to the left and hide
+    // Step 1: move to the right and hide
     Animated.timing(presentLeftValue, {
       toValue: -width,
       duration: fadeInDuration,
@@ -307,7 +307,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       duration: fadeInDuration,
       useNativeDriver: false,
     }).start(() => {
-      // Step 2: move quickly to the left to starting point
+      // Step 2: move quickly to the right to starting point
       Animated.timing(presentLeftValue, {
         toValue: presentcurrent + width,
         duration: 0.01,
