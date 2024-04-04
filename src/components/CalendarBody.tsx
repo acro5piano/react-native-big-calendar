@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
 
 interface CalendarBodyProps<T extends ICalendarEventBase> {
   cellHeight: number
+  date?: Date
   containerHeight: number
   dateRange: dayjs.Dayjs[]
   events: T[]
@@ -70,6 +71,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
 
 function _CalendarBody<T extends ICalendarEventBase>({
   containerHeight,
+  date,
   cellHeight,
   dateRange,
   style,
@@ -97,7 +99,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   eventsAreSorted = false,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
-  const { now } = useNow(!hideNowIndicator)
+  const { now } = useNow(!hideNowIndicator, date)
 
   React.useEffect(() => {
     let timeout: NodeJS.Timeout

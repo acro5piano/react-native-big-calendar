@@ -291,6 +291,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         <HeaderComponentForMonthView {...headerProps} />
         <CalendarBodyForMonthView<T>
           {...commonProps}
+          date={date}
           style={bodyContainerStyle}
           containerHeight={height}
           events={[...daytimeEvents, ...allDayEvents]}
@@ -366,6 +367,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       <HeaderComponent {...headerProps} />
       <CalendarBody
         {...commonProps}
+        date={date}
         style={bodyContainerStyle}
         containerHeight={height}
         events={daytimeEvents}
