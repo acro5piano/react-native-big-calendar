@@ -79,6 +79,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
 
   ampm?: boolean
+  current?: Date
   date?: Date
   locale?: string
   hideNowIndicator?: boolean
@@ -138,6 +139,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   height,
   hourRowHeight,
   ampm = false,
+  current,
   date,
   eventCellStyle,
   calendarCellStyle,
@@ -291,7 +293,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         <HeaderComponentForMonthView {...headerProps} />
         <CalendarBodyForMonthView<T>
           {...commonProps}
-          date={date}
+          current={current}
           style={bodyContainerStyle}
           containerHeight={height}
           events={[...daytimeEvents, ...allDayEvents]}
@@ -367,7 +369,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       <HeaderComponent {...headerProps} />
       <CalendarBody
         {...commonProps}
-        date={date}
+        current={current}
         style={bodyContainerStyle}
         containerHeight={height}
         events={daytimeEvents}

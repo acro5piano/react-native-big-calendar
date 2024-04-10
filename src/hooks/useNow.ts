@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
 import React from 'react'
 
-export function useNow(enabled: boolean, date: any) {
-  const [now, setNow] = React.useState(dayjs(date))
+export function useNow(enabled: boolean, current?: Date) {
+  const [now, setNow] = React.useState(dayjs(current))
 
   React.useEffect(() => {
     if (!enabled) {

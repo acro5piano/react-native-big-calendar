@@ -31,7 +31,7 @@ import { CalendarEventForMonthView } from './CalendarEventForMonthView'
 interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   containerHeight: number
   targetDate: dayjs.Dayjs
-  date?: Date
+  current?: Date
   events: T[]
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
@@ -57,7 +57,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   containerHeight,
-  date,
+  current,
   targetDate,
   style,
   onLongPressCell,
@@ -81,7 +81,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   renderCustomDateForMonth,
   disableMonthEventCellPress,
 }: CalendarBodyForMonthViewProps<T>) {
-  const { now } = useNow(!hideNowIndicator, date)
+  const { now } = useNow(!hideNowIndicator, current)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
   const [calendarCellHeight, setCalendarCellHeight] = React.useState<number>(0)
 

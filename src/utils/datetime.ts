@@ -81,8 +81,8 @@ export function formatHour(hour: number, ampm = false) {
   return `${hour}:00`
 }
 
-export function isToday(date: dayjs.Dayjs) {
-  const today = dayjs()
+export function isToday(date: dayjs.Dayjs, current?: Date) {
+  const today = dayjs(current)
   return today.isSame(date, 'day')
 }
 
