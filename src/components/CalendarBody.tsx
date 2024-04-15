@@ -100,7 +100,12 @@ function _CalendarBody<T extends ICalendarEventBase>({
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator, current)
+  const [nowIndicatorTop, setNowIndicatorTop] = React.useState(getRelativeTopInDay(now))
 
+  React.useEffect(() => {
+    const targetDate = current ? dayjs(current) : dayjs()
+    setNowIndicatorTop(getRelativeTopInDay(targetDate))
+  }, [now, current])
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -410,7 +415,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   style={[
                     styles.nowIndicator,
                     { backgroundColor: theme.palette.nowIndicator },
-                    { top: `${getRelativeTopInDay(now)}%` },
+                    { top: `${nowIndicatorTop}%` },
                   ]}
                 />
               )}
