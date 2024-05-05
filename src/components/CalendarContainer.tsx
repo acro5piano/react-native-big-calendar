@@ -334,6 +334,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const headerProps = {
     ...commonProps,
     style: headerContainerStyle,
+    locale,
     allDayEventCellStyle,
     allDayEvents: allDayEvents,
     onPressDateHeader: onPressDateHeader,

@@ -49,6 +49,7 @@ interface ScheduleProps<T extends ICalendarEventBase> {
   weekDayHeaderHighlightColor?: string
   dayHeaderHighlightColor?: string
   itemSeparatorComponent?: React.ComponentType<any> | null | undefined
+  locale: string
 }
 
 function _Schedule<T extends ICalendarEventBase>({
@@ -66,6 +67,7 @@ function _Schedule<T extends ICalendarEventBase>({
   weekDayHeaderHighlightColor = '',
   dayHeaderHighlightColor = '',
   itemSeparatorComponent,
+  locale,
 }: ScheduleProps<T>) {
   const theme = useTheme()
 
@@ -117,7 +119,7 @@ function _Schedule<T extends ICalendarEventBase>({
   }, [events])
 
   const renderFlatListItem = (eventGroup: T[]): JSX.Element => {
-    const date = dayjs(eventGroup[0].start)
+    const date = dayjs(eventGroup[0].start).locale(locale)
     const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
 
     return (
