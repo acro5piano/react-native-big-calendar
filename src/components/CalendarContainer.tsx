@@ -338,6 +338,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const headerProps = {
     ...commonProps,
     style: headerContainerStyle,
+    locale,
     allDayEventCellStyle,
     allDayEventCellTextColor,
     allDayEvents: allDayEvents,
