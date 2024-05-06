@@ -60,7 +60,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.72.6",
-    "react-native-web": "^0.19.9",
+    "react-native-web": "^0.19.11",
     "remeda": "^1.39.0",
     "rimraf": "^5.0.5",
     "rn-tailwind": "^1.0.16",
