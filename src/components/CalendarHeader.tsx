@@ -14,6 +14,7 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   cellHeight: number
   style: ViewStyle
   allDayEventCellStyle: ViewStyle | ((event: T) => ViewStyle)
+  allDayEventCellTextColor: string
   allDayEvents: T[]
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
@@ -33,6 +34,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   cellHeight,
   style,
   allDayEventCellStyle,
+  allDayEventCellTextColor,
   allDayEvents,
   onPressDateHeader,
   onPressEvent,
@@ -211,7 +213,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                       <Text
                         style={{
                           fontSize: theme.typography.sm.fontSize,
-                          color: theme.palette.primary.contrastText,
+                          color: allDayEventCellTextColor || theme.palette.primary.contrastText,
                         }}
                       >
                         {event.title}
