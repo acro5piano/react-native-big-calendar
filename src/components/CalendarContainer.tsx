@@ -248,6 +248,16 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     [mode, locale, weekEndsOn, weekStartsOn],
   )
 
+  if (minHour < 0) {
+    throw new Error('minHour should be 0 or greater')
+  }
+  if (maxHour > 23) {
+    throw new Error('maxHour should be less that 24')
+  }
+  if (minHour >= maxHour) {
+    throw new Error('minHour should be less than maxHour')
+  }
+
   const cellHeight = React.useMemo(
     () => hourRowHeight || Math.max(height - 30, MIN_HEIGHT) / 24,
     [height, hourRowHeight],

@@ -103,9 +103,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
-  const hours = minHour < maxHour && minHour >= 0 && maxHour <= 23
-      ? Array.from({ length: maxHour - minHour + 1 }, (_, i) => minHour + i)
-      : Array.from(Array(24).keys())
+  const hours = Array.from({ length: maxHour - minHour + 1 }, (_, i) => minHour + i)
 
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
