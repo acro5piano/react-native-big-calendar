@@ -20,7 +20,6 @@ import {
   getCountOfEventsAtEvent,
   getOrderOfEvent,
   getRelativeTopInDay,
-  hours,
   isToday,
 } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
@@ -60,6 +59,8 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   hideHours?: Boolean
+  minHour?: number
+  maxHour?: number
   isEventOrderingEnabled?: boolean
   showWeekNumber?: boolean
   showVerticalScrollIndicator?: boolean
@@ -91,6 +92,8 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponentStyle = {},
   hourStyle = {},
   hideHours = false,
+  minHour = 0,
+  maxHour = 23,
   isEventOrderingEnabled = true,
   showWeekNumber = false,
   showVerticalScrollIndicator = false,
@@ -100,6 +103,9 @@ function _CalendarBody<T extends ICalendarEventBase>({
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
+  const hours = minHour < maxHour && minHour >= 0 && maxHour <= 23
+      ? Array.from({ length: maxHour - minHour + 1 }, (_, i) => minHour + i)
+      : Array.from(Array(24).keys())
 
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
