@@ -181,6 +181,11 @@ storiesOf('showcase - Desktop', module)
       <Calendar height={SCREEN_HEIGHT} events={events} weekStartsOn={1} />
     </View>
   ))
+  .add('week mode - minHour and maxHour', () => (
+    <View style={styles.desktop}>
+      <Calendar height={SCREEN_HEIGHT} events={events} minHour={5} maxHour={22} />
+    </View>
+  ))
   .add('all day event', () => {
     const monday = dayjs().day(1)
     const _events = [
