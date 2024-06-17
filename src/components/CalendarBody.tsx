@@ -183,10 +183,24 @@ function _CalendarBody<T extends ICalendarEventBase>({
           overlapOffset={overlapOffset}
           renderEvent={renderEvent}
           ampm={ampm}
+          maxHour={maxHour}
+          minHour={minHour}
+          hours={hours.length}
         />
       )
     },
-    [ampm, eventCellStyle, eventCellTextColor, onPressEvent, overlapOffset, renderEvent, showTime],
+    [
+      ampm,
+      eventCellStyle,
+      eventCellTextColor,
+      onPressEvent,
+      overlapOffset,
+      renderEvent,
+      showTime,
+      maxHour,
+      minHour,
+      hours.length,
+    ],
   )
 
   const _renderEvents = React.useCallback(
@@ -301,7 +315,9 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   style={[
                     styles.nowIndicator,
                     { backgroundColor: theme.palette.nowIndicator },
-                    { top: `${getRelativeTopInDay(now)}%` },
+                    {
+                      top: `${getRelativeTopInDay(now, minHour, hours.length)}%`,
+                    },
                   ]}
                 />
               )}

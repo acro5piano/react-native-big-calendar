@@ -9,12 +9,15 @@ import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent } from '.
 import { typedMemo } from '../utils/react'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
-const getEventCellPositionStyle = (start: Date, end: Date) => {
-  const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
-  const relativeTop = getRelativeTopInDay(dayjs(start))
+const getEventCellPositionStyle = (start: Date, end: Date, minHour: number, hours: number) => {
+  const totalMinutesInRange = (DAY_MINUTES / 24) * hours
+  const durationInMinutes = dayjs(end).diff(start, 'minute')
+  const relativeHeight = 100 * (1 / totalMinutesInRange) * durationInMinutes
+  const relativeTop = getRelativeTopInDay(dayjs(start), minHour, hours)
+  const relativeTopOffset = (minHour * 60) / DAY_MINUTES
   return {
     height: `${relativeHeight}%`,
-    top: `${relativeTop}%`,
+    top: `${relativeTop - relativeTopOffset}%`,
   }
 }
 
@@ -30,6 +33,9 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   renderEvent?: EventRenderer<T>
   ampm: boolean
   mode?: Mode
+  maxHour?: number
+  minHour?: number
+  hours?: number
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
@@ -44,6 +50,8 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   renderEvent,
   ampm,
   mode,
+  minHour = 0,
+  hours = 24,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -60,7 +68,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       mode === 'schedule'
         ? [getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes)]
         : [
-            getEventCellPositionStyle(event.start, event.end),
+            getEventCellPositionStyle(event.start, event.end, minHour, hours),
             getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
             u['absolute'],
             u['mt-2'],
