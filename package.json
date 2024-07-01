@@ -69,7 +69,7 @@
     "simple-git-hooks": "^2.8.1",
     "tailwind-rn": "^3.0.1",
     "ts-loader": "^9.5.1",
-    "tslib": "^2.6.1",
+    "tslib": "^2.6.3",
     "typescript": "^5.4.5",
     "webpack-merge": "^5.10.0"
   },
