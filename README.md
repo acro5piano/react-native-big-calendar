@@ -101,11 +101,16 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   ampm?: boolean
   date?: Date
   eventCellStyle?: EventCellStyle<T>
+  eventCellAccessibilityProps?: AccessibilityProps
   eventCellTextColor?: string
   allDayEventCellStyle?: allDayEventCellStyle<>
+  allDayEventCellAccessibilityProps?: AccessibilityProps
   allDayEventCellTextColor?: string
   calendarContainerStyle?: ViewStyle
+  calendarCellAccessibilityProps?: AccessibilityProps
   headerContainerStyle?: ViewStyle
+  headerContainerAccessibilityProps?: AccessibilityProps
+  headerCellAccessibilityProps?: AccessibilityProps
   bodyContainerStyle?: ViewStyle
   renderEvent?: (
     event: T,
