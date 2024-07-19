@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { AccessibilityProps, Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { eventCellCss, u } from '../commonStyles'
 import { ICalendarEventBase } from '../interfaces'
@@ -27,6 +27,9 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   hideHours?: Boolean
   showWeekNumber?: boolean
   weekNumberPrefix?: string
+  allDayEventCellAccessibilityProps?: AccessibilityProps
+  headerContainerAccessibilityProps?: AccessibilityProps
+  headerCellAccessibilityProps?: AccessibilityProps
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -47,6 +50,9 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   hideHours = false,
   showWeekNumber = false,
   weekNumberPrefix = '',
+  allDayEventCellAccessibilityProps = {},
+  headerContainerAccessibilityProps = {},
+  headerCellAccessibilityProps = {},
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
@@ -75,6 +81,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
         theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
+      {...headerContainerAccessibilityProps}
     >
       {(!hideHours || showWeekNumber) && (
         <View style={[u['z-10'], u['w-50'], u['pt-2'], borderColor]}>
@@ -84,6 +91,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                 { height: cellHeight },
                 objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
               ]}
+              {...headerCellAccessibilityProps}
             >
               <Text
                 style={[
@@ -124,6 +132,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             onPress={() => _onPressHeader(date.toDate())}
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
+            {...headerCellAccessibilityProps}
           >
             <View
               style={[
@@ -209,6 +218,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                       style={[eventCellCss.style, primaryBg, u['mt-2'], getEventStyle(event)]}
                       key={index}
                       onPress={() => _onPressEvent(event)}
+                      {...allDayEventCellAccessibilityProps}
                     >
                       <Text
                         style={{

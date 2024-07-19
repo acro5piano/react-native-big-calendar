@@ -8,6 +8,7 @@ import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
+import { AccessibilityProps } from 'react-native'
 
 const getEventCellPositionStyle = (start: Date, end: Date, minHour: number, hours: number) => {
   const totalMinutesInRange = (DAY_MINUTES / 24) * hours
@@ -26,6 +27,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   onPressEvent?: (event: T) => void
   eventCellStyle?: EventCellStyle<T>
   eventCellTextColor?: string
+  eventCellAccessibilityProps?: AccessibilityProps
   showTime: boolean
   eventCount?: number
   eventOrder?: number
@@ -42,6 +44,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   event,
   onPressEvent,
   eventCellStyle,
+  eventCellAccessibilityProps = {},
   eventCellTextColor,
   showTime,
   eventCount = 1,
@@ -63,6 +66,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
     eventCellStyle,
+    eventCellAccessibilityProps,
     onPressEvent,
     injectedStyles:
       mode === 'schedule'

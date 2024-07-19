@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { AccessibilityProps, Text, TouchableOpacity, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
@@ -13,6 +13,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   event: T
   onPressEvent?: (event: T) => void
   eventCellStyle?: EventCellStyle<T>
+  eventCellAccessibilityProps?: AccessibilityProps
   renderEvent?: EventRenderer<T>
   date: dayjs.Dayjs
   dayOfTheWeek: number
@@ -26,6 +27,7 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   event,
   onPressEvent,
   eventCellStyle,
+  eventCellAccessibilityProps = {},
   renderEvent,
   date,
   dayOfTheWeek,
@@ -44,6 +46,7 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
     event,
     eventCellStyle,
+    eventCellAccessibilityProps,
     onPressEvent,
     injectedStyles: [
       { backgroundColor: theme.palette.primary.main },

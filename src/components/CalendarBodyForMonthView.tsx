@@ -2,6 +2,7 @@ import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import * as React from 'react'
 import {
+  AccessibilityProps,
   Animated,
   Platform,
   Text,
@@ -34,7 +35,9 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   events: T[]
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
+  eventCellAccessibilityProps?: AccessibilityProps
   calendarCellStyle?: CalendarCellStyle
+  calendarCellAccessibilityProps?: AccessibilityProps
   calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
   showAdjacentMonths: boolean
@@ -65,7 +68,9 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   events,
   onPressEvent,
   eventCellStyle,
+  eventCellAccessibilityProps = {},
   calendarCellStyle,
+  calendarCellAccessibilityProps = {},
   calendarCellTextStyle,
   onSwipeHorizontal,
   hideNowIndicator,
@@ -277,6 +282,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                 },
               ]}
               key={'weekNumber'}
+              {...calendarCellAccessibilityProps}
             >
               <Text
                 style={[
@@ -321,6 +327,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   // Only set calendarCellHeight once because they are all same
                   i === 0 && ii === 0 && setCalendarCellHeight(layout.height)
                 }
+                {...calendarCellAccessibilityProps}
               >
                 <TouchableOpacity
                   onPress={() =>
@@ -361,6 +368,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                           key={index}
                           event={event}
                           eventCellStyle={eventCellStyle}
+                          eventCellAccessibilityProps={eventCellAccessibilityProps}
                           onPressEvent={onPressEvent}
                           renderEvent={renderEvent}
                           date={date}

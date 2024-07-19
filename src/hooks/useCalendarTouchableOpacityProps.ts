@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { ViewStyle } from 'react-native'
+import { AccessibilityProps, ViewStyle } from 'react-native'
 
 import { eventCellCss } from '../commonStyles'
 import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEventBase } from '../interfaces'
@@ -8,6 +8,7 @@ import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEventBase } fro
 interface UseCalendarTouchableOpacityPropsProps<T extends ICalendarEventBase> {
   event: T
   eventCellStyle?: EventCellStyle<T>
+  eventCellAccessibilityProps?: AccessibilityProps
   onPressEvent?: (event: T) => void
   injectedStyles?: ViewStyle[]
 }
@@ -15,6 +16,7 @@ interface UseCalendarTouchableOpacityPropsProps<T extends ICalendarEventBase> {
 export function useCalendarTouchableOpacityProps<T extends ICalendarEventBase>({
   event,
   eventCellStyle,
+  eventCellAccessibilityProps: eventCellAccessiblityProps = {},
   injectedStyles = [],
   onPressEvent,
 }: UseCalendarTouchableOpacityPropsProps<T>) {
@@ -42,6 +44,7 @@ export function useCalendarTouchableOpacityProps<T extends ICalendarEventBase>({
     style: [eventCellCss.style, ...injectedStyles, getEventStyle(plainJsEvent)],
     onPress: _onPress,
     disabled: !onPressEvent || !!event.disabled,
+    ...eventCellAccessiblityProps,
   }
 
   return touchableOpacityProps
