@@ -218,7 +218,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   )
 
   const _renderEvents = React.useCallback(
-    (date) => {
+    (date: dayjs.Dayjs) => {
       if (enableEnrichedEvents) {
         return (internalEnrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(
           _renderMappedEvent,
