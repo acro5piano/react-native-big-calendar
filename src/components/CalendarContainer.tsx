@@ -71,6 +71,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   calendarCellStyle?: CalendarCellStyle
   calendarCellTextStyle?: CalendarCellTextStyle
   calendarCellAccessibilityProps?: AccessibilityProps
+  calendarCellAccessibilityPropsForMonthView?: AccessibilityProps
   calendarContainerStyle?: ViewStyle
   headerContainerStyle?: ViewStyle
   headerContainerAccessibilityProps?: AccessibilityProps
@@ -159,6 +160,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   eventCellStyle,
   eventCellTextColor = '',
   eventCellAccessibilityProps = {},
+  calendarCellAccessibilityPropsForMonthView = {},
   calendarCellStyle,
   calendarCellTextStyle,
   calendarCellAccessibilityProps = {},
@@ -339,6 +341,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           eventCellAccessibilityProps={eventCellAccessibilityProps}
           calendarCellStyle={calendarCellStyle}
           calendarCellAccessibilityProps={calendarCellAccessibilityProps}
+          calendarCellAccessibilityPropsForMonthView={calendarCellAccessibilityPropsForMonthView}
           calendarCellTextStyle={calendarCellTextStyle}
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}

@@ -37,6 +37,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   eventCellStyle?: EventCellStyle<T>
   eventCellAccessibilityProps?: AccessibilityProps
   calendarCellStyle?: CalendarCellStyle
+  calendarCellAccessibilityPropsForMonthView?: AccessibilityProps
   calendarCellAccessibilityProps?: AccessibilityProps
   calendarCellTextStyle?: CalendarCellTextStyle
   hideNowIndicator?: boolean
@@ -70,6 +71,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   eventCellStyle,
   eventCellAccessibilityProps = {},
   calendarCellStyle,
+  calendarCellAccessibilityPropsForMonthView = {},
   calendarCellAccessibilityProps = {},
   calendarCellTextStyle,
   onSwipeHorizontal,
@@ -327,7 +329,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   // Only set calendarCellHeight once because they are all same
                   i === 0 && ii === 0 && setCalendarCellHeight(layout.height)
                 }
-                {...calendarCellAccessibilityProps}
+                {...calendarCellAccessibilityPropsForMonthView}
               >
                 <TouchableOpacity
                   onPress={() =>
@@ -342,6 +344,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       ? onPressDateHeader(date.toDate())
                       : onLongPressCell && onLongPressCell(date.toDate()))
                   }
+                  {...calendarCellAccessibilityProps}
                 >
                   {renderDateCell(date, i)}
                 </TouchableOpacity>
@@ -394,6 +397,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     }}
                     onLongPress={() => date && onLongPressCell && onLongPressCell(date.toDate())}
                     onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                    {...calendarCellAccessibilityProps}
                   />
                 )}
               </TouchableOpacity>
