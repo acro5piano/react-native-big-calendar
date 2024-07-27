@@ -1,6 +1,14 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { FlatList, Platform, Text, TextStyle, View, ViewStyle } from 'react-native'
+import {
+  AccessibilityProps,
+  FlatList,
+  Platform,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import { u } from '../commonStyles'
 import {
@@ -31,7 +39,9 @@ interface ScheduleProps<T extends ICalendarEventBase> {
   showTime: boolean
   style: ViewStyle
   eventCellStyle?: EventCellStyle<T>
+  eventCellAccessibilityProps?: AccessibilityProps
   calendarCellStyle?: CalendarCellStyle
+  calendarCellAccessibilityProps?: AccessibilityProps
   hideNowIndicator?: boolean
   overlapOffset?: number
   onLongPressCell?: (date: Date) => void
@@ -57,6 +67,7 @@ function _Schedule<T extends ICalendarEventBase>({
   ampm,
   onPressEvent,
   eventCellStyle,
+  eventCellAccessibilityProps = {},
   showTime,
   isEventOrderingEnabled,
   overlapOffset,
@@ -68,6 +79,7 @@ function _Schedule<T extends ICalendarEventBase>({
   dayHeaderHighlightColor = '',
   itemSeparatorComponent,
   locale,
+  calendarCellAccessibilityProps = {},
 }: ScheduleProps<T>) {
   const theme = useTheme()
 
@@ -133,6 +145,7 @@ function _Schedule<T extends ICalendarEventBase>({
               u['items-center'],
               u['flex-column-reverse'],
             ]}
+            {...calendarCellAccessibilityProps}
           >
             <Text
               style={[
@@ -182,6 +195,7 @@ function _Schedule<T extends ICalendarEventBase>({
                   event={event}
                   onPressEvent={onPressEvent}
                   eventCellStyle={eventStyles}
+                  eventCellAccessibilityProps={eventCellAccessibilityProps}
                   showTime={showTime}
                   eventCount={
                     isEventOrderingEnabled ? getCountOfEventsAtEvent(event, events) : undefined

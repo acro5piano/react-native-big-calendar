@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import { AccessibilityProps, TouchableWithoutFeedback, View } from 'react-native'
 
 import { u } from '../commonStyles'
 import { CalendarCellStyle } from '../interfaces'
@@ -14,6 +14,7 @@ interface HourGuideCellProps {
   hour: number
   index: number
   calendarCellStyle?: CalendarCellStyle
+  calendarCellAccessibilityProps?: AccessibilityProps
 }
 
 const _HourGuideCell = ({
@@ -24,6 +25,7 @@ const _HourGuideCell = ({
   hour,
   index,
   calendarCellStyle,
+  calendarCellAccessibilityProps,
 }: HourGuideCellProps) => {
   const theme = useTheme()
 
@@ -36,6 +38,7 @@ const _HourGuideCell = ({
     <TouchableWithoutFeedback
       onLongPress={() => onLongPress(date.hour(hour).minute(0))}
       onPress={() => onPress(date.hour(hour).minute(0))}
+      {...calendarCellAccessibilityProps}
     >
       <View
         style={[

@@ -1,7 +1,15 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { useMemo } from 'react'
-import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import {
+  AccessibilityProps,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -47,7 +55,9 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   style: ViewStyle
   eventCellTextColor?: string
   eventCellStyle?: EventCellStyle<T>
+  eventCellAccessibilityProps?: AccessibilityProps
   calendarCellStyle?: CalendarCellStyle
+  calendarCellAccessibilityProps?: AccessibilityProps
   hideNowIndicator?: boolean
   overlapOffset?: number
   onLongPressCell?: (date: Date) => void
@@ -80,7 +90,9 @@ function _CalendarBody<T extends ICalendarEventBase>({
   onPressEvent,
   eventCellTextColor,
   eventCellStyle,
+  eventCellAccessibilityProps = {},
   calendarCellStyle,
+  calendarCellAccessibilityProps = {},
   ampm,
   showTime,
   scrollOffsetMinutes,
@@ -176,6 +188,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           event={event}
           onPressEvent={onPressEvent}
           eventCellStyle={eventCellStyle}
+          eventCellAccessibilityProps={eventCellAccessibilityProps}
           eventCellTextColor={eventCellTextColor}
           showTime={showTime}
           eventCount={event.overlapCount}
@@ -193,6 +206,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
       ampm,
       eventCellStyle,
       eventCellTextColor,
+      eventCellAccessibilityProps,
       onPressEvent,
       overlapOffset,
       renderEvent,
@@ -204,7 +218,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   )
 
   const _renderEvents = React.useCallback(
-    (date) => {
+    (date: dayjs.Dayjs) => {
       if (enableEnrichedEvents) {
         return (internalEnrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(
           _renderMappedEvent,
@@ -290,6 +304,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   hour={hour}
                   ampm={ampm}
                   hourStyle={hourStyle}
+                  calendarCellAccessibilityProps={calendarCellAccessibilityProps}
                 />
               ))}
             </View>
@@ -307,6 +322,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   onPress={_onPressCell}
                   index={index}
                   calendarCellStyle={calendarCellStyle}
+                  calendarCellAccessibilityProps={calendarCellAccessibilityProps}
                 />
               ))}
               {_renderEvents(date)}

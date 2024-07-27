@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { TextStyle, ViewStyle } from 'react-native'
+import { AccessibilityProps, TextStyle, ViewStyle } from 'react-native'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
@@ -64,13 +64,19 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
    */
   eventCellStyle?: EventCellStyle<T>
   eventCellTextColor?: string
+  eventCellAccessibilityProps?: AccessibilityProps
   allDayEventCellStyle?: AllDayEventCellStyle<T>
   allDayEventCellTextColor?: string
+  allDayEventCellAccessibilityProps?: AccessibilityProps
   calendarCellStyle?: CalendarCellStyle
   calendarCellTextStyle?: CalendarCellTextStyle
+  calendarCellAccessibilityProps?: AccessibilityProps
+  calendarCellAccessibilityPropsForMonthView?: AccessibilityProps
   calendarContainerStyle?: ViewStyle
   headerContainerStyle?: ViewStyle
+  headerContainerAccessibilityProps?: AccessibilityProps
   headerContentStyle?: ViewStyle
+  headerCellAccessibilityProps?: AccessibilityProps
   dayHeaderStyle?: ViewStyle
   dayHeaderHighlightColor?: string
   weekDayHeaderHighlightColor?: string
@@ -150,10 +156,14 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   date,
   allDayEventCellStyle = {},
   allDayEventCellTextColor = '',
+  allDayEventCellAccessibilityProps = {},
   eventCellStyle,
   eventCellTextColor = '',
+  eventCellAccessibilityProps = {},
+  calendarCellAccessibilityPropsForMonthView = {},
   calendarCellStyle,
   calendarCellTextStyle,
+  calendarCellAccessibilityProps = {},
   locale = 'en',
   hideNowIndicator = false,
   mode = 'week',
@@ -161,7 +171,9 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   scrollOffsetMinutes = 0,
   showTime = true,
   headerContainerStyle = {},
+  headerContainerAccessibilityProps = {},
   headerContentStyle = {},
+  headerCellAccessibilityProps = {},
   dayHeaderStyle = {},
   dayHeaderHighlightColor = '',
   weekDayHeaderHighlightColor = '',
@@ -305,9 +317,11 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   if (mode === 'month') {
     const headerProps = {
       style: headerContainerStyle,
+      headerContainerAccessibilityProps: headerContainerAccessibilityProps,
       locale: locale,
       weekStartsOn: weekStartsOn,
       headerContentStyle: headerContentStyle,
+      headerCellAccessibilityProps: headerCellAccessibilityProps,
       dayHeaderStyle: dayHeaderStyle,
       dayHeaderHighlightColor: dayHeaderHighlightColor,
       weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
@@ -324,7 +338,10 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           containerHeight={height}
           events={[...daytimeEvents, ...allDayEvents]}
           eventCellStyle={eventCellStyle}
+          eventCellAccessibilityProps={eventCellAccessibilityProps}
           calendarCellStyle={calendarCellStyle}
+          calendarCellAccessibilityProps={calendarCellAccessibilityProps}
+          calendarCellAccessibilityPropsForMonthView={calendarCellAccessibilityPropsForMonthView}
           calendarCellTextStyle={calendarCellTextStyle}
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
@@ -351,13 +368,16 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const headerProps = {
     ...commonProps,
     style: headerContainerStyle,
+    headerContainerAccessibilityProps: headerContainerAccessibilityProps,
     locale,
     allDayEventCellStyle,
     allDayEventCellTextColor,
     allDayEvents: allDayEvents,
+    allDayEventCellAccessibilityProps: allDayEventCellAccessibilityProps,
     onPressDateHeader: onPressDateHeader,
     activeDate,
     headerContentStyle: headerContentStyle,
+    headerCellAccessibilityProps: headerCellAccessibilityProps,
     dayHeaderStyle: dayHeaderStyle,
     dayHeaderHighlightColor: dayHeaderHighlightColor,
     weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
@@ -374,6 +394,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         containerHeight={height}
         eventCellStyle={eventCellStyle}
         calendarCellStyle={calendarCellStyle}
+        calendarCellAccessibilityProps={calendarCellAccessibilityProps}
         hideNowIndicator={hideNowIndicator}
         overlapOffset={overlapOffset}
         scrollOffsetMinutes={scrollOffsetMinutes}
@@ -403,8 +424,10 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         containerHeight={height}
         events={daytimeEvents}
         eventCellStyle={eventCellStyle}
+        eventCellAccessibilityProps={eventCellAccessibilityProps}
         eventCellTextColor={eventCellTextColor}
         calendarCellStyle={calendarCellStyle}
+        calendarCellAccessibilityProps={calendarCellAccessibilityProps}
         hideNowIndicator={hideNowIndicator}
         overlapOffset={overlapOffset}
         scrollOffsetMinutes={scrollOffsetMinutes}
