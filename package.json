@@ -59,7 +59,7 @@
     "prettier-plugin-import-sort": "^0.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.74.1",
+    "react-native": "^0.75.2",
     "react-native-web": "^0.19.11",
     "remeda": "^1.39.0",
     "rimraf": "^5.0.5",
