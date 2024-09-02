@@ -146,6 +146,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
    * Default value is `false`.
    */
   eventsAreSorted?: boolean
+  timeslots?: number
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -214,6 +215,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   enableEnrichedEvents = false,
   eventsAreSorted = false,
   onSwipeEnd,
+  timeslots = 0,
 }: CalendarContainerProps<T>) {
   // To ensure we have proper effect callback, use string to date comparision.
   const dateString = date?.toString()
@@ -448,6 +450,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         enrichedEventsByDate={enrichedEventsByDate}
         enableEnrichedEvents={enableEnrichedEvents}
         eventsAreSorted={eventsAreSorted}
+        timeslots={timeslots}
       />
     </React.Fragment>
   )
