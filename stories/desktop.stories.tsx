@@ -248,7 +248,7 @@ storiesOf('showcase - Desktop', module)
       <Calendar height={SCREEN_HEIGHT} events={events} overlapOffset={70} />
     </View>
   ))
-  .add('With timesslots', () => (
+  .add('With timeslots', () => (
     <View style={styles.desktop}>
       <Calendar height={SCREEN_HEIGHT} events={events} overlapOffset={70} timeslots={1} />
     </View>
