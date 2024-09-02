@@ -20,6 +20,7 @@ import {
   EventRenderer,
   HorizontalDirection,
   ICalendarEventBase,
+  HourRenderer,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import {
@@ -77,6 +78,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   enrichedEventsByDate?: Record<string, T[]>
   enableEnrichedEvents?: boolean
   eventsAreSorted?: boolean
+  hourComponent?: HourRenderer
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -112,6 +114,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   enrichedEventsByDate,
   enableEnrichedEvents = false,
   eventsAreSorted = false,
+  hourComponent,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -305,6 +308,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   ampm={ampm}
                   hourStyle={hourStyle}
                   calendarCellAccessibilityProps={calendarCellAccessibilityProps}
+                  hourComponent={hourComponent}
                 />
               ))}
             </View>
