@@ -7,7 +7,7 @@ import { Alert, Dimensions, View } from 'react-native'
 
 import { Calendar, ICalendarEventBase } from '../src'
 import { CONTROL_HEIGHT, Control } from './components/Control'
-import { customEventRenderer, events, spanningEvents } from './events'
+import { customEventRenderer, events, spanningEvents, customHourRenderer } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 import { themes } from './themes'
@@ -270,6 +270,16 @@ storiesOf('showcase - Desktop', module)
       </View>
     )
   })
+  .add('Custom Hour Component renderer', () => (
+    <View style={styles.desktop}>
+      <Calendar
+        height={SCREEN_HEIGHT}
+        events={events}
+        hourComponent={customHourRenderer}
+        mode={'custom'}
+      />
+    </View>
+  ))
   .add('Custom week length', () => (
     <View style={styles.desktop}>
       <Calendar
