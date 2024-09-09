@@ -201,7 +201,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   sortedMonthView = true,
   hideHours = false,
   minHour = 0,
-  maxHour = 23,
+  maxHour = 16,
   isEventOrderingEnabled,
   showWeekNumber = false,
   weekNumberPrefix = '',
