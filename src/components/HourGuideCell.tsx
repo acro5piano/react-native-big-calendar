@@ -15,6 +15,7 @@ interface HourGuideCellProps {
   index: number
   calendarCellStyle?: CalendarCellStyle
   calendarCellAccessibilityProps?: AccessibilityProps
+  timeslots: number
 }
 
 const _HourGuideCell = ({
@@ -26,6 +27,7 @@ const _HourGuideCell = ({
   index,
   calendarCellStyle,
   calendarCellAccessibilityProps,
+  timeslots,
 }: HourGuideCellProps) => {
   const theme = useTheme()
 
@@ -44,11 +46,28 @@ const _HourGuideCell = ({
         style={[
           u['border-l'],
           u['border-b'],
-          { borderColor: theme.palette.gray['200'] },
-          { height: cellHeight },
+          {
+            borderColor: theme.palette.gray['200'],
+            height: cellHeight,
+            justifyContent: 'space-evenly',
+          },
           { ...getCalendarCellStyle(date.toDate(), index) },
         ]}
-      />
+      >
+        {Array.from({ length: timeslots }, (_, index) => (
+          <View
+            key={index}
+            style={[
+              u['border-l'],
+              u['border-b'],
+              {
+                borderColor: theme.palette.gray['100'],
+                height: 1,
+              },
+            ]}
+          />
+        ))}
+      </View>
     </TouchableWithoutFeedback>
   )
 }
