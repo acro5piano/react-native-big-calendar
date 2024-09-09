@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
-import { EventRenderer, ICalendarEventBase } from '../src/interfaces'
+import { EventRenderer, ICalendarEventBase, HourRenderer } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils/datetime'
 
 const getRandomInt = (min: number, max: number) => {
@@ -170,5 +170,18 @@ export const customEventRenderer: EventRenderer<MyCustomEventType> = (
         </>
       )}
     </TouchableOpacity>
+  )
+}
+
+export const customHourRenderer: HourRenderer = ({ hour }) => {
+  return (
+    <Text
+      style={{
+        textAlign: 'right',
+        paddingRight: 5,
+      }}
+    >
+      {hour}
+    </Text>
   )
 }

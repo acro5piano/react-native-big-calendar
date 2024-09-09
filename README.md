@@ -204,6 +204,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `showWeekNumber`                             | no       | `boolean`                                                         | Show week number. Week number will be shown at top left corner for week/day mode and at start of each row for month mode                                                                                                                                                                                                                                                                                                                                          |
 | `weekNumberPrefix`                           | no       | `string`                                                          | Prefix for week number. For month mode, the prefix will be shown in header row.                                                                                                                                                                                                                                                                                                                                                                                   |
 | `maxVisibleEventCount`                       | no       | `number`                                                          | Maximum number of events to show in a cell in month view. If the number of events exceeds this value, the cell will show the `moreLabel`. Defaults to 3.                                                                                                                                                                                                                                                                                                          |
+| `hourComponent`                              | no       | `HourRenderer`                                                    | Custom hour renderer                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ## EventRenderer
 
@@ -225,6 +226,15 @@ interface ICalendarEventBase {
   title: string
   children?: ReactElement | null
   disabled?: boolean
+}
+```
+
+## HourRenderer
+
+```typescript
+type HourRenderer = {
+  appm: boolean
+  hour: number
 }
 ```
 

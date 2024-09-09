@@ -5,6 +5,7 @@ import { u } from '../commonStyles'
 import { useTheme } from '../theme/ThemeContext'
 import { formatHour } from '../utils/datetime'
 import { objHasContent } from '../utils/object'
+import { HourRenderer } from '../interfaces'
 
 interface HourGuideColumnProps {
   cellHeight: number
@@ -12,6 +13,7 @@ interface HourGuideColumnProps {
   ampm: boolean
   hourStyle: TextStyle
   calendarCellAccessibilityProps?: AccessibilityProps
+  hourComponent?: HourRenderer
 }
 
 const _HourGuideColumn = ({
@@ -20,6 +22,7 @@ const _HourGuideColumn = ({
   ampm,
   hourStyle = {},
   calendarCellAccessibilityProps = {},
+  hourComponent: HourComponent,
 }: HourGuideColumnProps) => {
   const theme = useTheme()
   const textStyle = React.useMemo(
@@ -29,9 +32,13 @@ const _HourGuideColumn = ({
 
   return (
     <View style={{ height: cellHeight }} {...calendarCellAccessibilityProps}>
-      <Text style={[objHasContent(hourStyle) ? hourStyle : textStyle, u['text-center']]}>
-        {formatHour(hour, ampm)}
-      </Text>
+      {HourComponent ? (
+        <HourComponent hour={hour} ampm={ampm} />
+      ) : (
+        <Text style={[objHasContent(hourStyle) ? hourStyle : textStyle, u['text-center']]}>
+          {formatHour(hour, ampm)}
+        </Text>
+      )}
     </View>
   )
 }
