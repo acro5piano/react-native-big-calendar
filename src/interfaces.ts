@@ -62,3 +62,5 @@ export type HeaderRenderer<T extends ICalendarEventBase> = React.ComponentType<
   CalendarHeaderProps<T> & { mode: Mode }
 >
 export type MonthHeaderRenderer = React.ComponentType<CalendarHeaderForMonthViewProps>
+
+export type HourRenderer = React.ComponentType<{ ampm: boolean; hour: number }>

@@ -12,6 +12,7 @@ import {
   EventRenderer,
   HeaderRenderer,
   HorizontalDirection,
+  HourRenderer,
   ICalendarEventBase,
   Mode,
   MonthHeaderRenderer,
@@ -146,6 +147,8 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
    * Default value is `false`.
    */
   eventsAreSorted?: boolean
+  timeslots?: number
+  hourComponent?: HourRenderer
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -215,6 +218,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   eventsAreSorted = false,
   excludeSunday = false,
   onSwipeEnd,
+  timeslots = 0,
+  hourComponent,
 }: CalendarContainerProps<T>) {
   // To ensure we have proper effect callback, use string to date comparision.
   const dateString = date?.toString()
@@ -452,6 +457,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         enrichedEventsByDate={enrichedEventsByDate}
         enableEnrichedEvents={enableEnrichedEvents}
         eventsAreSorted={eventsAreSorted}
+        timeslots={timeslots}
+        hourComponent={hourComponent}
       />
     </React.Fragment>
   )
