@@ -19,6 +19,7 @@ export interface ICalendarEventBase {
    * number of events overlapping with this event (optional)
    */
   overlapCount?: number
+  excludeSunday?: boolean
 }
 
 export type CalendarTouchableOpacityProps = {

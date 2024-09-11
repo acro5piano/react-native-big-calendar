@@ -373,8 +373,9 @@ export function getEventSpanningInfo(
 export function getWeeksWithAdjacentMonths(
   targetDate: dayjs.Dayjs,
   weekStartsOn: WeekNum,
-  excludeSunday: false,
+  excludeSunday: boolean,
 ) {
+  console.log('excludeSunday--', excludeSunday)
   let weeks = calendarize(targetDate.toDate(), weekStartsOn)
   const firstDayIndex = weeks[0].findIndex((d) => d === 1)
   const lastDay = targetDate.endOf('month').date()
