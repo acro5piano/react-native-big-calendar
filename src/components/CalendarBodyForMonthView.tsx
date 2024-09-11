@@ -57,6 +57,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   showWeekNumber?: boolean
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
   disableMonthEventCellPress?: boolean
+  excludeSunday: boolean
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -87,6 +88,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   showWeekNumber = false,
   renderCustomDateForMonth,
   disableMonthEventCellPress,
+  excludeSunday,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
@@ -97,7 +99,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   })
 
   const weeks = showAdjacentMonths
-    ? getWeeksWithAdjacentMonths(targetDate, weekStartsOn)
+    ? getWeeksWithAdjacentMonths(targetDate, weekStartsOn, excludeSunday)
     : calendarize(targetDate.toDate(), weekStartsOn)
 
   const minCellHeight = containerHeight / 5 - 30

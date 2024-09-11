@@ -16,6 +16,7 @@ export interface CalendarHeaderForMonthViewProps {
   weekNumberPrefix?: string
   headerContainerAccessibilityProps?: AccessibilityProps
   headerCellAccessibilityProps?: AccessibilityProps
+  excludeSunday?: boolean
 }
 
 function _CalendarHeaderForMonthView({
@@ -26,8 +27,9 @@ function _CalendarHeaderForMonthView({
   weekNumberPrefix = '',
   headerContainerAccessibilityProps = {},
   headerCellAccessibilityProps = {},
+  excludeSunday,
 }: CalendarHeaderForMonthViewProps) {
-  const dates = getDatesInWeek(new Date(), weekStartsOn, locale)
+  const dates = getDatesInWeek(new Date(), weekStartsOn, locale, excludeSunday)
   const todayWeekNum = dayjs().day()
 
   const theme = useTheme()

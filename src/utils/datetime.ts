@@ -22,16 +22,21 @@ export function getDatesInWeek(
   date: string | Date | dayjs.Dayjs = new Date(),
   weekStartsOn: WeekNum = 0,
   locale = 'en',
+  excludeSunday = false,
 ) {
   const subject = dayjs(date)
   const subjectDOW = subject.day()
-  const days = Array(7)
+
+  let days = Array(7)
     .fill(0)
     .map((_, i) => {
       return subject
         .add(i - (subjectDOW < weekStartsOn ? 7 + subjectDOW : subjectDOW) + weekStartsOn, 'day')
         .locale(locale)
     })
+  if (excludeSunday) {
+    days = days.filter((day) => day.day() !== 0) // Exclude Sunday (day() === 0)
+  }
   return days
 }
 
@@ -365,7 +370,11 @@ export function getEventSpanningInfo(
   return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
 }
 
-export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn: WeekNum) {
+export function getWeeksWithAdjacentMonths(
+  targetDate: dayjs.Dayjs,
+  weekStartsOn: WeekNum,
+  excludeSunday: false,
+) {
   let weeks = calendarize(targetDate.toDate(), weekStartsOn)
   const firstDayIndex = weeks[0].findIndex((d) => d === 1)
   const lastDay = targetDate.endOf('month').date()
@@ -382,6 +391,7 @@ export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn
       }
     }) as Week
   })
+  const updatedData = weeks.map((week) => week.filter((_, index) => index !== 0))
 
-  return weeks
+  return excludeSunday ? updatedData : weeks
 }

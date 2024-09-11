@@ -116,7 +116,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   sortedMonthView?: boolean
   moreLabel?: string
   isEventOrderingEnabled?: boolean
-
+  excludeSunday?: boolean
   //Week Number
   showWeekNumber?: boolean
   weekNumberPrefix?: string
@@ -213,6 +213,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   enrichedEventsByDate,
   enableEnrichedEvents = false,
   eventsAreSorted = false,
+  excludeSunday = false,
   onSwipeEnd,
 }: CalendarContainerProps<T>) {
   // To ensure we have proper effect callback, use string to date comparision.
@@ -242,7 +243,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         case 'month':
           return getDatesInMonth(date, locale)
         case 'week':
-          return getDatesInWeek(date, weekStartsOn, locale)
+          return getDatesInWeek(date, weekStartsOn, locale, excludeSunday)
         case '3days':
           return getDatesInNextThreeDays(date, locale)
         case 'day':
@@ -257,7 +258,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           )
       }
     },
-    [mode, locale, weekEndsOn, weekStartsOn],
+    [mode, locale, weekEndsOn, weekStartsOn, excludeSunday],
   )
 
   if (minHour < 0) {
@@ -328,6 +329,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       showAllDayEventCell: showAllDayEventCell,
       showWeekNumber: showWeekNumber,
       weekNumberPrefix: weekNumberPrefix,
+      excludeSunday: excludeSunday,
     }
     return (
       <React.Fragment>
@@ -360,6 +362,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           onPressMoreLabel={onPressMoreLabel}
           renderCustomDateForMonth={renderCustomDateForMonth}
           disableMonthEventCellPress={disableMonthEventCellPress}
+          excludeSunday={excludeSunday}
         />
       </React.Fragment>
     )
@@ -383,6 +386,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
     showAllDayEventCell: showAllDayEventCell,
     weekNumberPrefix: weekNumberPrefix,
+    excludeSunday: excludeSunday,
   }
 
   if (mode === 'schedule') {
