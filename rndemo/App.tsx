@@ -472,7 +472,6 @@ export const App = () => {
           onPressMoreLabel={(moreEvents) => {
             console.log(moreEvents)
           }}
-          excludeSunday={true}
           itemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         />
       </SafeAreaView>
