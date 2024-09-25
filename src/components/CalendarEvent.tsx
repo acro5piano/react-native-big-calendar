@@ -10,12 +10,33 @@ import { typedMemo } from '../utils/react'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 import { AccessibilityProps } from 'react-native'
 
-const getEventCellPositionStyle = (start: Date, end: Date, minHour: number, hours: number) => {
+const getEventCellPositionStyle = (
+  start: Date,
+  end: Date,
+  minHour: number,
+  hours: number,
+  eventCount: number,
+  eventOrder: number,
+  eventOverlapping: boolean,
+) => {
   const totalMinutesInRange = (DAY_MINUTES / 24) * hours
   const durationInMinutes = dayjs(end).diff(start, 'minute')
   const relativeHeight = 100 * (1 / totalMinutesInRange) * durationInMinutes
   const relativeTop = getRelativeTopInDay(dayjs(start), minHour, hours)
   const relativeTopOffset = (minHour * 60) / DAY_MINUTES
+
+  const width = 100 / eventCount // Divide the width equally among overlapping events
+  const left = width * eventOrder
+
+  if (eventOverlapping === true) {
+    return {
+      height: `${relativeHeight}%`,
+      top: `${relativeTop - relativeTopOffset}%`,
+      width: `${width}%`, // Set the width based on event count
+      left: `${left}%`,
+    }
+  }
+
   return {
     height: `${relativeHeight}%`,
     top: `${relativeTop - relativeTopOffset}%`,
@@ -38,6 +59,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   maxHour?: number
   minHour?: number
   hours?: number
+  eventOverlapping?: boolean
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
@@ -55,6 +77,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   mode,
   minHour = 0,
   hours = 24,
+  eventOverlapping = false,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -72,7 +95,15 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       mode === 'schedule'
         ? [getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes)]
         : [
-            getEventCellPositionStyle(event.start, event.end, minHour, hours),
+            getEventCellPositionStyle(
+              event.start,
+              event.end,
+              minHour,
+              hours,
+              eventCount,
+              eventOrder,
+              eventOverlapping,
+            ),
             getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
             u['absolute'],
             u['mt-2'],
