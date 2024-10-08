@@ -462,6 +462,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         timeslots={timeslots}
         hourComponent={hourComponent}
         eventOverlapping={eventOverlapping}
+        mode={mode}
       />
     </React.Fragment>
   )

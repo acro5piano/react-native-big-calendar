@@ -81,6 +81,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   timeslots?: number
   hourComponent?: HourRenderer
   eventOverlapping?: boolean
+  mode?: string
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -119,10 +120,17 @@ function _CalendarBody<T extends ICalendarEventBase>({
   timeslots = 0,
   hourComponent,
   eventOverlapping,
+  mode,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
   const hours = Array.from({ length: maxHour - minHour + 1 }, (_, i) => minHour + i)
+  const filteredDateRange = useMemo(() => {
+    if (mode === 'day') {
+      return [dayjs()] // Set only today's date
+    }
+    return dateRange // Use the provided dateRange in other views
+  }, [mode, dateRange])
 
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
@@ -228,7 +236,18 @@ function _CalendarBody<T extends ICalendarEventBase>({
 
   const _renderEvents = React.useCallback(
     (date: dayjs.Dayjs) => {
-      if (enableEnrichedEvents) {
+      if (mode === 'day') {
+        return (
+          <>
+            {/* Render events based on the date logic */}
+            {(events as T[])
+              .filter(({ start }) =>
+                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+              )
+              .map(_renderMappedEvent)}
+          </>
+        )
+      } else if (enableEnrichedEvents) {
         return (internalEnrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(
           _renderMappedEvent,
         )
@@ -278,7 +297,14 @@ function _CalendarBody<T extends ICalendarEventBase>({
         )
       }
     },
-    [_renderMappedEvent, enableEnrichedEvents, enrichedEvents, internalEnrichedEventsByDate],
+    [
+      _renderMappedEvent,
+      enableEnrichedEvents,
+      enrichedEvents,
+      internalEnrichedEventsByDate,
+      mode,
+      events,
+    ],
   )
 
   const theme = useTheme()
@@ -320,7 +346,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
             </View>
           )}
 
-          {dateRange.map((date) => (
+          {filteredDateRange.map((date) => (
             <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
               {hours.map((hour, index) => (
                 <HourGuideCell

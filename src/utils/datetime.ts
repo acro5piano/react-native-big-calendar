@@ -58,7 +58,7 @@ export function getDatesInNextOneDay(
   locale = 'en',
 ) {
   const subject = dayjs(date).locale(locale)
-  const days = Array(1)
+  const days = Array(7)
     .fill(0)
     .map((_, i) => {
       return subject.add(i, 'day')
