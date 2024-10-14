@@ -82,6 +82,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   hourComponent?: HourRenderer
   eventOverlapping?: boolean
   mode?: string
+  activeDate?: Date
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -121,6 +122,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hourComponent,
   eventOverlapping,
   mode,
+  activeDate,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -236,13 +238,19 @@ function _CalendarBody<T extends ICalendarEventBase>({
 
   const _renderEvents = React.useCallback(
     (date: dayjs.Dayjs) => {
+      const currentActiveDate = activeDate ? dayjs(activeDate) : date
       if (mode === 'day') {
         return (
           <>
             {/* Render events based on the date logic */}
             {(events as T[])
               .filter(({ start }) =>
-                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                dayjs(start).isBetween(
+                  currentActiveDate.startOf('day'),
+                  currentActiveDate.endOf('day'),
+                  null,
+                  '[)',
+                ),
               )
               .map(_renderMappedEvent)}
           </>
@@ -304,6 +312,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
       internalEnrichedEventsByDate,
       mode,
       events,
+      activeDate,
     ],
   )
 
