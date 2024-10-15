@@ -12,6 +12,7 @@ import { typedMemo } from '../utils/react'
 export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dateRange: dayjs.Dayjs[]
   cellHeight: number
+  locale: string
   style: ViewStyle
   allDayEventCellStyle: ViewStyle | ((event: T) => ViewStyle)
   allDayEventCellTextColor: string
