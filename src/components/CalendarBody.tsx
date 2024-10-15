@@ -198,7 +198,12 @@ function _CalendarBody<T extends ICalendarEventBase>({
   }, [enableEnrichedEvents, events, isEventOrderingEnabled])
 
   const _renderMappedEvent = React.useCallback(
-    (event: T, index: number) => {
+    (event: T, index: number, allEvents: T[]) => {
+      // Get overlapping events for the current event
+      const overlappingEvents = allEvents.filter(
+        (e) => dayjs(e.start).isBefore(event.end) && dayjs(e.end).isAfter(event.start),
+      )
+
       return (
         <CalendarEvent
           key={`${index}${event.start}${event.title}${event.end}`}
@@ -208,15 +213,15 @@ function _CalendarBody<T extends ICalendarEventBase>({
           eventCellAccessibilityProps={eventCellAccessibilityProps}
           eventCellTextColor={eventCellTextColor}
           showTime={showTime}
-          eventCount={event.overlapCount}
-          eventOrder={event.overlapPosition}
+          eventCount={overlappingEvents.length} // Use overlapping event count
+          eventOrder={getOrderOfEvent(event, overlappingEvents)} // Adjust event order
           overlapOffset={overlapOffset}
           renderEvent={renderEvent}
           ampm={ampm}
           maxHour={maxHour}
           minHour={minHour}
           hours={hours.length}
-          eventOverlapping={eventOverlapping}
+          eventOverlapping={eventOverlapping} // Pass the event overlapping prop
         />
       )
     },
