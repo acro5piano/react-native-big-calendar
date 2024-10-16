@@ -217,30 +217,44 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
     if (date && renderCustomDateForMonth) {
       return renderCustomDateForMonth(date.toDate())
     }
+    let todayDate = date?.format(SIMPLE_DATE_FORMAT) === now.format(SIMPLE_DATE_FORMAT)
 
     return (
-      <Text
-        style={[
-          { textAlign: 'center' },
-          theme.typography.sm,
-          {
-            color:
-              date?.format(SIMPLE_DATE_FORMAT) === now.format(SIMPLE_DATE_FORMAT)
-                ? theme.palette.primary.main
+      <View
+        style={
+          todayDate && {
+            borderRadius: 20,
+            width: 25,
+            height: 25,
+            backgroundColor: '#CEE2F2',
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center',
+            alignContent: 'center',
+          }
+        }
+      >
+        <Text
+          style={[
+            { textAlign: 'center', fontWeight: todayDate ? 'bold' : 'regular' },
+            theme.typography.sm,
+            {
+              color: todayDate
+                ? '#000'
                 : date?.month() !== targetDate.month()
                 ? theme.palette.gray['500']
                 : theme.palette.gray['800'],
-          },
-          {
-            ...getCalendarCellTextStyle(date?.toDate(), index),
-          },
-        ]}
-      >
-        {date && date.format('D')}
-      </Text>
+            },
+            {
+              ...getCalendarCellTextStyle(date?.toDate(), index),
+            },
+          ]}
+        >
+          {date && date.format('D')}
+        </Text>
+      </View>
     )
   }
-
   return (
     <View
       style={[
