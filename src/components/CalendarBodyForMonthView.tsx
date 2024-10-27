@@ -269,8 +269,27 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
             {
               minHeight: minCellHeight,
             },
+            { position: 'relative' },
           ]}
         >
+          <View
+            style={[
+              { position: 'absolute', height: '100%', width: '100%' },
+              theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
+            ]}
+          >
+            {week
+              .map((d) =>
+                showAdjacentMonths ? targetDate.date(d) : d > 0 ? targetDate.date(d) : null,
+              )
+              .map((date, ii) => {
+                const calendarCellStyle = getCalendarCellStyle(date?.toDate(), i)
+                const backgroundColor = calendarCellStyle?.backgroundColor
+                return (
+                  <View key={ii} style={[u['flex-1'], { height: '100%', backgroundColor }]}></View>
+                )
+              })}
+          </View>
           {showWeekNumber ? (
             <View
               style={[
@@ -322,6 +341,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   },
                   {
                     ...getCalendarCellStyle(date?.toDate(), i),
+                    backgroundColor: undefined,
                   },
                 ]}
                 key={ii}
