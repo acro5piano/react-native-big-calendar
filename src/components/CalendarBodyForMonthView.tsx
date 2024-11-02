@@ -319,6 +319,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   u['flex-column'],
                   {
                     minHeight: minCellHeight,
+                    zIndex: ii * -1,
                   },
                   {
                     ...getCalendarCellStyle(date?.toDate(), i),
