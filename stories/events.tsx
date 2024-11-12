@@ -60,6 +60,17 @@ export const events: Array<ICalendarEventBase & { color?: string }> = [
     end: dayjs().set('hour', 14).set('minute', 15).toDate(),
     children: eventNotes,
   },
+  {
+    title: 'Plan a holiday',
+    start: dayjs().set('hour', 13).set('minute', 0).add(1, 'month').toDate(),
+    end: dayjs().set('hour', 14).set('minute', 15).add(1, 'month').toDate(),
+  },
+
+  {
+    title: 'Go on holiday',
+    start: dayjs().set('hour', 13).set('minute', 0).add(3, 'month').toDate(),
+    end: dayjs().set('hour', 14).set('minute', 15).add(3, 'month').toDate(),
+  },
 ]
 
 export const tonsOfEvents: Array<ICalendarEventBase & { color?: string }> = new Array(10)

@@ -60,6 +60,7 @@ interface ScheduleProps<T extends ICalendarEventBase> {
   dayHeaderHighlightColor?: string
   itemSeparatorComponent?: React.ComponentType<any> | null | undefined
   locale: string
+  scheduleMonthSeparatorStyle?: ViewStyle
 }
 
 function _Schedule<T extends ICalendarEventBase>({
@@ -80,6 +81,7 @@ function _Schedule<T extends ICalendarEventBase>({
   itemSeparatorComponent,
   locale,
   calendarCellAccessibilityProps = {},
+  scheduleMonthSeparatorStyle,
 }: ScheduleProps<T>) {
   const theme = useTheme()
 
@@ -130,12 +132,28 @@ function _Schedule<T extends ICalendarEventBase>({
     return Object.values(groupedData)
   }, [events])
 
-  const renderFlatListItem = (eventGroup: T[]): JSX.Element => {
+  const renderMonthSeparator = (date: dayjs.Dayjs): JSX.Element => (
+    <View style={{ width: '100%' }}>
+      <Text
+        style={[
+          { color: theme.palette.primary.main, textAlign: 'center', paddingVertical: 6 },
+          scheduleMonthSeparatorStyle,
+        ]}
+      >
+        {date.format('MMMM YYYY')}
+      </Text>
+    </View>
+  )
+
+  const renderFlatListItem = (eventGroup: T[], index: number): JSX.Element => {
     const date = dayjs(eventGroup[0].start).locale(locale)
     const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
+    const isNewMonth =
+      index === 0 || !dayjs(eventGroup[0].start).isSame(events[index - 1].start, 'month')
 
     return (
-      <View style={[u['flex'], { padding: 2 }]}>
+      <View style={[u['flex'], { padding: 2, flexWrap: 'wrap' }]}>
+        {isNewMonth && renderMonthSeparator(date)}
         <View style={[u['flex'], u['justify-center'], { width: '20%' }]}>
           <View
             style={[
@@ -218,7 +236,7 @@ function _Schedule<T extends ICalendarEventBase>({
     <View style={{ ...style, height: containerHeight }}>
       <FlatList
         data={getItem}
-        renderItem={({ item }: { item: any }) => renderFlatListItem(item)}
+        renderItem={({ item }: { item: any }) => renderFlatListItem(item, getItem.indexOf(item))}
         ItemSeparatorComponent={itemSeparatorComponent}
         keyExtractor={(_, index) => index.toString()}
       />
