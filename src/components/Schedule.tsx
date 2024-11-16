@@ -60,7 +60,7 @@ interface ScheduleProps<T extends ICalendarEventBase> {
   dayHeaderHighlightColor?: string
   itemSeparatorComponent?: React.ComponentType<any> | null | undefined
   locale: string
-  scheduleMonthSeparatorStyle?: ViewStyle
+  scheduleMonthSeparatorStyle?: TextStyle
 }
 
 function _Schedule<T extends ICalendarEventBase>({

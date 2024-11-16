@@ -149,7 +149,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   eventsAreSorted?: boolean
   timeslots?: number
   hourComponent?: HourRenderer
-  scheduleMonthSeparatorStyle?: ViewStyle
+  scheduleMonthSeparatorStyle?: TextStyle
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
