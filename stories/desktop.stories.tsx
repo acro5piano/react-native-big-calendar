@@ -402,6 +402,11 @@ storiesOf('showcase - Desktop', module)
               { borderWidth: 1, borderColor: 'green' },
             ]
           }}
+          scheduleMonthSeparatorStyle={{
+            color: 'grey',
+            fontSize: 12,
+            paddingVertical: 4,
+          }}
         />
       </View>
     )

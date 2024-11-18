@@ -149,6 +149,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   eventsAreSorted?: boolean
   timeslots?: number
   hourComponent?: HourRenderer
+  scheduleMonthSeparatorStyle?: TextStyle
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -219,6 +220,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   onSwipeEnd,
   timeslots = 0,
   hourComponent,
+  scheduleMonthSeparatorStyle = {},
 }: CalendarContainerProps<T>) {
   // To ensure we have proper effect callback, use string to date comparision.
   const dateString = date?.toString()
@@ -416,6 +418,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         isEventOrderingEnabled={isEventOrderingEnabled}
         showVerticalScrollIndicator={showVerticalScrollIndicator}
         itemSeparatorComponent={itemSeparatorComponent}
+        scheduleMonthSeparatorStyle={scheduleMonthSeparatorStyle}
       />
     )
   }
