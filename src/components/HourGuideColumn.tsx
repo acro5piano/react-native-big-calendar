@@ -35,7 +35,13 @@ const _HourGuideColumn = ({
       {HourComponent ? (
         <HourComponent hour={hour} ampm={ampm} />
       ) : (
-        <Text style={[objHasContent(hourStyle) ? hourStyle : textStyle, u['text-center']]}>
+        <Text
+          style={[
+            objHasContent(hourStyle) ? hourStyle : textStyle,
+            u['text-center'],
+            { marginTop: -8 },
+          ]}
+        >
           {formatHour(hour, ampm)}
         </Text>
       )}
