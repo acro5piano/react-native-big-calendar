@@ -10,7 +10,9 @@ import {
   useWindowDimensions,
 } from 'react-native'
 
-import { Calendar, ICalendarEventBase, Mode } from './build'
+import { ICalendarEventBase, Mode } from './build'
+import { Calendar } from './src/components/Calendar'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const events = [
   {
@@ -424,7 +426,7 @@ export const App = () => {
   )
 
   return (
-    <View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView>
         <Text style={styles.headline}>Calendar Mode</Text>
         <ScrollView horizontal={true}>
@@ -475,7 +477,7 @@ export const App = () => {
           itemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         />
       </SafeAreaView>
-    </View>
+    </GestureHandlerRootView>
   )
 }
 
