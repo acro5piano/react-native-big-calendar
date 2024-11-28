@@ -1,15 +1,7 @@
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { dateCellStyle, guideTextStyle, u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -61,6 +53,7 @@ interface CalendarBodyProps<T> {
   dayEndsOn: HourNum
   extendDaysTimeWithEvents?: boolean
   onPressCell?: (date: Date) => void
+  onLongPressCell?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
@@ -86,18 +79,20 @@ const HourGuideColumn = React.memo(_HourGuideColumn, () => true)
 
 interface HourCellProps extends WithCellHeight {
   onPress: (d: dayjs.Dayjs) => void
+  onLongPress: (d: dayjs.Dayjs) => void
   date: dayjs.Dayjs
   hour: number
 }
 
-const HourCell = ({ cellHeight, onPress, date, hour }: HourCellProps) => {
+const HourCell = ({ cellHeight, onPress, date, hour, onLongPress }: HourCellProps) => {
   return (
-    <TouchableWithoutFeedback
+    <Pressable
       testID="Touchable Body 1"
       onPress={() => onPress(date.hour(hour).minute(0))}
+      onLongPress={() => onLongPress(date.hour(hour).minute(0))}
     >
       <View testID="View Body 1" style={[dateCellStyle, { height: cellHeight }]} />
-    </TouchableWithoutFeedback>
+    </Pressable>
   )
 }
 
@@ -107,6 +102,7 @@ function _CalendarBody<T>({
   dateRange,
   style = {},
   onPressCell,
+  onLongPressCell,
   events,
   onPressEvent,
   eventCellStyle,
@@ -154,6 +150,13 @@ function _CalendarBody<T>({
       onPressCell && onPressCell(date.toDate())
     },
     [onPressCell],
+  )
+
+  const _onLongPressCell = React.useCallback(
+    (date: dayjs.Dayjs) => {
+      onLongPressCell && onLongPressCell(date.toDate())
+    },
+    [onLongPressCell],
   )
 
   const _renderMappedEvent = (event: ICalendarEvent<T>) => (
@@ -205,6 +208,7 @@ function _CalendarBody<T>({
                 date={date}
                 hour={hour}
                 onPress={_onPressCell}
+                onLongPress={_onLongPressCell}
               />
             ))}
             {events
@@ -239,7 +243,9 @@ function _CalendarBody<T>({
               <View
                 style={[
                   styles.nowIndicator,
-                  { top: `${getRelativeTopInDay(now, dayStartsOn, dayEndsOn)}%` },
+                  {
+                    top: `${getRelativeTopInDay(now, dayStartsOn, dayEndsOn)}%`,
+                  },
                 ]}
               />
             )}

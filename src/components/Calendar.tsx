@@ -45,6 +45,7 @@ export interface CalendarProps<T> {
   onChangeDate?: DateRangeHandler
   onSwipeChangeDate?: DateRangeHandler
   onPressCell?: (date: Date) => void
+  onLongPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   renderEvent?: EventRenderer<T>
@@ -74,6 +75,7 @@ function _Calendar<T>({
   onChangeDate,
   onSwipeChangeDate,
   onPressCell,
+  onLongPressCell,
   onPressDateHeader,
   onPressEvent,
   renderEvent,
@@ -169,6 +171,7 @@ function _Calendar<T>({
           weekStartsOn={weekStartsOn}
           hideNowIndicator={hideNowIndicator}
           onPressCell={onPressCell}
+          onLongPressCell={onLongPressCell}
           onPressEvent={onPressEvent}
           onSwipeHorizontal={onSwipeHorizontal}
           renderEvent={renderEvent}
@@ -197,6 +200,7 @@ function _Calendar<T>({
         ampm={ampm}
         showTime={showTime}
         onPressCell={onPressCell}
+        onLongPressCell={onLongPressCell}
         onPressEvent={onPressEvent}
         onSwipeHorizontal={onSwipeHorizontal}
         renderEvent={renderEvent}

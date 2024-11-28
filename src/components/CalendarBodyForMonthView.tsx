@@ -2,7 +2,7 @@ import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import * as React from 'react'
-import { Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Pressable, Text, View, ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
@@ -30,6 +30,7 @@ interface CalendarBodyForMonthViewProps<T> {
   hideNowIndicator?: boolean
   isRTL: boolean
   onPressCell?: (date: Date) => void
+  onLongPressCell?: (date: Date) => void
   onPressEvent?: (event: ICalendarEvent<T>) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
@@ -42,6 +43,7 @@ function _CalendarBodyForMonthView<T>({
   targetDate,
   style = {},
   onPressCell,
+  onLongPressCell,
   events,
   onPressEvent,
   eventCellStyle,
@@ -87,8 +89,9 @@ function _CalendarBodyForMonthView<T>({
           {week
             .map((d) => (d > 0 ? targetDate.date(d) : null))
             .map((date, ii) => (
-              <TouchableOpacity
+              <Pressable
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                onLongPress={() => date && onLongPressCell && onLongPressCell(date.toDate())}
                 style={[
                   i > 0 && u['border-t'],
                   isRTL && ii > 0 && u['border-r'],
@@ -121,13 +124,17 @@ function _CalendarBodyForMonthView<T>({
                       if (index > maxVisibleEventCount) {
                         return elements
                       }
-                      const key = event.uniqueKey || index;
+                      const key = event.uniqueKey || index
                       return [
                         ...elements,
                         index > maxVisibleEventCount - 1 ? (
                           <Text
                             key={key}
-                            style={{ fontSize: 11, marginTop: 2, fontWeight: 'bold' }}
+                            style={{
+                              fontSize: 11,
+                              marginTop: 2,
+                              fontWeight: 'bold',
+                            }}
                           >
                             {events.length - maxVisibleEventCount} More
                           </Text>
@@ -142,7 +149,7 @@ function _CalendarBodyForMonthView<T>({
                         ),
                       ]
                     }, [] as JSX.Element[])}
-              </TouchableOpacity>
+              </Pressable>
             ))}
         </View>
       ))}
