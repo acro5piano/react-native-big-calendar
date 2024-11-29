@@ -1,14 +1,15 @@
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   AccessibilityProps,
-  FlatList,
   Platform,
   Text,
   TextStyle,
+  TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native'
+import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist'
 
 import { u } from '../commonStyles'
 import {
@@ -85,12 +86,8 @@ function _Schedule<T extends ICalendarEventBase>({
 }: ScheduleProps<T>) {
   const theme = useTheme()
 
-  /**
-   * Bind default style for eventCellStyle.
-   */
   const eventStyles = React.useCallback(
     (event: T) => {
-      // This default style  need for Schedule view
       const defaultEventStyle = {
         ...u['flex-column'],
         ...u['h-50'],
@@ -116,9 +113,6 @@ function _Schedule<T extends ICalendarEventBase>({
     [eventCellStyle],
   )
 
-  /**
-   * Group by events by start date.
-   */
   const getItem = React.useMemo(() => {
     const groupedData = events.reduce((result: any, item: T): any => {
       const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
@@ -152,93 +146,122 @@ function _Schedule<T extends ICalendarEventBase>({
       index === 0 || !dayjs(eventGroup[0].start).isSame(events[index - 1].start, 'month')
 
     return (
-      <View style={[u['flex'], { padding: 2, flexWrap: 'wrap' }]}>
-        {isNewMonth && renderMonthSeparator(date)}
-        <View style={[u['flex'], u['justify-center'], { width: '20%' }]}>
-          <View
-            style={[
-              { width: 60, height: 60, borderRadius: 30 },
-              u['flex'],
-              u['justify-center'],
-              u['items-center'],
-              u['flex-column-reverse'],
-            ]}
-            {...calendarCellAccessibilityProps}
-          >
-            <Text
+      <ScaleDecorator>
+        <View style={[u['flex'], { padding: 2, flexWrap: 'wrap' }]}>
+          {isNewMonth && renderMonthSeparator(date)}
+          <View style={[u['flex'], u['justify-center'], { width: '20%' }]}>
+            <View
               style={[
-                {
-                  color: shouldHighlight
-                    ? stringHasContent(dayHeaderHighlightColor)
-                      ? dayHeaderHighlightColor
-                      : theme.palette.primary.main
-                    : theme.palette.gray['800'],
-                },
+                { width: 60, height: 60, borderRadius: 30 },
+                u['flex'],
+                u['justify-center'],
+                u['items-center'],
+                u['flex-column-reverse'],
+              ]}
+              {...calendarCellAccessibilityProps}
+            >
+              <Text
+                style={[
+                  {
+                    color: shouldHighlight
+                      ? stringHasContent(dayHeaderHighlightColor)
+                        ? dayHeaderHighlightColor
+                        : theme.palette.primary.main
+                      : theme.palette.gray['800'],
+                  },
 
-                theme.typography.xl,
-                u['text-center'],
-                Platform.OS === 'web' &&
-                  shouldHighlight &&
-                  !stringHasContent(dayHeaderHighlightColor) &&
-                  u['mt-6'],
-              ]}
-            >
-              {date.format('D')}
-            </Text>
-            <Text
-              style={[
-                theme.typography.xs,
-                {
-                  color: shouldHighlight
-                    ? stringHasContent(weekDayHeaderHighlightColor)
-                      ? weekDayHeaderHighlightColor
-                      : theme.palette.primary.main
-                    : theme.palette.gray['500'],
-                },
-              ]}
-            >
-              {date.format('ddd')}
-            </Text>
+                  theme.typography.xl,
+                  u['text-center'],
+                  Platform.OS === 'web' &&
+                    shouldHighlight &&
+                    !stringHasContent(dayHeaderHighlightColor) &&
+                    u['mt-6'],
+                ]}
+              >
+                {date.format('D')}
+              </Text>
+              <Text
+                style={[
+                  theme.typography.xs,
+                  {
+                    color: shouldHighlight
+                      ? stringHasContent(weekDayHeaderHighlightColor)
+                        ? weekDayHeaderHighlightColor
+                        : theme.palette.primary.main
+                      : theme.palette.gray['500'],
+                  },
+                ]}
+              >
+                {date.format('ddd')}
+              </Text>
+            </View>
+          </View>
+          <View style={[u['flex'], u['flex-column'], { width: '75%' }]}>
+            {eventGroup.map((event: T, index) => {
+              return (
+                <View
+                  style={[u['flex-1'], u['overflow-hidden'], { marginTop: 2, marginBottom: 2 }]}
+                  key={index}
+                >
+                  <CalendarEvent
+                    key={`${index}${event.start}${event.title}${event.end}`}
+                    event={event}
+                    onPressEvent={onPressEvent}
+                    eventCellStyle={eventStyles}
+                    eventCellAccessibilityProps={eventCellAccessibilityProps}
+                    showTime={showTime}
+                    eventCount={
+                      isEventOrderingEnabled ? getCountOfEventsAtEvent(event, events) : undefined
+                    }
+                    eventOrder={isEventOrderingEnabled ? getOrderOfEvent(event, events) : undefined}
+                    overlapOffset={overlapOffset}
+                    renderEvent={renderEvent}
+                    ampm={ampm}
+                    mode="schedule"
+                  />
+                </View>
+              )
+            })}
           </View>
         </View>
-        <View style={[u['flex'], u['flex-column'], { width: '75%' }]}>
-          {eventGroup.map((event: T, index) => {
-            return (
-              <View
-                style={[u['flex-1'], u['overflow-hidden'], { marginTop: 2, marginBottom: 2 }]}
-                key={index}
-              >
-                <CalendarEvent
-                  key={`${index}${event.start}${event.title}${event.end}`}
-                  event={event}
-                  onPressEvent={onPressEvent}
-                  eventCellStyle={eventStyles}
-                  eventCellAccessibilityProps={eventCellAccessibilityProps}
-                  showTime={showTime}
-                  eventCount={
-                    isEventOrderingEnabled ? getCountOfEventsAtEvent(event, events) : undefined
-                  }
-                  eventOrder={isEventOrderingEnabled ? getOrderOfEvent(event, events) : undefined}
-                  overlapOffset={overlapOffset}
-                  renderEvent={renderEvent}
-                  ampm={ampm}
-                  mode="schedule"
-                />
-              </View>
-            )
-          })}
-        </View>
-      </View>
+      </ScaleDecorator>
     )
+  }
+
+  const [data, setData] = useState<any>(getItem)
+  const onDragEnd = ({ data: newData }: { data: any }) => {
+    // Update the data state with the new ordering
+    setData(newData)
+
+    // Flatten the nested array and map to extract titles
+    const updatedTitles = newData.flat().map((item: { title: any }) => item.title)
+
+    // Log the updated titles for debugging
+    console.log('Updated Titles:', updatedTitles)
   }
 
   return (
     <View style={{ ...style, height: containerHeight }}>
-      <FlatList
-        data={getItem}
-        renderItem={({ item }: { item: any }) => renderFlatListItem(item, getItem.indexOf(item))}
+      <DraggableFlatList
+        data={data}
+        onDragEnd={onDragEnd}
         ItemSeparatorComponent={itemSeparatorComponent}
         keyExtractor={(_, index) => index.toString()}
+        // keyExtractor={(index: { toString: () => any }) => index.toString()}
+        renderItem={({ item, drag, isActive }: { item: any; drag: any; isActive: any }) => (
+          <TouchableOpacity
+            onLongPress={drag}
+            disabled={isActive}
+            style={{
+              padding: 20,
+              backgroundColor: isActive ? '#f0f0f0' : '#ffffff',
+              borderWidth: 1,
+              borderColor: '#cccccc',
+            }}
+          >
+            {renderFlatListItem(item, getItem.indexOf(item))}
+          </TouchableOpacity>
+        )}
       />
     </View>
   )

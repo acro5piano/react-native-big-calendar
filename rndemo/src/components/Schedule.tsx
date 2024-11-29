@@ -234,12 +234,33 @@ function _Schedule<T extends ICalendarEventBase>({
   }
 
   const [data, setData] = useState(getItem)
+  console.log('evente', getItem[0])
 
   return (
     <View style={{ ...style, height: containerHeight }}>
       <DraggableFlatList
         data={data}
-        onDragEnd={({ data }) => setData(data)}
+        onDragEnd={({ data, from, to }) => {
+          // Create a new object with the new event
+          const newObject = {
+            title: 'Event 3',
+            start: getItem[from][0].start,
+            end: getItem[from][0].end,
+          }
+
+          // Clone the current `getItem` array (shallow copy)
+          const newItem = [...getItem[to], newObject] // Append the new event to `getItem[to]`
+
+          // Create a new copy of the `getItem` object to avoid direct mutation
+          const updatedGetItem = [...getItem]
+          data[to] = data[from] // Update the specific index with the new item
+
+          // Log for debugging
+          console.log(to, from, getItem)
+          setData(data)
+          // Update the state with the new `updatedGetItem`
+          // setData(updatedGetItem) // Set the updated state (assuming setData is the state setter)
+        }}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item, drag, isActive }: any) => (
           <TouchableOpacity
