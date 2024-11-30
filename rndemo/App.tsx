@@ -17,8 +17,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 const events = [
   {
     title: 'Meeting',
-    start: dayjs().set('hour', 10).set('minute', 0).toDate(),
-    end: dayjs().set('hour', 10).set('minute', 30).toDate(),
+    start: '2024-12-24T18:30:29.102Z',
+    end: '2024-12-24T19:30:29.102Z',
   },
   {
     title: 'Coffee break',

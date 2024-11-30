@@ -232,40 +232,62 @@ function _Schedule<T extends ICalendarEventBase>({
       </ScaleDecorator>
     )
   }
-
   const [data, setData] = useState(getItem)
-  console.log('evente', getItem[0])
 
   return (
     <View style={{ ...style, height: containerHeight }}>
       <DraggableFlatList
         data={data}
-        onDragEnd={({ data, from, to }) => {
-          // Create a new object with the new event
-          const newObject = {
-            title: 'Event 3',
-            start: getItem[from][0].start,
-            end: getItem[from][0].end,
-          }
+        onDragEnd={async ({ data, from, to }) => {
+          const dates = await [
+            ...getItem,
+            ...getItem[from]?.map((item) => ({
+              ...item,
+              start: getItem[to][0]?.start,
+              end: getItem[to][0]?.end,
+            })),
+          ]
 
-          // Clone the current `getItem` array (shallow copy)
-          const newItem = [...getItem[to], newObject] // Append the new event to `getItem[to]`
+          const reversGroup = dates?.flat()?.map((item) => ({
+            title: item.title || 'Untitled', // Use item.title if available, otherwise default to "Untitled"
+            start: dayjs(item.start).toDate(), // Ensure `start` is converted back to a JavaScript Date object
+            end: dayjs(item.end).toDate(), // Ensure `end` is converted back to a JavaScript Date object
+          }))
 
-          // Create a new copy of the `getItem` object to avoid direct mutation
-          const updatedGetItem = [...getItem]
-          data[to] = data[from] // Update the specific index with the new item
+          const groupedData = reversGroup.reduce((result: any, item: T): any => {
+            const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
+            if (!result[startDate]) {
+              result[startDate] = []
+            }
+            result[startDate].push(item)
+            return result
+          }, {})
 
-          // Log for debugging
-          console.log(to, from, getItem)
-          setData(data)
-          // Update the state with the new `updatedGetItem`
-          // setData(updatedGetItem) // Set the updated state (assuming setData is the state setter)
+          // const getItemss = React.useMemo(() => {
+          //   const groupedData = reverseGroupedData.reduce((result: any, item: T): any => {
+          //     const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
+          //     if (!result[startDate]) {
+          //       result[startDate] = []
+          //     }
+          //     result[startDate].push(item)
+          //     return result
+          //   }, {})
+
+          //   return Object.values(groupedData)
+          // }, [reverseGroupedData])
+
+          // const dates = getItem
+          // console.log(dates)
+          console.log(JSON.stringify(reversGroup))
+          // console.log(JSON.stringify( Object.values(groupedData)))
+
+          // setData(Object.values(groupedData))
         }}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item, drag, isActive }: any) => (
           <TouchableOpacity
-            onLongPress={drag} // Trigger drag on long press
-            disabled={isActive} // Prevent interaction when item is being dragged
+            onLongPress={drag}
+            disabled={isActive}
             style={[u['flex-1'], { backgroundColor: isActive ? 'red' : item.backgroundColor }]} // Style when item is dragged
           >
             {renderFlatListItem(item, getItem.indexOf(item))}
