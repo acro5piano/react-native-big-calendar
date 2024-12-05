@@ -1,8 +1,6 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
-import minMax from 'dayjs/plugin/minMax'
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import Mockdate from 'mockdate'
 import * as R from 'remeda'
 
@@ -14,8 +12,6 @@ Mockdate.set('2021-09-17T04:00:00.000Z')
 
 dayjs.extend(isBetween)
 dayjs.extend(duration)
-dayjs.extend(minMax)
-dayjs.extend(isSameOrAfter)
 
 const events: ICalendarEventBase[] = [
   {
