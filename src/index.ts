@@ -2,10 +2,14 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
 import isoWeek from 'dayjs/plugin/isoWeek'
+import minMax from 'dayjs/plugin/minMax'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 
 dayjs.extend(duration)
 dayjs.extend(isBetween)
 dayjs.extend(isoWeek)
+dayjs.extend(minMax)
+dayjs.extend(isSameOrAfter)
 
 export * from './components/Calendar'
 export * from './components/CalendarBody'
