@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { useMemo } from 'react'
 import {
   AccessibilityProps,
   Platform,
@@ -164,21 +163,23 @@ function _CalendarBody<T extends ICalendarEventBase>({
     [onLongPressCell],
   )
 
-  const internalEnrichedEventsByDate = useMemo(() => {
+  const internalEnrichedEventsByDate = React.useMemo(() => {
     if (enableEnrichedEvents) {
       return enrichedEventsByDate || enrichEvents(events, eventsAreSorted)
     }
     return {}
   }, [enableEnrichedEvents, enrichedEventsByDate, events, eventsAreSorted])
 
-  const enrichedEvents = useMemo(() => {
+  const enrichedEvents = React.useMemo(() => {
     if (enableEnrichedEvents) return []
 
     if (isEventOrderingEnabled) {
-      return events.map((event) => ({
+      // Events are being sorted once so we dont have to do it on each loop
+      const sortedEvents = events.sort((a, b) => a.start.getTime() - b.start.getTime())
+      return sortedEvents.map((event) => ({
         ...event,
-        overlapPosition: getOrderOfEvent(event, events),
-        overlapCount: getCountOfEventsAtEvent(event, events),
+        overlapPosition: getOrderOfEvent(event, sortedEvents),
+        overlapCount: getCountOfEventsAtEvent(event, sortedEvents),
       }))
     }
 

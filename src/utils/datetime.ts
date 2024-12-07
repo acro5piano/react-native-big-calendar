@@ -128,30 +128,81 @@ export function isAllDayEvent(start: Date, end: Date) {
 
 export function getCountOfEventsAtEvent(
   event: ICalendarEventBase,
-  eventList: ICalendarEventBase[],
+  sortedEventList: ICalendarEventBase[],
 ) {
-  return eventList.filter(
-    (e) =>
-      dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
-      dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
-  ).length
+  let count = 0
+
+  // Since the list is sorted, we can stop iterating once the start time exceeds the event's end time
+  for (const e of sortedEventList) {
+    // If the current event starts after the end of the event we're checking, no need to proceed further
+    if (e.start >= event.end) {
+      break
+    }
+
+    // Check for overlap
+    if (e.end > event.start && e.start < event.end) {
+      count++
+    }
+  }
+
+  return count
 }
 
-export function getOrderOfEvent(event: ICalendarEventBase, eventList: ICalendarEventBase[]) {
-  const events = eventList
-    .filter(
-      (e) =>
-        dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
-        dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)'),
-    )
-    .sort((a, b) => {
-      if (dayjs(a.start).isSame(b.start)) {
-        return dayjs(a.start).diff(a.end) < dayjs(b.start).diff(b.end) ? -1 : 1
-      } else {
-        return dayjs(a.start).isBefore(b.start) ? -1 : 1
-      }
-    })
-  const index = events.indexOf(event)
+export function getOrderOfEvent(
+  event: ICalendarEventBase,
+  sortedEventList: ICalendarEventBase[],
+): number {
+  const eventStart = new Date(event.start).getTime()
+  const eventEnd = new Date(event.end).getTime()
+
+  // Helper functions to get start and end times
+  const getStartTime = (e: ICalendarEventBase) => new Date(e.start).getTime()
+  const getEndTime = (e: ICalendarEventBase) => new Date(e.end).getTime()
+
+  // Binary search to find the first potentially overlapping event
+  let left = 0
+  let right = sortedEventList.length - 1
+  let firstOverlapIndex = sortedEventList.length
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2)
+    const midEventEnd = getEndTime(sortedEventList[mid])
+
+    if (midEventEnd <= eventStart) {
+      left = mid + 1
+    } else {
+      firstOverlapIndex = mid
+      right = mid - 1
+    }
+  }
+
+  // Collect overlapping events starting from the firstOverlapIndex
+  const overlappingEvents = []
+  for (let i = firstOverlapIndex; i < sortedEventList.length; i++) {
+    const currentEvent = sortedEventList[i]
+    const start = getStartTime(currentEvent)
+    const end = getEndTime(currentEvent)
+
+    if (start >= eventEnd) {
+      break // No further events will overlap
+    }
+
+    if ((eventStart >= start && eventStart < end) || (start >= eventStart && start < eventEnd)) {
+      overlappingEvents.push({ event: currentEvent, start, end })
+    }
+  }
+
+  // Sort overlapping events by start time and duration
+  overlappingEvents.sort((a, b) => {
+    if (a.start === b.start) {
+      return a.end - a.start - (b.end - b.start)
+    } else {
+      return a.start - b.start
+    }
+  })
+
+  // Find the index of the given event in the sorted overlapping events
+  const index = overlappingEvents.findIndex(({ event: e }) => e === event)
   return index === -1 ? 0 : index
 }
 
