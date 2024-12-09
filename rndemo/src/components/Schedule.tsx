@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import React, { useState } from 'react'
 import {
   AccessibilityProps,
+  FlatList,
   Platform,
   Text,
   TextStyle,
@@ -9,7 +10,11 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist'
+import DraggableFlatList, {
+  NestableScrollContainer,
+  NestableDraggableFlatList,
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist'
 
 import { u } from '../commonStyles'
 import {
@@ -227,41 +232,68 @@ function _Schedule<T extends ICalendarEventBase>({
       </ScaleDecorator>
     )
   }
-
-  const [data, setData] = useState<any>(getItem)
-  const onDragEnd = ({ data: newData }: { data: any }) => {
-    // Update the data state with the new ordering
-    setData(newData)
-
-    // Flatten the nested array and map to extract titles
-    const updatedTitles = newData.flat().map((item: { title: any }) => item.title)
-
-    // Log the updated titles for debugging
-    console.log('Updated Titles:', updatedTitles)
-  }
+  const [data, setData] = useState(getItem)
 
   return (
     <View style={{ ...style, height: containerHeight }}>
       <DraggableFlatList
         data={data}
-        onDragEnd={onDragEnd}
-        ItemSeparatorComponent={itemSeparatorComponent}
+        onDragEnd={async ({ data, from, to }) => {
+          const dates = await [
+            ...getItem,
+            ...getItem[from]?.map((item) => ({
+              ...item,
+              start: getItem[to][0]?.start,
+              end: getItem[to][0]?.end,
+            })),
+          ]
+
+          const reversGroup = dates?.flat()?.map((item) => ({
+            title: item.title || 'Untitled', // Use item.title if available, otherwise default to "Untitled"
+            start: dayjs(item.start).toDate(), // Ensure `start` is converted back to a JavaScript Date object
+            end: dayjs(item.end).toDate(), // Ensure `end` is converted back to a JavaScript Date object
+          }))
+
+          const groupedData = reversGroup.reduce((result: any, item: T): any => {
+            const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
+            if (!result[startDate]) {
+              result[startDate] = []
+            }
+            result[startDate].push(item)
+            return result
+          }, {})
+
+          // const getItemss = React.useMemo(() => {
+          //   const groupedData = reverseGroupedData.reduce((result: any, item: T): any => {
+          //     const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
+          //     if (!result[startDate]) {
+          //       result[startDate] = []
+          //     }
+          //     result[startDate].push(item)
+          //     return result
+          //   }, {})
+
+          //   return Object.values(groupedData)
+          // }, [reverseGroupedData])
+
+          // const dates = getItem
+          // console.log(dates)
+          console.log(JSON.stringify(reversGroup))
+          // console.log(JSON.stringify( Object.values(groupedData)))
+
+          // setData(Object.values(groupedData))
+        }}
         keyExtractor={(_, index) => index.toString()}
-        // keyExtractor={(index: { toString: () => any }) => index.toString()}
-        renderItem={({ item, drag, isActive }: { item: any; drag: any; isActive: any }) => (
+        renderItem={({ item, drag, isActive }: any) => (
           <TouchableOpacity
             onLongPress={drag}
             disabled={isActive}
-            style={{
-              padding: 20,
-              backgroundColor: isActive ? '#f0f0f0' : '#ffffff',
-              borderWidth: 1,
-              borderColor: '#cccccc',
-            }}
+            style={[u['flex-1'], { backgroundColor: isActive ? 'red' : item.backgroundColor }]} // Style when item is dragged
           >
             {renderFlatListItem(item, getItem.indexOf(item))}
           </TouchableOpacity>
         )}
+        ItemSeparatorComponent={itemSeparatorComponent}
       />
     </View>
   )
