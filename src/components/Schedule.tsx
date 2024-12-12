@@ -119,15 +119,17 @@ function _Schedule<T extends ICalendarEventBase>({
   /**
    * Group by events by start date.
    */
-  const getItem = React.useMemo(() => {
-    const groupedData = events.reduce((result: any, item: T): any => {
-      const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
-      if (!result[startDate]) {
-        result[startDate] = []
-      }
-      result[startDate].push(item)
-      return result
-    }, {})
+  const getItem = React.useMemo((): T[][] => {
+    const groupedData = events
+      .sort((a, b) => dayjs(a.start).diff(b.start))
+      .reduce((result: any, item: T): any => {
+        const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
+        if (!result[startDate]) {
+          result[startDate] = []
+        }
+        result[startDate].push(item)
+        return result
+      }, {})
 
     return Object.values(groupedData)
   }, [events])
@@ -149,7 +151,7 @@ function _Schedule<T extends ICalendarEventBase>({
     const date = dayjs(eventGroup[0].start).locale(locale)
     const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
     const isNewMonth =
-      index === 0 || !dayjs(eventGroup[0].start).isSame(events[index - 1].start, 'month')
+      index === 0 || !dayjs(eventGroup[0].start).isSame(getItem[index - 1][0].start, 'month')
 
     return (
       <View style={[u['flex'], { padding: 2, flexWrap: 'wrap' }]}>
