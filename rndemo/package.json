@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "calendarize": "^1.1.1",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.13",
     "react": "18.2.0",
-    "react-native": "0.72.5"
+    "react-native": "0.72.5",
+    "react-native-draggable-flatlist": "^4.0.0",
+    "react-native-gesture-handler": "^2.21.2",
+    "react-native-reanimated": "~3.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

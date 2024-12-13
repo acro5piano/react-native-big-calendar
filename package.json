@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "calendarize": "^1.1.1",
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "react-native-draggable-flatlist": "^4.0.1"
   },
   "peerDependencies": {
     "react": "*",
