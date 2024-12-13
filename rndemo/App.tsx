@@ -16,11 +16,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const events = [
   {
-    title: 'Meeting',
-    start: '2024-12-24T18:30:29.102Z',
-    end: '2024-12-24T19:30:29.102Z',
-  },
-  {
     title: 'Coffee break',
     start: dayjs().set('hour', 14).set('minute', 30).toDate(),
     end: dayjs().set('hour', 15).set('minute', 30).toDate(),
@@ -99,7 +94,7 @@ const events = [
 
 export const App = () => {
   const { height } = useWindowDimensions()
-  const [mode, setMode] = React.useState<Mode>('schedule')
+  const [mode, setMode] = React.useState<Mode>('week')
   const [additionalEvents, setAdditionalEvents] = React.useState<ICalendarEventBase[]>([])
 
   const addEvent = React.useCallback(
@@ -119,7 +114,9 @@ export const App = () => {
     },
     [additionalEvents, setAdditionalEvents],
   )
-
+  const pressEvent = () => {
+    console.log('PRess Event')
+  }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView>
@@ -164,6 +161,7 @@ export const App = () => {
           onLongPressCell={addLongEvent}
           onPressCell={addEvent}
           sortedMonthView={false}
+          onPressEvent={pressEvent}
           mode={mode}
           moreLabel="+{moreCount}"
           onPressMoreLabel={(moreEvents) => {
