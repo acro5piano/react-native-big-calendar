@@ -10,6 +10,7 @@ import {
   DateRangeHandler,
   EventCellStyle,
   EventRenderer,
+  HeaderRendererProps,
   HeaderRenderer,
   HorizontalDirection,
   HourRenderer,
@@ -372,7 +373,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     )
   }
 
-  const headerProps = {
+  const headerProps: HeaderRendererProps<T> = {
     ...commonProps,
     style: headerContainerStyle,
     headerContainerAccessibilityProps: headerContainerAccessibilityProps,
