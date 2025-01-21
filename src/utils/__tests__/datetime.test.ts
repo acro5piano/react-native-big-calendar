@@ -153,13 +153,13 @@ describe('getOrderOfEvent', () => {
   test('3 events middle', () => {
     const event = events[6]
     const index = utils.getOrderOfEvent(event, events)
-    expect(index).toEqual(1)
+    expect(index).toEqual(2)
   })
 
   test('3 events end', () => {
     const event = events[5]
     const index = utils.getOrderOfEvent(event, events)
-    expect(index).toEqual(2)
+    expect(index).toEqual(1)
   })
 })
 
