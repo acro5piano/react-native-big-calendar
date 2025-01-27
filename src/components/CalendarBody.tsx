@@ -175,7 +175,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
 
     if (isEventOrderingEnabled) {
       // Events are being sorted once so we dont have to do it on each loop
-      const sortedEvents = events.sort((a, b) => a.start.getTime() - b.start.getTime())
+      const sortedEvents = events.sort((a, b) => a.start.getDate() - b.start.getDate())
       return sortedEvents.map((event) => ({
         ...event,
         overlapPosition: getOrderOfEvent(event, sortedEvents),
