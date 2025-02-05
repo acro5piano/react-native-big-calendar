@@ -451,6 +451,21 @@ cd rndemo
 yarn install
 ```
 
+Go to `rndemo/node_modules/react-native/third-party-podspecs/boost.podspec` and replace the code `spec.source = { :http => 'https://boostorg.jfrog.io...` for the code below:
+
+```
+spec.source = { :http => 'https://sourceforge.net/projects/boost/files/boost/1.83.0/boost_1_83_0.tar.bz2',
+                :sha256 => '6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e' }
+```
+
+Then run:
+
+```sh
+cd ios && NO_FLIPPER=1 pod install
+cd ..
+yarn ios
+```
+
 ## Start
 
 Start React Native development server in the demo directory:

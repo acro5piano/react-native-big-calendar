@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import { AccessibilityProps, TextStyle, ViewStyle } from 'react-native'
+import InfinitePager from 'react-native-infinite-pager'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
@@ -312,6 +313,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }
   }, [dateString, onChangeDate, getDateRange])
 
+  const getCurrentDate = React.useCallback(
+    (page: number) => {
+      return targetDate.add(modeToNum(mode, targetDate, page), 'day')
+    },
+    [mode, targetDate],
+  )
+
   const commonProps = {
     cellHeight,
     dateRange: getDateRange(targetDate),
@@ -337,38 +345,45 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       weekNumberPrefix: weekNumberPrefix,
     }
     return (
-      <React.Fragment>
-        <HeaderComponentForMonthView {...headerProps} />
-        <CalendarBodyForMonthView<T>
-          {...commonProps}
-          style={bodyContainerStyle}
-          containerHeight={height}
-          events={[...daytimeEvents, ...allDayEvents]}
-          eventCellStyle={eventCellStyle}
-          eventCellAccessibilityProps={eventCellAccessibilityProps}
-          calendarCellStyle={calendarCellStyle}
-          calendarCellAccessibilityProps={calendarCellAccessibilityProps}
-          calendarCellAccessibilityPropsForMonthView={calendarCellAccessibilityPropsForMonthView}
-          calendarCellTextStyle={calendarCellTextStyle}
-          weekStartsOn={weekStartsOn}
-          hideNowIndicator={hideNowIndicator}
-          showAdjacentMonths={showAdjacentMonths}
-          onLongPressCell={onLongPressCell}
-          onPressCell={onPressCell}
-          onPressDateHeader={onPressDateHeader}
-          onPressEvent={onPressEvent}
-          onSwipeHorizontal={onSwipeHorizontal}
-          renderEvent={renderEvent}
-          targetDate={targetDate}
-          maxVisibleEventCount={maxVisibleEventCount}
-          eventMinHeightForMonthView={eventMinHeightForMonthView}
-          sortedMonthView={sortedMonthView}
-          moreLabel={moreLabel}
-          onPressMoreLabel={onPressMoreLabel}
-          renderCustomDateForMonth={renderCustomDateForMonth}
-          disableMonthEventCellPress={disableMonthEventCellPress}
-        />
-      </React.Fragment>
+      <InfinitePager
+        renderPage={({ index }) => (
+          <React.Fragment>
+            <HeaderComponentForMonthView {...headerProps} />
+            <CalendarBodyForMonthView<T>
+              {...commonProps}
+              style={bodyContainerStyle}
+              containerHeight={height}
+              events={[...daytimeEvents, ...allDayEvents]}
+              eventCellStyle={eventCellStyle}
+              eventCellAccessibilityProps={eventCellAccessibilityProps}
+              calendarCellStyle={calendarCellStyle}
+              calendarCellAccessibilityProps={calendarCellAccessibilityProps}
+              calendarCellAccessibilityPropsForMonthView={
+                calendarCellAccessibilityPropsForMonthView
+              }
+              calendarCellTextStyle={calendarCellTextStyle}
+              weekStartsOn={weekStartsOn}
+              hideNowIndicator={hideNowIndicator}
+              showAdjacentMonths={showAdjacentMonths}
+              onLongPressCell={onLongPressCell}
+              onPressCell={onPressCell}
+              onPressDateHeader={onPressDateHeader}
+              onPressEvent={onPressEvent}
+              renderEvent={renderEvent}
+              targetDate={getCurrentDate(index)}
+              maxVisibleEventCount={maxVisibleEventCount}
+              eventMinHeightForMonthView={eventMinHeightForMonthView}
+              sortedMonthView={sortedMonthView}
+              moreLabel={moreLabel}
+              onPressMoreLabel={onPressMoreLabel}
+              renderCustomDateForMonth={renderCustomDateForMonth}
+              disableMonthEventCellPress={disableMonthEventCellPress}
+            />
+          </React.Fragment>
+        )}
+        onPageChange={(page) => onSwipeEnd?.(getCurrentDate(page).toDate())}
+        pageBuffer={2}
+      />
     )
   }
 
@@ -424,42 +439,48 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   }
 
   return (
-    <React.Fragment>
-      <HeaderComponent {...headerProps} />
-      <CalendarBody
-        {...commonProps}
-        style={bodyContainerStyle}
-        containerHeight={height}
-        events={daytimeEvents}
-        eventCellStyle={eventCellStyle}
-        eventCellAccessibilityProps={eventCellAccessibilityProps}
-        eventCellTextColor={eventCellTextColor}
-        calendarCellStyle={calendarCellStyle}
-        calendarCellAccessibilityProps={calendarCellAccessibilityProps}
-        hideNowIndicator={hideNowIndicator}
-        overlapOffset={overlapOffset}
-        scrollOffsetMinutes={scrollOffsetMinutes}
-        ampm={ampm}
-        minHour={minHour}
-        maxHour={maxHour}
-        showTime={showTime}
-        onLongPressCell={onLongPressCell}
-        onPressCell={onPressCell}
-        onPressEvent={onPressEvent}
-        onSwipeHorizontal={onSwipeHorizontal}
-        renderEvent={renderEvent}
-        headerComponent={headerComponent}
-        headerComponentStyle={headerComponentStyle}
-        hourStyle={hourStyle}
-        isEventOrderingEnabled={isEventOrderingEnabled}
-        showVerticalScrollIndicator={showVerticalScrollIndicator}
-        enrichedEventsByDate={enrichedEventsByDate}
-        enableEnrichedEvents={enableEnrichedEvents}
-        eventsAreSorted={eventsAreSorted}
-        timeslots={timeslots}
-        hourComponent={hourComponent}
-      />
-    </React.Fragment>
+    <InfinitePager
+      renderPage={({ index }) => (
+        <React.Fragment>
+          <HeaderComponent {...headerProps} dateRange={getDateRange(getCurrentDate(index))} />
+          <CalendarBody
+            {...commonProps}
+            dateRange={getDateRange(getCurrentDate(index))}
+            style={bodyContainerStyle}
+            containerHeight={height}
+            events={daytimeEvents}
+            eventCellStyle={eventCellStyle}
+            eventCellAccessibilityProps={eventCellAccessibilityProps}
+            eventCellTextColor={eventCellTextColor}
+            calendarCellStyle={calendarCellStyle}
+            calendarCellAccessibilityProps={calendarCellAccessibilityProps}
+            hideNowIndicator={hideNowIndicator}
+            overlapOffset={overlapOffset}
+            scrollOffsetMinutes={scrollOffsetMinutes}
+            ampm={ampm}
+            minHour={minHour}
+            maxHour={maxHour}
+            showTime={showTime}
+            onLongPressCell={onLongPressCell}
+            onPressCell={onPressCell}
+            onPressEvent={onPressEvent}
+            renderEvent={renderEvent}
+            headerComponent={headerComponent}
+            headerComponentStyle={headerComponentStyle}
+            hourStyle={hourStyle}
+            isEventOrderingEnabled={isEventOrderingEnabled}
+            showVerticalScrollIndicator={showVerticalScrollIndicator}
+            enrichedEventsByDate={enrichedEventsByDate}
+            enableEnrichedEvents={enableEnrichedEvents}
+            eventsAreSorted={eventsAreSorted}
+            timeslots={timeslots}
+            hourComponent={hourComponent}
+          />
+        </React.Fragment>
+      )}
+      onPageChange={(page) => onSwipeEnd?.(getCurrentDate(page).toDate())}
+      pageBuffer={2}
+    />
   )
 }
 

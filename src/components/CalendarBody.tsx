@@ -12,12 +12,10 @@ import {
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
-import { usePanResponder } from '../hooks/usePanResponder'
 import {
   CalendarCellStyle,
   EventCellStyle,
   EventRenderer,
-  HorizontalDirection,
   ICalendarEventBase,
   HourRenderer,
 } from '../interfaces'
@@ -63,7 +61,6 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   onLongPressCell?: (date: Date) => void
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: T) => void
-  onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
@@ -98,7 +95,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
   ampm,
   showTime,
   scrollOffsetMinutes,
-  onSwipeHorizontal,
   hideNowIndicator,
   overlapOffset,
   renderEvent,
@@ -144,10 +140,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
       }
     }
   }, [scrollView, scrollOffsetMinutes, cellHeight])
-
-  const panResponder = usePanResponder({
-    onSwipeHorizontal,
-  })
 
   const _onPressCell = React.useCallback(
     (date: dayjs.Dayjs) => {
@@ -292,15 +284,11 @@ function _CalendarBody<T extends ICalendarEventBase>({
         ]}
         ref={scrollView}
         scrollEventThrottle={32}
-        {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={showVerticalScrollIndicator}
         nestedScrollEnabled
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
       >
-        <View
-          style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
-          {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
-        >
+        <View style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}>
           {(!hideHours || showWeekNumber) && (
             <View style={[u['z-20'], u['w-50']]}>
               {hours.map((hour) => (
