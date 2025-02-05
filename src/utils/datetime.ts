@@ -100,7 +100,8 @@ export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date, amount = 1):
     if (current instanceof Date) {
       current = dayjs(current)
     }
-    return (current.daysInMonth() - current.date() + 1) * amount
+
+    return current.add(amount, 'month').diff(current, 'day')
   }
   switch (mode) {
     case 'day':

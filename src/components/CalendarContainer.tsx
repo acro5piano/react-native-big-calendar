@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { useRef } from 'react'
 import { AccessibilityProps, TextStyle, ViewStyle } from 'react-native'
-import InfinitePager from 'react-native-infinite-pager'
+import InfinitePager, { InfinitePagerImperativeApi } from 'react-native-infinite-pager'
 
 import { MIN_HEIGHT } from '../commonStyles'
 import {
@@ -226,6 +226,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   // To ensure we have proper effect callback, use string to date comparision.
   const dateString = date?.toString()
 
+  const calendarRef = useRef<InfinitePagerImperativeApi>(null)
+
   const [targetDate, setTargetDate] = React.useState(() => dayjs(date))
 
   React.useEffect(() => {
@@ -233,6 +235,10 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       setTargetDate(dayjs(dateString))
     }
   }, [dateString]) // if setting `[date]`, it will triggered twice
+
+  React.useEffect(() => {
+    calendarRef.current?.setPage(0, { animated: false })
+  }, [date])
 
   const allDayEvents = React.useMemo(
     () => events.filter((event) => isAllDayEvent(event.start, event.end)),
@@ -346,9 +352,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }
     return (
       <InfinitePager
+        ref={calendarRef}
         renderPage={({ index }) => (
           <React.Fragment>
-            <HeaderComponentForMonthView {...headerProps} />
+            <HeaderComponentForMonthView
+              {...headerProps}
+              dateRange={getDateRange(getCurrentDate(index))}
+            />
             <CalendarBodyForMonthView<T>
               {...commonProps}
               style={bodyContainerStyle}
@@ -366,7 +376,10 @@ function _CalendarContainer<T extends ICalendarEventBase>({
               hideNowIndicator={hideNowIndicator}
               showAdjacentMonths={showAdjacentMonths}
               onLongPressCell={onLongPressCell}
-              onPressCell={onPressCell}
+              onPressCell={(date) => {
+                onPressCell?.(date)
+                calendarRef.current?.setPage(0, { animated: true })
+              }}
               onPressDateHeader={onPressDateHeader}
               onPressEvent={onPressEvent}
               renderEvent={renderEvent}
@@ -440,6 +453,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   return (
     <InfinitePager
+      ref={calendarRef}
       renderPage={({ index }) => (
         <React.Fragment>
           <HeaderComponent {...headerProps} dateRange={getDateRange(getCurrentDate(index))} />
@@ -462,7 +476,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
             maxHour={maxHour}
             showTime={showTime}
             onLongPressCell={onLongPressCell}
-            onPressCell={onPressCell}
+            onPressCell={(date) => {
+              onPressCell?.(date)
+
+              if (mode !== 'day') {
+                calendarRef.current?.setPage(0, { animated: true })
+              }
+            }}
             onPressEvent={onPressEvent}
             renderEvent={renderEvent}
             headerComponent={headerComponent}

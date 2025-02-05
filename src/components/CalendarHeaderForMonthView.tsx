@@ -16,6 +16,7 @@ export interface CalendarHeaderForMonthViewProps {
   weekNumberPrefix?: string
   headerContainerAccessibilityProps?: AccessibilityProps
   headerCellAccessibilityProps?: AccessibilityProps
+  dateRange: dayjs.Dayjs[]
 }
 
 function _CalendarHeaderForMonthView({
