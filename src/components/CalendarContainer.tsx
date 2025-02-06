@@ -353,6 +353,8 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     return (
       <InfinitePager
         ref={calendarRef}
+        style={{ flex: 1 }}
+        pageWrapperStyle={{ flex: 1 }}
         renderPage={({ index }) => (
           <React.Fragment>
             <HeaderComponentForMonthView
