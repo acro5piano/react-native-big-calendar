@@ -40,7 +40,7 @@ yarn add react-native-big-calendar
 Please ensure peer dependencies are installed.
 
 ```sh
-npm install react react-native
+npm install react react-native react-native-gesture-handler react-native-infinite-pager react-native-reanimated
 ```
 
 ### TypeScript
@@ -67,7 +67,10 @@ https://github.com/necolas/react-native-web
 
 # Getting Started
 
+Wrap the Calendar component on a GestureHandlerRootView:
+
 ```typescript
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Calendar } from 'react-native-big-calendar'
 
 const events = [
@@ -84,7 +87,11 @@ const events = [
 ]
 
 function App() {
-  return <Calendar events={events} height={600} />
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Calendar events={events} height={600} />
+    </GestureHandlerRootView>
+  )
 }
 ```
 
@@ -449,21 +456,6 @@ yarn install
 yarn sync-rndemo
 cd rndemo
 yarn install
-```
-
-Go to `rndemo/node_modules/react-native/third-party-podspecs/boost.podspec` and replace the code `spec.source = { :http => 'https://boostorg.jfrog.io...` for the code below:
-
-```
-spec.source = { :http => 'https://sourceforge.net/projects/boost/files/boost/1.83.0/boost_1_83_0.tar.bz2',
-                :sha256 => '6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e' }
-```
-
-Then run:
-
-```sh
-cd ios && NO_FLIPPER=1 pod install
-cd ..
-yarn ios
 ```
 
 ## Start
