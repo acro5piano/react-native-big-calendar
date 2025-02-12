@@ -13,7 +13,10 @@
     "calendarize": "^1.1.1",
     "dayjs": "^1.11.10",
     "react": "18.2.0",
-    "react-native": "0.72.5"
+    "react-native": "0.72.5",
+    "react-native-gesture-handler": "^2.22.1",
+    "react-native-infinite-pager": "^0.3.18",
+    "react-native-reanimated": "^3.16.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

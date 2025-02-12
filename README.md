@@ -40,7 +40,7 @@ yarn add react-native-big-calendar
 Please ensure peer dependencies are installed.
 
 ```sh
-npm install react react-native
+npm install react react-native react-native-gesture-handler react-native-infinite-pager react-native-reanimated
 ```
 
 ### TypeScript
@@ -67,7 +67,10 @@ https://github.com/necolas/react-native-web
 
 # Getting Started
 
+Wrap the Calendar component on a GestureHandlerRootView:
+
 ```typescript
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Calendar } from 'react-native-big-calendar'
 
 const events = [
@@ -84,7 +87,11 @@ const events = [
 ]
 
 function App() {
-  return <Calendar events={events} height={600} />
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Calendar events={events} height={600} />
+    </GestureHandlerRootView>
+  )
 }
 ```
 

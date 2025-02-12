@@ -14,13 +14,11 @@ import {
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
-import { usePanResponder } from '../hooks/usePanResponder'
 import {
   CalendarCellStyle,
   CalendarCellTextStyle,
   EventCellStyle,
   EventRenderer,
-  HorizontalDirection,
   ICalendarEventBase,
   WeekNum,
 } from '../interfaces'
@@ -46,7 +44,6 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   onPressCell?: (date: Date) => void
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
-  onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   maxVisibleEventCount: number
   weekStartsOn: WeekNum
@@ -74,7 +71,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   calendarCellAccessibilityPropsForMonthView = {},
   calendarCellAccessibilityProps = {},
   calendarCellTextStyle,
-  onSwipeHorizontal,
   hideNowIndicator,
   showAdjacentMonths,
   renderEvent,
@@ -91,10 +87,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
   const [calendarCellHeight, setCalendarCellHeight] = React.useState<number>(0)
-
-  const panResponder = usePanResponder({
-    onSwipeHorizontal,
-  })
 
   const weeks = showAdjacentMonths
     ? getWeeksWithAdjacentMonths(targetDate, weekStartsOn)
@@ -257,7 +249,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
       onLayout={({ nativeEvent: { layout } }) => {
         setCalendarWidth(layout.width)
       }}
-      {...panResponder.panHandlers}
     >
       {weeks.map((week, i) => (
         <View
