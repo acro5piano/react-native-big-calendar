@@ -398,7 +398,7 @@ export function getEventSpanningInfo(
   const isMultipleDays = eventDuration > 1
   // This is to determine how many days from the event to show during a week
   const eventWeekDuration =
-    !showAdjacentMonths && monthDaysLeft < 7 && monthDaysLeft < eventDuration
+    !showAdjacentMonths && monthDaysLeft < 7 && monthDaysLeft < eventDaysLeft
       ? monthDaysLeft + 1
       : eventDaysLeft > weekDaysLeft
       ? weekDaysLeft
