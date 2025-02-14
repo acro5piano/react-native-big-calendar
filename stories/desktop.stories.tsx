@@ -13,10 +13,11 @@ import { styles } from './styles'
 import { themes } from './themes'
 
 function alert(input: any) {
+  // @ts-ignore React Native + web integration limitation
   if (typeof window !== 'undefined') {
+    // @ts-ignore
     window.alert(String(input))
-  }
-  return Alert.alert('', String(input))
+  }  return Alert.alert('', String(input))
 }
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
