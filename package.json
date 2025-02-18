@@ -102,5 +102,8 @@
       "style": "module",
       "parser": "typescript"
     }
+  },
+  "volta": {
+    "node": "22.13.0"
   }
 }
