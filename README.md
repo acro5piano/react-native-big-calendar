@@ -26,14 +26,16 @@ It's a hard task to debug this library on three platforms. I usually develop wit
 # Install
 
 ```
-npm install --save react-native-big-calendar
+npm install --save react-native-big-calendar@next
 ```
 
 Or if you use Yarn:
 
 ```
-yarn add react-native-big-calendar
+yarn add react-native-big-calendar@next
 ```
+
+> NOTE: The `next` version is a beta release that includes the [awesome swipe animations](https://github.com/acro5piano/react-native-big-calendar/pull/1135). If you encounter any issues with the `next` version, please consider using the stable version by running `yarn add react-native-big-calendar`.
 
 ### Other dependencies
 
