@@ -9,6 +9,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { Calendar, ICalendarEventBase, Mode } from './build'
 
@@ -424,58 +425,63 @@ export const App = () => {
   )
 
   return (
-    <View>
-      <SafeAreaView>
-        <Text style={styles.headline}>Calendar Mode</Text>
-        <ScrollView horizontal={true}>
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              onPress={() => setMode('week')}
-              style={[styles.buttonContainer, mode === 'week' && styles.buttonContainerActive]}
-            >
-              <Text>week</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setMode('day')}
-              style={[styles.buttonContainer, mode === 'day' && styles.buttonContainerActive]}
-            >
-              <Text>day</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setMode('3days')}
-              style={[styles.buttonContainer, mode === '3days' && styles.buttonContainerActive]}
-            >
-              <Text>3days</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setMode('month')}
-              style={[styles.buttonContainer, mode === 'month' && styles.buttonContainerActive]}
-            >
-              <Text>month</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setMode('schedule')}
-              style={[styles.buttonContainer, mode === 'schedule' && styles.buttonContainerActive]}
-            >
-              <Text>schedule</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-        <Calendar
-          height={height - 60}
-          events={[...events, ...additionalEvents]}
-          onLongPressCell={addLongEvent}
-          onPressCell={addEvent}
-          sortedMonthView={false}
-          mode={mode}
-          moreLabel="+{moreCount}"
-          onPressMoreLabel={(moreEvents) => {
-            console.log(moreEvents)
-          }}
-          itemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-        />
-      </SafeAreaView>
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View>
+        <SafeAreaView>
+          <Text style={styles.headline}>Calendar Mode</Text>
+          <ScrollView horizontal={true}>
+            <View style={styles.buttonRow}>
+              <TouchableOpacity
+                onPress={() => setMode('week')}
+                style={[styles.buttonContainer, mode === 'week' && styles.buttonContainerActive]}
+              >
+                <Text>week</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setMode('day')}
+                style={[styles.buttonContainer, mode === 'day' && styles.buttonContainerActive]}
+              >
+                <Text>day</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setMode('3days')}
+                style={[styles.buttonContainer, mode === '3days' && styles.buttonContainerActive]}
+              >
+                <Text>3days</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setMode('month')}
+                style={[styles.buttonContainer, mode === 'month' && styles.buttonContainerActive]}
+              >
+                <Text>month</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setMode('schedule')}
+                style={[
+                  styles.buttonContainer,
+                  mode === 'schedule' && styles.buttonContainerActive,
+                ]}
+              >
+                <Text>schedule</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+          <Calendar
+            height={height - 60}
+            events={[...events, ...additionalEvents]}
+            onLongPressCell={addLongEvent}
+            onPressCell={addEvent}
+            sortedMonthView={false}
+            mode={mode}
+            moreLabel="+{moreCount}"
+            onPressMoreLabel={(moreEvents) => {
+              console.log(moreEvents)
+            }}
+            itemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+          />
+        </SafeAreaView>
+      </View>
+    </GestureHandlerRootView>
   )
 }
 
