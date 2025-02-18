@@ -1,11 +1,10 @@
-name: release
+name: release-beta
 on:
   push:
-    tags: ["v*"]
+    tags: ["*beta*"]
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "!contains(github.ref, 'beta')"  # Add this line to skip if 'beta' is in the ref
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
@@ -19,6 +18,7 @@ jobs:
           test -n "$NPM_TOKEN"
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
           yarn install
-          npm publish
+          npm publish --tag next
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
