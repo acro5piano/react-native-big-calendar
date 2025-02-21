@@ -1,5 +1,5 @@
-import typescript2 from 'rollup-plugin-typescript2'
 import jsx from 'acorn-jsx'
+import typescript2 from 'rollup-plugin-typescript2'
 
 export default {
   input: './src/index.ts',
