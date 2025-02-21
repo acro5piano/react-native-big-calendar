@@ -18,8 +18,8 @@
     "lint": "eslint --ext ts,tsx src stories",
     "lint:fix": "yarn lint --fix",
     "watch": "rollup -cw",
-    "prepublish": "npm run build",
-    "build": "npm-run-all build:clean build:ts",
+    "prepublish": "bun run build",
+    "build": "bun run build:clean && bun run build:ts",
     "build:clean": "rimraf build/",
     "build:ts": "env NODE_ENV=production rollup -c"
   },
