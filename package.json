@@ -12,7 +12,7 @@
     "prepare": "simple-git-hooks || true",
     "storybook": "storybook dev -p 7007",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider' storybook build -o .storybook-build",
-    "sync-rndemo": "yarn build && cp -r build rndemo",
+    "sync-demo": "bun run build && cp -r build expo-demo/node_modules/react-native-big-calendar && echo 'copied build to expo-demo'",
     "test": "jest",
     "format": "prettier --write {src,stories}/**.{ts,tsx}",
     "lint": "eslint --ext ts,tsx src stories",
