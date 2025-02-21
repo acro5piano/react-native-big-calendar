@@ -1,9 +1,9 @@
-import dayjs from 'dayjs'
+import type dayjs from 'dayjs'
 import * as React from 'react'
-import { AccessibilityProps, TouchableWithoutFeedback, View } from 'react-native'
+import { type AccessibilityProps, TouchableWithoutFeedback, View } from 'react-native'
 
 import { u } from '../commonStyles'
-import { CalendarCellStyle } from '../interfaces'
+import type { CalendarCellStyle } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 
 interface HourGuideCellProps {
@@ -56,7 +56,7 @@ const _HourGuideCell = ({
       >
         {Array.from({ length: timeslots }, (_, index) => (
           <View
-            key={index}
+            key={`${index}-${date.toDate()}`}
             style={[
               u['border-l'],
               u['border-b'],

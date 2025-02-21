@@ -1,23 +1,23 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
 import {
-  AccessibilityProps,
+  type AccessibilityProps,
   Platform,
   ScrollView,
   StyleSheet,
-  TextStyle,
+  type TextStyle,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
-import {
+import type {
   CalendarCellStyle,
   EventCellStyle,
   EventRenderer,
-  ICalendarEventBase,
   HourRenderer,
+  ICalendarEventBase,
 } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import {
@@ -61,11 +61,12 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   onLongPressCell?: (date: Date) => void
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: T) => void
+  onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
-  hideHours?: Boolean
+  hideHours?: boolean
   minHour?: number
   maxHour?: number
   isEventOrderingEnabled?: boolean
@@ -124,7 +125,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
       // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
       timeout = setTimeout(
         () => {
-          if (scrollView && scrollView.current) {
+          if (scrollView?.current) {
             scrollView.current.scrollTo({
               y: (cellHeight * scrollOffsetMinutes) / 60,
               animated: false,
@@ -139,18 +140,18 @@ function _CalendarBody<T extends ICalendarEventBase>({
         clearTimeout(timeout)
       }
     }
-  }, [scrollView, scrollOffsetMinutes, cellHeight])
+  }, [scrollOffsetMinutes, cellHeight])
 
   const _onPressCell = React.useCallback(
     (date: dayjs.Dayjs) => {
-      onPressCell && onPressCell(date.toDate())
+      onPressCell?.(date.toDate())
     },
     [onPressCell],
   )
 
   const _onLongPressCell = React.useCallback(
     (date: dayjs.Dayjs) => {
-      onLongPressCell && onLongPressCell(date.toDate())
+      onLongPressCell?.(date.toDate())
     },
     [onLongPressCell],
   )
@@ -221,51 +222,50 @@ function _CalendarBody<T extends ICalendarEventBase>({
         return (internalEnrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(
           _renderMappedEvent,
         )
-      } else {
-        return (
-          <>
-            {/* Render events of this date */}
-            {/* M  T  (W)  T  F  S  S */}
-            {/*       S-E             */}
-            {(enrichedEvents as T[])
-              .filter(({ start }) =>
-                dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-              )
-              .map(_renderMappedEvent)}
-
-            {/* Render events which starts before this date and ends on this date */}
-            {/* M  T  (W)  T  F  S  S */}
-            {/* S------E              */}
-            {(enrichedEvents as T[])
-              .filter(
-                ({ start, end }) =>
-                  dayjs(start).isBefore(date.startOf('day')) &&
-                  dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
-              )
-              .map((event) => ({
-                ...event,
-                start: dayjs(event.end).startOf('day'),
-              }))
-              .map(_renderMappedEvent)}
-
-            {/* Render events which starts before this date and ends after this date */}
-            {/* M  T  (W)  T  F  S  S */}
-            {/*    S-------E          */}
-            {(enrichedEvents as T[])
-              .filter(
-                ({ start, end }) =>
-                  dayjs(start).isBefore(date.startOf('day')) &&
-                  dayjs(end).isAfter(date.endOf('day')),
-              )
-              .map((event) => ({
-                ...event,
-                start: dayjs(event.end).startOf('day'),
-                end: dayjs(event.end).endOf('day'),
-              }))
-              .map(_renderMappedEvent)}
-          </>
-        )
       }
+
+      return (
+        <>
+          {/* Render events of this date */}
+          {/* M  T  (W)  T  F  S  S */}
+          {/*       S-E             */}
+          {(enrichedEvents as T[])
+            .filter(({ start }) =>
+              dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+            )
+            .map(_renderMappedEvent)}
+
+          {/* Render events which starts before this date and ends on this date */}
+          {/* M  T  (W)  T  F  S  S */}
+          {/* S------E              */}
+          {(enrichedEvents as T[])
+            .filter(
+              ({ start, end }) =>
+                dayjs(start).isBefore(date.startOf('day')) &&
+                dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+            )
+            .map((event) => ({
+              ...event,
+              start: dayjs(event.end).startOf('day'),
+            }))
+            .map(_renderMappedEvent)}
+
+          {/* Render events which starts before this date and ends after this date */}
+          {/* M  T  (W)  T  F  S  S */}
+          {/*    S-------E          */}
+          {(enrichedEvents as T[])
+            .filter(
+              ({ start, end }) =>
+                dayjs(start).isBefore(date.startOf('day')) && dayjs(end).isAfter(date.endOf('day')),
+            )
+            .map((event) => ({
+              ...event,
+              start: dayjs(event.end).startOf('day'),
+              end: dayjs(event.end).endOf('day'),
+            }))
+            .map(_renderMappedEvent)}
+        </>
+      )
     },
     [_renderMappedEvent, enableEnrichedEvents, enrichedEvents, internalEnrichedEventsByDate],
   )

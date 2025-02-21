@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { AccessibilityProps, Text, TextStyle, View } from 'react-native'
+import { type AccessibilityProps, Text, type TextStyle, View } from 'react-native'
 
 import { u } from '../commonStyles'
+import type { HourRenderer } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { formatHour } from '../utils/datetime'
 import { objHasContent } from '../utils/object'
-import { HourRenderer } from '../interfaces'
 
 interface HourGuideColumnProps {
   cellHeight: number
