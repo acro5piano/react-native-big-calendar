@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import React from 'react'
 
-import { ICalendarEventBase } from '../src/interfaces'
+import type { ICalendarEventBase } from '../src/interfaces'
 
 export function useEvents(defaultEvents: ICalendarEventBase[]) {
   const [events, setEvents] = React.useState(defaultEvents)

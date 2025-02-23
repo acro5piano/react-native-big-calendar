@@ -3,13 +3,13 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Text, TouchableOpacity, View } from 'react-native'
 
-import { Calendar, EventRenderer, ICalendarEventBase } from '../src'
+import { Calendar, type EventRenderer, type ICalendarEventBase } from '../src'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events, tonsOfEvents, tonsOfEventsSorted } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 
-function alert(input: any) {
+function alert(input: string) {
   // @ts-ignore
   if (typeof window !== 'undefined') {
     // @ts-ignore

@@ -1,9 +1,15 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { AccessibilityProps, Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-
+import {
+  type AccessibilityProps,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+  type ViewStyle,
+} from 'react-native'
 import { eventCellCss, u } from '../commonStyles'
-import { ICalendarEventBase } from '../interfaces'
+import type { ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { isToday } from '../utils/datetime'
 import { objHasContent, stringHasContent } from '../utils/object'
@@ -25,7 +31,7 @@ export interface CalendarHeaderProps<T extends ICalendarEventBase> {
   dayHeaderHighlightColor?: string
   weekDayHeaderHighlightColor?: string
   showAllDayEventCell?: boolean
-  hideHours?: Boolean
+  hideHours?: boolean
   showWeekNumber?: boolean
   weekNumberPrefix?: string
   allDayEventCellAccessibilityProps?: AccessibilityProps
@@ -57,14 +63,14 @@ function _CalendarHeader<T extends ICalendarEventBase>({
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
-      onPressDateHeader && onPressDateHeader(date)
+      onPressDateHeader?.(date)
     },
     [onPressDateHeader],
   )
 
   const _onPressEvent = React.useCallback(
     (event: T) => {
-      onPressEvent && onPressEvent(event)
+      onPressEvent?.(event)
     },
     [onPressEvent],
   )
@@ -161,18 +167,18 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                   objHasContent(dayHeaderStyle)
                     ? dayHeaderStyle
                     : shouldHighlight
-                    ? [
-                        primaryBg,
-                        u['h-36'],
-                        u['w-36'],
-                        u['pb-6'],
-                        u['rounded-full'],
-                        u['items-center'],
-                        u['justify-center'],
-                        u['self-center'],
-                        u['z-20'],
-                      ]
-                    : [u['mb-6']]
+                      ? [
+                          primaryBg,
+                          u['h-36'],
+                          u['w-36'],
+                          u['pb-6'],
+                          u['rounded-full'],
+                          u['items-center'],
+                          u['justify-center'],
+                          u['self-center'],
+                          u['z-20'],
+                        ]
+                      : [u['mb-6']]
                 }
               >
                 <Text
@@ -217,7 +223,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                   return (
                     <TouchableOpacity
                       style={[eventCellCss.style, primaryBg, u['mt-2'], getEventStyle(event)]}
-                      key={index}
+                      key={`${index}-${event.start}-${event.title}-${event.end}`}
                       onPress={() => _onPressEvent(event)}
                       {...allDayEventCellAccessibilityProps}
                     >

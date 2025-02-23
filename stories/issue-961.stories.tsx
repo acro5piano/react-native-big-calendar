@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import React, { useCallback } from 'react'
 import { Button } from 'react-native'
 
@@ -31,13 +31,13 @@ const CalendarContainer: React.FC<CalendarContainerProps> = ({ swipeEnabled }) =
   const [date, setDate] = React.useState(new Date())
 
   const toNextWeek = () => {
-    let nextWeek = new Date(date)
+    const nextWeek = new Date(date)
     nextWeek.setDate(nextWeek.getDate() + 7)
     setDate(nextWeek)
   }
 
   const toLastWeek = () => {
-    let lastWeek = new Date(date)
+    const lastWeek = new Date(date)
     lastWeek.setDate(lastWeek.getDate() - 7)
     setDate(lastWeek)
   }

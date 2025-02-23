@@ -2,8 +2,7 @@
   "extends": "./tsconfig.json",
   "exclude": [
     "./stories/**",
-    "./rndemo/**",
-    "./example/**",
+    "./expo-demo/**",
     "**/node_modules/**",
     "**/vendor/**",
     ".git",

@@ -1,9 +1,13 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { AccessibilityProps, ViewStyle } from 'react-native'
+import type { AccessibilityProps, ViewStyle } from 'react-native'
 
 import { eventCellCss } from '../commonStyles'
-import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEventBase } from '../interfaces'
+import type {
+  CalendarTouchableOpacityProps,
+  EventCellStyle,
+  ICalendarEventBase,
+} from '../interfaces'
 
 interface UseCalendarTouchableOpacityPropsProps<T extends ICalendarEventBase> {
   event: T
@@ -35,7 +39,7 @@ export function useCalendarTouchableOpacityProps<T extends ICalendarEventBase>({
   )
 
   const _onPress = React.useCallback(() => {
-    onPressEvent && onPressEvent(plainJsEvent)
+    onPressEvent?.(plainJsEvent)
   }, [onPressEvent, plainJsEvent])
 
   const touchableOpacityProps: CalendarTouchableOpacityProps = {

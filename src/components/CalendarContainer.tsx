@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
 import React, { useRef } from 'react'
-import { AccessibilityProps, TextStyle, ViewStyle } from 'react-native'
-import InfinitePager, { InfinitePagerImperativeApi } from 'react-native-infinite-pager'
+import type { AccessibilityProps, TextStyle, ViewStyle } from 'react-native'
+import InfinitePager, { type InfinitePagerImperativeApi } from 'react-native-infinite-pager'
 
 import { MIN_HEIGHT } from '../commonStyles'
-import {
+import type {
   AllDayEventCellStyle,
   CalendarCellStyle,
   CalendarCellTextStyle,
@@ -40,7 +40,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   /**
    * To remove Hours Column from week View.
    */
-  hideHours?: Boolean
+  hideHours?: boolean
   /**
    * Events to be rendered. This is a required prop.
    */
@@ -125,7 +125,12 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   onPressMoreLabel?: (event: T[]) => void
   disableMonthEventCellPress?: boolean
   showVerticalScrollIndicator?: boolean
-  itemSeparatorComponent?: React.ComponentType<any> | null | undefined
+  itemSeparatorComponent?:
+    | React.ComponentType<{
+        highlighted: boolean
+      }>
+    | null
+    | undefined
   /**
    * Callback when the user swipes horizontally.
    * Note: Memoize this callback to avoid un-necessary re-renders.
@@ -238,7 +243,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   React.useEffect(() => {
     calendarRef.current?.setPage(0, { animated: false })
-  }, [date])
+  }, [])
 
   const allDayEvents = React.useMemo(
     () => events.filter((event) => isAllDayEvent(event.start, event.end)),
