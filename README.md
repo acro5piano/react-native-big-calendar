@@ -112,7 +112,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   eventCellStyle?: EventCellStyle<T>
   eventCellAccessibilityProps?: AccessibilityProps
   eventCellTextColor?: string
-  allDayEventCellStyle?: allDayEventCellStyle<>
+  allDayEventCellStyle?: allDayEventCellStyle<T>
   allDayEventCellAccessibilityProps?: AccessibilityProps
   calendarCellAccessibilityPropsForMonthView?: AccessiblityProps
   allDayEventCellTextColor?: string
@@ -454,10 +454,10 @@ This is specially useful for example when you want to build the dictionary in a 
 After checking this repo, please run:
 
 ```sh
-yarn install
-yarn sync-rndemo
-cd rndemo
-yarn install
+bun install
+bun sync-demo
+cd expo-demo
+bun install
 ```
 
 ## Start
@@ -465,25 +465,14 @@ yarn install
 Start React Native development server in the demo directory:
 
 ```sh
-cd rndemo
-yarn start
-```
-
-Then, open another terminal and run:
-
-```sh
-# For ios
-pod install
-yarn ios
-
-# For Android
-yarn android
+cd expo-demo
+bun start
 ```
 
 Every time you modify code of this library, you should run the following command in the root directory:
 
 ```sh
-yarn sync-rndemo
+bun sync-demo
 ```
 
 # Screenshots
