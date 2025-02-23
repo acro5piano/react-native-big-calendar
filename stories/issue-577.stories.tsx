@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, View } from 'react-native'
@@ -17,17 +17,6 @@ function alert(input: any) {
 
 const MOBILE_HEIGHT = 736
 
-storiesOf('reproduction-issue-577', module).add('month mode', () => (
-  <View style={styles.mobile}>
-    <Calendar
-      height={MOBILE_HEIGHT}
-      events={events}
-      mode="month"
-      onPressEvent={(event) => alert(event.title)}
-    />
-  </View>
-))
-
 const events = [
   {
     title: 'RX-1002',
@@ -35,3 +24,25 @@ const events = [
     end: dayjs().add(5, 'days').hour(0).minute(0).second(0).toDate(),
   },
 ]
+
+const meta: Meta<typeof Calendar> = {
+  title: 'reproduction-issue-577',
+  component: Calendar,
+}
+
+export default meta
+
+type Story = StoryObj<typeof Calendar>
+
+export const MonthMode: Story = {
+  render: () => (
+    <View style={styles.mobile}>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={events}
+        mode="month"
+        onPressEvent={(event) => alert(event.title)}
+      />
+    </View>
+  ),
+}

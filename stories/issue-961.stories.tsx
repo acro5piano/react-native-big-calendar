@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import React, { useCallback } from 'react'
 import { Button } from 'react-native'
 
@@ -6,9 +6,22 @@ import { Calendar } from '../src'
 
 const MOBILE_HEIGHT = 736
 
-storiesOf('reproduction-issue-961', module)
-  .add('myBehaviour', () => <CalendarContainer swipeEnabled={false} />)
-  .add('working', () => <CalendarContainer swipeEnabled={true} />)
+const meta: Meta<typeof Calendar> = {
+  title: 'reproduction-issue-961',
+  component: Calendar,
+}
+
+export default meta
+
+type Story = StoryObj<typeof Calendar>
+
+export const MyBehaviour: Story = {
+  render: () => <CalendarContainer swipeEnabled={false} />,
+}
+
+export const Working: Story = {
+  render: () => <CalendarContainer swipeEnabled={true} />,
+}
 
 interface CalendarContainerProps {
   swipeEnabled: boolean

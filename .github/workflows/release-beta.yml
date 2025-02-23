@@ -1,9 +1,9 @@
-name: test
-
-on: [push, pull_request]
-
+name: release-beta
+on:
+  push:
+    tags: ['*beta*']
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,8 +14,10 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
-      - run: yarn sync-rndemo
-      - run: yarn tsc --noEmit
-      - run: yarn lint
-      - run: yarn test
+      - run: |
+          test -n "$NPM_TOKEN"
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+          yarn install
+          npm publish --tag next
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
