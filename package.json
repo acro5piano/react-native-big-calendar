@@ -102,5 +102,9 @@
       "style": "module",
       "parser": "typescript"
     }
+  },
+  "volta": {
+    "node": "22.13.0",
+    "yarn": "1.22.22"
   }
 }

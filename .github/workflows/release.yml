@@ -1,16 +1,14 @@
 name: release
 on:
   push:
-    tags: ["v*"]
+    tags: ['v*']
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "!contains(github.ref, 'beta')"  # Add this line to skip if 'beta' is in the ref
+    if: ${{ !contains(github.ref, 'beta') }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - uses: actions/checkout@v4
+      - uses: volta-cli/action@v4
       - uses: actions/cache@master
         with:
           path: node_modules
