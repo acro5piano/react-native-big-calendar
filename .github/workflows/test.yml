@@ -13,4 +13,4 @@ jobs:
       - run: bun sync-demo
       - run: bun tsc --noEmit
       - run: bun lint
-      - run: bun test
+      - run: bun run test
