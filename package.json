@@ -9,7 +9,7 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "simple-git-hooks || true",
+    "prepare": "husky",
     "storybook": "storybook dev -p 7007",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider' storybook build -o .storybook-build",
     "sync-demo": "bun run build && cp -r build expo-demo/node_modules/react-native-big-calendar && echo 'copied build to expo-demo'",
@@ -61,6 +61,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^9.1.7",
     "import-sort-style-module": "^6.0.0",
     "jest": "^29.7.0",
     "lint-staged": "^15.2.9",
@@ -77,16 +78,12 @@
     "rimraf": "^5.0.5",
     "rollup": "^2.79.1",
     "rollup-plugin-typescript2": "^0.36.0",
-    "simple-git-hooks": "^2.11.1",
     "storybook": "^8.5.5",
     "tailwind-rn": "^3.0.1",
     "ts-loader": "^9.5.1",
     "tslib": "^2.7.0",
     "typescript": "^5.4.5",
     "webpack-merge": "^5.10.0"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
