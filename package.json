@@ -81,7 +81,7 @@
     "storybook": "^8.5.5",
     "tailwind-rn": "^3.0.1",
     "ts-loader": "^9.5.1",
-    "tslib": "^2.7.0",
+    "tslib": "^2.8.1",
     "typescript": "^5.4.5",
     "webpack-merge": "^5.10.0"
   },
