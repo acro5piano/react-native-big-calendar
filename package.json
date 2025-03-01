@@ -35,7 +35,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.8",
+    "@babel/core": "^7.26.9",
     "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
