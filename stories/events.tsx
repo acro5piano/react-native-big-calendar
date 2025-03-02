@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { RecursiveArray, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { type RecursiveArray, Text, TouchableOpacity, View, type ViewStyle } from 'react-native'
 
-import { EventRenderer, ICalendarEventBase, HourRenderer } from '../src/interfaces'
+import type { EventRenderer, HourRenderer, ICalendarEventBase } from '../src/interfaces'
 import { formatStartEnd } from '../src/utils/datetime'
 
 const getRandomInt = (min: number, max: number) => {

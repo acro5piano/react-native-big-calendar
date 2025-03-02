@@ -1,14 +1,13 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-
+import type { AccessibilityProps } from 'react-native'
 import { OVERLAP_OFFSET, u } from '../commonStyles'
 import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEventBase, Mode } from '../interfaces'
+import type { EventCellStyle, EventRenderer, ICalendarEventBase, Mode } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
-import { AccessibilityProps } from 'react-native'
 
 const getEventCellPositionStyle = (start: Date, end: Date, minHour: number, hours: number) => {
   const totalMinutesInRange = (DAY_MINUTES / 24) * hours
@@ -74,7 +73,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
         : [
             getEventCellPositionStyle(event.start, event.end, minHour, hours),
             getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes),
-            u['absolute'],
+            u.absolute,
             u['mt-2'],
             u['mx-3'],
           ],

@@ -3,7 +3,7 @@ import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
 import Mockdate from 'mockdate'
 
-import { ICalendarEventBase } from '../../interfaces'
+import type { ICalendarEventBase } from '../../interfaces'
 import * as utils from '../datetime'
 import { SIMPLE_DATE_FORMAT, enrichEvents } from '../datetime'
 
@@ -66,8 +66,8 @@ const getEvents = (eventsHours: { startHour: number; endHour: number }[]): ICale
     end: dayjs().set('hour', endHour).set('minute', 0).toDate(),
   }))
 
-function assertDateRange(expected: any[], actual: any[]) {
-  const formatToIso = (a: any) => a.toISOString()
+function assertDateRange(expected: Date[], actual: dayjs.Dayjs[]) {
+  const formatToIso = (a: Date | dayjs.Dayjs) => a.toISOString()
   expect(actual.map(formatToIso)).toEqual(expected.map(formatToIso))
 }
 

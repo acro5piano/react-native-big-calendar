@@ -1,17 +1,17 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import {
-  AccessibilityProps,
+  type AccessibilityProps,
   FlatList,
   Platform,
   Text,
-  TextStyle,
+  type TextStyle,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from 'react-native'
 
 import { u } from '../commonStyles'
-import {
+import type {
   CalendarCellStyle,
   EventCellStyle,
   EventRenderer,
@@ -52,13 +52,18 @@ interface ScheduleProps<T extends ICalendarEventBase> {
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
-  hideHours?: Boolean
+  hideHours?: boolean
   isEventOrderingEnabled?: boolean
   showVerticalScrollIndicator?: boolean
   activeDate?: Date
   weekDayHeaderHighlightColor?: string
   dayHeaderHighlightColor?: string
-  itemSeparatorComponent?: React.ComponentType<any> | null | undefined
+  itemSeparatorComponent?:
+    | React.ComponentType<{
+        highlighted: boolean
+      }>
+    | null
+    | undefined
   locale: string
   scheduleMonthSeparatorStyle?: TextStyle
 }
@@ -122,7 +127,7 @@ function _Schedule<T extends ICalendarEventBase>({
   const getItem = React.useMemo((): T[][] => {
     const groupedData = events
       .sort((a, b) => dayjs(a.start).diff(b.start))
-      .reduce((result: any, item: T): any => {
+      .reduce((result: Record<string, T[]>, item: T): Record<string, T[]> => {
         const startDate = dayjs(item.start).format(SIMPLE_DATE_FORMAT)
         if (!result[startDate]) {
           result[startDate] = []
@@ -154,13 +159,13 @@ function _Schedule<T extends ICalendarEventBase>({
       index === 0 || !dayjs(eventGroup[0].start).isSame(getItem[index - 1][0].start, 'month')
 
     return (
-      <View style={[u['flex'], { padding: 2, flexWrap: 'wrap' }]}>
+      <View style={[u.flex, { padding: 2, flexWrap: 'wrap' }]}>
         {isNewMonth && renderMonthSeparator(date)}
-        <View style={[u['flex'], u['justify-center'], { width: '20%' }]}>
+        <View style={[u.flex, u['justify-center'], { width: '20%' }]}>
           <View
             style={[
               { width: 60, height: 60, borderRadius: 30 },
-              u['flex'],
+              u.flex,
               u['justify-center'],
               u['items-center'],
               u['flex-column-reverse'],
@@ -203,12 +208,12 @@ function _Schedule<T extends ICalendarEventBase>({
             </Text>
           </View>
         </View>
-        <View style={[u['flex'], u['flex-column'], { width: '75%' }]}>
+        <View style={[u.flex, u['flex-column'], { width: '75%' }]}>
           {eventGroup.map((event: T, index) => {
             return (
               <View
                 style={[u['flex-1'], u['overflow-hidden'], { marginTop: 2, marginBottom: 2 }]}
-                key={index}
+                key={`${index}-${event.start}-${event.title}-${event.end}`}
               >
                 <CalendarEvent
                   key={`${index}${event.start}${event.title}${event.end}`}
@@ -238,7 +243,7 @@ function _Schedule<T extends ICalendarEventBase>({
     <View style={{ ...style, height: containerHeight }}>
       <FlatList
         data={getItem}
-        renderItem={({ item }: { item: any }) => renderFlatListItem(item, getItem.indexOf(item))}
+        renderItem={({ item }: { item: T[] }) => renderFlatListItem(item, getItem.indexOf(item))}
         ItemSeparatorComponent={itemSeparatorComponent}
         keyExtractor={(_, index) => index.toString()}
       />

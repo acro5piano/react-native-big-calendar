@@ -1,7 +1,7 @@
 import { deepMerge } from '../object'
 
 test('deepMerge', () => {
-  let obj1 = {
+  const obj1 = {
     a: 1,
     b: {
       c: 2,
@@ -10,7 +10,7 @@ test('deepMerge', () => {
     },
     array: [1, 2, 3],
   }
-  let obj2 = {
+  const obj2 = {
     a: 2,
     b: {
       c: 2,

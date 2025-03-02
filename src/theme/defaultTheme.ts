@@ -1,4 +1,4 @@
-import { ThemeInterface } from './ThemeInterface'
+import type { ThemeInterface } from './ThemeInterface'
 
 export const defaultTheme: ThemeInterface = {
   isRTL: false,

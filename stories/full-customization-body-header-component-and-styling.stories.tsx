@@ -5,7 +5,7 @@ import React from 'react'
 import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
 import tailwind from 'tailwind-rn'
 
-import { Calendar, Mode, modeToNum } from '../src'
+import { Calendar, type Mode, modeToNum } from '../src'
 import { events } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
@@ -55,7 +55,7 @@ export const BodyHeaderComponentAndStyling: Story = {
 
     const textStyle = theme === 'dark' ? tailwind('text-white') : tailwind('text-gray-800')
 
-    const Button = ({ onPress, title }: { onPress: () => any; title: string }) => (
+    const Button = ({ onPress, title }: { onPress: () => void; title: string }) => (
       <TouchableOpacity
         onPress={onPress}
         style={[tailwind('px-4 py-2 border border-gray-200 mx-2 rounded')]}

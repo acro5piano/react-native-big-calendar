@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import dayjs from 'dayjs'
 import React, { useCallback, useState } from 'react'
 import { Dimensions, Text, TouchableOpacity } from 'react-native'
 
-import { Calendar, CalendarTouchableOpacityProps, ICalendarEventBase } from '../src'
-import { DateRangeHandler } from '../src/interfaces'
+import { Calendar, type CalendarTouchableOpacityProps, type ICalendarEventBase } from '../src'
+import type { DateRangeHandler } from '../src/interfaces'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
