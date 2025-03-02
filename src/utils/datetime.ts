@@ -402,10 +402,10 @@ export function getEventSpanningInfo(
     !showAdjacentMonths && monthDaysLeft < 7 && monthDaysLeft < eventDaysLeft
       ? monthDaysLeft + 1
       : eventDaysLeft > weekDaysLeft
-      ? weekDaysLeft
-      : eventDaysLeft < eventDuration
-      ? eventDaysLeft
-      : eventDuration
+        ? weekDaysLeft
+        : eventDaysLeft < eventDuration
+          ? eventDaysLeft
+          : eventDuration
   const isMultipleDaysStart =
     isMultipleDays &&
     (date.isSame(event.start, 'day') ||

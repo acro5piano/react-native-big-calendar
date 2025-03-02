@@ -7,17 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-      - uses: actions/cache@master
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - uses: oven-sh/setup-bun@v2
       - run: |
           test -n "$NPM_TOKEN"
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-          yarn install
-          npm publish --tag next
+          bun install
+          bun publish --tag next
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

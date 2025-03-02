@@ -7,15 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-      - uses: actions/cache@master
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
-      - run: yarn sync-rndemo
-      - run: yarn tsc --noEmit
-      - run: yarn lint
-      - run: yarn test
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: cd expo-demo && bun install && cd ..
+      - run: bun sync-demo
+      - run: bun tsc --noEmit
+      - run: bun lint
+      - run: bun run test
