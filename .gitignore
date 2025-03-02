@@ -65,3 +65,4 @@ build
 /.idea
 
 .DS_Store
+.aider*

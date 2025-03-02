@@ -9,7 +9,7 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "simple-git-hooks || true",
+    "prepare": "husky",
     "storybook": "storybook dev -p 7007",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider' storybook build -o .storybook-build",
     "sync-demo": "bun run build && cp -r build expo-demo/node_modules/react-native-big-calendar && echo 'copied build to expo-demo'",
@@ -17,8 +17,8 @@
     "lint": "biome check --error-on-warnings --files-ignore-unknown=true",
     "lint:fix": "biome check --write --unsafe --files-ignore-unknown=true",
     "watch": "rollup -cw",
-    "prepublish": "npm run build",
-    "build": "npm-run-all build:clean build:ts",
+    "prepublish": "bun run build",
+    "build": "bun run build:clean && bun run build:ts",
     "build:clean": "rimraf build/",
     "build:ts": "env NODE_ENV=production rollup -c"
   },
@@ -67,17 +67,23 @@
     "rimraf": "^5.0.5",
     "rollup": "^2.79.1",
     "rollup-plugin-typescript2": "^0.36.0",
-    "simple-git-hooks": "^2.11.1",
     "storybook": "^8.5.5",
     "tailwind-rn": "^3.0.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
     "webpack-merge": "^5.10.0"
   },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
-  },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": ["biome check --write --unsafe --files-ignore-unknown=true"]
+  },
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
+  },
+  "volta": {
+    "node": "22.13.0",
+    "yarn": "1.22.22"
   }
 }
