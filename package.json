@@ -63,7 +63,6 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.75.2",
     "react-native-web": "^0.19.13",
-    "remeda": "^1.39.0",
     "rimraf": "^5.0.5",
     "rollup": "^2.79.1",
     "rollup-plugin-typescript2": "^0.36.0",

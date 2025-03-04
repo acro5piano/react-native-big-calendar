@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
 import Mockdate from 'mockdate'
-import * as R from 'remeda'
 
 import type { ICalendarEventBase } from '../../interfaces'
 import * as utils from '../datetime'
@@ -73,7 +72,7 @@ function assertDateRange(expected: Date[], actual: dayjs.Dayjs[]) {
 }
 
 describe('getDatesInMonth', () => {
-  const expected = R.range(1, 32).map((date) => new Date(2021, 4, date))
+  const expected = Array.from({ length: 31 }, (_, i) => new Date(2021, 4, i + 1))
 
   test('may 2021', () => {
     const actual = utils.getDatesInMonth(new Date(2021, 4, 9))
