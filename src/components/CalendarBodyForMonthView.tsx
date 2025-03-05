@@ -19,6 +19,7 @@ import type {
   CalendarCellTextStyle,
   EventCellStyle,
   EventRenderer,
+  HorizontalDirection,
   ICalendarEventBase,
   WeekNum,
 } from '../interfaces'

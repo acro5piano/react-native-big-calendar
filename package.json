@@ -40,6 +40,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.26.8",
     "@babel/preset-react": "^7.26.3",
+    "@biomejs/biome": "^1.9.4",
     "@react-native-picker/picker": "^2.6.1",
     "@react-native/babel-preset": "^0.77.0",
     "@storybook/addon-react-native-web": "^0.0.27",
@@ -74,7 +75,7 @@
     "webpack-merge": "^5.10.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": ["biome check --write --unsafe --files-ignore-unknown=true"]
+    "*": ["biome check --write --unsafe --files-ignore-unknown=true --no-errors-on-unmatched"]
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
@@ -85,5 +86,6 @@
   "volta": {
     "node": "22.13.0",
     "yarn": "1.22.22"
-  }
+  },
+  "trustedDependencies": ["@swc/core"]
 }

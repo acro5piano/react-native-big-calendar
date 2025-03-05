@@ -61,7 +61,6 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   onLongPressCell?: (date: Date) => void
   onPressCell?: (date: Date) => void
   onPressEvent?: (event: T) => void
-  onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
