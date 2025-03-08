@@ -1,7 +1,7 @@
 import React from 'react'
 import { PanResponder } from 'react-native'
 
-import { HorizontalDirection } from '../interfaces'
+import type { HorizontalDirection } from '../interfaces'
 
 const SWIPE_THRESHOLD = 50
 
@@ -24,12 +24,12 @@ export function usePanResponder({
             return
           }
           if (dx < -1 * SWIPE_THRESHOLD) {
-            onSwipeHorizontal && onSwipeHorizontal('LEFT')
+            onSwipeHorizontal?.('LEFT')
             panHandledRef.current = true
             return
           }
           if (dx > SWIPE_THRESHOLD) {
-            onSwipeHorizontal && onSwipeHorizontal('RIGHT')
+            onSwipeHorizontal?.('RIGHT')
             panHandledRef.current = true
             return
           }

@@ -1,8 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react'
-import React from 'react'
-
-import { Calendar } from '../src'
+import type { Meta, StoryObj } from '@storybook/react'
 import dayjs from 'dayjs'
+import React, { type FC } from 'react'
+import { Calendar } from '../src'
 
 const MOBILE_HEIGHT = 736
 
@@ -27,7 +26,7 @@ const events = [
   },
 ]
 
-const CalendarContainer: React.FC = () => {
+const CalendarContainer: FC = () => {
   return (
     <>
       <Calendar
