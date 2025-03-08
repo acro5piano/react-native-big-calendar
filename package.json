@@ -1,6 +1,6 @@
 {
   "name": "react-native-big-calendar",
-  "version": "5.0.0-beta.1",
+  "version": "5.0.0-beta.2",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
@@ -9,7 +9,7 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky",
+    "prepare": "bun run husky",
     "storybook": "storybook dev -p 7007",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider' storybook build -o .storybook-build",
     "sync-demo": "bun run build && cp -r build expo-demo/node_modules/react-native-big-calendar && echo 'copied build to expo-demo'",
