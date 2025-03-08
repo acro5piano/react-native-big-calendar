@@ -10,9 +10,8 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: |
           test -n "$NPM_TOKEN"
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
           bun install
           bun run build
           bun publish --tag next
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
