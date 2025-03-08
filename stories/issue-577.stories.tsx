@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, View } from 'react-native'
@@ -6,7 +6,7 @@ import { Alert, View } from 'react-native'
 import { Calendar } from '../src'
 import { styles } from './styles'
 
-function alert(input: any) {
+function alert(input: string) {
   // @ts-ignore
   if (typeof window !== 'undefined') {
     // @ts-ignore

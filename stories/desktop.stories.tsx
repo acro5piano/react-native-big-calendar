@@ -1,23 +1,22 @@
 import 'dayjs/locale/ja'
-
 import type { Meta, StoryObj } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Dimensions, View } from 'react-native'
-
-import { Calendar, ICalendarEventBase } from '../src'
+import { Calendar, type ICalendarEventBase } from '../src'
 import { CONTROL_HEIGHT, Control } from './components/Control'
-import { customEventRenderer, events, spanningEvents, customHourRenderer } from './events'
+import { events, customEventRenderer, customHourRenderer, spanningEvents } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 import { themes } from './themes'
 
-function alert(input: any) {
+function alert(input: string) {
   // @ts-ignore React Native + web integration limitation
   if (typeof window !== 'undefined') {
     // @ts-ignore
     window.alert(String(input))
-  }  return Alert.alert('', String(input))
+  }
+  return Alert.alert('', String(input))
 }
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
@@ -244,7 +243,7 @@ export const OnPressDateHeader: Story = {
   args: {
     height: SCREEN_HEIGHT,
     events: events,
-    onPressDateHeader: (date) => alert(date),
+    onPressDateHeader: (date) => alert(date.toISOString()),
     mode: '3days',
   },
 }

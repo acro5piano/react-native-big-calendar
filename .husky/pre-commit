@@ -1,1 +1,2 @@
-bun lint-staged
+bun tsc --noEmit
+bun lint
