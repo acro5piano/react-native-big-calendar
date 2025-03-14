@@ -156,6 +156,11 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   timeslots?: number
   hourComponent?: HourRenderer
   scheduleMonthSeparatorStyle?: TextStyle
+  /**
+   * If true, enables horizontal scrolling for events.
+   * Default value is `false`.
+   */
+  enableHorizontalScroll?: boolean
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -227,6 +232,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   timeslots = 0,
   hourComponent,
   scheduleMonthSeparatorStyle = {},
+  enableHorizontalScroll = false,
 }: CalendarContainerProps<T>) {
   // To ensure we have proper effect callback, use string to date comparision.
   const dateString = date?.toString()
@@ -338,6 +344,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     onPressEvent,
     hideHours,
     showWeekNumber,
+    enableHorizontalScroll,
   }
 
   if (mode === 'month') {
