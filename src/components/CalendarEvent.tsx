@@ -18,6 +18,7 @@ const getEventCellPositionStyle = (start: Date, end: Date, minHour: number, hour
   return {
     height: `${relativeHeight}%`,
     top: `${relativeTop - relativeTopOffset}%`,
+    minWidth: '33%',
   }
 }
 
