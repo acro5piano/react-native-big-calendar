@@ -383,10 +383,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
               hideNowIndicator={hideNowIndicator}
               showAdjacentMonths={showAdjacentMonths}
               onLongPressCell={onLongPressCell}
-              onPressCell={(date) => {
-                onPressCell?.(date)
-                calendarRef.current?.setPage(0, { animated: true })
-              }}
+              onPressCell={onPressCell}
               onPressDateHeader={onPressDateHeader}
               onPressEvent={onPressEvent}
               renderEvent={renderEvent}
