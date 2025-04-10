@@ -111,10 +111,10 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   )
 
   const getStartOfWeek = (date: dayjs.Dayjs) => {
-    if(date.day() < weekStartsOn) {
+    if (date.day() < weekStartsOn) {
       return date.add(weekStartsOn - date.day() - 7, 'days')
     }
-    else if(date.day() > weekStartsOn) {
+    if (date.day() > weekStartsOn) {
       return date.add(weekStartsOn - date.day(), 'days')
     }
     return date
@@ -144,13 +144,11 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
       /**
        * Start of week should consider weekStartOn parameter instead of relying on day.startOf('week') which is locale affected
        */
-      const startOfWeek = getStartOfWeek(day);
+      const startOfWeek = getStartOfWeek(day)
 
       //filter all events that starts from the current week until the current day, and sort them by reverse starting time
       let filteredEvents = events
-        .filter(
-          ({ start, end }) => dayjs(end).isAfter(startOfWeek) && dayjs(start).isBefore(max),
-        )
+        .filter(({ start, end }) => dayjs(end).isAfter(startOfWeek) && dayjs(start).isBefore(max))
         .sort((a, b) => {
           if (dayjs(a.start).isSame(b.start, 'day')) {
             const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
@@ -190,7 +188,10 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
       //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
       while (!tmpDay.isAfter(day)) {
         for (const event of filteredEvents) {
-          if (dayjs(event.end).isBefore(tmpDay.startOf('day')) || dayjs(event.end).isSame(tmpDay.startOf('day'))) {
+          if (
+            dayjs(event.end).isBefore(tmpDay.startOf('day')) || 
+            dayjs(event.end).isSame(tmpDay.startOf('day'))
+          ) {
             const eventToMoveUp = filteredEvents.find((e) =>
               dayjs(e.start).startOf('day').isSame(tmpDay.startOf('day')),
             )
@@ -216,7 +217,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 
       return finalEvents
     },
-    [events, sortedMonthView],
+    [events, sortedMonthView, getStartOfWeek],
   )
 
   const renderDateCell = (date: dayjs.Dayjs | null, index: number) => {
