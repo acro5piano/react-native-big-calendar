@@ -110,15 +110,18 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
     [calendarCellTextStyle],
   )
 
-  const getStartOfWeek = (date: dayjs.Dayjs) => {
-    if (date.day() < weekStartsOn) {
-      return date.add(weekStartsOn - date.day() - 7, 'days')
-    }
-    if (date.day() > weekStartsOn) {
-      return date.add(weekStartsOn - date.day(), 'days')
-    }
-    return date
-  }
+  const getStartOfWeek = React.useCallback(
+    (date: dayjs.Dayjs) => {
+      if (date.day() < weekStartsOn) {
+        return date.add(weekStartsOn - date.day() - 7, 'days')
+      }
+      if (date.day() > weekStartsOn) {
+        return date.add(weekStartsOn - date.day(), 'days')
+      }
+      return date
+    },
+    [],
+  )
 
   const sortedEvents = React.useCallback(
     (day: dayjs.Dayjs) => {
@@ -189,7 +192,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
       while (!tmpDay.isAfter(day)) {
         for (const event of filteredEvents) {
           if (
-            dayjs(event.end).isBefore(tmpDay.startOf('day')) || 
+            dayjs(event.end).isBefore(tmpDay.startOf('day')) ||
             dayjs(event.end).isSame(tmpDay.startOf('day'))
           ) {
             const eventToMoveUp = filteredEvents.find((e) =>
