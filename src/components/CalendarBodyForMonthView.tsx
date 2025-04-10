@@ -120,7 +120,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
       }
       return date
     },
-    [],
+    [weekStartsOn],
   )
 
   const sortedEvents = React.useCallback(
