@@ -125,6 +125,10 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   onPressMoreLabel?: (event: T[]) => void
   disableMonthEventCellPress?: boolean
   showVerticalScrollIndicator?: boolean
+  /**
+   * Indicates if the calendar body should be scrollable
+   */
+  verticalScrollEnabled?: boolean
   itemSeparatorComponent?:
     | React.ComponentType<{
         highlighted: boolean
@@ -219,6 +223,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   renderCustomDateForMonth,
   disableMonthEventCellPress = false,
   showVerticalScrollIndicator = false,
+  verticalScrollEnabled = true,
   itemSeparatorComponent = null,
   enrichedEventsByDate,
   enableEnrichedEvents = false,
@@ -497,6 +502,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
             hourStyle={hourStyle}
             isEventOrderingEnabled={isEventOrderingEnabled}
             showVerticalScrollIndicator={showVerticalScrollIndicator}
+            scrollEnabled={verticalScrollEnabled}
             enrichedEventsByDate={enrichedEventsByDate}
             enableEnrichedEvents={enableEnrichedEvents}
             eventsAreSorted={eventsAreSorted}
