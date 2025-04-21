@@ -213,6 +213,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   renderCustomDateForMonth,
   disableMonthEventCellPress = false,
   showVerticalScrollIndicator = false,
+  verticalScrollEnabled = true,
   itemSeparatorComponent = null,
   enrichedEventsByDate,
   enableEnrichedEvents = false,
