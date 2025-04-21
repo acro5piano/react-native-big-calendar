@@ -65,3 +65,7 @@ build
 /.idea
 
 .DS_Store
+
+.aider.*
+.expo
+expo-env.d.ts
