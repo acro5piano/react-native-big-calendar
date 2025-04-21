@@ -2,6 +2,7 @@ name: release-beta
 on:
   push:
     tags: ['*beta*']
+  workflow_dispatch: {}
 jobs:
   release:
     runs-on: ubuntu-latest
