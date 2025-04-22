@@ -74,6 +74,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   isEventOrderingEnabled?: boolean
   showWeekNumber?: boolean
   showVerticalScrollIndicator?: boolean
+  scrollEnabled?: boolean
   enrichedEventsByDate?: Record<string, T[]>
   enableEnrichedEvents?: boolean
   eventsAreSorted?: boolean
@@ -111,6 +112,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   isEventOrderingEnabled = true,
   showWeekNumber = false,
   showVerticalScrollIndicator = false,
+  scrollEnabled = true,
   enrichedEventsByDate,
   enableEnrichedEvents = false,
   eventsAreSorted = false,
@@ -294,6 +296,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         scrollEventThrottle={32}
         {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
         showsVerticalScrollIndicator={showVerticalScrollIndicator}
+        scrollEnabled={scrollEnabled}
         nestedScrollEnabled
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
       >
