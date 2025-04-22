@@ -1,5 +1,8 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
+  "files": {
+    "ignore": ["**/.expo/**", "expo-env.d.ts"]
+  },
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,

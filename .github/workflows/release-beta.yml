@@ -2,6 +2,7 @@ name: release-beta
 on:
   push:
     tags: ['*beta*']
+  workflow_dispatch: {}
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -9,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: |
-          test -n "$NPM_TOKEN"
+          test -n "$NPM_CONFIG_TOKEN"
           bun install
           bun run build
           bun publish --tag next

@@ -1,6 +1,6 @@
 {
   "name": "react-native-big-calendar",
-  "version": "5.0.0-beta.2",
+  "version": "5.0.0-beta.5",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
@@ -24,14 +24,14 @@
   },
   "dependencies": {
     "calendarize": "^1.1.1",
-    "dayjs": "^1.11.13",
-    "react-native-gesture-handler": "^2.22.1",
-    "react-native-infinite-pager": "^0.3.18",
-    "react-native-reanimated": "^3.16.7"
+    "dayjs": "^1.11.13"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": ">=18.0.0",
+    "react-native": ">=0.65.0",
+    "react-native-gesture-handler": ">=2.2.0",
+    "react-native-infinite-pager": ">=0.3.18",
+    "react-native-reanimated": ">=3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.8",
