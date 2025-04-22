@@ -1,8 +1,8 @@
-import typescript2 from 'rollup-plugin-typescript2'
+import { createRequire } from 'node:module'
 import jsx from 'acorn-jsx'
-import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 const pkg = require('./package.json')
+import typescript2 from 'rollup-plugin-typescript2'
 
 export default {
   input: './src/index.ts',

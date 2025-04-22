@@ -1,4 +1,4 @@
-import { PartialTheme } from '../src'
+import type { PartialTheme } from '../src'
 
 export const themes: Record<string, PartialTheme> = {
   default: {},

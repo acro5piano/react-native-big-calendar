@@ -1,0 +1,2 @@
+bun tsc --noEmit
+bun lint

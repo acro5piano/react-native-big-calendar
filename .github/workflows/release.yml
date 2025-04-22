@@ -1,23 +1,18 @@
 name: release
 on:
   push:
-    tags: ["v*"]
+    tags: ['v*']
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: ${{ !contains(github.ref, 'beta') }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - uses: actions/cache@master
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
       - run: |
           test -n "$NPM_TOKEN"
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-          yarn install
-          npm publish
+          bun install
+          bun run build
+          bun publish
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}

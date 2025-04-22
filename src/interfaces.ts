@@ -1,8 +1,8 @@
-import { ReactElement } from 'react'
-import { RecursiveArray, TextStyle, ViewStyle } from 'react-native'
+import type { ReactElement } from 'react'
+import type { RecursiveArray, TextStyle, ViewStyle } from 'react-native'
 
-import { CalendarHeaderProps } from './components/CalendarHeader'
-import { CalendarHeaderForMonthViewProps } from './components/CalendarHeaderForMonthView'
+import type { CalendarHeaderProps } from './components/CalendarHeader'
+import type { CalendarHeaderForMonthViewProps } from './components/CalendarHeaderForMonthView'
 
 export interface ICalendarEventBase {
   start: Date

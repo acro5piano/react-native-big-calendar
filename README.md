@@ -26,21 +26,23 @@ It's a hard task to debug this library on three platforms. I usually develop wit
 # Install
 
 ```
-npm install --save react-native-big-calendar
+npm install --save react-native-big-calendar@next
 ```
 
 Or if you use Yarn:
 
 ```
-yarn add react-native-big-calendar
+yarn add react-native-big-calendar@next
 ```
+
+> NOTE: The `next` version is a beta release that includes the [awesome swipe animations](https://github.com/acro5piano/react-native-big-calendar/pull/1135). If you encounter any issues with the `next` version, please consider using the stable version by running `yarn add react-native-big-calendar`.
 
 ### Other dependencies
 
 Please ensure peer dependencies are installed.
 
 ```sh
-npm install react react-native
+npm install react react-native react-native-gesture-handler react-native-infinite-pager react-native-reanimated
 ```
 
 ### TypeScript
@@ -67,7 +69,10 @@ https://github.com/necolas/react-native-web
 
 # Getting Started
 
+Wrap the Calendar component on a GestureHandlerRootView:
+
 ```typescript
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Calendar } from 'react-native-big-calendar'
 
 const events = [
@@ -84,7 +89,11 @@ const events = [
 ]
 
 function App() {
-  return <Calendar events={events} height={600} />
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Calendar events={events} height={600} />
+    </GestureHandlerRootView>
+  )
 }
 ```
 
@@ -103,7 +112,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   eventCellStyle?: EventCellStyle<T>
   eventCellAccessibilityProps?: AccessibilityProps
   eventCellTextColor?: string
-  allDayEventCellStyle?: allDayEventCellStyle<>
+  allDayEventCellStyle?: allDayEventCellStyle<T>
   allDayEventCellAccessibilityProps?: AccessibilityProps
   calendarCellAccessibilityPropsForMonthView?: AccessiblityProps
   allDayEventCellTextColor?: string
@@ -447,10 +456,10 @@ This is specially useful for example when you want to build the dictionary in a 
 After checking this repo, please run:
 
 ```sh
-yarn install
-yarn sync-rndemo
-cd rndemo
-yarn install
+bun install
+bun sync-demo
+cd expo-demo
+bun install
 ```
 
 ## Start
@@ -458,25 +467,14 @@ yarn install
 Start React Native development server in the demo directory:
 
 ```sh
-cd rndemo
-yarn start
-```
-
-Then, open another terminal and run:
-
-```sh
-# For ios
-pod install
-yarn ios
-
-# For Android
-yarn android
+cd expo-demo
+bun start
 ```
 
 Every time you modify code of this library, you should run the following command in the root directory:
 
 ```sh
-yarn sync-rndemo
+bun sync-demo
 ```
 
 # Screenshots

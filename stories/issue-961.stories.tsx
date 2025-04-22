@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import React, { useCallback } from 'react'
 import { Button } from 'react-native'
 
@@ -6,9 +6,22 @@ import { Calendar } from '../src'
 
 const MOBILE_HEIGHT = 736
 
-storiesOf('reproduction-issue-961', module)
-  .add('myBehaviour', () => <CalendarContainer swipeEnabled={false} />)
-  .add('working', () => <CalendarContainer swipeEnabled={true} />)
+const meta: Meta<typeof Calendar> = {
+  title: 'reproduction-issue-961',
+  component: Calendar,
+}
+
+export default meta
+
+type Story = StoryObj<typeof Calendar>
+
+export const MyBehaviour: Story = {
+  render: () => <CalendarContainer swipeEnabled={false} />,
+}
+
+export const Working: Story = {
+  render: () => <CalendarContainer swipeEnabled={true} />,
+}
 
 interface CalendarContainerProps {
   swipeEnabled: boolean
@@ -18,13 +31,13 @@ const CalendarContainer: React.FC<CalendarContainerProps> = ({ swipeEnabled }) =
   const [date, setDate] = React.useState(new Date())
 
   const toNextWeek = () => {
-    let nextWeek = new Date(date)
+    const nextWeek = new Date(date)
     nextWeek.setDate(nextWeek.getDate() + 7)
     setDate(nextWeek)
   }
 
   const toLastWeek = () => {
-    let lastWeek = new Date(date)
+    const lastWeek = new Date(date)
     lastWeek.setDate(lastWeek.getDate() - 7)
     setDate(lastWeek)
   }

@@ -1,19 +1,59 @@
-import { storiesOf } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import dayjs from 'dayjs'
 import React, { useCallback, useState } from 'react'
-import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Text, TouchableOpacity } from 'react-native'
 
-import { Calendar, CalendarTouchableOpacityProps, ICalendarEventBase } from '../src'
-import { DateRangeHandler } from '../src/interfaces'
-import { styles } from './styles'
+import { Calendar, type CalendarTouchableOpacityProps, type ICalendarEventBase } from '../src'
+import type { DateRangeHandler } from '../src/interfaces'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
-storiesOf('reproduction-issue-712', module).add('basic', () => (
-  <View style={styles.desktop}>
-    <Schedule />
-  </View>
-))
+const meta: Meta<typeof Calendar> = {
+  title: 'reproduction-issue-712',
+  component: Calendar,
+}
+
+export default meta
+
+type Story = StoryObj<typeof Calendar>
+
+export const Basic: Story = {
+  render: () => {
+    const [selectedDate, changeSelectedDate] = useState(new Date())
+
+    const onChangeDate: DateRangeHandler = useCallback(([, end]) => {
+      changeSelectedDate(end)
+    }, [])
+
+    const onPressEvent = useCallback((event) => {
+      console.log(event)
+    }, [])
+
+    const renderEvent = useCallback(
+      (event: ICalendarEventBase, touchableOpacityProps: CalendarTouchableOpacityProps) => (
+        <TouchableOpacity {...touchableOpacityProps}>
+          <Text>{`${event.title}`}</Text>
+        </TouchableOpacity>
+      ),
+      [],
+    )
+
+    return (
+      <Calendar
+        events={events}
+        height={SCREEN_HEIGHT}
+        ampm={true}
+        mode={'month'}
+        date={selectedDate}
+        scrollOffsetMinutes={new Date().getHours() * 60}
+        swipeEnabled={true}
+        renderEvent={renderEvent}
+        onChangeDate={onChangeDate}
+        onPressEvent={onPressEvent}
+      />
+    )
+  },
+}
 
 const events = [
   {
@@ -22,39 +62,3 @@ const events = [
     end: dayjs().hour(0).minute(0).second(0).toDate(),
   },
 ]
-
-const Schedule = () => {
-  const [selectedDate, changeSelectedDate] = useState(new Date())
-
-  const onChangeDate: DateRangeHandler = useCallback(([, end]) => {
-    changeSelectedDate(end)
-  }, [])
-
-  const onPressEvent = useCallback((event) => {
-    console.log(event)
-  }, [])
-
-  const renderEvent = useCallback(
-    (event: ICalendarEventBase, touchableOpacityProps: CalendarTouchableOpacityProps) => (
-      <TouchableOpacity {...touchableOpacityProps}>
-        <Text>{`${event.title}`}</Text>
-      </TouchableOpacity>
-    ),
-    [],
-  )
-
-  return (
-    <Calendar
-      events={events}
-      height={SCREEN_HEIGHT}
-      ampm={true}
-      mode={'month'}
-      date={selectedDate}
-      scrollOffsetMinutes={new Date().getHours() * 60}
-      swipeEnabled={true}
-      renderEvent={renderEvent}
-      onChangeDate={onChangeDate}
-      onPressEvent={onPressEvent}
-    />
-  )
-}

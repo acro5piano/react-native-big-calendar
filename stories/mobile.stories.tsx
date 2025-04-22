@@ -1,15 +1,15 @@
-import { storiesOf } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import dayjs from 'dayjs'
 import React from 'react'
 import { Alert, Text, TouchableOpacity, View } from 'react-native'
 
-import { Calendar, EventRenderer, ICalendarEventBase } from '../src'
+import { Calendar, type EventRenderer, type ICalendarEventBase } from '../src'
 import { AppHeader, HEADER_HEIGHT } from './components/AppHeader'
 import { events, tonsOfEvents, tonsOfEventsSorted } from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 
-function alert(input: any) {
+function alert(input: string) {
   // @ts-ignore
   if (typeof window !== 'undefined') {
     // @ts-ignore
@@ -20,80 +20,95 @@ function alert(input: any) {
 
 const MOBILE_HEIGHT = 736
 
-storiesOf('showcase - Mobile', module)
-  .add('day mode', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={events}
-        mode="day"
-        onPressEvent={(event) => alert(event.title)}
-      />
-    </View>
-  ))
-  .add('3days mode', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={events}
-        mode="3days"
-        onPressEvent={(event) => alert(event.title)}
-      />
-    </View>
-  ))
-  .add('week mode', () => (
-    <View style={styles.mobile}>
-      <Calendar hideHours height={MOBILE_HEIGHT} events={events} />
-    </View>
-  ))
-  .add('Tons of events', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={tonsOfEvents}
-        mode="week"
-        onPressEvent={(event) => alert(event.title)}
-      />
-    </View>
-  ))
-  .add('Tons of sorted events', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={tonsOfEventsSorted}
-        mode="week"
-        onPressEvent={(event) => alert(event.title)}
-        enableEnrichedEvents
-        eventsAreSorted
-      />
-    </View>
-  ))
-  .add('Month mode', () => {
+const meta: Meta<typeof Calendar> = {
+  title: 'showcase/Mobile',
+  component: Calendar,
+  decorators: [(Story) => <View style={styles.mobile}>{Story()}</View>],
+}
+
+export default meta
+type Story = StoryObj<typeof Calendar>
+
+export const DayMode: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'day',
+    onPressEvent: (event) => alert(event.title),
+  },
+}
+
+export const ThreeDaysMode: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: '3days',
+    onPressEvent: (event) => alert(event.title),
+  },
+}
+
+export const WeekMode: Story = {
+  args: {
+    hideHours: true,
+    height: MOBILE_HEIGHT,
+    events: events,
+  },
+}
+
+export const TonsOfEvents: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: tonsOfEvents,
+    mode: 'week',
+    onPressEvent: (event) => alert(event.title),
+  },
+}
+
+export const TonsOfSortedEvents: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: tonsOfEventsSorted,
+    mode: 'week',
+    onPressEvent: (event) => alert(event.title),
+    enableEnrichedEvents: true,
+    eventsAreSorted: true,
+  },
+}
+
+export const MonthMode: Story = {
+  render: () => {
     const state = useEvents(events)
     return (
-      <View style={styles.mobile}>
-        <Calendar
-          mode="month"
-          height={MOBILE_HEIGHT}
-          events={state.events}
-          onPressEvent={(event) => alert(event.title)}
-          onPressCell={state.addEvent}
-        />
-      </View>
+      <Calendar
+        mode="month"
+        height={MOBILE_HEIGHT}
+        events={state.events}
+        onPressEvent={(event) => alert(event.title)}
+        onPressCell={state.addEvent}
+      />
     )
-  })
-  .add('with app header', () => (
-    <View style={styles.mobile}>
+  },
+}
+
+export const WithAppHeader: Story = {
+  render: () => (
+    <>
       <AppHeader />
       <Calendar height={MOBILE_HEIGHT - HEADER_HEIGHT} events={events} />
-    </View>
-  ))
-  .add('do not show time', () => (
-    <View style={styles.mobile}>
-      <Calendar height={MOBILE_HEIGHT} events={events} showTime={false} />
-    </View>
-  ))
-  .add('on date changed', () => {
+    </>
+  ),
+}
+
+export const DoNotShowTime: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    showTime: false,
+  },
+}
+
+export const OnDateChanged: Story = {
+  render: () => {
     const onChangeDate = React.useCallback(([start, end]) => {
       alert(`${start} - ${end}`)
     }, [])
@@ -105,164 +120,152 @@ storiesOf('showcase - Mobile', module)
     )
 
     return (
-      <View style={styles.mobile}>
-        <Calendar
-          height={MOBILE_HEIGHT}
-          events={events}
-          onChangeDate={onChangeDate}
-          renderEvent={renderEvent}
-        />
-      </View>
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={events}
+        onChangeDate={onChangeDate}
+        renderEvent={renderEvent}
+      />
     )
-  })
-  .add('Hidden now indocator', () => (
-    <View style={styles.mobile}>
-      <Calendar height={MOBILE_HEIGHT} events={events} hideNowIndicator />
-    </View>
-  ))
-  .add('RTL', () => {
+  },
+}
+
+export const HiddenNowIndicator: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    hideNowIndicator: true,
+  },
+}
+
+export const RTL: Story = {
+  render: () => {
     React.useEffect(() => {
       require('dayjs/locale/he')
     }, [])
-    return (
-      <View style={styles.mobile}>
-        <Calendar isRTL locale="he" height={MOBILE_HEIGHT} events={events} />
-      </View>
-    )
-  })
-  .add('Custom week length', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={events}
-        mode={'custom'}
-        weekStartsOn={1}
-        weekEndsOn={5}
-      />
-    </View>
-  ))
-  .add('Month - Calendar Cell Style', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={events}
-        mode={'month'}
-        calendarCellStyle={(date) => {
-          let cellStyles = {
-            backgroundColor: 'white',
-            color: 'white',
-          }
+    return <Calendar isRTL locale="he" height={MOBILE_HEIGHT} events={events} />
+  },
+}
 
-          const now = dayjs()
+export const CustomWeekLength: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'custom',
+    weekStartsOn: 1,
+    weekEndsOn: 5,
+  },
+}
 
-          const isBefore = dayjs(date).startOf('day').isBefore(now.startOf('day'))
-          const isToday = dayjs(date).startOf('day').isSame(now.startOf('day'))
-          const isAfter = dayjs(date).startOf('day').isAfter(now.startOf('day'))
+export const MonthCalendarCellStyle: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'month',
+    calendarCellStyle: (date) => {
+      let cellStyles = {
+        backgroundColor: 'white',
+        color: 'white',
+      }
 
-          if (isBefore) {
-            cellStyles = {
-              ...cellStyles,
-              backgroundColor: 'red',
-            }
-          } else if (isToday) {
-            cellStyles = {
-              ...cellStyles,
-              backgroundColor: 'blue',
-            }
-          } else if (isAfter) {
-            cellStyles = {
-              ...cellStyles,
-              backgroundColor: 'green',
-            }
-          } else {
-            cellStyles = {
-              ...cellStyles,
-            }
-          }
+      const now = dayjs()
 
-          return cellStyles
-        }}
-        calendarCellTextStyle={{ color: 'white' }}
-      />
-    </View>
-  ))
-  .add('Month - Event Cell - Even and Odd Row BgColor', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={events}
-        mode={'month'}
-        calendarCellStyle={(_, index = 0) => {
-          const isEvenRow = index % 2 === 0
+      const isBefore = dayjs(date).startOf('day').isBefore(now.startOf('day'))
+      const isToday = dayjs(date).startOf('day').isSame(now.startOf('day'))
+      const isAfter = dayjs(date).startOf('day').isAfter(now.startOf('day'))
 
-          return {
-            backgroundColor: isEvenRow ? 'red' : 'green',
-          }
-        }}
-      />
-    </View>
-  ))
-  .add('Week - Calendar Cell Style', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={events}
-        mode={'week'}
-        calendarCellStyle={(date) => {
-          let cellStyles = {
-            backgroundColor: 'white',
-            color: 'black',
-          }
+      if (isBefore) {
+        cellStyles = {
+          ...cellStyles,
+          backgroundColor: 'red',
+        }
+      } else if (isToday) {
+        cellStyles = {
+          ...cellStyles,
+          backgroundColor: 'blue',
+        }
+      } else if (isAfter) {
+        cellStyles = {
+          ...cellStyles,
+          backgroundColor: 'green',
+        }
+      }
 
-          const now = dayjs()
+      return cellStyles
+    },
+    calendarCellTextStyle: { color: 'white' },
+  },
+}
 
-          const isBefore = dayjs(date).startOf('day').isBefore(now.startOf('day'))
-          const isToday = dayjs(date).startOf('day').isSame(now.startOf('day'))
-          const isAfter = dayjs(date).startOf('day').isAfter(now.startOf('day'))
+export const MonthEventCellEvenOddRowBgColor: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'month',
+    calendarCellStyle: (_, index = 0) => {
+      const isEvenRow = index % 2 === 0
+      return {
+        backgroundColor: isEvenRow ? 'red' : 'green',
+      }
+    },
+  },
+}
 
-          if (isBefore) {
-            cellStyles = {
-              ...cellStyles,
-              backgroundColor: 'red',
-            }
-          } else if (isToday) {
-            cellStyles = {
-              ...cellStyles,
-              backgroundColor: 'blue',
-            }
-          } else if (isAfter) {
-            cellStyles = {
-              ...cellStyles,
-              backgroundColor: 'green',
-            }
-          } else {
-            cellStyles = {
-              ...cellStyles,
-            }
-          }
+export const WeekCalendarCellStyle: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'week',
+    calendarCellStyle: (date) => {
+      let cellStyles = {
+        backgroundColor: 'white',
+        color: 'black',
+      }
 
-          return cellStyles
-        }}
-      />
-    </View>
-  ))
-  .add('Week - Calendar Cell - Even and Odd Row BgColor', () => (
-    <View style={styles.mobile}>
-      <Calendar
-        height={MOBILE_HEIGHT}
-        events={events}
-        mode={'week'}
-        calendarCellStyle={(_, index = 0) => {
-          const isEvenRow: boolean = index % 2 === 0
+      const now = dayjs()
 
-          return {
-            backgroundColor: isEvenRow ? 'red' : 'green',
-          }
-        }}
-      />
-    </View>
-  ))
-  .add('Month - Calendar Cell - Custom Date Cell Renderer', () => {
+      const isBefore = dayjs(date).startOf('day').isBefore(now.startOf('day'))
+      const isToday = dayjs(date).startOf('day').isSame(now.startOf('day'))
+      const isAfter = dayjs(date).startOf('day').isAfter(now.startOf('day'))
+
+      if (isBefore) {
+        cellStyles = {
+          ...cellStyles,
+          backgroundColor: 'red',
+        }
+      } else if (isToday) {
+        cellStyles = {
+          ...cellStyles,
+          backgroundColor: 'blue',
+        }
+      } else if (isAfter) {
+        cellStyles = {
+          ...cellStyles,
+          backgroundColor: 'green',
+        }
+      }
+
+      return cellStyles
+    },
+  },
+}
+
+export const WeekCalendarCellEvenOddRowBgColor: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'week',
+    calendarCellStyle: (_, index = 0) => {
+      const isEvenRow: boolean = index % 2 === 0
+      return {
+        backgroundColor: isEvenRow ? 'red' : 'green',
+      }
+    },
+  },
+}
+
+export const MonthCalendarCellCustomDateRenderer: Story = {
+  render: () => {
     const renderCustomDate = (_date: Date) => {
       return (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -283,62 +286,58 @@ storiesOf('showcase - Mobile', module)
     }
 
     return (
-      <View style={styles.mobile}>
-        <Calendar
-          height={MOBILE_HEIGHT}
-          events={events}
-          mode={'month'}
-          renderCustomDateForMonth={renderCustomDate}
-        />
-      </View>
-    )
-  })
-  .add('Month - Calendar Cell - Disabled Pressing Month Event Cell', () => {
-    return (
-      <View style={styles.mobile}>
-        <Calendar
-          height={MOBILE_HEIGHT}
-          events={events}
-          mode={'month'}
-          disableMonthEventCellPress={true}
-          onPressCell={(_date) => {
-            alert(`You can only press Date Cell. Not Event Cell ${_date.getDay()}`)
-          }}
-        />
-      </View>
-    )
-  })
-  .add('Schedule mode', () => {
-    const state = useEvents(events)
-    return (
-      <View style={styles.mobile}>
-        <Calendar
-          height={MOBILE_HEIGHT}
-          events={state.events}
-          mode="schedule"
-          eventCellStyle={(event: ICalendarEventBase & { color?: string }) => {
-            return [
-              { backgroundColor: event.color ?? 'red' },
-              { borderWidth: 1, borderColor: 'green' },
-            ]
-          }}
-          scheduleMonthSeparatorStyle={{
-            color: 'grey',
-            fontSize: 12,
-            paddingVertical: 4,
-          }}
-        />
-      </View>
-    )
-  })
-  .add('With OnSwipe handler', () => (
-    <View style={styles.mobile}>
       <Calendar
         height={MOBILE_HEIGHT}
         events={events}
-        mode="day"
-        onPressEvent={(event) => alert(event.title)}
-        onSwipeEnd={(date) => alert(`You swiped to ${date.toUTCString()}`)}
+        mode="month"
+        renderCustomDateForMonth={renderCustomDate}
       />
-    </View>
-  ))
+    )
+  },
+}
+
+export const MonthCalendarCellDisabledPressing: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'month',
+    disableMonthEventCellPress: true,
+    onPressCell: (_date) => {
+      alert(`You can only press Date Cell. Not Event Cell ${_date.getDay()}`)
+    },
+  },
+}
+
+export const ScheduleMode: Story = {
+  render: () => {
+    const state = useEvents(events)
+    return (
+      <Calendar
+        height={MOBILE_HEIGHT}
+        events={state.events}
+        mode="schedule"
+        eventCellStyle={(event: ICalendarEventBase & { color?: string }) => {
+          return [
+            { backgroundColor: event.color ?? 'red' },
+            { borderWidth: 1, borderColor: 'green' },
+          ]
+        }}
+        scheduleMonthSeparatorStyle={{
+          color: 'grey',
+          fontSize: 12,
+          paddingVertical: 4,
+        }}
+      />
+    )
+  },
+}
+
+export const WithOnSwipeHandler: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'day',
+    onPressEvent: (event) => alert(event.title),
+    onSwipeEnd: (date) => alert(`You swiped to ${date.toUTCString()}`),
+  },
+}

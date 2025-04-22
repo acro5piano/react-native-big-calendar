@@ -1,9 +1,9 @@
-import calendarize, { Week } from 'calendarize'
+import calendarize, { type Week } from 'calendarize'
 import dayjs from 'dayjs'
 
 import { OVERLAP_PADDING } from '../commonStyles'
-import { ICalendarEventBase, Mode, WeekNum } from '../interfaces'
-import { Palette } from '../theme/ThemeInterface'
+import type { ICalendarEventBase, Mode, WeekNum } from '../interfaces'
+import type { Palette } from '../theme/ThemeInterface'
 
 export const DAY_MINUTES = 1440
 export const SIMPLE_DATE_FORMAT = 'YYYY-MM-DD'
@@ -67,7 +67,7 @@ export function formatHour(hour: number, ampm = false) {
       return ''
     }
     if (hour === 12) {
-      return `12 PM`
+      return '12 PM'
     }
     if (hour > 12) {
       return `${hour - 12} PM`
@@ -82,7 +82,7 @@ export function isToday(date: dayjs.Dayjs) {
   return today.isSame(date, 'day')
 }
 
-export function getRelativeTopInDay(date: dayjs.Dayjs, minHour: number = 0, hours: number = 24) {
+export function getRelativeTopInDay(date: dayjs.Dayjs, minHour = 0, hours = 24) {
   const totalMinutesInRange = (DAY_MINUTES / 24) * hours
   return (100 * ((date.hour() - minHour) * 60 + date.minute())) / totalMinutesInRange
 }
@@ -92,24 +92,23 @@ export function todayInMinutes() {
   return today.diff(dayjs().startOf('day'), 'minute')
 }
 
-export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date): number {
+export function modeToNum(mode: Mode, current?: dayjs.Dayjs | Date, amount = 1): number {
   if (mode === 'month') {
     if (!current) {
       throw new Error('You must specify current date if mode is month')
     }
-    if (current instanceof Date) {
-      current = dayjs(current)
-    }
-    return current.daysInMonth() - current.date() + 1
+    const currentDate = current instanceof Date ? dayjs(current) : current
+
+    return currentDate.add(amount, 'month').diff(currentDate, 'day')
   }
   switch (mode) {
     case 'day':
-      return 1
+      return 1 * amount
     case '3days':
-      return 3
+      return 3 * amount
     case 'week':
     case 'custom':
-      return 7
+      return 7 * amount
     default:
       throw new Error('undefined mode')
   }
@@ -196,9 +195,9 @@ export function getOrderOfEvent(
   overlappingEvents.sort((a, b) => {
     if (a.start === b.start) {
       return a.end - a.start - (b.end - b.start)
-    } else {
-      return a.start - b.start
     }
+
+    return a.start - b.start
   })
 
   // Find the index of the given event in the sorted overlapping events
@@ -222,7 +221,7 @@ export function enrichEvents<T extends ICalendarEventBase>(
   let groupEndTime = events[0].end
   let overlapPosition = 0
   let overlapCounting = 0
-  let overlapCountingPointers: number[] = []
+  const overlapCountingPointers: number[] = []
 
   // If events are not sorted, sort them by start time
   const baseEvents = eventsAreSorted
@@ -398,13 +397,13 @@ export function getEventSpanningInfo(
   const isMultipleDays = eventDuration > 1
   // This is to determine how many days from the event to show during a week
   const eventWeekDuration =
-    !showAdjacentMonths && monthDaysLeft < 7 && monthDaysLeft < eventDuration
+    !showAdjacentMonths && monthDaysLeft < 7 && monthDaysLeft < eventDaysLeft
       ? monthDaysLeft + 1
       : eventDaysLeft > weekDaysLeft
-      ? weekDaysLeft
-      : eventDaysLeft < eventDuration
-      ? eventDaysLeft
-      : eventDuration
+        ? weekDaysLeft
+        : eventDaysLeft < eventDuration
+          ? eventDaysLeft
+          : eventDuration
   const isMultipleDaysStart =
     isMultipleDays &&
     (date.isSame(event.start, 'day') ||
@@ -426,11 +425,13 @@ export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn
     return week.map((d, id) => {
       if (d !== 0) {
         return d
-      } else if (iw === 0) {
-        return d - (firstDayIndex - id - 1)
-      } else {
-        return lastDay + (id - lastDayIndex)
       }
+
+      if (iw === 0) {
+        return d - (firstDayIndex - id - 1)
+      }
+
+      return lastDay + (id - lastDayIndex)
     }) as Week
   })
 

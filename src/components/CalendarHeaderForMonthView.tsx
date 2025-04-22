@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 import * as React from 'react'
-import { AccessibilityProps, Text, View, ViewStyle } from 'react-native'
+import { type AccessibilityProps, Text, View, type ViewStyle } from 'react-native'
 
 import { u } from '../commonStyles'
-import { WeekNum } from '../interfaces'
+import type { WeekNum } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { getDatesInWeek } from '../utils/datetime'
 import { typedMemo } from '../utils/react'
@@ -16,6 +16,7 @@ export interface CalendarHeaderForMonthViewProps {
   weekNumberPrefix?: string
   headerContainerAccessibilityProps?: AccessibilityProps
   headerCellAccessibilityProps?: AccessibilityProps
+  dateRange: dayjs.Dayjs[]
 }
 
 function _CalendarHeaderForMonthView({
@@ -57,7 +58,7 @@ function _CalendarHeaderForMonthView({
                 },
               ]}
             >
-              {weekNumberPrefix != undefined ? weekNumberPrefix : ''}
+              {weekNumberPrefix !== undefined ? weekNumberPrefix : ''}
             </Text>
           </View>
         </View>

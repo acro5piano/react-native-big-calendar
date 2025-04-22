@@ -2,20 +2,19 @@ import calendarize from 'calendarize'
 import dayjs from 'dayjs'
 import * as React from 'react'
 import {
-  AccessibilityProps,
+  type AccessibilityProps,
   Animated,
   Platform,
   Text,
   TouchableHighlight,
   TouchableOpacity,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from 'react-native'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
-import { usePanResponder } from '../hooks/usePanResponder'
-import {
+import type {
   CalendarCellStyle,
   CalendarCellTextStyle,
   EventCellStyle,
@@ -74,7 +73,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   calendarCellAccessibilityPropsForMonthView = {},
   calendarCellAccessibilityProps = {},
   calendarCellTextStyle,
-  onSwipeHorizontal,
   hideNowIndicator,
   showAdjacentMonths,
   renderEvent,
@@ -91,10 +89,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
   const [calendarCellHeight, setCalendarCellHeight] = React.useState<number>(0)
-
-  const panResponder = usePanResponder({
-    onSwipeHorizontal,
-  })
 
   const weeks = showAdjacentMonths
     ? getWeeksWithAdjacentMonths(targetDate, weekStartsOn)
@@ -135,96 +129,96 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
         return events.filter(({ start, end }) =>
           day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
         )
-      } else {
-        /**
-         * Better way to sort overlapping events that spans accross multiple days
-         * For example, if you want following events
-         * Event 1, start = 01/01 12:00, end = 02/01 12:00
-         * Event 2, start = 02/01 12:00, end = 03/01 12:00
-         * Event 3, start = 03/01 12:00, end = 04/01 12:00
-         *
-         * When drawing calendar in month view, event 3 should be placed at 3rd index for 03/01, because Event 2 are placed at 2nd index for 02/01 and 03/01
-         *
-         */
-        let min = day.startOf('day'),
-          max = day.endOf('day')
+      }
 
-        /**
-         * Start of week should consider weekStartOn parameter instead of relying on day.startOf('week') which is locale affected
-         */
-        const startOfWeek = getStartOfWeek(day)
+      /**
+       * Better way to sort overlapping events that spans accross multiple days
+       * For example, if you want following events
+       * Event 1, start = 01/01 12:00, end = 02/01 12:00
+       * Event 2, start = 02/01 12:00, end = 03/01 12:00
+       * Event 3, start = 03/01 12:00, end = 04/01 12:00
+       *
+       * When drawing calendar in month view, event 3 should be placed at 3rd index for 03/01, because Event 2 are placed at 2nd index for 02/01 and 03/01
+       *
+       */
+      let min = day.startOf('day')
+      const max = day.endOf('day')
 
-        //filter all events that starts from the current week until the current day, and sort them by reverse starting time
-        let filteredEvents = events
-          .filter(({ start, end }) => dayjs(end).isAfter(startOfWeek) && dayjs(start).isBefore(max))
-          .sort((a, b) => {
-            if (dayjs(a.start).isSame(b.start, 'day')) {
-              const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
-              const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
-              return aDuration - bDuration
-            }
-            return b.start.getTime() - a.start.getTime()
-          })
+      /**
+       * Start of week should consider weekStartOn parameter instead of relying on day.startOf('week') which is locale affected
+       */
+      const startOfWeek = getStartOfWeek(day)
 
-        /**
-         * find the most relevant min date to filter the events
-         * in the example:
-         * 1. when rendering for 01/01, min date will be 01/01 (start of day for event 1)
-         * 2. when rendering for 02/01, min date will be 01/01 (start of day for event 1)
-         * 3. when rendering for 03/01, min date will be 01/01 (start of day for event 1)
-         * 4. when rendering for 04/01, min date will be 01/01 (start of day for event 1)
-         * 5. when rendering for 05/01, min date will be 05/01 (no event overlaps with 05/01)
-         */
-        filteredEvents.forEach(({ start, end }) => {
-          if (dayjs(end).isAfter(min) && dayjs(start).isBefore(min)) {
-            min = dayjs(start).startOf('day')
+      //filter all events that starts from the current week until the current day, and sort them by reverse starting time
+      let filteredEvents = events
+        .filter(({ start, end }) => dayjs(end).isAfter(startOfWeek) && dayjs(start).isBefore(max))
+        .sort((a, b) => {
+          if (dayjs(a.start).isSame(b.start, 'day')) {
+            const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
+            const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
+            return aDuration - bDuration
           }
+          return b.start.getTime() - a.start.getTime()
         })
 
-        filteredEvents = filteredEvents
-          .filter(
-            ({ start, end }) => dayjs(end).endOf('day').isAfter(min) && dayjs(start).isBefore(max),
-          )
-          .reverse()
-        /**
-         * We move eligible event to the top
-         * For example, when rendering for 03/01, Event 3 should be moved to the top, since there is a gap left by Event 1
-         */
-        let finalEvents: T[] = []
-        let tmpDay: dayjs.Dayjs = startOfWeek
-        //re-sort events from the start of week until the calendar cell date
-        //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
-        while (!tmpDay.isAfter(day)) {
-          filteredEvents.forEach((event) => {
-            if (
-              dayjs(event.end).isBefore(tmpDay.startOf('day')) ||
-              dayjs(event.end).isSame(tmpDay.startOf('day'))
-            ) {
-              let eventToMoveUp = filteredEvents.find((e) =>
-                dayjs(e.start).startOf('day').isSame(tmpDay.startOf('day')),
-              )
-              if (eventToMoveUp != undefined) {
-                //remove eventToMoveUp from finalEvents first
-                if (finalEvents.indexOf(eventToMoveUp) > -1) {
-                  finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 1)
-                }
+      /**
+       * find the most relevant min date to filter the events
+       * in the example:
+       * 1. when rendering for 01/01, min date will be 01/01 (start of day for event 1)
+       * 2. when rendering for 02/01, min date will be 01/01 (start of day for event 1)
+       * 3. when rendering for 03/01, min date will be 01/01 (start of day for event 1)
+       * 4. when rendering for 04/01, min date will be 01/01 (start of day for event 1)
+       * 5. when rendering for 05/01, min date will be 05/01 (no event overlaps with 05/01)
+       */
+      for (const { start, end } of filteredEvents) {
+        if (dayjs(end).isAfter(min) && dayjs(start).isBefore(min)) {
+          min = dayjs(start).startOf('day')
+        }
+      }
 
-                if (finalEvents.indexOf(event) > -1) {
-                  finalEvents.splice(finalEvents.indexOf(event), 1, eventToMoveUp)
-                } else {
-                  finalEvents.push(eventToMoveUp)
-                }
+      filteredEvents = filteredEvents
+        .filter(
+          ({ start, end }) => dayjs(end).endOf('day').isAfter(min) && dayjs(start).isBefore(max),
+        )
+        .reverse()
+      /**
+       * We move eligible event to the top
+       * For example, when rendering for 03/01, Event 3 should be moved to the top, since there is a gap left by Event 1
+       */
+      const finalEvents: T[] = []
+      let tmpDay: dayjs.Dayjs = startOfWeek
+      //re-sort events from the start of week until the calendar cell date
+      //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
+      while (!tmpDay.isAfter(day)) {
+        for (const event of filteredEvents) {
+          if (
+            dayjs(event.end).isBefore(tmpDay.startOf('day')) ||
+            dayjs(event.end).isSame(tmpDay.startOf('day'))
+          ) {
+            const eventToMoveUp = filteredEvents.find((e) =>
+              dayjs(e.start).startOf('day').isSame(tmpDay.startOf('day')),
+            )
+            if (eventToMoveUp !== undefined) {
+              //remove eventToMoveUp from finalEvents first
+              if (finalEvents.indexOf(eventToMoveUp) > -1) {
+                finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 1)
               }
-            } else if (finalEvents.indexOf(event) == -1) {
-              finalEvents.push(event)
-            }
-          })
 
-          tmpDay = tmpDay.add(1, 'day')
+              if (finalEvents.indexOf(event) > -1) {
+                finalEvents.splice(finalEvents.indexOf(event), 1, eventToMoveUp)
+              } else {
+                finalEvents.push(eventToMoveUp)
+              }
+            }
+          } else if (finalEvents.indexOf(event) === -1) {
+            finalEvents.push(event)
+          }
         }
 
-        return finalEvents
+        tmpDay = tmpDay.add(1, 'day')
       }
+
+      return finalEvents
     },
     [events, sortedMonthView, getStartOfWeek],
   )
@@ -244,15 +238,15 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               date?.format(SIMPLE_DATE_FORMAT) === now.format(SIMPLE_DATE_FORMAT)
                 ? theme.palette.primary.main
                 : date?.month() !== targetDate.month()
-                ? theme.palette.gray['500']
-                : theme.palette.gray['800'],
+                  ? theme.palette.gray['500']
+                  : theme.palette.gray['800'],
           },
           {
             ...getCalendarCellTextStyle(date?.toDate(), index),
           },
         ]}
       >
-        {date && date.format('D')}
+        {date?.format('D')}
       </Text>
     )
   }
@@ -268,18 +262,17 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
         u['border-b'],
         u['border-l'],
         u['border-r'],
-        u['rounded'],
+        u.rounded,
         { borderColor: theme.palette.gray['200'] },
         style,
       ]}
       onLayout={({ nativeEvent: { layout } }) => {
         setCalendarWidth(layout.width)
       }}
-      {...panResponder.panHandlers}
     >
       {weeks.map((week, i) => (
         <View
-          key={i}
+          key={`${i}-${week.join('-')}`}
           style={[
             u['flex-1'],
             theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
@@ -343,7 +336,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     ...getCalendarCellStyle(date?.toDate(), i),
                   },
                 ]}
-                key={ii}
+                key={`${ii}-${date?.toDate()}`}
                 onLayout={({ nativeEvent: { layout } }) =>
                   // Only set calendarCellHeight once because they are all same
                   // Only set calendarCellHeight if disableMonthEventCellPress is true, since calendarCellHeihgt is only used when disableMonthEventCellPress is true
@@ -359,13 +352,13 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     date &&
                     (onPressDateHeader
                       ? onPressDateHeader(date.toDate())
-                      : onPressCell && onPressCell(date.toDate()))
+                      : onPressCell?.(date.toDate()))
                   }
                   onLongPress={() =>
                     date &&
                     (onPressDateHeader
                       ? onPressDateHeader(date.toDate())
-                      : onLongPressCell && onLongPressCell(date.toDate()))
+                      : onLongPressCell?.(date.toDate()))
                   }
                   {...calendarCellAccessibilityProps}
                 >
@@ -378,10 +371,11 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                     date &&
                     sortedEvents(date).reduce(
                       (elements, event, index, events) => [
+                        // biome-ignore lint/performance/noAccumulatingSpread: Acceptable to use spread operator here
                         ...elements,
                         index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
                           <Text
-                            key={index}
+                            key={`${index}-${event.start}-${event.title}-${event.end}`}
                             style={[
                               theme.typography.moreLabel,
                               { marginTop: 2, color: theme.palette.moreLabel },
@@ -395,7 +389,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                           </Text>
                         ) : (
                           <CalendarEventForMonthView
-                            key={index}
+                            key={`${index}-${event.start}-${event.title}-${event.end}`}
                             event={event}
                             eventCellStyle={eventCellStyle}
                             eventCellAccessibilityProps={eventCellAccessibilityProps}
