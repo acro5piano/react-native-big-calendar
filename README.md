@@ -325,7 +325,12 @@ export interface Palette {
 
 export type Typography = Pick<
   TextStyle,
-  'fontFamily' | 'fontWeight' | 'fontSize' | 'lineHeight' | 'letterSpacing' | 'textAlign'
+  | 'fontFamily'
+  | 'fontWeight'
+  | 'fontSize'
+  | 'lineHeight'
+  | 'letterSpacing'
+  | 'textAlign'
 >
 
 export interface ThemeInterface {
@@ -497,6 +502,11 @@ bun sync-demo
 </p>
 
 If you are using this library, please send a PR to add your organization!
+
+# Contribution
+
+- For stable version, please send PR to `v4` branch.
+- For beta version, please send PR to `main` branch.
 
 # Sponsors
 
