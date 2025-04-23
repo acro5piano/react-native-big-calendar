@@ -500,6 +500,11 @@ yarn sync-rndemo
 
 If you are using this library, please send a PR to add your organization!
 
+# Contribution
+
+- For stable version, please send PR to `v4` branch.
+- For beta version, please send PR to `main` branch.
+
 # Sponsors
 
 <p>
