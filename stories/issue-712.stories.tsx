@@ -30,7 +30,7 @@ const Schedule = () => {
     changeSelectedDate(end)
   }, [])
 
-  const onPressEvent = useCallback((event) => {
+  const onPressEvent = useCallback((event: (typeof events)[0]) => {
     console.log(event)
   }, [])
 

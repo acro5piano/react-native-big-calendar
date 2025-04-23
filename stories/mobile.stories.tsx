@@ -94,7 +94,7 @@ storiesOf('showcase - Mobile', module)
     </View>
   ))
   .add('on date changed', () => {
-    const onChangeDate = React.useCallback(([start, end]) => {
+    const onChangeDate = React.useCallback(([start, end]: [Date, Date]) => {
       alert(`${start} - ${end}`)
     }, [])
 
