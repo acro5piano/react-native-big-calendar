@@ -150,6 +150,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   showVerticalScrollIndicator?: boolean
   verticalScrollEnabled?: boolean
   timeslots?: number
+  preservePageOnPressCell?: boolean
 }
 ```
 
@@ -219,6 +220,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `hourComponent`                              | no       | `HourRenderer`                                                    | Custom hour renderer                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `scheduleMonthSeparatorStyle`                | no       | `TextStyle`                                                       | Schedule mode month separator styling. Accepts a style object (static)                                                                                                                                                                                                                                                                                                                                                                                            |
 | `verticalScrollEnabled`                      | no       | `boolean`                                                         | Indicates if the body of the calendar should be scrollable                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `preservePageOnPressCell`                    | no       | `boolean`                                                         | Prevent the calendar reverting to it's initial page on cell press                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ## EventRenderer
 
