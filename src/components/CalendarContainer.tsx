@@ -105,7 +105,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   onChangeDate?: DateRangeHandler
   onLongPressCell?: (date: Date) => void
   onPressCell?: (date: Date) => void
-  preservePageOnPressCell?: boolean
+  resetPageOnPressCell?: boolean
   onPressDateHeader?: (date: Date) => void
   onPressEvent?: (event: T) => void
   weekEndsOn?: WeekNum
@@ -198,7 +198,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   onChangeDate,
   onLongPressCell,
   onPressCell,
-  preservePageOnPressCell = false,
+  resetPageOnPressCell = false,
   onPressDateHeader,
   onPressEvent,
   renderEvent,
@@ -392,7 +392,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
               onLongPressCell={onLongPressCell}
               onPressCell={(date) => {
                 onPressCell?.(date)
-                if (!preservePageOnPressCell) calendarRef.current?.setPage(0, { animated: true })
+                if (resetPageOnPressCell) calendarRef.current?.setPage(0, { animated: true })
               }}
               onPressDateHeader={onPressDateHeader}
               onPressEvent={onPressEvent}
@@ -493,7 +493,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
             onPressCell={(date) => {
               onPressCell?.(date)
 
-              if (mode !== 'day' && !preservePageOnPressCell) {
+              if (mode !== 'day' && resetPageOnPressCell) {
                 calendarRef.current?.setPage(0, { animated: true })
               }
             }}
