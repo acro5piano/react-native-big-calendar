@@ -150,7 +150,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   showVerticalScrollIndicator?: boolean
   verticalScrollEnabled?: boolean
   timeslots?: number
-  preservePageOnPressCell?: boolean
+  resetPageOnPressCell?: boolean
 }
 ```
 
