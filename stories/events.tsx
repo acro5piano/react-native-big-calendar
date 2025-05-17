@@ -109,118 +109,34 @@ export const tonsOfEventsSorted = tonsOfEvents.sort((a, b) => a.start.getTime() 
 
 export const spanningEvents: Array<ICalendarEventBase & { color?: string }> = [
   {
-    title: 'event1',
-    start: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(3, 'day')
-      .set('hour', 9)
-      .set('minute', 0)
-      .toDate(),
-    end: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(4, 'day')
-      .set('hour', 17)
-      .set('minute', 0)
-      .toDate(),
+    title: 'Watch Boxing',
+    start: dayjs().subtract(1, 'week').set('hour', 14).set('minute', 30).toDate(),
+    end: dayjs().subtract(1, 'week').set('hour', 15).set('minute', 30).toDate(),
   },
   {
-    title: 'event2',
-    start: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(4, 'day')
-      .set('hour', 9)
-      .set('minute', 0)
-      .toDate(),
-    end: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(5, 'day')
-      .set('hour', 17)
-      .set('minute', 0)
-      .toDate(),
+    title: 'Laundry',
+    start: dayjs().subtract(1, 'week').set('hour', 1).set('minute', 30).toDate(),
+    end: dayjs().subtract(1, 'week').set('hour', 2).set('minute', 30).toDate(),
   },
   {
-    title: 'event3',
-    start: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(4, 'day')
-      .set('hour', 9)
-      .set('minute', 0)
-      .toDate(),
-    end: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(4, 'day')
-      .set('hour', 17)
-      .set('minute', 0)
-      .toDate(),
+    title: 'Meeting',
+    start: dayjs().subtract(1, 'week').set('hour', 10).set('minute', 0).toDate(),
+    end: dayjs().add(1, 'week').set('hour', 10).set('minute', 30).toDate(),
   },
   {
-    title: 'event4',
-    start: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(5, 'day')
-      .set('hour', 9)
-      .set('minute', 0)
-      .toDate(),
-    end: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(5, 'day')
-      .set('hour', 17)
-      .set('minute', 0)
-      .toDate(),
+    title: 'Coffee break',
+    start: dayjs().set('hour', 14).set('minute', 30).toDate(),
+    end: dayjs().add(1, 'week').set('hour', 15).set('minute', 30).toDate(),
   },
   {
-    title: 'event5',
-    start: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(5, 'day')
-      .set('hour', 9)
-      .set('minute', 0)
-      .toDate(),
-    end: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(5, 'day')
-      .set('hour', 17)
-      .set('minute', 0)
-      .toDate(),
+    title: 'Repair my car',
+    start: dayjs().add(1, 'day').set('hour', 7).set('minute', 45).toDate(),
+    end: dayjs().add(4, 'day').set('hour', 13).set('minute', 30).toDate(),
   },
   {
-    title: 'event6',
-    start: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(5, 'day')
-      .set('hour', 9)
-      .set('minute', 0)
-      .toDate(),
-    end: dayjs()
-      .date(1)
-      .add(1, 'week')
-      .day(5)
-      .add(5, 'day')
-      .set('hour', 17)
-      .set('minute', 0)
-      .toDate(),
+    title: 'Vacation',
+    start: dayjs().subtract(1, 'month').set('hour', 7).set('minute', 45).toDate(),
+    end: dayjs().add(1, 'month').set('hour', 13).set('minute', 30).toDate(),
   },
 ]
 
