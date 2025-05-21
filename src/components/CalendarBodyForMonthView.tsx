@@ -192,6 +192,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
          */
         let finalEvents: T[] = []
         let tmpDay: dayjs.Dayjs = startOfWeek
+        let movedEvents: T[] = []
         //re-sort events from the start of week until the calendar cell date
         //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
         while (!tmpDay.isAfter(day)) {
@@ -205,12 +206,20 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               )
               if (eventToMoveUp != undefined) {
                 //remove eventToMoveUp from finalEvents first
-                if (finalEvents.indexOf(eventToMoveUp) > -1) {
+                if (
+                  finalEvents.indexOf(eventToMoveUp) > -1 &&
+                  movedEvents.indexOf(eventToMoveUp) === -1
+                ) {
                   finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 1)
                 }
 
                 if (finalEvents.indexOf(event) > -1) {
-                  finalEvents.splice(finalEvents.indexOf(event), 1, eventToMoveUp)
+                  if (movedEvents.indexOf(eventToMoveUp) === -1) {
+                    finalEvents.splice(finalEvents.indexOf(event), 1, eventToMoveUp)
+                    movedEvents.push(eventToMoveUp)
+                  } else {
+                    finalEvents.splice(finalEvents.indexOf(event), 1)
+                  }
                 } else {
                   finalEvents.push(eventToMoveUp)
                 }
