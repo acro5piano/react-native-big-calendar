@@ -140,6 +140,74 @@ export const spanningEvents: Array<ICalendarEventBase & { color?: string }> = [
   },
 ]
 
+export const complexSpanningEvents: Array<ICalendarEventBase & { color?: string }> = [
+  {
+    title: 'event1-1',
+    start: dayjs().date(1).add(1, 'week').day(5).add(3, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(4, 'day').toDate(),
+  },
+  {
+    title: 'event1-2',
+    start: dayjs().date(1).add(1, 'week').day(5).add(3, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(4, 'day').toDate(),
+  },
+  {
+    title: 'event1-3',
+    start: dayjs().date(1).add(1, 'week').day(5).add(3, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(4, 'day').toDate(),
+  },
+  {
+    title: 'event2',
+    start: dayjs().date(1).add(1, 'week').day(5).add(4, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(8, 'day').toDate(),
+  },
+  {
+    title: 'event3',
+    start: dayjs().date(1).add(1, 'week').day(5).add(4, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(6, 'day').toDate(),
+  },
+  {
+    title: 'event4-1',
+    start: dayjs().date(1).add(1, 'week').day(5).add(5, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(5, 'day').toDate(),
+  },
+  {
+    title: 'event4-2',
+    start: dayjs().date(1).add(1, 'week').day(5).add(5, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(5, 'day').toDate(),
+  },
+  {
+    title: 'event5-1',
+    start: dayjs().date(1).add(1, 'week').day(5).add(6, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(6, 'day').toDate(),
+  },
+  {
+    title: 'event5-2',
+    start: dayjs().date(1).add(1, 'week').day(5).add(6, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(6, 'day').toDate(),
+  },
+  {
+    title: 'event6-1',
+    start: dayjs().date(1).add(1, 'week').day(5).add(7, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(7, 'day').toDate(),
+  },
+  {
+    title: 'event6-2',
+    start: dayjs().date(1).add(1, 'week').day(5).add(7, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(7, 'day').toDate(),
+  },
+  {
+    title: 'event6-3',
+    start: dayjs().date(1).add(1, 'week').day(5).add(7, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(7, 'day').toDate(),
+  },
+  {
+    title: 'event7',
+    start: dayjs().date(1).add(1, 'week').day(5).add(8, 'day').toDate(),
+    end: dayjs().date(1).add(1, 'week').day(5).add(8, 'day').toDate(),
+  },
+]
+
 export interface MyCustomEventType extends ICalendarEventBase {
   color?: string
 }
