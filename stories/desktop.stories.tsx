@@ -7,7 +7,13 @@ import { Alert, Dimensions, View } from 'react-native'
 
 import { Calendar, ICalendarEventBase } from '../src'
 import { CONTROL_HEIGHT, Control } from './components/Control'
-import { customEventRenderer, events, spanningEvents, customHourRenderer } from './events'
+import {
+  customEventRenderer,
+  events,
+  spanningEvents,
+  customHourRenderer,
+  complexSpanningEvents,
+} from './events'
 import { useEvents } from './hooks'
 import { styles } from './styles'
 import { themes } from './themes'
@@ -135,6 +141,37 @@ storiesOf('showcase - Desktop', module)
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
           showAdjacentMonths={false}
+        />
+      </View>
+    )
+  })
+  .add('Month mode - Spanning Events (complex)', () => {
+    const state = useEvents(complexSpanningEvents)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          mode="month"
+          height={SCREEN_HEIGHT}
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          maxVisibleEventCount={6}
+        />
+      </View>
+    )
+  })
+  .add('Month mode - Spanning Events (complex) RTL', () => {
+    const state = useEvents(complexSpanningEvents)
+    return (
+      <View style={styles.desktop}>
+        <Calendar
+          mode="month"
+          height={SCREEN_HEIGHT}
+          isRTL
+          events={state.events}
+          onPressEvent={(event) => alert(event.title)}
+          onPressCell={state.addEvent}
+          maxVisibleEventCount={6}
         />
       </View>
     )

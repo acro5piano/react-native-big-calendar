@@ -192,36 +192,34 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
          */
         let finalEvents: T[] = []
         let tmpDay: dayjs.Dayjs = startOfWeek
-        let movedEvents: T[] = []
         //re-sort events from the start of week until the calendar cell date
         //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
         while (!tmpDay.isAfter(day)) {
-          filteredEvents.forEach((event) => {
+          if (tmpDay === startOfWeek) {
+            finalEvents = [...filteredEvents]
+          }
+          finalEvents.forEach((event) => {
             if (
               dayjs(event.end).isBefore(tmpDay.startOf('day')) ||
               dayjs(event.end).isSame(tmpDay.startOf('day'))
             ) {
-              let eventToMoveUp = filteredEvents.find((e) =>
+              let eventsToMoveUp = finalEvents.filter((e) =>
                 dayjs(e.start).startOf('day').isSame(tmpDay.startOf('day')),
               )
-              if (eventToMoveUp != undefined) {
-                //remove eventToMoveUp from finalEvents first
-                if (
-                  finalEvents.indexOf(eventToMoveUp) > -1 &&
-                  movedEvents.indexOf(eventToMoveUp) === -1
-                ) {
-                  finalEvents.splice(finalEvents.indexOf(eventToMoveUp), 1)
-                }
 
-                if (finalEvents.indexOf(event) > -1) {
-                  if (movedEvents.indexOf(eventToMoveUp) === -1) {
+              if (eventsToMoveUp.length > 0) {
+                eventsToMoveUp.forEach((eventToMoveUp) => {
+                  const eventIndex = finalEvents.indexOf(event)
+                  const eventToMoveUpIndex = finalEvents.indexOf(eventToMoveUp)
+
+                  if (eventIndex > -1 && eventIndex < eventToMoveUpIndex) {
+                    finalEvents.splice(eventToMoveUpIndex, 1)
                     finalEvents.splice(finalEvents.indexOf(event), 1, eventToMoveUp)
-                    movedEvents.push(eventToMoveUp)
-                  } else {
-                    finalEvents.splice(finalEvents.indexOf(event), 1)
                   }
-                } else {
-                  finalEvents.push(eventToMoveUp)
+                })
+              } else {
+                if (finalEvents.indexOf(event) === -1) {
+                  finalEvents.push(event)
                 }
               }
             } else if (finalEvents.indexOf(event) == -1) {
@@ -231,6 +229,14 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 
           tmpDay = tmpDay.add(1, 'day')
         }
+
+        finalEvents = finalEvents.filter(
+          (e) =>
+            !(
+              dayjs(e.end).endOf('day').isSame(dayjs(day).startOf('day')) ||
+              dayjs(e.end).endOf('day').isBefore(dayjs(day).startOf('day'))
+            ),
+        )
 
         return finalEvents
       }
