@@ -3,12 +3,13 @@ import * as React from 'react'
 import {
   type AccessibilityProps,
   Platform,
-  ScrollView,
   StyleSheet,
   type TextStyle,
   View,
   type ViewStyle,
 } from 'react-native'
+
+import { ScrollView } from 'react-native-gesture-handler'
 
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
