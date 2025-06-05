@@ -25,7 +25,7 @@ export const Basic: Story = {
       changeSelectedDate(end)
     }, [])
 
-    const onPressEvent = useCallback((event) => {
+    const onPressEvent = useCallback((event: ICalendarEventBase) => {
       console.log(event)
     }, [])
 
