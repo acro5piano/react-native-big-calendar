@@ -17,7 +17,10 @@ export function usePanResponder({
       PanResponder.create({
         // see https://stackoverflow.com/questions/47568850/touchableopacity-with-parent-panresponder
         onMoveShouldSetPanResponder: (_, { dx, dy }) => {
-          return dx > 2 || dx < -2 || dy > 2 || dy < -2
+          if (onSwipeHorizontal !== undefined) {
+            return Math.abs(dx / dy) > 1
+          }
+          return false
         },
         onPanResponderMove: (_, { dy, dx }) => {
           if (dy < -1 * SWIPE_THRESHOLD || SWIPE_THRESHOLD < dy || panHandledRef.current) {
