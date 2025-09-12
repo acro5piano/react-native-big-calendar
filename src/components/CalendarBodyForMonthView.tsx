@@ -116,133 +116,95 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
     [calendarCellTextStyle],
   )
 
-  const getStartOfWeek = React.useCallback(
-    (date: dayjs.Dayjs) => {
-      if (date.day() < weekStartsOn) {
-        return date.add(weekStartsOn - date.day() - 7, 'days')
-      }
-      if (date.day() > weekStartsOn) {
-        return date.add(weekStartsOn - date.day(), 'days')
-      }
-      return date
-    },
-    [weekStartsOn],
-  )
+  const eventsByDate = React.useMemo(() => {
+    if (!sortedMonthView) {
+      const gridStart = dayjs(targetDate).startOf('month').startOf('week')
+      const gridEnd = dayjs(targetDate).endOf('month').endOf('week')
+      let eventDict: { [date: string]: T[] } = {}
+      let d = gridStart.clone()
 
-  const sortedEvents = React.useCallback(
-    (day: dayjs.Dayjs) => {
-      if (!sortedMonthView) {
-        return events.filter(({ start, end }) =>
-          day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
+      while (d.isBefore(gridEnd, 'day')) {
+        const key = d.format(SIMPLE_DATE_FORMAT)
+        eventDict[key] = events.filter(({ start, end }) =>
+          // replicate your previous behavior: inclusive start, exclusive end
+          d.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
         )
-      } else {
-        /**
-         * Better way to sort overlapping events that spans accross multiple days
-         * For example, if you want following events
-         * Event 1, start = 01/01 12:00, end = 02/01 12:00
-         * Event 2, start = 02/01 12:00, end = 03/01 12:00
-         * Event 3, start = 03/01 12:00, end = 04/01 12:00
-         *
-         * When drawing calendar in month view, event 3 should be placed at 3rd index for 03/01, because Event 2 are placed at 2nd index for 02/01 and 03/01
-         *
-         */
-        let min = day.startOf('day'),
-          max = day.endOf('day')
+        d = d.add(1, 'day')
+      }
+      return eventDict
+    }
 
-        /**
-         * Start of week should consider weekStartOn parameter instead of relying on day.startOf('week') which is locale affected
-         */
-        const startOfWeek = getStartOfWeek(day)
+    let eventDict: { [date: string]: T[] } = {}
+    let multipleDayEventsOrder: Map<T, number> = new Map()
+    let dateToCompare = dayjs(targetDate).startOf('month').startOf('week').startOf('day')
+    let startDateOfWeek = dateToCompare.startOf('week')
+    let lastDateOfWeek = dateToCompare.endOf('week')
+    let lastDateOfMonth = dayjs(targetDate).endOf('month').endOf('week').endOf('day').add(1, 'day')
 
-        //filter all events that starts from the current week until the current day, and sort them by reverse starting time
-        let filteredEvents = events
-          .filter(({ start, end }) => dayjs(end).isAfter(startOfWeek) && dayjs(start).isBefore(max))
-          .sort((a, b) => {
-            if (dayjs(a.start).isSame(b.start, 'day')) {
-              const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
-              const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
-              return aDuration - bDuration
-            }
-            return b.start.getTime() - a.start.getTime()
-          })
+    while (dateToCompare.isBefore(lastDateOfMonth, 'day')) {
+      // Update the relevant variables to the next week when the date you're currently trying to index is past the last date of the current week
+      // Initialize the order index for multi-date events, as the order of multi-date events changes every week.
+      if (dateToCompare.isAfter(lastDateOfWeek)) {
+        multipleDayEventsOrder.clear()
+        startDateOfWeek = dayjs(dateToCompare).startOf('week')
+        lastDateOfWeek = dayjs(dateToCompare).endOf('week')
+      }
 
-        /**
-         * find the most relevant min date to filter the events
-         * in the example:
-         * 1. when rendering for 01/01, min date will be 01/01 (start of day for event 1)
-         * 2. when rendering for 02/01, min date will be 01/01 (start of day for event 1)
-         * 3. when rendering for 03/01, min date will be 01/01 (start of day for event 1)
-         * 4. when rendering for 04/01, min date will be 01/01 (start of day for event 1)
-         * 5. when rendering for 05/01, min date will be 05/01 (no event overlaps with 05/01)
-         */
-        filteredEvents.forEach(({ start, end }) => {
-          if (dayjs(end).isAfter(min) && dayjs(start).isBefore(min)) {
-            min = dayjs(start).startOf('day')
-          }
-        })
+      // Get all the events that start today and sort them.
+      let todayStartsEvents = events
+        .filter(
+          (event) =>
+            dateToCompare.isSame(dayjs(event.start).startOf('day'), 'day') ||
+            (dateToCompare.isSame(startDateOfWeek, 'day') &&
+              dateToCompare.isBetween(
+                dayjs(event.start).startOf('day'),
+                dayjs(event.end).startOf('day'),
+                'day',
+                '[]',
+              )),
+        )
+        .sort((a, b) => a.start.getTime() - b.start.getTime())
 
-        filteredEvents = filteredEvents
-          .filter(
-            ({ start, end }) => dayjs(end).endOf('day').isAfter(min) && dayjs(start).isBefore(max),
-          )
-          .reverse()
-        /**
-         * We move eligible event to the top
-         * For example, when rendering for 03/01, Event 3 should be moved to the top, since there is a gap left by Event 1
-         */
-        let finalEvents: T[] = []
-        let tmpDay: dayjs.Dayjs = startOfWeek
-        //re-sort events from the start of week until the calendar cell date
-        //optimize sorting of event nodes and make sure that no empty gaps are left on top of calendar cell
-        while (!tmpDay.isAfter(day)) {
-          if (tmpDay === startOfWeek) {
-            finalEvents = [...filteredEvents]
-          }
-          finalEvents.forEach((event) => {
-            if (
-              dayjs(event.end).isBefore(tmpDay.startOf('day')) ||
-              dayjs(event.end).isSame(tmpDay.startOf('day'))
-            ) {
-              let eventsToMoveUp = finalEvents.filter((e) =>
-                dayjs(e.start).startOf('day').isSame(tmpDay.startOf('day')),
-              )
+      let todayStartsEventsSet = new Set(todayStartsEvents)
+      let finalEvents = [...todayStartsEvents]
 
-              if (eventsToMoveUp.length > 0) {
-                eventsToMoveUp.forEach((eventToMoveUp) => {
-                  const eventIndex = finalEvents.indexOf(event)
-                  const eventToMoveUpIndex = finalEvents.indexOf(eventToMoveUp)
+      // Import and sort events that don't start today, but are included today.
+      let todayIncludedEvents = events
+        .filter(
+          (event) =>
+            dateToCompare.isBetween(
+              dayjs(event.start).startOf('day'),
+              dayjs(event.end).startOf('day'),
+              'day',
+              '[]',
+            ) && !todayStartsEventsSet.has(event),
+        )
+        .sort((a, b) => (multipleDayEventsOrder.get(a) ?? 0) - (multipleDayEventsOrder.get(b) ?? 0))
 
-                  if (eventIndex > -1 && eventIndex < eventToMoveUpIndex) {
-                    finalEvents.splice(eventToMoveUpIndex, 1)
-                    finalEvents.splice(finalEvents.indexOf(event), 1, eventToMoveUp)
-                  }
-                })
-              } else {
-                if (finalEvents.indexOf(event) === -1) {
-                  finalEvents.push(event)
-                }
-              }
-            } else if (finalEvents.indexOf(event) == -1) {
-              finalEvents.push(event)
-            }
-          })
+      // Inserts an existing multi-day event into today's schedule,
+      // preserving the order of the existing multi-day event.
+      todayIncludedEvents.forEach((event) => {
+        if (!multipleDayEventsOrder.has(event)) return
+        let order = multipleDayEventsOrder.get(event)
+        if (order === undefined) return
+        finalEvents.splice(order, 0, event)
+      })
 
-          tmpDay = tmpDay.add(1, 'day')
+      eventDict[dateToCompare.format(SIMPLE_DATE_FORMAT)] = finalEvents
+
+      // Pre-indexes locations in a multi-date event starting with the current date
+      // for use in the next date index.
+      finalEvents.forEach((event) => {
+        // Check whether span on multiple calendar days
+        if (!dayjs(event.start).isSame(dayjs(event.end), 'day')) {
+          multipleDayEventsOrder.set(event, finalEvents.indexOf(event))
         }
+      })
 
-        finalEvents = finalEvents.filter(
-          (e) =>
-            !(
-              dayjs(e.end).endOf('day').isSame(dayjs(day).startOf('day')) ||
-              dayjs(e.end).endOf('day').isBefore(dayjs(day).startOf('day'))
-            ),
-        )
-
-        return finalEvents
-      }
-    },
-    [events, sortedMonthView, getStartOfWeek],
-  )
+      dateToCompare = dateToCompare.add(1, 'day')
+    }
+    return eventDict
+  }, [events, sortedMonthView, targetDate])
 
   const renderDateCell = (date: dayjs.Dayjs | null, index: number) => {
     if (date && renderCustomDateForMonth) {
@@ -259,8 +221,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               date?.format(SIMPLE_DATE_FORMAT) === now.format(SIMPLE_DATE_FORMAT)
                 ? theme.palette.primary.main
                 : date?.month() !== targetDate.month()
-                ? theme.palette.gray['500']
-                : theme.palette.gray['800'],
+                  ? theme.palette.gray['500']
+                  : theme.palette.gray['800'],
           },
           {
             ...getCalendarCellTextStyle(date?.toDate(), index),
@@ -391,7 +353,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   calendarWidth > 0 &&
                     (!disableMonthEventCellPress || calendarCellHeight > 0) &&
                     date &&
-                    sortedEvents(date).reduce(
+                    (eventsByDate[date.format('YYYY-MM-DD')] ?? []).reduce(
                       (elements, event, index, events) => [
                         ...elements,
                         index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
