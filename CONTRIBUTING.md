@@ -7,19 +7,20 @@ First off, thanks for your interest in `react-native-big-calendar` and for wanti
 After checking out the repo, to install:
 
 ```
-yarn install
+bun install
+bun run postinstall
 ```
 
 And confirm that you can successfully build `react-native-big-calendar`:
 
 ```
-yarn build
+bun build
 ```
 
 And run test to confirm that everything works as expected:
 
 ```
-yarn test
+bun run test
 ```
 
 ## Development process
