@@ -13,10 +13,6 @@ updates:
     versions:
     - 8.1.1
     - 8.2.0
-  - dependency-name: husky
-    versions:
-    - 4.3.8
-    - 5.1.2
   - dependency-name: "@storybook/react"
     versions:
     - 6.1.20
