@@ -14,7 +14,7 @@ bun run postinstall
 And confirm that you can successfully build `react-native-big-calendar`:
 
 ```
-bun build
+bun run build
 ```
 
 And run test to confirm that everything works as expected:
