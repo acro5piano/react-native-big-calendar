@@ -117,10 +117,11 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   )
 
   const eventsByDate = React.useMemo(() => {
+    const eventDict: { [date: string]: T[] } = {}
+
     if (!sortedMonthView) {
       const gridStart = dayjs(targetDate).startOf('month').startOf('week')
       const gridEnd = dayjs(targetDate).endOf('month').endOf('week')
-      let eventDict: { [date: string]: T[] } = {}
       let d = gridStart.clone()
 
       while (d.isBefore(gridEnd, 'day')) {
@@ -134,12 +135,15 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
       return eventDict
     }
 
-    let eventDict: { [date: string]: T[] } = {}
-    let multipleDayEventsOrder: Map<T, number> = new Map()
     let dateToCompare = dayjs(targetDate).startOf('month').startOf('week').startOf('day')
     let startDateOfWeek = dateToCompare.startOf('week')
     let lastDateOfWeek = dateToCompare.endOf('week')
-    let lastDateOfMonth = dayjs(targetDate).endOf('month').endOf('week').endOf('day').add(1, 'day')
+    const multipleDayEventsOrder: Map<T, number> = new Map()
+    const lastDateOfMonth = dayjs(targetDate)
+      .endOf('month')
+      .endOf('week')
+      .endOf('day')
+      .add(1, 'day')
 
     while (dateToCompare.isBefore(lastDateOfMonth, 'day')) {
       // Update the relevant variables to the next week when the date you're currently trying to index is past the last date of the current week
@@ -151,7 +155,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
       }
 
       // Get all the events that start today and sort them.
-      let todayStartsEvents = events
+      const todayStartsEvents = events
         .filter(
           (event) =>
             dateToCompare.isSame(dayjs(event.start).startOf('day'), 'day') ||
@@ -165,11 +169,11 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
         )
         .sort((a, b) => a.start.getTime() - b.start.getTime())
 
-      let todayStartsEventsSet = new Set(todayStartsEvents)
-      let finalEvents = [...todayStartsEvents]
+      const todayStartsEventsSet = new Set(todayStartsEvents)
+      const finalEvents = [...todayStartsEvents]
 
       // Import and sort events that don't start today, but are included today.
-      let todayIncludedEvents = events
+      const todayIncludedEvents = events
         .filter(
           (event) =>
             dateToCompare.isBetween(
@@ -183,23 +187,24 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
 
       // Inserts an existing multi-day event into today's schedule,
       // preserving the order of the existing multi-day event.
-      todayIncludedEvents.forEach((event) => {
-        if (!multipleDayEventsOrder.has(event)) return
-        let order = multipleDayEventsOrder.get(event)
-        if (order === undefined) return
+      for (const event of todayIncludedEvents) {
+        if (!multipleDayEventsOrder.has(event)) continue
+        const order = multipleDayEventsOrder.get(event)
+        if (order === undefined) continue
         finalEvents.splice(order, 0, event)
-      })
+      }
 
       eventDict[dateToCompare.format(SIMPLE_DATE_FORMAT)] = finalEvents
 
       // Pre-indexes locations in a multi-date event starting with the current date
       // for use in the next date index.
-      finalEvents.forEach((event) => {
+      for (let i = 0; i < finalEvents.length; i++) {
+        const event = finalEvents[i]
         // Check whether span on multiple calendar days
         if (!dayjs(event.start).isSame(dayjs(event.end), 'day')) {
-          multipleDayEventsOrder.set(event, finalEvents.indexOf(event))
+          multipleDayEventsOrder.set(event, i)
         }
-      })
+      }
 
       dateToCompare = dateToCompare.add(1, 'day')
     }
