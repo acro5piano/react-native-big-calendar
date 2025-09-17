@@ -110,86 +110,100 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
     [calendarCellTextStyle],
   )
 
-  const eventsByDate = React.useMemo(() => { 
+  const eventsByDate = React.useMemo(() => {
+    const eventDict: { [date: string]: T[] } = {}
+
     if (!sortedMonthView) {
-      const gridStart = dayjs(targetDate).startOf('month').startOf('week');
-      const gridEnd = dayjs(targetDate).endOf('month').endOf('week');
-      let eventDict: { [date: string]: T[] } = {};
-      let d = gridStart.clone();
+      const gridStart = dayjs(targetDate).startOf('month').startOf('week')
+      const gridEnd = dayjs(targetDate).endOf('month').endOf('week')
+      let d = gridStart.clone()
 
       while (d.isBefore(gridEnd, 'day')) {
-        const key = d.format(SIMPLE_DATE_FORMAT);
+        const key = d.format(SIMPLE_DATE_FORMAT)
         eventDict[key] = events.filter(({ start, end }) =>
           // replicate your previous behavior: inclusive start, exclusive end
           d.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
-        );
-        d = d.add(1, 'day');
+        )
+        d = d.add(1, 'day')
       }
-      return eventDict;
+      return eventDict
     }
 
-    let eventDict: { [date: string]: T[] } = {};
-    let multipleDayEventsOrder: Map<T, number> = new Map();
-    let dateToCompare = dayjs(targetDate).startOf('month').startOf('week').startOf('day');
-    let startDateOfWeek = dateToCompare.startOf('week');
-    let lastDateOfWeek = dateToCompare.endOf('week');
-    let lastDateOfMonth = dayjs(targetDate).endOf('month').endOf('week').endOf('day').add(1, 'day');
+    let dateToCompare = dayjs(targetDate).startOf('month').startOf('week').startOf('day')
+    let startDateOfWeek = dateToCompare.startOf('week')
+    let lastDateOfWeek = dateToCompare.endOf('week')
+    const multipleDayEventsOrder: Map<T, number> = new Map()
+    const lastDateOfMonth = dayjs(targetDate)
+      .endOf('month')
+      .endOf('week')
+      .endOf('day')
+      .add(1, 'day')
 
     while (dateToCompare.isBefore(lastDateOfMonth, 'day')) {
       // Update the relevant variables to the next week when the date you're currently trying to index is past the last date of the current week
       // Initialize the order index for multi-date events, as the order of multi-date events changes every week.
       if (dateToCompare.isAfter(lastDateOfWeek)) {
-        multipleDayEventsOrder.clear();
-        startDateOfWeek = dayjs(dateToCompare).startOf('week');
-        lastDateOfWeek = dayjs(dateToCompare).endOf('week');
+        multipleDayEventsOrder.clear()
+        startDateOfWeek = dayjs(dateToCompare).startOf('week')
+        lastDateOfWeek = dayjs(dateToCompare).endOf('week')
       }
 
       // Get all the events that start today and sort them.
-      let todayStartsEvents = events
+      const todayStartsEvents = events
         .filter(
-          event =>
+          (event) =>
             dateToCompare.isSame(dayjs(event.start).startOf('day'), 'day') ||
             (dateToCompare.isSame(startDateOfWeek, 'day') &&
-              dateToCompare.isBetween(dayjs(event.start).startOf('day'), dayjs(event.end).startOf('day'), 'day', '[]')),
+              dateToCompare.isBetween(
+                dayjs(event.start).startOf('day'),
+                dayjs(event.end).startOf('day'),
+                'day',
+                '[]',
+              )),
         )
-        .sort((a, b) => a.start.getTime() - b.start.getTime());
+        .sort((a, b) => a.start.getTime() - b.start.getTime())
 
-      let todayStartsEventsSet = new Set(todayStartsEvents);
-      let finalEvents = [...todayStartsEvents];
+      const todayStartsEventsSet = new Set(todayStartsEvents)
+      const finalEvents = [...todayStartsEvents]
 
       // Import and sort events that don't start today, but are included today.
-      let todayIncludedEvents = events
+      const todayIncludedEvents = events
         .filter(
-          event =>
-            dateToCompare.isBetween(dayjs(event.start).startOf('day'), dayjs(event.end).startOf('day'), 'day', '[]') &&
-            !todayStartsEventsSet.has(event),
+          (event) =>
+            dateToCompare.isBetween(
+              dayjs(event.start).startOf('day'),
+              dayjs(event.end).startOf('day'),
+              'day',
+              '[]',
+            ) && !todayStartsEventsSet.has(event),
         )
-        .sort((a, b) => (multipleDayEventsOrder.get(a) ?? 0) - (multipleDayEventsOrder.get(b) ?? 0));
+        .sort((a, b) => (multipleDayEventsOrder.get(a) ?? 0) - (multipleDayEventsOrder.get(b) ?? 0))
 
       // Inserts an existing multi-day event into today's schedule,
       // preserving the order of the existing multi-day event.
-      todayIncludedEvents.forEach(event => {
-        if (!multipleDayEventsOrder.has(event)) return;
-        let order = multipleDayEventsOrder.get(event);
-        if (order === undefined) return;
-        finalEvents.splice(order, 0, event);
-      });
+      for (const event of todayIncludedEvents) {
+        if (!multipleDayEventsOrder.has(event)) continue
+        const order = multipleDayEventsOrder.get(event)
+        if (order === undefined) continue
+        finalEvents.splice(order, 0, event)
+      }
 
-      eventDict[dateToCompare.format(SIMPLE_DATE_FORMAT)] = finalEvents;
+      eventDict[dateToCompare.format(SIMPLE_DATE_FORMAT)] = finalEvents
 
       // Pre-indexes locations in a multi-date event starting with the current date
       // for use in the next date index.
-      finalEvents.forEach(event => {
+      for (let i = 0; i < finalEvents.length; i++) {
+        const event = finalEvents[i]
         // Check whether span on multiple calendar days
         if (!dayjs(event.start).isSame(dayjs(event.end), 'day')) {
-          multipleDayEventsOrder.set(event, finalEvents.indexOf(event));
+          multipleDayEventsOrder.set(event, i)
         }
-      });
+      }
 
-      dateToCompare = dateToCompare.add(1, 'day');
+      dateToCompare = dateToCompare.add(1, 'day')
     }
-    return eventDict;
-  }, [events, sortedMonthView]);
+    return eventDict
+  }, [events, sortedMonthView, targetDate])
 
   const renderDateCell = (date: dayjs.Dayjs | null, index: number) => {
     if (date && renderCustomDateForMonth) {
