@@ -56,6 +56,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   showWeekNumber?: boolean
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
   disableMonthEventCellPress?: boolean
+  showSixWeeks?: boolean
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -85,16 +86,17 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   showWeekNumber = false,
   renderCustomDateForMonth,
   disableMonthEventCellPress,
+  showSixWeeks = false,
 }: CalendarBodyForMonthViewProps<T>) {
   const { now } = useNow(!hideNowIndicator)
   const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
   const [calendarCellHeight, setCalendarCellHeight] = React.useState<number>(0)
 
   const weeks = showAdjacentMonths
-    ? getWeeksWithAdjacentMonths(targetDate, weekStartsOn)
+    ? getWeeksWithAdjacentMonths(targetDate, weekStartsOn, showSixWeeks)
     : calendarize(targetDate.toDate(), weekStartsOn)
 
-  const minCellHeight = containerHeight / 5 - 30
+  const minCellHeight = showSixWeeks ? containerHeight / 6 - 30 : containerHeight / 5 - 30
   const theme = useTheme()
 
   const getCalendarCellStyle = React.useMemo(
