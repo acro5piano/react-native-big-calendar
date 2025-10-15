@@ -122,6 +122,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
 
   //Week Number
   showWeekNumber?: boolean
+  showSixWeeks?: boolean
   weekNumberPrefix?: string
   onPressMoreLabel?: (event: T[]) => void
   disableMonthEventCellPress?: boolean
@@ -220,6 +221,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   maxHour = 23,
   isEventOrderingEnabled,
   showWeekNumber = false,
+  showSixWeeks = false,
   weekNumberPrefix = '',
   onPressMoreLabel,
   renderCustomDateForMonth,
@@ -405,6 +407,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
               onPressMoreLabel={onPressMoreLabel}
               renderCustomDateForMonth={renderCustomDateForMonth}
               disableMonthEventCellPress={disableMonthEventCellPress}
+              showSixWeeks={showSixWeeks}
             />
           </React.Fragment>
         )}

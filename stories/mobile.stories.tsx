@@ -341,3 +341,13 @@ export const WithOnSwipeHandler: Story = {
     onSwipeEnd: (date) => alert(`You swiped to ${date.toUTCString()}`),
   },
 }
+
+export const MonthCalendarWithSixWeeks: Story = {
+  args: {
+    height: MOBILE_HEIGHT,
+    events: events,
+    mode: 'month',
+    disableMonthEventCellPress: true,
+    showSixWeeks: true,
+  },
+}

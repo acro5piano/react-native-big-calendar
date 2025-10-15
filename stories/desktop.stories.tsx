@@ -477,3 +477,21 @@ export const MonthModeWithWeekNumber: Story = {
     )
   },
 }
+
+export const MonthModeWithSixWeeks: Story = {
+  render: () => {
+    const state = useEvents(events)
+    return (
+      <Calendar
+        mode="month"
+        height={SCREEN_HEIGHT}
+        events={state.events}
+        onPressEvent={(event) => alert(event.title)}
+        onPressCell={state.addEvent}
+        showWeekNumber={true}
+        weekNumberPrefix={'W'}
+        showSixWeeks={true}
+      />
+    )
+  },
+}

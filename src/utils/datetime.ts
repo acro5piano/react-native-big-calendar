@@ -415,11 +415,21 @@ export function getEventSpanningInfo(
   return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
 }
 
-export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn: WeekNum) {
+export function getWeeksWithAdjacentMonths(
+  targetDate: dayjs.Dayjs,
+  weekStartsOn: WeekNum,
+  showSixWeeks: boolean,
+) {
   let weeks = calendarize(targetDate.toDate(), weekStartsOn)
+
   const firstDayIndex = weeks[0].findIndex((d) => d === 1)
   const lastDay = targetDate.endOf('month').date()
   const lastDayIndex = weeks[weeks.length - 1].findIndex((d) => d === lastDay)
+  const lastWeekIndex = weeks.length - 1
+
+  while (showSixWeeks && weeks.length < 6) {
+    weeks.push([0, 0, 0, 0, 0, 0, 0])
+  }
 
   weeks = weeks.map((week, iw) => {
     return week.map((d, id) => {
@@ -431,7 +441,7 @@ export function getWeeksWithAdjacentMonths(targetDate: dayjs.Dayjs, weekStartsOn
         return d - (firstDayIndex - id - 1)
       }
 
-      return lastDay + (id - lastDayIndex)
+      return lastDay + (id - lastDayIndex) + (iw - lastWeekIndex) * 7
     }) as Week
   })
 
