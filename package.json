@@ -5,6 +5,18 @@
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.js",
+      "types": "./build/index.d.ts"
+    },
+    "./legacy": {
+      "import": "./build/legacy.es.js",
+      "require": "./build/legacy.js",
+      "types": "./build/legacy.d.ts"
+    }
+  },
   "repository": "git@github.com:acro5piano/react-native-big-calendar",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
