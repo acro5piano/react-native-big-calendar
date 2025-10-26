@@ -225,6 +225,10 @@ function _CalendarContainerCore<T extends ICalendarEventBase>({
   scheduleMonthSeparatorStyle = {},
   ScrollViewComponent,
 }: CalendarContainerCoreProps<T>) {
+  // Ensure header components are properly typed for JSX usage
+  const MonthHeaderComponent = HeaderComponentForMonthView
+  const WeekHeaderComponent = HeaderComponent
+
   // To ensure we have proper effect callback, use string to date comparision.
   const dateString = date?.toString()
 
@@ -319,7 +323,7 @@ function _CalendarContainerCore<T extends ICalendarEventBase>({
 
     return (
       <React.Fragment>
-        <HeaderComponentForMonthView {...headerProps} dateRange={getDateRange(targetDate)} />
+        <MonthHeaderComponent {...headerProps} dateRange={getDateRange(targetDate)} />
         <CalendarBodyForMonthView<T>
           {...commonProps}
           style={bodyContainerStyle}
@@ -406,7 +410,7 @@ function _CalendarContainerCore<T extends ICalendarEventBase>({
 
   return (
     <React.Fragment>
-      <HeaderComponent {...headerProps} dateRange={getDateRange(targetDate)} />
+      <WeekHeaderComponent {...headerProps} dateRange={getDateRange(targetDate)} />
       <CalendarBody
         {...commonProps}
         dateRange={getDateRange(targetDate)}

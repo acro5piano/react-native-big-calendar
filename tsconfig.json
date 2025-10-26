@@ -39,5 +39,12 @@
     "module": "esnext",
     "outDir": "build"
   },
-  "exclude": ["./expo-demo/**", "**/node_modules/**", "**/vendor/**", ".git", "**/__mocks__/*"]
+  "exclude": [
+    "./expo-demo/**",
+    "**/node_modules/**",
+    "**/vendor/**",
+    ".git",
+    "**/__mocks__/*",
+    "./DemoApp/**"
+  ]
 }

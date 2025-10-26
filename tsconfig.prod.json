@@ -3,6 +3,7 @@
   "exclude": [
     "./stories/**",
     "./expo-demo/**",
+    "./DemoApp/**",
     "**/node_modules/**",
     "**/vendor/**",
     ".git",
