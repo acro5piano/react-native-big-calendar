@@ -48,6 +48,7 @@ interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   onPressEvent?: (event: T) => void
   onSwipeHorizontal?: (d: HorizontalDirection) => void
   renderEvent?: EventRenderer<T>
+  renderMultiDayEventPadding?: EventRenderer<T>
   maxVisibleEventCount: number
   weekStartsOn: WeekNum
   eventMinHeightForMonthView: number
@@ -78,6 +79,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   hideNowIndicator,
   showAdjacentMonths,
   renderEvent,
+  renderMultiDayEventPadding,
   maxVisibleEventCount,
   weekStartsOn,
   eventMinHeightForMonthView,
@@ -226,8 +228,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               date?.format(SIMPLE_DATE_FORMAT) === now.format(SIMPLE_DATE_FORMAT)
                 ? theme.palette.primary.main
                 : date?.month() !== targetDate.month()
-                  ? theme.palette.gray['500']
-                  : theme.palette.gray['800'],
+                ? theme.palette.gray['500']
+                : theme.palette.gray['800'],
           },
           {
             ...getCalendarCellTextStyle(date?.toDate(), index),
@@ -383,6 +385,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                             eventCellAccessibilityProps={eventCellAccessibilityProps}
                             onPressEvent={onPressEvent}
                             renderEvent={renderEvent}
+                            renderMultiDayEventPadding={renderMultiDayEventPadding}
                             date={date}
                             dayOfTheWeek={ii}
                             calendarWidth={calendarWidth}
