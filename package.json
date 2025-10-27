@@ -25,6 +25,7 @@
     "storybook": "storybook dev -p 7007",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider' storybook build -o .storybook-build",
     "sync-demo": "bun run build && cp -r build expo-demo/node_modules/react-native-big-calendar && echo 'copied build to expo-demo'",
+    "sync-demo-app": "bun run build && mkdir -p DemoApp/node_modules/react-native-big-calendar && cp package.json DemoApp/node_modules/react-native-big-calendar/ && cp -r build DemoApp/node_modules/react-native-big-calendar/ && echo 'copied build to DemoApp'",
     "test": "jest",
     "lint": "biome check --error-on-warnings --files-ignore-unknown=true",
     "lint:fix": "biome check --write --unsafe --files-ignore-unknown=true",
