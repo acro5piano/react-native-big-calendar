@@ -9,7 +9,7 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "postinstall": "simple-git-hooks",
+    "prepare": "simple-git-hooks",
     "storybook": "storybook dev -p 7007",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider' storybook build -o .storybook-build",
     "sync-demo": "bun run build && cp -r build expo-demo/node_modules/react-native-big-calendar && echo 'copied build to expo-demo'",
