@@ -37,6 +37,43 @@ yarn add react-native-big-calendar@next
 
 > NOTE: The `next` version is a beta release that includes the [awesome swipe animations](https://github.com/acro5piano/react-native-big-calendar/pull/1135). If you encounter any issues with the `next` version, please consider using the stable version by running `yarn add react-native-big-calendar`.
 
+## Using LegacyCalendar (without native dependencies)
+
+If you want to use the calendar **without the native dependencies** (`react-native-gesture-handler`, `react-native-infinite-pager`, `react-native-reanimated`), you can use the `LegacyCalendar` component instead. This is useful if:
+
+- You want to avoid installing native libraries
+- You're having issues with native module linking
+- You don't need swipe gesture animations
+- You're maintaining a v4-compatible codebase
+
+To use LegacyCalendar, import from the legacy entry point:
+
+```typescript
+import { LegacyCalendar } from 'react-native-big-calendar/legacy'
+
+const events = [
+  {
+    title: 'Meeting',
+    start: new Date(2020, 1, 11, 10, 0),
+    end: new Date(2020, 1, 11, 10, 30),
+  },
+]
+
+function App() {
+  return <LegacyCalendar events={events} height={600} />
+}
+```
+
+**Differences from the regular Calendar component:**
+
+- ❌ No swipe gesture navigation between dates
+- ❌ No animated transitions
+- ✅ All other features work the same (events, customization, themes, etc.)
+- ✅ No need to wrap in `GestureHandlerRootView`
+- ✅ No native dependencies required
+
+**Note:** The `swipeEnabled`, `onSwipeEnd`, and `resetPageOnPressCell` props are ignored in LegacyCalendar as these features are not supported without native dependencies.
+
 ### Other dependencies
 
 Please ensure peer dependencies are installed.
