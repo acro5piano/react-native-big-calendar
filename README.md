@@ -119,6 +119,10 @@ export interface CalendarProps<T extends ICalendarEventBase> {
   ) => ReactElement | null
   renderHeader?: React.ComponentType<CalendarHeaderProps<T> & { mode: Mode }>
   renderHeaderForMonthView?: React.ComponentType<CalendarHeaderForMonthViewProps>
+  renderMultiDayEventPadding?: (
+    event: T,
+    touchableOpacityProps: CalendarTouchableOpacityProps,
+  ) => ReactElement | null
   locale?: string
   hideNowIndicator?: boolean
   mode?: Mode
@@ -210,6 +214,7 @@ export interface CalendarProps<T extends ICalendarEventBase> {
 | `hourComponent`                              | no       | `HourRenderer`                                                    | Custom hour renderer                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `scheduleMonthSeparatorStyle`                | no       | `TextStyle`                                                       | Schedule mode month separator styling. Accepts a style object (static)                                                                                                                                                                                                                                                                                                                                                                                            |
 | `verticalScrollEnabled`                      | no       | `boolean`                                                         | Indicates if the body of the calendar should be scrollable                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `renderMultiDayEventPadding`                 | no       | `EventRenderer`                                                   | Custom renderer for multiday event padding in monthview. Use this to adjust the height of multiday event in monthview, to prevent overlapping with events in other days.                                                                                                                                                                                                                                                                                          |
 
 ## EventRenderer
 

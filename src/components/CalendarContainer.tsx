@@ -88,6 +88,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   renderHeader?: HeaderRenderer<T>
   renderHeaderForMonthView?: MonthHeaderRenderer
   renderCustomDateForMonth?: (date: Date) => React.ReactElement | null
+  renderMultiDayEventPadding?: EventRenderer<T>
 
   ampm?: boolean
   date?: Date
@@ -196,6 +197,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   renderEvent,
   renderHeader: HeaderComponent = CalendarHeader,
   renderHeaderForMonthView: HeaderComponentForMonthView = CalendarHeaderForMonthView,
+  renderMultiDayEventPadding,
   weekEndsOn = 6,
   maxVisibleEventCount = 3,
   eventMinHeightForMonthView = 22,
@@ -364,6 +366,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           onPressEvent={onPressEvent}
           onSwipeHorizontal={onSwipeHorizontal}
           renderEvent={renderEvent}
+          renderMultiDayEventPadding={renderMultiDayEventPadding}
           targetDate={targetDate}
           maxVisibleEventCount={maxVisibleEventCount}
           eventMinHeightForMonthView={eventMinHeightForMonthView}

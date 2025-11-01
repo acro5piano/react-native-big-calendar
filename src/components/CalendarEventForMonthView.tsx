@@ -15,6 +15,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   eventCellStyle?: EventCellStyle<T>
   eventCellAccessibilityProps?: AccessibilityProps
   renderEvent?: EventRenderer<T>
+  renderMultiDayEventPadding?: EventRenderer<T>
   date: dayjs.Dayjs
   dayOfTheWeek: number
   calendarWidth: number
@@ -29,6 +30,7 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   eventCellStyle,
   eventCellAccessibilityProps = {},
   renderEvent,
+  renderMultiDayEventPadding,
   date,
   dayOfTheWeek,
   calendarWidth,
@@ -85,6 +87,8 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
             </Text>
           </View>
         )
+      ) : renderMultiDayEventPadding ? (
+        renderMultiDayEventPadding(event, touchableOpacityProps)
       ) : null}
     </TouchableOpacity>
   )
