@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { ReactElement } from 'react'
 import { RecursiveArray, TextStyle, ViewStyle } from 'react-native'
 
@@ -57,9 +58,9 @@ export type EventRenderer<T extends ICalendarEventBase = ICalendarEventBase> = (
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => JSX.Element
 
-export type HeaderRenderer<T extends ICalendarEventBase> = React.ComponentType<
+export type HeaderRenderer<T extends ICalendarEventBase> = React.JSXElementConstructor<
   CalendarHeaderProps<T> & { mode: Mode }
 >
-export type MonthHeaderRenderer = React.ComponentType<CalendarHeaderForMonthViewProps>
+export type MonthHeaderRenderer = React.JSXElementConstructor<CalendarHeaderForMonthViewProps>
 
-export type HourRenderer = React.ComponentType<{ ampm: boolean; hour: number }>
+export type HourRenderer = React.JSXElementConstructor<{ ampm: boolean; hour: number }>

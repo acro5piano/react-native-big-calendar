@@ -30,10 +30,11 @@ const _HourGuideColumn = ({
     [theme],
   )
 
+  const HourComp = HourComponent as any
   return (
     <View style={{ height: cellHeight }} {...calendarCellAccessibilityProps}>
       {HourComponent ? (
-        <HourComponent hour={hour} ampm={ampm} />
+        <HourComp hour={hour} ampm={ampm} />
       ) : (
         <Text style={[objHasContent(hourStyle) ? hourStyle : textStyle, u['text-center']]}>
           {formatHour(hour, ampm)}

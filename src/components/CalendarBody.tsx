@@ -124,7 +124,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const hours = Array.from({ length: maxHour - minHour + 1 }, (_, i) => minHour + i)
 
   React.useEffect(() => {
-    let timeout: NodeJS.Timeout
+    let timeout: ReturnType<typeof setTimeout>
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
       // We add delay here to work correct on React Native
       // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working

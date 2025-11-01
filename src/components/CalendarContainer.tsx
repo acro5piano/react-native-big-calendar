@@ -343,9 +343,10 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       showWeekNumber: showWeekNumber,
       weekNumberPrefix: weekNumberPrefix,
     }
+    const HeaderComp = HeaderComponentForMonthView as any
     return (
       <React.Fragment>
-        <HeaderComponentForMonthView {...headerProps} />
+        <HeaderComp {...headerProps} />
         <CalendarBodyForMonthView<T>
           {...commonProps}
           style={bodyContainerStyle}
@@ -431,9 +432,10 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     )
   }
 
+  const HeaderComp = HeaderComponent as any
   return (
     <React.Fragment>
-      <HeaderComponent {...headerProps} />
+      <HeaderComp {...headerProps} />
       <CalendarBody
         {...commonProps}
         style={bodyContainerStyle}
