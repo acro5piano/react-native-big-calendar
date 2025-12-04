@@ -264,6 +264,11 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     [events],
   )
 
+  const allEvents = React.useMemo(
+    () => [...daytimeEvents, ...allDayEvents],
+    [daytimeEvents, allDayEvents],
+  )
+
   const getDateRange = React.useCallback(
     (date: string | dayjs.Dayjs) => {
       switch (mode) {
@@ -328,9 +333,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   React.useEffect(() => {
     if (dateString && onChangeDate) {
-      const dateRange = getDateRange(dateString)
-      onChangeDate([dateRange[0].toDate(), dateRange[dateRange.length - 1].toDate()])
+      const timeoutId = setTimeout(() => {
+        const dateRange = getDateRange(dateString)
+        onChangeDate([dateRange[0].toDate(), dateRange[dateRange.length - 1].toDate()])
+      }, 50) // Small delay to batch rapid changes
+      return () => clearTimeout(timeoutId)
     }
+    return undefined
   }, [dateString, onChangeDate, getDateRange])
 
   const getCurrentDate = React.useCallback(
@@ -338,6 +347,21 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       return targetDate.add(modeToNum(mode, targetDate, page), 'day')
     },
     [mode, targetDate],
+  )
+
+  const handlePageChange = React.useCallback(
+    (page: number) => {
+      onSwipeEnd?.(getCurrentDate(page).toDate())
+    },
+    [onSwipeEnd, getCurrentDate],
+  )
+
+  const handlePressCell = React.useCallback(
+    (date: Date) => {
+      onPressCell?.(date)
+      if (resetPageOnPressCell) calendarRef.current?.setPage(0, { animated: true })
+    },
+    [onPressCell, resetPageOnPressCell],
   )
 
   const commonProps = {
@@ -379,7 +403,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
               {...commonProps}
               style={bodyContainerStyle}
               containerHeight={height}
-              events={[...daytimeEvents, ...allDayEvents]}
+              events={allEvents}
               eventCellStyle={eventCellStyle}
               eventCellAccessibilityProps={eventCellAccessibilityProps}
               calendarCellStyle={calendarCellStyle}
@@ -392,10 +416,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
               hideNowIndicator={hideNowIndicator}
               showAdjacentMonths={showAdjacentMonths}
               onLongPressCell={onLongPressCell}
-              onPressCell={(date) => {
-                onPressCell?.(date)
-                if (resetPageOnPressCell) calendarRef.current?.setPage(0, { animated: true })
-              }}
+              onPressCell={handlePressCell}
               onPressDateHeader={onPressDateHeader}
               onPressEvent={onPressEvent}
               renderEvent={renderEvent}
@@ -411,7 +432,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
             />
           </React.Fragment>
         )}
-        onPageChange={(page) => onSwipeEnd?.(getCurrentDate(page).toDate())}
+        onPageChange={handlePageChange}
         pageBuffer={2}
       />
     )
@@ -516,7 +537,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           />
         </React.Fragment>
       )}
-      onPageChange={(page) => onSwipeEnd?.(getCurrentDate(page).toDate())}
+      onPageChange={handlePageChange}
       pageBuffer={2}
     />
   )

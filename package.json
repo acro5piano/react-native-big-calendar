@@ -1,11 +1,17 @@
 {
-  "name": "react-native-big-calendar",
-  "version": "5.0.0-beta.10",
+  "name": "@mirrorim/react-native-big-calendar",
+  "version": "5.0.0-beta.10.2",
   "main": "build/index.js",
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
-  "repository": "git@github.com:acro5piano/react-native-big-calendar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MirrorIM/react-native-big-calendar.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
