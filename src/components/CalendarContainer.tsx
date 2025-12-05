@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React, { useRef } from 'react'
+import React, { useLayoutEffect, useRef } from 'react'
 import type { AccessibilityProps, TextStyle, ViewStyle } from 'react-native'
 import InfinitePager, { type InfinitePagerImperativeApi } from 'react-native-infinite-pager'
 
@@ -250,9 +250,22 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }
   }, [dateString]) // if setting `[date]`, it will triggered twice
 
+  // Use useLayoutEffect to reset page synchronously before paint when mode changes
+  // This ensures InfinitePager doesn't render with the wrong page index
+  // The issue: InfinitePager maintains its page index across mode changes, but page indices
+  // mean different things in different modes (e.g., page 5 in day mode = 5 days, but in
+  // month mode = ~5 months). Resetting to page 0 on mode change prevents showing wrong dates.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mode is a prop and we need to reset when it changes
+  useLayoutEffect(() => {
+    if (calendarRef.current) {
+      calendarRef.current.setPage(0, { animated: false })
+    }
+  }, [mode]) // Reset to page 0 immediately when mode changes
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: targetDate changes should reset the page
   React.useEffect(() => {
     calendarRef.current?.setPage(0, { animated: false })
-  }, [])
+  }, [targetDate])
 
   const allDayEvents = React.useMemo(
     () => events.filter((event) => isAllDayEvent(event.start, event.end)),
