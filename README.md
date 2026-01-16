@@ -493,11 +493,6 @@ bun sync-demo
 
 # Who's using this?
 
-<p>
-<a href="https://www.nupp1.io?utm_source=react-native-big-calendar">
-  <img src="https://www.nupp1.io/favicon.ico" height="80" />
-</a>
-</p>
 </p>
 <a href="https://www.telaqua.com?utm_source=react-native-big-calendar">
   <img src="https://user-images.githubusercontent.com/10719495/195131400-cd334757-caad-4ed8-ba73-786affa2a6b0.png" height="80" />
