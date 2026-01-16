@@ -6,9 +6,6 @@
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
   "repository": "git@github.com:acro5piano/react-native-big-calendar",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
