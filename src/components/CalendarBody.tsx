@@ -3,12 +3,12 @@ import * as React from 'react'
 import {
   type AccessibilityProps,
   Platform,
+  ScrollView as RNScrollView,
   StyleSheet,
   type TextStyle,
   View,
   type ViewStyle,
 } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
 import { u } from '../commonStyles'
 import { useNow } from '../hooks/useNow'
 import type {
@@ -76,6 +76,8 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   eventsAreSorted?: boolean
   timeslots?: number
   hourComponent?: HourRenderer
+  // biome-ignore lint/suspicious/noExplicitAny: ScrollView component can be from different sources
+  ScrollViewComponent?: any
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -113,8 +115,10 @@ function _CalendarBody<T extends ICalendarEventBase>({
   eventsAreSorted = false,
   timeslots = 0,
   hourComponent,
+  ScrollViewComponent = RNScrollView,
 }: CalendarBodyProps<T>) {
-  const scrollView = React.useRef<ScrollView>(null)
+  // biome-ignore lint/suspicious/noExplicitAny: Ref type varies based on ScrollView component
+  const scrollView = React.useRef<any>(null)
   const { now } = useNow(!hideNowIndicator)
   const hours = Array.from({ length: maxHour - minHour + 1 }, (_, i) => minHour + i)
 
@@ -275,7 +279,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   return (
     <React.Fragment>
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
-      <ScrollView
+      <ScrollViewComponent
         style={[
           {
             height: containerHeight - cellHeight * 3,
@@ -337,7 +341,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
             </View>
           ))}
         </View>
-      </ScrollView>
+      </ScrollViewComponent>
     </React.Fragment>
   )
 }

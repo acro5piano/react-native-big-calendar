@@ -5,6 +5,18 @@
   "jsnext:main": "build/index.es.js",
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.js",
+      "types": "./build/index.d.ts"
+    },
+    "./legacy": {
+      "import": "./build/legacy.es.js",
+      "require": "./build/legacy.js",
+      "types": "./build/legacy.d.ts"
+    }
+  },
   "repository": "git@github.com:acro5piano/react-native-big-calendar",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
@@ -13,6 +25,7 @@
     "storybook": "storybook dev -p 7007",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider' storybook build -o .storybook-build",
     "sync-demo": "bun run build && cp -r build expo-demo/node_modules/react-native-big-calendar && echo 'copied build to expo-demo'",
+    "sync-demo-app": "bun run build && mkdir -p DemoApp/node_modules/react-native-big-calendar && cp package.json DemoApp/node_modules/react-native-big-calendar/ && cp -r build DemoApp/node_modules/react-native-big-calendar/ && echo 'copied build to DemoApp'",
     "test": "jest",
     "lint": "biome check --error-on-warnings --files-ignore-unknown=true",
     "lint:fix": "biome check --write --unsafe --files-ignore-unknown=true",
