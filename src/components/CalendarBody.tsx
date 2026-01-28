@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     height: 2,
     width: '100%',
   },
+  horizontalScrollView: {
+    flexDirection: 'row',
+  },
 })
 
 interface CalendarBodyProps<T extends ICalendarEventBase> {
@@ -219,13 +222,17 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const _renderEvents = React.useCallback(
     (date: dayjs.Dayjs) => {
       if (enableEnrichedEvents) {
-        return (internalEnrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(
-          _renderMappedEvent,
+        return (
+          <ScrollView horizontal style={styles.horizontalScrollView}>
+            {(internalEnrichedEventsByDate[date.format(SIMPLE_DATE_FORMAT)] || []).map(
+              _renderMappedEvent,
+            )}
+          </ScrollView>
         )
       }
 
       return (
-        <>
+        <ScrollView horizontal style={styles.horizontalScrollView}>
           {/* Render events of this date */}
           {/* M  T  (W)  T  F  S  S */}
           {/*       S-E             */}
@@ -264,7 +271,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
               end: dayjs(event.end).endOf('day'),
             }))
             .map(_renderMappedEvent)}
-        </>
+        </ScrollView>
       )
     },
     [_renderMappedEvent, enableEnrichedEvents, enrichedEvents, internalEnrichedEventsByDate],
