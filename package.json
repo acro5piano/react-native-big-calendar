@@ -9,7 +9,6 @@
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "simple-git-hooks",
     "storybook": "storybook dev -p 7007",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider' storybook build -o .storybook-build",
     "sync-demo": "bun run build && cp -r build expo-demo/node_modules/react-native-big-calendar && echo 'copied build to expo-demo'",
@@ -66,15 +65,11 @@
     "rimraf": "^5.0.5",
     "rollup": "^2.79.1",
     "rollup-plugin-typescript2": "^0.36.0",
-    "simple-git-hooks": "^2.13.1",
     "storybook": "^8.5.5",
     "tailwind-rn": "^3.0.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
     "webpack-merge": "^5.10.0"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "bun tsc --noEmit && bun lint && bun run biome format"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
