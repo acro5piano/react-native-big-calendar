@@ -57,9 +57,14 @@ export type EventRenderer<T extends ICalendarEventBase = ICalendarEventBase> = (
   touchableOpacityProps: CalendarTouchableOpacityProps,
 ) => JSX.Element
 
+export type HeaderRendererProps<T extends ICalendarEventBase> = CalendarHeaderProps<T> & {
+  mode: Mode
+}
+
 export type HeaderRenderer<T extends ICalendarEventBase> = React.ComponentType<
-  CalendarHeaderProps<T> & { mode: Mode }
+  HeaderRendererProps<T>
 >
+
 export type MonthHeaderRenderer = React.ComponentType<CalendarHeaderForMonthViewProps>
 
 export type HourRenderer = React.ComponentType<{ ampm: boolean; hour: number }>
