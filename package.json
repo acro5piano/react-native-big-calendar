@@ -63,7 +63,7 @@
     "react-native": "^0.76.6",
     "react-native-web": "^0.19.13",
     "rimraf": "^5.0.5",
-    "rollup": "^2.79.1",
+    "rollup": "^4.52.4",
     "rollup-plugin-typescript2": "^0.36.0",
     "storybook": "^8.5.5",
     "tailwind-rn": "^3.0.1",
