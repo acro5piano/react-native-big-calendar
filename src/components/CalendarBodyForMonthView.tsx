@@ -112,6 +112,58 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
     [calendarCellTextStyle],
   )
 
+  // Memoize date press handlers to prevent recreation on every render
+  // This ensures click events propagate immediately without waiting for re-renders
+  // handleDateHeaderPress is for the inner TouchableOpacity (date number/header area)
+  // - Calls onPressDateHeader if provided, otherwise falls back to onPressCell
+  const handleDateHeaderPress = React.useCallback(
+    (date: dayjs.Dayjs | null) => {
+      if (!date) return
+      const dateObj = date.toDate()
+      if (onPressDateHeader) {
+        onPressDateHeader(dateObj)
+      } else if (onPressCell) {
+        onPressCell(dateObj)
+      }
+    },
+    [onPressDateHeader, onPressCell],
+  )
+
+  // handleCellPress is for the outer TouchableOpacity (entire cell body area)
+  // Always calls onPressCell
+  const handleCellPress = React.useCallback(
+    (date: dayjs.Dayjs | null) => {
+      if (!date) return
+      onPressCell?.(date.toDate())
+    },
+    [onPressCell],
+  )
+
+  // handleDateHeaderLongPress is for the inner TouchableOpacity (date number/header area) long press
+  // - Calls onPressDateHeader if provided, otherwise falls back to onLongPressCell
+  const handleDateHeaderLongPress = React.useCallback(
+    (date: dayjs.Dayjs | null) => {
+      if (!date) return
+      const dateObj = date.toDate()
+      if (onPressDateHeader) {
+        onPressDateHeader(dateObj)
+      } else if (onLongPressCell) {
+        onLongPressCell(dateObj)
+      }
+    },
+    [onPressDateHeader, onLongPressCell],
+  )
+
+  // handleCellLongPress is for the outer TouchableOpacity (entire cell body area) long press
+  // Always calls onLongPressCell
+  const handleCellLongPress = React.useCallback(
+    (date: dayjs.Dayjs | null) => {
+      if (!date || !onLongPressCell) return
+      onLongPressCell(date.toDate())
+    },
+    [onLongPressCell],
+  )
+
   const eventsByDate = React.useMemo(() => {
     const eventDict: { [date: string]: T[] } = {}
 
@@ -302,8 +354,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
             )
             .map((date, ii) => (
               <TouchableOpacity
-                onLongPress={() => date && onLongPressCell && onLongPressCell(date.toDate())}
-                onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                onLongPress={() => handleCellLongPress(date)}
+                onPress={() => handleCellPress(date)}
                 style={[
                   i > 0 && u['border-t'],
                   theme.isRTL && (ii > 0 || showWeekNumber) && u['border-r'],
@@ -314,7 +366,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   u['flex-column'],
                   {
                     minHeight: minCellHeight,
-                    zIndex: ii * -1,
                   },
                   {
                     ...getCalendarCellStyle(date?.toDate(), i),
@@ -332,18 +383,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                 {...calendarCellAccessibilityPropsForMonthView}
               >
                 <TouchableOpacity
-                  onPress={() =>
-                    date &&
-                    (onPressDateHeader
-                      ? onPressDateHeader(date.toDate())
-                      : onPressCell?.(date.toDate()))
-                  }
-                  onLongPress={() =>
-                    date &&
-                    (onPressDateHeader
-                      ? onPressDateHeader(date.toDate())
-                      : onLongPressCell?.(date.toDate()))
-                  }
+                  onPress={() => handleDateHeaderPress(date)}
+                  onLongPress={() => handleDateHeaderLongPress(date)}
                   {...calendarCellAccessibilityProps}
                 >
                   {renderDateCell(date, i)}

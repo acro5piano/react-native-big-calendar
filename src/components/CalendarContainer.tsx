@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React, { useRef } from 'react'
+import React, { useLayoutEffect, useRef } from 'react'
 import type { AccessibilityProps, TextStyle, ViewStyle } from 'react-native'
 import InfinitePager, { type InfinitePagerImperativeApi } from 'react-native-infinite-pager'
 
@@ -250,9 +250,22 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     }
   }, [dateString]) // if setting `[date]`, it will triggered twice
 
+  // Use useLayoutEffect to reset page synchronously before paint when mode changes
+  // This ensures InfinitePager doesn't render with the wrong page index
+  // The issue: InfinitePager maintains its page index across mode changes, but page indices
+  // mean different things in different modes (e.g., page 5 in day mode = 5 days, but in
+  // month mode = ~5 months). Resetting to page 0 on mode change prevents showing wrong dates.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mode is a prop and we need to reset when it changes
+  useLayoutEffect(() => {
+    if (calendarRef.current) {
+      calendarRef.current.setPage(0, { animated: false })
+    }
+  }, [mode]) // Reset to page 0 immediately when mode changes
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: targetDate changes should reset the page
   React.useEffect(() => {
     calendarRef.current?.setPage(0, { animated: false })
-  }, [])
+  }, [targetDate])
 
   const allDayEvents = React.useMemo(
     () => events.filter((event) => isAllDayEvent(event.start, event.end)),
@@ -262,6 +275,11 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   const daytimeEvents = React.useMemo(
     () => events.filter((event) => !isAllDayEvent(event.start, event.end)),
     [events],
+  )
+
+  const allEvents = React.useMemo(
+    () => [...daytimeEvents, ...allDayEvents],
+    [daytimeEvents, allDayEvents],
   )
 
   const getDateRange = React.useCallback(
@@ -328,9 +346,13 @@ function _CalendarContainer<T extends ICalendarEventBase>({
 
   React.useEffect(() => {
     if (dateString && onChangeDate) {
-      const dateRange = getDateRange(dateString)
-      onChangeDate([dateRange[0].toDate(), dateRange[dateRange.length - 1].toDate()])
+      const timeoutId = setTimeout(() => {
+        const dateRange = getDateRange(dateString)
+        onChangeDate([dateRange[0].toDate(), dateRange[dateRange.length - 1].toDate()])
+      }, 50) // Small delay to batch rapid changes
+      return () => clearTimeout(timeoutId)
     }
+    return undefined
   }, [dateString, onChangeDate, getDateRange])
 
   const getCurrentDate = React.useCallback(
@@ -338,6 +360,21 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       return targetDate.add(modeToNum(mode, targetDate, page), 'day')
     },
     [mode, targetDate],
+  )
+
+  const handlePageChange = React.useCallback(
+    (page: number) => {
+      onSwipeEnd?.(getCurrentDate(page).toDate())
+    },
+    [onSwipeEnd, getCurrentDate],
+  )
+
+  const handlePressCell = React.useCallback(
+    (date: Date) => {
+      onPressCell?.(date)
+      if (resetPageOnPressCell) calendarRef.current?.setPage(0, { animated: true })
+    },
+    [onPressCell, resetPageOnPressCell],
   )
 
   const commonProps = {
@@ -379,7 +416,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
               {...commonProps}
               style={bodyContainerStyle}
               containerHeight={height}
-              events={[...daytimeEvents, ...allDayEvents]}
+              events={allEvents}
               eventCellStyle={eventCellStyle}
               eventCellAccessibilityProps={eventCellAccessibilityProps}
               calendarCellStyle={calendarCellStyle}
@@ -392,10 +429,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
               hideNowIndicator={hideNowIndicator}
               showAdjacentMonths={showAdjacentMonths}
               onLongPressCell={onLongPressCell}
-              onPressCell={(date) => {
-                onPressCell?.(date)
-                if (resetPageOnPressCell) calendarRef.current?.setPage(0, { animated: true })
-              }}
+              onPressCell={handlePressCell}
               onPressDateHeader={onPressDateHeader}
               onPressEvent={onPressEvent}
               renderEvent={renderEvent}
@@ -411,7 +445,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
             />
           </React.Fragment>
         )}
-        onPageChange={(page) => onSwipeEnd?.(getCurrentDate(page).toDate())}
+        onPageChange={handlePageChange}
         pageBuffer={2}
       />
     )
@@ -516,7 +550,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           />
         </React.Fragment>
       )}
-      onPageChange={(page) => onSwipeEnd?.(getCurrentDate(page).toDate())}
+      onPageChange={handlePageChange}
       pageBuffer={2}
     />
   )

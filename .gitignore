@@ -66,3 +66,6 @@ build
 
 .DS_Store
 .aider*
+
+# npmrc with auth tokens
+.npmrc

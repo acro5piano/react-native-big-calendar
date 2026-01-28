@@ -61,10 +61,16 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
     ],
   })
 
+  const handlePress = React.useCallback(() => {
+    if (!event.disabled && onPressEvent) {
+      onPressEvent(event)
+    }
+  }, [event, onPressEvent])
+
   return (
     <TouchableOpacity
       style={[{ minHeight: eventMinHeightForMonthView }, u['mt-2']]}
-      onPress={() => !event.disabled && onPressEvent?.(event)}
+      onPress={handlePress}
     >
       {(!isMultipleDays && date.isSame(event.start, 'day')) ||
       (isMultipleDays && isMultipleDaysStart) ? (
