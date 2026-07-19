@@ -6,6 +6,18 @@
 
 Cross-platform gcal/outlook like calendar component for React Native.
 
+> [!IMPORTANT]
+> **react-native-big-calendar v4 is the stable, actively maintained release line.**
+>
+> Development of the experimental v5 implementation (the swipe/gesture-driven rewrite that was
+> published under the `next` npm tag) has been discontinued. Its code is preserved on the
+> [`v5` branch](https://github.com/acro5piano/react-native-big-calendar/tree/v5) for reference only.
+>
+> If you are looking for a modern, gesture-driven calendar with virtualization and drag-and-drop,
+> consider [super-calendar](https://github.com/afonsojramos/super-calendar) — a separate,
+> ground-up library by [@afonsojramos](https://github.com/afonsojramos) with a different API.
+> It is not a fork or an official v5, but it covers the direction the v5 experiment was aiming for.
+
 ### ⚠️ Help me to debug this component ⚠️
 
 It's a hard task to debug this library on three platforms. I usually develop with the Web version first, then confirm its functionality with real devices. My PC is Linux and my phone is Android, so on Android it is easy to test, but to debug on iOS, I have to bring my Macbook Pro from my garage and connect my wife's iPhone and test it. Every time I launch my MacBook Pro, it requires updating Xcode or even performing a full system update.. It takes so long time to start debug. As React Native works on iOS better than Android, I ~~always~~ sometimes skip testing it, so there should be a bug on iOS. If you help me debug it, I would much appreciate!
