@@ -26,7 +26,7 @@ yarn test
 
 - Fork it
 - Add your commit
-- Send PR to `master` branch
+- Send PR to `main` branch
 
 And then maintainer (currently only @acro5piano) will review your code. We might request changes, so please discuss with us.
 
@@ -36,7 +36,7 @@ And then maintainer (currently only @acro5piano) will review your code. We might
 
 - Edit `package.json` and bump version
 - Add summary to `Changelog.md`
-- Create a pull request to `master`
+- Create a pull request to `main`
 - Merge it
 - Create a new release on GitHub, which triggers `npm publish`
 
