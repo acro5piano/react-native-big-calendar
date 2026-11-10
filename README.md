@@ -530,24 +530,5 @@ If you are using this library, please send a PR to add your organization!
 </a>
 </p>
 
-# Enterprise support
-
-First, thank you for your interest in this project. As this library is getting famous, lots of people are requesting features they need. I would like to respond all of them as possible, but there are limited hours I'm working on this. To be a full-time open sourcer and make this project sustainable, I've decided to add the enterprise support.
-
-Enterprise customers are able to obtain:
-
-- Full customization like colors, logos, images, and more.
-- Priority response and development.
-- Consultancy for React, TypeScript, and React Native application.
-
-Note that some Enterprise features will be merged to the OSS version too.
-
-If you are interested in those features, please send an email to: ketsume0211@gmail.com
-
-# Hire me
-
-I'm a freelance software engineer specialized in React, React Native and TypeScript. Also available for GraphQL and RDB backend, and Node.JS applications.
-
-If you are interested in hiring me, please send an email to: ketsume0211@gmail.com
 
 I'm based in Japan (by the beautiful sea), so a remote contract job is especially welcome.
