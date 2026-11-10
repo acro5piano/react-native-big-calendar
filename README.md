@@ -504,23 +504,15 @@ yarn sync-rndemo
 
 # Who's using this?
 
-<p>
-<a href="https://www.nupp1.io?utm_source=react-native-big-calendar">
-  <img src="https://www.nupp1.io/favicon.ico" height="80" />
-</a>
-</p>
-</p>
 <a href="https://www.telaqua.com?utm_source=react-native-big-calendar">
   <img src="https://user-images.githubusercontent.com/10719495/195131400-cd334757-caad-4ed8-ba73-786affa2a6b0.png" height="80" />
 </a>
-</p>
 
 If you are using this library, please send a PR to add your organization!
 
 # Contribution
 
-- For stable version, please send PR to `v4` branch.
-- For beta version, please send PR to `main` branch.
+Please send a PR to the `main` branch.
 
 # Sponsors
 
@@ -529,6 +521,3 @@ If you are using this library, please send a PR to add your organization!
   <img src="https://images.ctfassets.net/jk5e9i3ije9y/1K8rFn7DeHTdGg9Mn4Hmzl/c95d1a87b7de549e1463e85a3a10829e/logo-with-text-copy__2_.png?h=250" height="80" />
 </a>
 </p>
-
-
-I'm based in Japan (by the beautiful sea), so a remote contract job is especially welcome.
